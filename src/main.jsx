@@ -8,7 +8,7 @@ import "./i18n"; // 🌍 i18n ishlashi uchun
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename="/uzintellekt/">
       <App />
     </BrowserRouter>
   </React.StrictMode>
