@@ -1,0 +1,465 @@
+@import 'tailwindcss';
+.custom-shape-divider-top-1770149441 {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+  z-index: 1;
+}
+
+.custom-shape-divider-top-1770149441 svg {
+  position: relative;
+  display: block;
+  width: calc(145% + 1.3px);
+  height: 200px;
+}
+.hero-bg {
+  background: linear-gradient(
+    to bottom,
+    #6d28d9 0%,
+    #7c3aed 40%,
+    #6e2adb 80%,
+    #ffffff 100%
+  );
+}
+
+
+
+
+.hero-img {
+  width: 460px;
+  height: 460px;
+  border-radius: 50%;
+  background:
+    radial-gradient(
+      circle at 30% 30%,
+      rgba(255, 255, 255, 0.45),
+      transparent 45%
+    ),
+    radial-gradient(
+      circle at 70% 70%,
+      rgba(168, 139, 250, 0.6),
+      transparent 50%
+    ),
+    linear-gradient(135deg, #7c3aed, #4f46e5);
+
+  filter: blur(0px);
+  box-shadow:
+    0 0 120px rgba(124, 58, 237, 0.6),
+    inset 0 0 60px rgba(255, 255, 255, 0.25);
+
+  animation: float 6s ease-in-out infinite;
+}
+
+/* subtle floating animation */
+@keyframes float {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-18px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+.hero-float {
+  animation: heroFloat 6s ease-in-out infinite;
+}
+
+@keyframes heroFloat {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+
+
+.footer-wave-bg {
+  position: relative;
+  background: linear-gradient(
+    180deg,
+    #5b21b6 0%,
+    #6d28d9 40%,
+    #7c3aed 100%
+  );
+  overflow: hidden;
+}
+
+
+/* =========================
+   SERVICES BG — MODERN AURORA STYLE
+   ========================= */
+
+.services-bg {
+  position: relative;
+  overflow: hidden;
+  background-color: white;
+}
+
+/* glow (yumshoqroq) */
+.services-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* background:
+    radial-gradient(800px 500px at 10% -10%, rgba(139,92,246,0.18), transparent 60%),
+    radial-gradient(700px 400px at 90% 0%, rgba(124,58,237,0.15), transparent 60%); */
+  filter: blur(40px); /* OLD = 80px → juda kuchli edi */
+  z-index: 0;
+}
+
+/* ⭐ STARS — endi ko‘rinadi */
+.services-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(4px 4px at 20% 30%, rgba(124,58,237,0.45), transparent),
+    radial-gradient(4px 4px at 70% 20%, rgba(168,139,250,0.45), transparent),
+    radial-gradient(2px 2px at 40% 70%, rgba(139,92,246,0.4), transparent),
+    radial-gradient(1.5px 1.5px at 85% 60%, rgba(124,58,237,0.4), transparent);
+  background-size: 180px 180px;
+  opacity: 1;
+  animation: starsMove 120s linear infinite;
+  z-index: 1; /* 🔥 MUHIM */
+}
+
+/* content ustida */
+.services-bg > * {
+  position: relative;
+  z-index: 2;
+}
+
+@keyframes starsMove {
+  from { transform: translateY(0); }
+  to { transform: translateY(-200px); }
+}
+
+
+/* =========================
+    SOFT FLOATING CARDS
+   ========================= */
+
+.soft-card {
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.95),
+    rgba(245,243,255,0.95)
+  );
+  border-radius: 20px;
+  box-shadow:
+    0 20px 40px rgba(124, 58, 237, 0.12),
+    inset 0 0 0 1px rgba(124, 58, 237, 0.08);
+  transition: all 0.35s ease;
+}
+
+.soft-card:hover {
+  transform: translateY(-10px);
+  box-shadow:
+    0 30px 60px rgba(124, 58, 237, 0.18),
+    inset 0 0 0 1px rgba(124, 58, 237, 0.15);
+}
+
+
+/* =========================
+    HOW IT WORKS SECTION
+   ========================= */
+
+.how-bg {
+  position: relative;
+  background:
+    radial-gradient(
+      1200px 500px at 50% 0%,
+      rgba(124, 58, 237, 0.18),
+      transparent 60%
+    ),
+    linear-gradient(
+      180deg,
+      #faf7ff 0%,
+      #ffffff 100%
+    );
+}
+
+.how-illustration {
+  position: absolute;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  height: 220px;
+  background: linear-gradient(
+    135deg,
+    rgba(124,58,237,0.15),
+    rgba(168,139,250,0.15)
+  );
+  border-radius: 32px;
+  filter: blur(20px);
+  z-index: 0;
+}
+
+/* step card */
+.how-card {
+  position: relative;
+  background: linear-gradient(
+    180deg,
+    #ffffff,
+    #f5f3ff
+  );
+  border-radius: 22px;
+  padding: 32px 24px;
+  box-shadow:
+    0 20px 40px rgba(124,58,237,0.15),
+    inset 0 0 0 1px rgba(124,58,237,0.1);
+  z-index: 1;
+}
+
+/* icon */
+.how-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 18px;
+  background: linear-gradient(
+    135deg,
+    #ede9fe,
+    #ddd6fe
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34px;
+  box-shadow: 0 14px 24px rgba(124,58,237,0.25);
+  margin-bottom: 20px;
+}
+/* =========================
+   GRADIENT TITLES
+   ========================= */
+
+.gradient-title {
+  background: linear-gradient(
+    90deg,
+    #5b21b6 0%,
+    #7c3aed 40%,
+    #a78bfa 70%,
+    #6d28d9 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* =========================
+   HOW IT WORKS – STEP NUMBER
+   ========================= */
+
+.step-badge {
+  position: absolute;
+  top: -18px;
+  left: -18px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(
+    135deg,
+    #7c3aed,
+    #a78bfa
+  );
+  color: white;
+  font-weight: 700;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 12px 25px rgba(124, 58, 237, 0.45);
+}
+/* =========================
+   HOW IT WORKS – CONNECTOR ARROW
+   ========================= */
+/* DESKTOP (default) – arrow RIGHT */
+.step-arrow {
+  position: absolute;
+  top: 50%;
+  right: -40px;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    rgba(124, 58, 237, 0.35),
+    rgba(124, 58, 237, 0.7)
+  );
+}
+
+.step-arrow::after {
+  content: "";
+  position: absolute;
+  right: -6px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-left: 8px solid rgba(124, 58, 237, 0.7);
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+}
+
+/* MOBILE / COLUMN – arrow DOWN */
+@media (max-width: 767px) {
+  .step-arrow {
+    top: auto;
+    bottom: -36px;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 32px;
+    background: linear-gradient(
+      to bottom,
+      rgba(124, 58, 237, 0.35),
+      rgba(124, 58, 237, 0.7)
+    );
+  }
+
+  .step-arrow::after {
+    right: auto;
+    left: 50%;
+    top: auto;
+    bottom: -6px;
+    transform: translateX(-50%);
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 8px solid rgba(124, 58, 237, 0.7);
+  }
+}
+
+/* =========================
+   NEWS PREVIEW SECTION
+   ========================= */
+
+.news-bg {
+  background:
+    radial-gradient(
+      900px 400px at 20% 0%,
+      rgba(124, 58, 237, 0.12),
+      transparent 60%
+    ),
+    radial-gradient(
+      700px 350px at 80% 20%,
+      rgba(168, 139, 250, 0.15),
+      transparent 60%
+    ),
+    linear-gradient(180deg, #f9f7ff 0%, #ffffff 100%);
+}
+
+.news-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(14px);
+  border-radius: 22px;
+  box-shadow: 0 20px 40px rgba(124, 58, 237, 0.12);
+  overflow: hidden;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.news-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 30px 60px rgba(124, 58, 237, 0.18);
+}
+
+.news-image {
+  height: 190px;
+  overflow: hidden;
+}
+
+.news-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.news-card:hover .news-image img {
+  transform: scale(1.08);
+}
+/* hide scrollbar */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+/* =========================
+   PARTNERS SECTION
+   ========================= */
+
+.partners-bg {
+  background:
+    radial-gradient(
+      900px 400px at 50% 0%,
+      rgba(124, 58, 237, 0.12),
+      transparent 60%
+    ),
+    linear-gradient(180deg, #ffffff 0%, #f8f6ff 100%);
+}
+
+/* track */
+.partners-track {
+  display: flex;
+  gap: 48px;
+  width: max-content;
+  animation: partners-scroll 28s linear infinite;
+}
+
+@keyframes partners-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* card */
+.partner-card {
+  min-width: 180px;
+  height: 100px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 12px 30px rgba(124, 58, 237, 0.12);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.partner-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 45px rgba(124, 58, 237, 0.2);
+}
+
+/* logo */
+.partner-logo {
+  max-height: 48px;
+  max-width: 120px;
+  object-fit: contain;
+  filter: grayscale(100%);
+  opacity: 0.7;
+  transition: filter 0.3s ease, opacity 0.3s ease;
+}
+
+.partner-card:hover .partner-logo {
+  filter: grayscale(0%);
+  opacity: 1;
+}
+
+/* pause on hover */
+.partners-track:hover {
+  animation-play-state: paused;
+}
