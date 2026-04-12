@@ -30,15 +30,15 @@ const services = [
 
 const ServicesPreview = () => {
   return (
-    <section className="py-28 relative services-bg">
-      <div className="max-w-7xl mx-auto px-6">
+    <section id="services" className="py-16 sm:py-28 relative services-bg">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6">
         {/* TITLE */}
-        <h2 className="text-3xl md:text-4xl font-bold gradient-title mb-14">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold gradient-title mb-8 sm:mb-14">
           Xizmatlarimiz
         </h2>
 
         {/* CARDS */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-10">
           {services.map((item, idx) => (
             <NavLink
               key={idx}
@@ -83,12 +83,12 @@ const ServicesPreview = () => {
               {/* TEXT */}
               <div className="p-8">
                 <h3 className="text-lg font-semibold text-gray-900">
-                {item.title}
-              </h3>
+                  {item.title}
+                </h3>
 
-              <p className="mt-2 text-sm text-gray-600 leading-relaxed">
-                {item.desc}
-              </p>
+                <p className="mt-2 text-sm text-gray-600 leading-relaxed">
+                  {item.desc}
+                </p>
               </div>
 
               {/* HOVER GLOW */}

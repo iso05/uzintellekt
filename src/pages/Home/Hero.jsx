@@ -8,7 +8,7 @@ const Hero = () => {
   return (
     <section className="relative min-h-screen overflow-hidden ">
       {/* BACKGROUND */}
-      <div className="absolute inset-0 hero-bg" />
+      <div className="absolute inset-0 hero-bg " />
       <div className="custom-shape-divider-top-1770149441 ">
         <svg
           data-name="Layer 1"
@@ -26,7 +26,7 @@ const Hero = () => {
               y2="0%"
             >
               <stop offset="0%" stopColor="#712edf" />
-              <stop offset="80%" stopColor="#712edf" />
+              <stop offset="90%" stopColor="#712edf" />
               <stop offset="100%" stopColor="#712edf" />
             </linearGradient>
           </defs>
@@ -51,7 +51,7 @@ const Hero = () => {
       </div>
 
       {/* CONTENT */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 min-h-[calc(100vh-80px)] flex items-center">
+      <div className="relative z-10 max-w-7xl mx-auto px-3 sm:px-6 min-h-[calc(100vh-80px)] flex items-center">
         <div
           className="
             flex flex-col
@@ -72,6 +72,8 @@ const Hero = () => {
                 xl:text-6xl
                 font-bold
                 leading-tight
+                lg:pt-0
+                pt-14
               "
             >
               Intellektual Mulkingizni
