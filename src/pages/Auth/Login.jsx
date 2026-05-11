@@ -1,24 +1,41 @@
 // src/pages/Auth/Login.jsx
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
+import useScrollToTop from '../../hooks/useScrollToTop'
 
 export default function Login() {
+  useScrollToTop()
+
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
-  const { user, loginWithOneId, handleCallback } = useAuth()
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError]         = useState(null)
+  const { user, loading, loginWithOneId, handleCallback } = useAuth()
 
-  // Allaqachon login bo'lgan → dashboard
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState(null)
+
+  // StrictMode / double-mount himoyasi
+  const callbackProcessed = useRef(false)
+
+  // Allaqachon kirgan (token bor, sessiya aktiv) → to'g'ri yo'naltirish
+  // FAQAT code parametri yo'q bo'lganda — aks holda callback o'zi navigate qiladi
+  const DASHBOARD_URL = import.meta.env.VITE_DASHBOARD_URL || 'https://dashboard.uzintellekt.uz'
+
   useEffect(() => {
-    if (user) navigate('/dashboard', { replace: true })
-  }, [user])
+    const hasCode = Boolean(searchParams.get('code'))
+    if (!loading && user && !hasCode) {
+      if (user.isMember) {
+        window.location.replace(DASHBOARD_URL)
+      } else {
+        navigate('/register', { replace: true })
+      }
+    }
+  }, [loading, user, searchParams, navigate])
 
   // OneID callback: /login?code=...&state=...
   useEffect(() => {
-    const code       = searchParams.get('code')
-    const state      = searchParams.get('state')
+    const code = searchParams.get('code')
+    const state = searchParams.get('state')
     const errorParam = searchParams.get('error')
 
     if (errorParam) {
@@ -26,103 +43,320 @@ export default function Login() {
       return
     }
     if (!code) return
+    if (callbackProcessed.current) return
+    callbackProcessed.current = true
 
-    // URL ni tozalash
+    // URL dan code/state ni tozalash — brauzer tarixida qolmasin
     window.history.replaceState({}, '', '/login')
     setIsLoading(true)
+    setError(null)
 
     handleCallback(code, state)
-      .then(() => navigate('/dashboard', { replace: true }))
-      .catch((err) => {
-        setError(err.message)
+      .then(({ isMember }) => {
         setIsLoading(false)
+
+        if (isMember) {
+          window.location.replace(DASHBOARD_URL)
+        } else {
+          navigate('/register', { replace: true })
+        }
       })
-  }, [searchParams])
+      .catch((err) => {
+        setError(err.message || 'Xatolik yuz berdi. Qayta urining.')
+        setIsLoading(false)
+        callbackProcessed.current = false
+      })
+  }, [searchParams, handleCallback, navigate])
+
+  const handleLoginClick = () => {
+    setError(null)
+    loginWithOneId()
+  }
 
   return (
-    <section className="min-h-screen flex items-center justify-center bg-linear-to-br from-indigo-600 via-purple-600 to-blue-700 py-20 px-4 relative overflow-hidden">
-      <div className="absolute top-0 left-0 w-96 h-96 bg-white/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl translate-x-1/2 translate-y-1/2" />
+    <section style={S.page}>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap');
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes fadeUp {
+          from { opacity: 0; transform: translateY(24px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes glow {
+          0%, 100% { box-shadow: 0 8px 28px rgba(168,85,247,.4); }
+          50%       { box-shadow: 0 8px 40px rgba(168,85,247,.7); }
+        }
+        .login-card { animation: fadeUp .4s ease both; }
+        .oneid-btn  { transition: transform .15s, box-shadow .15s; }
+        .oneid-btn:hover:not(:disabled) {
+          transform: translateY(-2px);
+          box-shadow: 0 14px 36px rgba(168,85,247,.55) !important;
+        }
+        .oneid-btn:active:not(:disabled) { transform: scale(.97); }
+      `}</style>
 
-      <div className="relative z-10 w-full max-w-md">
-        <div className="backdrop-blur-2xl bg-white/10 rounded-3xl shadow-2xl p-8 lg:p-12 border border-white/20">
+      {/* BG blobs */}
+      <div
+        style={{
+          ...S.blob,
+          top: '-120px',
+          left: '-80px',
+          width: 420,
+          height: 420,
+          background:
+            'radial-gradient(circle, rgba(99,102,241,.28) 0%, transparent 70%)',
+        }}
+      />
+      <div
+        style={{
+          ...S.blob,
+          bottom: '-100px',
+          right: '-80px',
+          width: 380,
+          height: 380,
+          background:
+            'radial-gradient(circle, rgba(168,85,247,.22) 0%, transparent 70%)',
+        }}
+      />
+      <div
+        style={{
+          ...S.blob,
+          top: '35%',
+          right: '5%',
+          width: 180,
+          height: 180,
+          background:
+            'radial-gradient(circle, rgba(59,130,246,.18) 0%, transparent 70%)',
+        }}
+      />
 
-          {/* HEADER */}
-          <div className="text-center mb-10">
-            <div className="inline-block p-3 rounded-2xl bg-linear-to-br from-purple-400 to-indigo-500 mb-4">
-              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+      <div style={S.wrap}>
+        <div style={S.card} className="login-card">
+          {/* Lock icon */}
+          <div style={S.iconWrap}>
+            <div style={S.iconBox}>
+              <svg
+                width="34"
+                height="34"
+                fill="none"
+                stroke="white"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                viewBox="0 0 24 24"
+              >
+                <rect x="3" y="11" width="18" height="11" rx="2" />
+                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                <circle cx="12" cy="16" r="1" fill="white" />
               </svg>
             </div>
-            <h1 className="text-3xl font-bold text-white mb-2">
-              {isLoading ? 'Kirilmoqda...' : 'Kirish'}
+          </div>
+
+          {/* Title */}
+          <div style={S.titleBlock}>
+            <h1 style={S.h1}>
+              {isLoading ? 'Tekshirilmoqda...' : 'Xush kelibsiz'}
             </h1>
-            <p className="text-white/60 text-sm">uzintellekt.uz ga xush kelibsiz</p>
+            <p style={S.subtitle}>uzintellekt.uz platformasiga kirish</p>
           </div>
 
-          {/* LOADING */}
+          {/* Loading */}
           {isLoading && (
-            <div className="mb-8 flex flex-col items-center gap-3">
-              <div className="w-12 h-12 border-4 border-white/20 border-t-white rounded-full animate-spin" />
-              <p className="text-white/70 text-sm">OneID tasdiqlash kutilmoqda...</p>
+            <div style={S.spinnerWrap}>
+              <div style={S.spinner} />
+              <p style={S.spinnerText}>OneID orqali autentifikatsiya...</p>
             </div>
           )}
 
-          {/* ERROR */}
-          {error && (
-            <div className="mb-6 p-4 rounded-xl bg-red-500/20 border border-red-400/50 text-red-100 text-sm">
-              ⚠️ {error}
+          {/* Error */}
+          {error && !isLoading && (
+            <div style={S.errorBox}>
+              <span>⚠️</span>
+              <span>{error}</span>
             </div>
           )}
 
-          {/* BUTTONS */}
+          {/* OneID button */}
           {!isLoading && (
-            <div className="space-y-4">
-              {/* OneID */}
+            <>
               <button
-                onClick={loginWithOneId}
-                className="w-full relative group overflow-hidden rounded-2xl p-4 bg-linear-to-r from-purple-500 to-indigo-600 text-white font-semibold text-base transition-all duration-300 hover:shadow-xl hover:shadow-purple-500/40 active:scale-95"
+                className="oneid-btn"
+                onClick={handleLoginClick}
+                style={S.oneIdBtn}
               >
-                <div className="absolute inset-0 bg-linear-to-r from-purple-600 to-indigo-700 opacity-0 group-hover:opacity-100 transition-opacity" />
-                <div className="relative flex items-center justify-center gap-3">
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" />
-                  </svg>
-                  OneID bilan kirish
-                </div>
+                <svg
+                  width="22"
+                  height="22"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10
+                    10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34
+                    3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0
+                    14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08
+                    6-3.08 1.99 0 5.97 1.09 6 3.08-1.29
+                    1.94-3.5 3.22-6 3.22z"
+                  />
+                </svg>
+                OneID bilan kirish
               </button>
-
-              
-            </div>
+              <p style={S.hint}>
+                🔐 O'zbekiston Davlat xizmatlari — id.egov.uz orqali xavfsiz
+                kirish
+              </p>
+            </>
           )}
-
-          <div className="my-8 flex items-center gap-4">
-            <div className="flex-1 h-px bg-white/20" />
-            <span className="text-white/40 text-sm">yoki</span>
-            <div className="flex-1 h-px bg-white/20" />
-          </div>
-
-          <p className="text-center text-white/60 text-sm">
-            Akkauntingiz yo'qmi?{' '}
-            <a href="/register" className="text-white font-semibold hover:text-purple-200 transition-colors">
-              Ro'yxatdan o'tish
-            </a>
-          </p>
-
-          <div className="mt-8 p-4 rounded-xl bg-blue-500/10 border border-blue-400/20 text-blue-200 text-xs text-center">
-            🔐 O'zbekiston Davlat xizmatlari — OneID orqali xavfsiz kirish
-          </div>
         </div>
 
-        <div className="mt-6 grid grid-cols-4 gap-3 text-white/50 text-xs text-center">
-          {[['🛡️','Xavfsiz'],['⚡','Tez'],['🔐','Shifrlangan'],['✓','Verified']].map(([icon, label]) => (
-            <div key={label} className="p-3 rounded-xl bg-white/5 border border-white/10">
-              <div className="mb-1">{icon}</div>
-              <p>{label}</p>
+        {/* Security badges */}
+        <div style={S.badges}>
+          {[
+            ['🛡️', 'Xavfsiz'],
+            ['⚡', 'Tez'],
+            ['🔐', 'Shifrlangan'],
+            ['✓', 'Verified'],
+          ].map(([icon, label]) => (
+            <div key={label} style={S.badge}>
+              <span style={{ fontSize: '18px' }}>{icon}</span>
+              <span style={S.badgeLabel}>{label}</span>
             </div>
           ))}
         </div>
       </div>
     </section>
   )
+}
+
+const S = {
+  page: {
+    minHeight: '100vh',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    background:
+      'linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%)',
+    padding: '32px 16px',
+    position: 'relative',
+    overflow: 'hidden',
+    fontFamily: "'DM Sans', sans-serif",
+  },
+  blob: {
+    position: 'absolute',
+    borderRadius: '50%',
+    pointerEvents: 'none',
+    filter: 'blur(50px)',
+  },
+  wrap: {
+    position: 'relative',
+    zIndex: 1,
+    width: '100%',
+    maxWidth: '420px',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '16px',
+  },
+  card: {
+    background: 'rgba(255,255,255,.06)',
+    backdropFilter: 'blur(32px)',
+    WebkitBackdropFilter: 'blur(32px)',
+    border: '1px solid rgba(255,255,255,.12)',
+    borderRadius: '28px',
+    padding: '44px 36px',
+    boxShadow: '0 32px 80px rgba(0,0,0,.5)',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '24px',
+  },
+  iconWrap: { display: 'flex', justifyContent: 'center' },
+  iconBox: {
+    width: '76px',
+    height: '76px',
+    borderRadius: '22px',
+    background: 'linear-gradient(135deg, #a855f7, #6366f1)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    animation: 'glow 3s ease-in-out infinite',
+  },
+  titleBlock: { textAlign: 'center' },
+  h1: {
+    fontSize: '28px',
+    fontWeight: '800',
+    color: '#fff',
+    margin: '0 0 8px',
+    letterSpacing: '-0.02em',
+  },
+  subtitle: { fontSize: '14px', color: 'rgba(255,255,255,.45)', margin: 0 },
+  spinnerWrap: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: '14px',
+    padding: '12px 0',
+  },
+  spinner: {
+    width: '48px',
+    height: '48px',
+    borderRadius: '50%',
+    border: '4px solid rgba(255,255,255,.12)',
+    borderTopColor: '#a855f7',
+    animation: 'spin 1s linear infinite',
+  },
+  spinnerText: { color: 'rgba(255,255,255,.55)', fontSize: '14px', margin: 0 },
+  errorBox: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    gap: '10px',
+    padding: '14px 16px',
+    borderRadius: '14px',
+    background: 'rgba(239,68,68,.15)',
+    border: '1px solid rgba(239,68,68,.3)',
+    color: '#fecaca',
+    fontSize: '14px',
+    lineHeight: 1.5,
+  },
+  oneIdBtn: {
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '10px',
+    padding: '16px 24px',
+    background: 'linear-gradient(135deg, #a855f7 0%, #6366f1 100%)',
+    border: 'none',
+    borderRadius: '14px',
+    color: '#fff',
+    fontSize: '16px',
+    fontWeight: '700',
+    cursor: 'pointer',
+    fontFamily: "'DM Sans', sans-serif",
+    boxShadow: '0 8px 28px rgba(168,85,247,.4)',
+  },
+  hint: {
+    textAlign: 'center',
+    fontSize: '12px',
+    color: 'rgba(147,197,253,.55)',
+    margin: 0,
+  },
+  badges: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(4, 1fr)',
+    gap: '10px',
+  },
+  badge: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    padding: '12px 8px',
+    background: 'rgba(255,255,255,.04)',
+    border: '1px solid rgba(255,255,255,.07)',
+    borderRadius: '12px',
+    gap: '4px',
+  },
+  badgeLabel: {
+    fontSize: '11px',
+    color: 'rgba(255,255,255,.4)',
+    fontWeight: '500',
+  },
 }

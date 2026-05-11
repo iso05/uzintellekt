@@ -1,0 +1,21 @@
+{
+  "home": "Bosh sahifa",
+  "about": "Biz haqimizda",
+  "services": "Xizmatlar",
+  "depositing": "Deponentlash",
+  "news": "Yangiliklar",
+  "contact": "Kontaktlar",
+  "login": "Kirish",
+  "register": "Ro'yxatdan o'tish",
+  "logout": "Chiqish",
+  "welcome": "Uz Intellekt platformasiga xush kelibsiz",
+  "loading": "Yuklanmoqda...",
+  "error": "Xatolik",
+  "success": "Muvaffaqiyatli",
+  "cancel": "Bekor qilish",
+  "save": "Saqlash",
+  "delete": "O'chirish",
+  "edit": "O'zgartirish",
+  "search": "Qidirish",
+  "noResults": "Natija topilmadi"
+}

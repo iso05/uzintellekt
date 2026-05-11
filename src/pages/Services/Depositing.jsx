@@ -46,8 +46,8 @@ const steps = [
 
 const Depositing = () => {
   return (
-    <section className="pt-28 pb-32 bg-linear-to-br from-purple-50 via-white to-purple-100">
-      <div className="max-w-7xl mx-auto px-6">
+    <section className="pt-28 pb-32 bg-gradient-to-br from-purple-50 via-white to-purple-100">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6">
         {/* HERO */}
         <div className="mb-24 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div>
@@ -180,7 +180,7 @@ const Depositing = () => {
           </p>
 
           <NavLink
-            to="/register"
+            to="/auth"
             className="
               inline-flex items-center gap-2
               px-10 py-4 rounded-2xl

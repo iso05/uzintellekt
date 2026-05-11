@@ -1,7 +1,7 @@
 const Leadership = () => {
   return (
     <section className="pt-28 pb-32 bg-gray-50">
-      <div className="max-w-6xl mx-auto px-6">
+      <div className="max-w-6xl mx-auto px-3 sm:px-6">
         <h1 className="text-4xl md:text-5xl font-bold gradient-title pb-6">
           Rahbariyat
         </h1>

@@ -1,31 +1,28 @@
 import { useState, useRef } from 'react'
 import emailjs from '@emailjs/browser'
 
-// ─────────────────────────────────────────────────────────────
-// EmailJS sozlash:
-//   1. emailjs.com da ro'yxatdan o'ting (bepul)
-//   2. Email Service qo'shing (Gmail yoki boshqa)
-//   3. Template yarating — template o'zgaruvchilari:
-//      {{from_name}}, {{from_email}}, {{message}}
-//   4. Quyidagi 3 ta qiymatni to'ldiring:
-// ─────────────────────────────────────────────────────────────
-const EMAILJS_SERVICE_ID  = 'YOUR_SERVICE_ID'   // emailjs.com → Email Services
-const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID'  // emailjs.com → Email Templates
-const EMAILJS_PUBLIC_KEY  = 'YOUR_PUBLIC_KEY'   // emailjs.com → Account → Public Key
+const EMAILJS_SERVICE_ID = 'YOUR_SERVICE_ID'
+const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID'
+const EMAILJS_PUBLIC_KEY = 'YOUR_PUBLIC_KEY'
+
+// form state keys match input name attributes exactly
+const INITIAL = { from_name: '', from_email: '', message: '' }
 
 const Contact = () => {
   const formRef = useRef()
-  const [form, setForm] = useState({ name: '', email: '', message: '' })
+  const [form, setForm] = useState(INITIAL)
   const [status, setStatus] = useState(null) // null | 'loading' | 'success' | 'error'
 
+  // name attr va state key bir xil — ishlaydi
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value })
+    const { name, value } = e.target
+    setForm((prev) => ({ ...prev, [name]: value }))
+    if (status) setStatus(null)
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setStatus('loading')
-
     try {
       await emailjs.sendForm(
         EMAILJS_SERVICE_ID,
@@ -34,85 +31,87 @@ const Contact = () => {
         EMAILJS_PUBLIC_KEY
       )
       setStatus('success')
-      setForm({ name: '', email: '', message: '' })
-    } catch (err) {
-      console.error(err)
+      setForm(INITIAL)
+    } catch {
       setStatus('error')
     }
   }
 
   return (
-    <section className="relative pt-28 pb-32 overflow-hidden">
+    <section className="relative pt-16 sm:pt-28 pb-20 sm:pb-32 overflow-hidden">
       {/* BACKGROUND */}
       <div className="absolute inset-0 bg-gradient-to-br from-purple-700 via-purple-600 to-indigo-500" />
       <div className="absolute -top-40 -left-40 w-[500px] h-[500px] bg-purple-400/30 rounded-full blur-[120px]" />
       <div className="absolute -bottom-40 -right-40 w-[500px] h-[500px] bg-indigo-400/30 rounded-full blur-[120px]" />
 
-      <div className="relative max-w-7xl mx-auto px-6">
-
+      <div className="relative max-w-7xl mx-auto px-3 sm:px-6">
         {/* TITLE */}
-        <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+        <div className="text-center mb-12 sm:mb-16">
+          <h1 className="text-2x pt-8  text-5xl font-bold text-white mb-4">
             Biz bilan bog'laning
           </h1>
-          <p className="text-white/80 max-w-2xl mx-auto text-lg">
-            Savollaringiz bormi yoki hamkorlik qilmoqchimisiz? Biz sizni eshitishga tayyormiz.
+          <p className="text-white/80 max-w-2xl mx-auto text-base sm:text-lg">
+            Savollaringiz bormi yoki hamkorlik qilmoqchimisiz? Biz sizni
+            eshitishga tayyormiz.
           </p>
         </div>
 
         {/* CONTENT */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12">
           {/* LEFT — INFO + MAP */}
           <div className="space-y-6 text-white flex flex-col">
-
-            {/* Lokatsiya — Google Maps ochadi */}
             <a
               href="https://maps.google.com/?q=Toshkent,O'zbekiston"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-start gap-4 group"
             >
-              <div className="w-12 h-12 rounded-xl bg-white/20 group-hover:bg-white/30 flex items-center justify-center text-xl transition-all flex-shrink-0">
+              <div className="w-12 h-12 rounded-xl bg-white/20 group-hover:bg-white/30 flex items-center justify-center text-xl transition-all shrink-0">
                 📍
               </div>
               <div>
-                <h4 className="font-semibold text-lg group-hover:text-purple-200 transition-colors">Manzil</h4>
+                <h4 className="font-semibold text-lg group-hover:text-purple-200 transition-colors">
+                  Manzil
+                </h4>
                 <p className="text-white/80">Toshkent shahri, O'zbekiston</p>
               </div>
             </a>
 
-            {/* Telefon — qo'ng'iroq qiladi */}
             <a
               href="tel:+998000000000"
               className="flex items-start gap-4 group"
             >
-              <div className="w-12 h-12 rounded-xl bg-white/20 group-hover:bg-white/30 flex items-center justify-center text-xl transition-all flex-shrink-0">
+              <div className="w-12 h-12 rounded-xl bg-white/20 group-hover:bg-white/30 flex items-center justify-center text-xl transition-all shrink-0">
                 📞
               </div>
               <div>
-                <h4 className="font-semibold text-lg group-hover:text-purple-200 transition-colors">Telefon</h4>
-                <p className="text-white/80">+998 (00) 000-00-00</p>
+                <h4 className="font-semibold text-lg group-hover:text-purple-200 transition-colors">
+                  Telefon
+                </h4>
+                <p className="text-white/80">+998 (88) 147-00-81</p>
               </div>
             </a>
 
-            {/* Email — pochta ochadi */}
             <a
-              href="mailto:info@uzintellekt.uz"
+              href="https://mail.google.com/mail/?view=cm&fs=1&to=patentlextashkent@gmail.com"
+  target="_blank"
+    rel="noopener noreferrer"
+
               className="flex items-start gap-4 group"
             >
-              <div className="w-12 h-12 rounded-xl bg-white/20 group-hover:bg-white/30 flex items-center justify-center text-xl transition-all flex-shrink-0">
+              <div className="w-12 h-12 rounded-xl bg-white/20 group-hover:bg-white/30 flex items-center justify-center text-xl transition-all shrink-0">
                 ✉️
               </div>
               <div>
-                <h4 className="font-semibold text-lg group-hover:text-purple-200 transition-colors">Email</h4>
-                <p className="text-white/80">info@uzintellekt.uz</p>
+                <h4 className="font-semibold text-lg group-hover:text-purple-200 transition-colors">
+                  Email
+                </h4>
+                <p className="text-white/80">patentlextashkent@gmail.com</p>
               </div>
             </a>
 
-            {/* Ish vaqti */}
             <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center text-xl flex-shrink-0">
+              <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center text-xl shrink-0">
                 🕐
               </div>
               <div>
@@ -121,7 +120,6 @@ const Contact = () => {
               </div>
             </div>
 
-            {/* Google Map — Toshkent embed */}
             <div className="flex-1 min-h-55 rounded-2xl overflow-hidden border border-white/20 shadow-xl mt-2">
               <iframe
                 title="UzIntellekt manzil"
@@ -138,16 +136,16 @@ const Contact = () => {
 
           {/* RIGHT — FORM */}
           <div className="bg-white/10 backdrop-blur-xl rounded-3xl border border-white/20 shadow-2xl p-8 md:p-10">
-            <h2 className="text-2xl font-bold text-white mb-6">Xabar yuborish</h2>
+            <h2 className="text-2xl font-bold text-white mb-6">
+              Xabar yuborish
+            </h2>
 
-            {/* SUCCESS */}
             {status === 'success' && (
               <div className="mb-6 p-4 rounded-xl bg-green-500/20 border border-green-400/40 text-green-100 text-sm">
                 ✅ Xabaringiz muvaffaqiyatli yuborildi! Tez orada javob beramiz.
               </div>
             )}
 
-            {/* ERROR */}
             {status === 'error' && (
               <div className="mb-6 p-4 rounded-xl bg-red-500/20 border border-red-400/40 text-red-100 text-sm">
                 ⚠️ Xatolik yuz berdi. Iltimos qayta urinib ko'ring.
@@ -155,13 +153,14 @@ const Contact = () => {
             )}
 
             <form ref={formRef} onSubmit={handleSubmit} className="space-y-5">
-              {/* Name */}
               <div className="flex flex-col gap-1.5">
-                <label className="text-sm font-medium text-white/90">Ismingiz</label>
+                <label className="text-sm font-medium text-white/90">
+                  Ismingiz
+                </label>
                 <input
                   type="text"
                   name="from_name"
-                  value={form.name}
+                  value={form.from_name}
                   onChange={handleChange}
                   placeholder="Ismingizni kiriting"
                   required
@@ -169,13 +168,14 @@ const Contact = () => {
                 />
               </div>
 
-              {/* Email */}
               <div className="flex flex-col gap-1.5">
-                <label className="text-sm font-medium text-white/90">Email</label>
+                <label className="text-sm font-medium text-white/90">
+                  Email
+                </label>
                 <input
                   type="email"
                   name="from_email"
-                  value={form.email}
+                  value={form.from_email}
                   onChange={handleChange}
                   placeholder="example@mail.com"
                   required
@@ -183,9 +183,10 @@ const Contact = () => {
                 />
               </div>
 
-              {/* Message */}
               <div className="flex flex-col gap-1.5">
-                <label className="text-sm font-medium text-white/90">Xabar</label>
+                <label className="text-sm font-medium text-white/90">
+                  Xabar
+                </label>
                 <textarea
                   name="message"
                   rows="5"
@@ -197,7 +198,6 @@ const Contact = () => {
                 />
               </div>
 
-              {/* Submit */}
               <button
                 type="submit"
                 disabled={status === 'loading'}

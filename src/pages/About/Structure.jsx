@@ -1,14 +1,13 @@
 const Structure = () => {
   return (
     <section className="pt-28 pb-32 bg-white">
-      <div className="max-w-6xl mx-auto px-6">
+      <div className="max-w-6xl mx-auto px-3 sm:px-6">
         <h1 className="text-4xl md:text-5xl font-bold gradient-title pb-6">
           Tuzilma
         </h1>
 
         <p className="text-gray-600 max-w-3xl mb-12">
-          Jamiyatning tashkiliy tuzilmasi va bo‘limlar o‘rtasidagi
-          bog‘liqlik.
+          Jamiyatning tashkiliy tuzilmasi va bo‘limlar o‘rtasidagi bog‘liqlik.
         </p>
 
         {/* KEYIN: schema / diagram */}
@@ -17,7 +16,7 @@ const Structure = () => {
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default Structure;
+export default Structure

@@ -1,14 +1,14 @@
 import { NavLink } from 'react-router-dom'
 
-import serviceDeposit from '../../assets/images/service-deposit.png'
-import serviceCertificate from '../../assets/images/service-certificate.png'
-import serviceRights from '../../assets/images/service-rights.png'
-import serviceRegistry from '../../assets/images/service-registry.png'
+import serviceDeposit from '../../assets/images/service-deposit.webp'
+import serviceCertificate from '../../assets/images/service-certificate.webp'
+import serviceRights from '../../assets/images/service-rights.webp'
+import serviceRegistry from '../../assets/images/service-registry.webp'
 
 const services = [
   {
     title: 'Deponentlash',
-    desc: 'Intellektual mulk obyektlarini ishonchli ro‘yxatdan o‘tkazish.',
+    desc: "Intellektual mulk obyektlarini ishonchli ro‘yxatdan o‘tkazish.",
     image: serviceDeposit,
   },
   {
@@ -23,7 +23,7 @@ const services = [
   },
   {
     title: 'Ochiq reestrlar',
-    desc: 'Ro‘yxatdan o‘tgan asarlar bazasi.',
+    desc: "Ro‘yxatdan o‘tgan asarlar bazasi.",
     image: serviceRegistry,
   },
 ]
@@ -61,7 +61,7 @@ const ServicesPreview = () => {
       flex
       items-center
       justify-center
-      bg-linear-to-br
+      bg-gradient-to-br
       from-purple-50
       to-indigo-50"
               >
@@ -98,7 +98,7 @@ const ServicesPreview = () => {
                   opacity-0
                   group-hover:opacity-100
                   transition
-                  bg-linear-to-t
+                  bg-gradient-to-t
                   from-purple-50/60
                   to-transparent
                   pointer-events-none

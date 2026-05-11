@@ -14,10 +14,11 @@ export const navConfig = [
       { label: 'Hamkorlar', path: '/about/partners' },
       {
         label: 'Hujjatlar',
+        disabled: true,
         children: [
-          { label: 'Nizomlar', file: '/docs/nizomlar.pdf' },
-          { label: 'Qonunlar', file: '/docs/qonunlar.pdf' },
-          { label: "Yo'riqnomalar", file: '/docs/yoriqnomalar.pdf' },
+          // { label: 'Nizomlar', path: '/docs/nizomlar' },
+          // { label: 'Qonunlar', path: '/docs/qonunlar' },
+          // { label: "Yo'riqnomalar", path: '/docs/yoriqnomalar' },
         ],
       },
     ],

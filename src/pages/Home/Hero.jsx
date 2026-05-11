@@ -1,5 +1,5 @@
-import '../../index.css'
-import heroImg from '../../assets/images/hero-img.png'
+import '../../assets/styles/index.css'
+import heroImg from '../../assets/images/hero-img.webp'
 import { useNavigate } from 'react-router-dom'
 
 const Hero = () => {
@@ -100,24 +100,7 @@ const Hero = () => {
             </p>
 
             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-              <button
-                onClick={() => navigate('/register')}
-                className="
-                  px-10 py-4
-                  rounded-2xl
-                  bg-white text-purple-700
-                  text-lg
-                  font-semibold
-                  cursor-pointer
-                  hover:bg-purple-50 hover:shadow-2xl
-                  transition-all duration-300
-                  shadow-xl
-                  hover:-translate-y-1
-                "
-              >
-                Ro'yxatdan o'tish
-              </button>
-
+              
               <button
                 onClick={() => navigate('/login')}
                 className="
@@ -134,7 +117,7 @@ const Hero = () => {
                   backdrop-blur
                 "
               >
-                Kirish
+                A'zo bo'lish / Kirish
               </button>
             </div>
           </div>

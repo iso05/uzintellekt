@@ -5,7 +5,7 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
   plugins: [
     react(),
-    tailwindcss(),  // ← shu yo'q edi! CSS yuklanmayotgan sabab shu
+    tailwindcss(),
   ],
-  base: '/uzintellekt/', // ← GitHub Pages uchun
+  base: '/',
 })

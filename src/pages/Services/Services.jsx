@@ -195,7 +195,7 @@ const Services = () => {
   return (
     <main className="bg-white">
       {/* HERO SECTION */}
-      <section className="relative overflow-hidden bg-linear-to-br from-purple-600 via-indigo-600 to-blue-600 pt-32 pb-24">
+      <section className="relative overflow-hidden bg-gradient-to-br from-purple-600 via-indigo-600 to-blue-600 pt-32 pb-24">
         {/* ANIMATED BACKGROUND */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute -top-40 -right-40 w-80 h-80 bg-white opacity-10 rounded-full blur-3xl animate-pulse"></div>
@@ -205,8 +205,8 @@ const Services = () => {
           ></div>
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="relative max-w-7xl mx-auto px-3 sm:px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center">
             {/* LEFT CONTENT */}
             <div className="text-white">
               <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
@@ -220,7 +220,7 @@ const Services = () => {
 
               <div className="flex flex-col sm:flex-row gap-4">
                 <NavLink
-                  to="/register"
+                  to="/login"
                   className="px-8 py-4 bg-white text-purple-600 font-bold rounded-xl hover:bg-purple-50 transition shadow-xl text-center"
                 >
                   Boshlash →
@@ -256,19 +256,19 @@ const Services = () => {
             <div className="relative">
               <div className="bg-white/10 backdrop-blur-3xl rounded-3xl p-8 border border-white/20 shadow-2xl">
                 <div className="grid grid-cols-2 gap-4 mb-6">
-                  <div className="bg-linear-to-br from-purple-400 to-purple-600 rounded-2xl p-6 text-white">
+                  <div className="bg-gradient-to-br from-purple-400 to-purple-600 rounded-2xl p-6 text-white">
                     <div className="text-4xl mb-2">📄</div>
                     <p className="font-semibold">Asarni yuklash</p>
                   </div>
-                  <div className="bg-linear-to-br from-blue-400 to-blue-600 rounded-2xl p-6 text-white">
+                  <div className="bg-gradient-to-br from-blue-400 to-blue-600 rounded-2xl p-6 text-white">
                     <div className="text-4xl mb-2">✓</div>
                     <p className="font-semibold">Tekshiruv</p>
                   </div>
-                  <div className="bg-linear-to-br from-indigo-400 to-indigo-600 rounded-2xl p-6 text-white">
+                  <div className="bg-gradient-to-br from-indigo-400 to-indigo-600 rounded-2xl p-6 text-white">
                     <div className="text-4xl mb-2">🎖️</div>
                     <p className="font-semibold">Guvohnoma</p>
                   </div>
-                  <div className="bg-linear-to-br from-pink-400 to-pink-600 rounded-2xl p-6 text-white">
+                  <div className="bg-gradient-to-br from-pink-400 to-pink-600 rounded-2xl p-6 text-white">
                     <div className="text-4xl mb-2">🔐</div>
                     <p className="font-semibold">Himoya</p>
                   </div>
@@ -285,10 +285,10 @@ const Services = () => {
       </section>
 
       {/* SERVICES GRID */}
-      <section className="py-24 px-6 bg-gray-50">
+      <section className="py-16 sm:py-24 px-3 sm:px-6 bg-gray-50">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold bg-linear-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent mb-4 pb-2">
+            <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent mb-4 pb-2.5">
               Bizning xizmatlarimiz
             </h2>
             <p className="text-gray-600 text-lg max-w-2xl mx-auto">
@@ -302,7 +302,7 @@ const Services = () => {
                 key={service.id}
                 className={`rounded-2xl p-8 transition transform hover:scale-105 ${
                   service.highlight
-                    ? 'bg-linear-to-br from-purple-600 to-indigo-600 text-white shadow-2xl ring-2 ring-purple-300'
+                    ? 'bg-gradient-to-br from-purple-600 to-indigo-600 text-white shadow-2xl ring-2 ring-purple-300'
                     : 'bg-white shadow-lg hover:shadow-xl'
                 }`}
               >
@@ -330,10 +330,10 @@ const Services = () => {
       </section>
 
       {/* WHAT WE ACCEPT */}
-      <section className="py-24 px-6">
+      <section className="py-16 sm:py-24 px-3 sm:px-6">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold bg-linear-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-4 pb-2">
+            <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-4 pb-2.5">
               Qanday asarlarni qabul qilamiz?
             </h2>
             <p className="text-gray-600 text-lg max-w-2xl mx-auto">
@@ -345,7 +345,7 @@ const Services = () => {
             {providedWorks.map((work, idx) => (
               <div
                 key={idx}
-                className="bg-linear-to-br from-gray-50 to-white rounded-2xl p-8 border border-gray-200 hover:border-purple-300 hover:shadow-lg transition"
+                className="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-8 border border-gray-200 hover:border-purple-300 hover:shadow-lg transition"
               >
                 <h3 className="text-lg font-bold text-gray-900 mb-6">
                   {work.category}
@@ -356,7 +356,7 @@ const Services = () => {
                       key={itemIdx}
                       className="flex items-center gap-3 text-gray-700"
                     >
-                      <span className="w-2 h-2 bg-linear-to-r from-purple-600 to-indigo-600 rounded-full"></span>
+                      <span className="w-2 h-2 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-full"></span>
                       {item}
                     </li>
                   ))}
@@ -368,10 +368,10 @@ const Services = () => {
       </section>
 
       {/* PROCESS SECTION */}
-      <section className="py-24 px-6 bg-linear-to-b from-blue-50 to-purple-50">
+      <section className="py-16 sm:py-24 px-3 sm:px-6 bg-gradient-to-b from-blue-50 to-purple-50">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold bg-linear-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent  pb-2">
+            <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent mb-4 pb-2.5">
               6 qadamda deponentlang
             </h2>
             <p className="text-gray-600 text-lg max-w-2xl mx-auto">
@@ -384,13 +384,13 @@ const Services = () => {
               <div key={idx} className="group relative">
                 {/* CONNECTION LINE */}
                 {idx < processSteps.length - 1 && idx % 3 !== 2 && (
-                  <div className="hidden lg:block absolute -right-4 top-16 w-8 h-1 bg-linear-to-r from-purple-400 to-transparent"></div>
+                  <div className="hidden lg:block absolute -right-4 top-16 w-8 h-1 bg-gradient-to-r from-purple-400 to-transparent"></div>
                 )}
 
                 {/* CARD */}
                 <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition relative">
                   {/* STEP NUMBER */}
-                  <div className="absolute -top-6 -left-6 w-16 h-16 bg-linear-to-br from-purple-600 to-indigo-600 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-lg">
+                  <div className="absolute -top-6 -left-6 w-16 h-16 bg-gradient-to-br from-purple-600 to-indigo-600 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-lg">
                     {step.number}
                   </div>
 
@@ -420,7 +420,7 @@ const Services = () => {
       <section className="py-24 px-6">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold bg-linear-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent pb-4">
+            <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent mb-4 pb-2.5">
               Nima uchun bizni tanlaysiz?
             </h2>
             <p className="text-gray-600 text-lg max-w-2xl mx-auto">
@@ -435,7 +435,7 @@ const Services = () => {
                 className="bg-white rounded-2xl p-8 border-2 border-gray-100 hover:border-purple-300 hover:shadow-xl transition relative overflow-hidden group"
               >
                 {/* linear BACKGROUND ON HOVER */}
-                <div className="absolute inset-0 bg-linear-to-br from-purple-50 to-indigo-50 opacity-0 group-hover:opacity-100 transition -z-10"></div>
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-50 to-indigo-50 opacity-0 group-hover:opacity-100 transition -z-10"></div>
 
                 <div className="text-5xl mb-4">{benefit.icon}</div>
                 <h3 className="text-lg font-bold text-gray-900 mb-3">
@@ -457,7 +457,7 @@ const Services = () => {
         </div>
 
         <div className="max-w-4xl mx-auto text-center relative z-10">
-          <h2 className="text-5xl md:text-6xl font-bold bg-linear-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent pb-6">
+          <h2 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent pb-6">
             Asaringizni bugunoq himoya qiling
           </h2>
           <p className="text-xl text-gray-700 mb-12 max-w-2xl mx-auto leading-relaxed">
@@ -467,8 +467,8 @@ const Services = () => {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <NavLink
-              to="/register"
-              className="px-10 py-5 bg-linear-to-r from-purple-600 to-indigo-600 text-white font-bold rounded-xl hover:shadow-xl transition text-lg"
+              to="/auth"
+              className="px-10 py-5 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold rounded-xl hover:shadow-xl transition text-lg"
             >
               Boshlang →
             </NavLink>

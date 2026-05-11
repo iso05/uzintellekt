@@ -1,0 +1,21 @@
+{
+  "home": "Home",
+  "about": "About",
+  "services": "Services",
+  "depositing": "Depositing",
+  "news": "News",
+  "contact": "Contact",
+  "login": "Login",
+  "register": "Register",
+  "logout": "Logout",
+  "welcome": "Welcome to Uz Intellekt platform",
+  "loading": "Loading...",
+  "error": "Error",
+  "success": "Success",
+  "cancel": "Cancel",
+  "save": "Save",
+  "delete": "Delete",
+  "edit": "Edit",
+  "search": "Search",
+  "noResults": "No results found"
+}

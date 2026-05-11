@@ -1,16 +1,14 @@
 const About = () => {
   return (
-    <section className="relative pt-28 pb-36 overflow-hidden bg-linear-to-br from-purple-50 via-white to-purple-100">
-      
+    <section className="relative pt-16 sm:pt-28 pb-20 sm:pb-36 overflow-hidden bg-gradient-to-br from-purple-50 via-white to-purple-100">
       {/* DECORATIVE BLURS */}
       <div className="absolute -top-32 -left-32 w-[420px] h-[420px] bg-purple-300/30 rounded-full blur-3xl" />
       <div className="absolute top-1/3 -right-40 w-[520px] h-[520px] bg-indigo-300/30 rounded-full blur-3xl" />
 
-      <div className="relative max-w-7xl mx-auto px-6">
-
+      <div className="relative max-w-7xl mx-auto px-3 sm:px-6">
         {/* HERO HEADER */}
         <div className="max-w-3xl mb-20">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold gradient-title leading-tight mb-6">
+          <h1 className="text-4xl pt-5 md:text-5xl lg:text-6xl font-bold gradient-title leading-tight mb-6">
             Biz haqimizda
           </h1>
 
@@ -23,7 +21,6 @@ const About = () => {
 
         {/* MISSION + VISION */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-24">
-
           {/* MISSION */}
           <div className="relative bg-white/80 backdrop-blur rounded-3xl p-10 shadow-lg">
             <span className="inline-block mb-4 px-4 py-1 rounded-full text-sm font-semibold bg-purple-100 text-purple-700">
@@ -35,9 +32,9 @@ const About = () => {
             </h3>
 
             <p className="text-gray-700 leading-relaxed">
-              Mualliflar, tadqiqotchilar va tashkilotlar o‘z asarlarini
-              huquqiy jihatdan himoyalangan, shaffof va raqamli muhitda
-              boshqarish imkoniga ega bo‘lishi uchun platforma yaratish.
+              Mualliflar, tadqiqotchilar va tashkilotlar o‘z asarlarini huquqiy
+              jihatdan himoyalangan, shaffof va raqamli muhitda boshqarish
+              imkoniga ega bo‘lishi uchun platforma yaratish.
             </p>
           </div>
 
@@ -52,9 +49,9 @@ const About = () => {
             </h3>
 
             <p className="leading-relaxed text-white/90">
-              UzIntellekt platformasini xalqaro standartlarga mos,
-              ishonchli va raqamli huquq infratuzilmasining ajralmas qismi
-              sifatida rivojlantirish.
+              UzIntellekt platformasini xalqaro standartlarga mos, ishonchli va
+              raqamli huquq infratuzilmasining ajralmas qismi sifatida
+              rivojlantirish.
             </p>
           </div>
         </div>
@@ -66,7 +63,6 @@ const About = () => {
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-
             <Value
               title="Shaffoflik"
               text="Barcha jarayonlar ochiq, tushunarli va huquqiy asoslangan."
@@ -91,28 +87,22 @@ const About = () => {
           </h3>
 
           <p className="text-gray-600 leading-relaxed max-w-3xl mx-auto">
-            UzIntellekt jamoasi mualliflik huquqlarini himoyalash,
-            raqamli sertifikatlash va huquqiy boshqaruvni
-            zamonaviy texnologiyalar bilan uyg‘unlashtiradi.
+            UzIntellekt jamoasi mualliflik huquqlarini himoyalash, raqamli
+            sertifikatlash va huquqiy boshqaruvni zamonaviy texnologiyalar bilan
+            uyg‘unlashtiradi.
           </p>
         </div>
-
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default About;
-
+export default About
 
 /* SUB COMPONENT */
 const Value = ({ title, text }) => (
   <div className="bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition">
-    <h4 className="text-xl font-semibold text-purple-700 mb-3">
-      {title}
-    </h4>
-    <p className="text-gray-600 leading-relaxed">
-      {text}
-    </p>
+    <h4 className="text-xl font-semibold text-purple-700 mb-3">{title}</h4>
+    <p className="text-gray-600 leading-relaxed">{text}</p>
   </div>
-);
+)
