@@ -1,0 +1,103 @@
+/* ── Design Tokens — Dark (default) ───────────────────────── */
+:root,
+[data-theme="dark"] {
+  --bg:          #0f1117;
+  --bg-card:     #1a1d27;
+  --border:      #2a2d3a;
+  --accent:      #6366f1;
+  --accent-dark: #4f52cc;
+  --accent-glow: rgba(99, 102, 241, 0.18);
+  --text-primary:   #f1f2f6;
+  --text-secondary: #9094a8;
+  --text-muted:     #5a5e72;
+  --danger:      #ef4444;
+  --success:     #22c55e;
+  --warning:     #f59e0b;
+  --shadow:      0 4px 24px rgba(0,0,0,0.4);
+  --topbar-blur: rgba(15,17,23,0.88);
+  --topbar-btn-hover: rgba(255,255,255,0.06);
+  --panel-alt-row: rgba(255,255,255,0.02);
+
+  /* ── Sidebar tokens — Dark ── */
+  --sb-bg:              #13161f;
+  --sb-border:          rgba(255,255,255,0.07);
+  --sb-text-primary:    #f1f2f6;
+  --sb-text-secondary:  #9094a8;
+  --sb-text-muted:      #5a5e72;
+  --sb-nav-hover:       rgba(255,255,255,0.06);
+  --sb-active-bg:       rgba(99,102,241,0.18);
+  --sb-active-color:    #818cf8;
+  --sb-active-bar:      #6366f1;
+  --sb-user-hover:      rgba(255,255,255,0.05);
+  --sb-toggle-bg:       #1a1d27;
+  --sb-toggle-border:   rgba(255,255,255,0.1);
+  --sb-toggle-color:    #9094a8;
+}
+
+/* ── Design Tokens — Light ─────────────────────────────────── */
+[data-theme="light"] {
+  --bg:          #f4f5f9;
+  --bg-card:     #ffffff;
+  --border:      #e2e4ec;
+  --accent:      #6366f1;
+  --accent-dark: #4f52cc;
+  --accent-glow: rgba(99, 102, 241, 0.12);
+  --text-primary:   #111827;
+  --text-secondary: #4b5563;
+  --text-muted:     #9ca3af;
+  --danger:      #ef4444;
+  --success:     #16a34a;
+  --warning:     #d97706;
+  --shadow:      0 4px 24px rgba(0,0,0,0.08);
+  --topbar-blur: rgba(244,245,249,0.9);
+  --topbar-btn-hover: rgba(0,0,0,0.05);
+  --panel-alt-row: rgba(0,0,0,0.015);
+
+  /* ── Sidebar tokens — Light ── */
+  --sb-bg:              #ffffff;
+  --sb-border:          #e2e4ec;
+  --sb-text-primary:    #111827;
+  --sb-text-secondary:  #4b5563;
+  --sb-text-muted:      #9ca3af;
+  --sb-nav-hover:       rgba(0,0,0,0.04);
+  --sb-active-bg:       rgba(99,102,241,0.1);
+  --sb-active-color:    #6366f1;
+  --sb-active-bar:      #6366f1;
+  --sb-user-hover:      rgba(0,0,0,0.03);
+  --sb-toggle-bg:       #f4f5f9;
+  --sb-toggle-border:   #e2e4ec;
+  --sb-toggle-color:    #6b7280;
+}
+
+/* ── Shared layout tokens (never change) ────────────────────── */
+:root {
+  --sidebar-w:         260px;
+  --sidebar-collapsed: 68px;
+  --topbar-h:          64px;
+  --radius:            12px;
+  --radius-sm:         8px;
+  --transition:        0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Reset ─────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body, #root {
+  height: 100%;
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  transition: background var(--transition), color var(--transition);
+}
+
+a { text-decoration: none; color: inherit; }
+button { cursor: pointer; font-family: inherit; border: none; background: none; }
+img { display: block; max-width: 100%; }
+ul { list-style: none; }
+
+/* ── Scrollbar ─────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
