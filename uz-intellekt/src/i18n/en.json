@@ -50,13 +50,17 @@
     "all_rights": "All rights reserved."
   },
   "hero": {
+    "badge": "Intellectual property protection",
     "title_prefix": "Protect Your ",
     "title_highlight": "Intellectual Property",
     "desc": "Register, manage, and secure copyright reliably through our digital platform.",
-    "cta": "Join / Login"
+    "cta": "Join / Login",
+    "cta_secondary": "Explore our services",
+    "image_alt": "UzIntellekt — intellectual property protection"
   },
   "services_preview": {
     "title": "Our Services",
+    "subtitle": "A complete digital ecosystem for intellectual property.",
     "items": {
       "dep": {
         "title": "Depositing",
@@ -78,6 +82,7 @@
   },
   "how_it_works": {
     "title": "How It Works",
+    "subtitle": "Protect your intellectual property in three simple steps.",
     "step_1": {
       "title": "Upload your trusted work",
       "desc": "Upload your intellectual property into the system."
@@ -93,7 +98,8 @@
   },
   "news_block": {
     "title": "Latest News",
-    "more": "Details →",
+    "subtitle": "Industry news and announcements",
+    "more": "Details",
     "back_to_news": "← Back to news",
     "search_placeholder": "Search news...",
     "all_news": "View All",
@@ -144,6 +150,7 @@
     "title": "Our Partners"
   },
   "about_page": {
+    "eyebrow": "UzIntellekt",
     "title": "About Us",
     "desc": "UzIntellekt is a modern national platform created for the registration, legal protection, and digital management of intellectual property objects.",
     "mission": "Our Mission",
@@ -171,6 +178,8 @@
     "hours": "Working Hours",
     "hours_val": "Monday – Friday, 9:00 – 18:00",
     "send_message": "Send Message",
+    "send_mailto_btn": "Send via Email",
+    "unconfigured_notice": "The form is not configured yet. Please use the 'Send via Email' button below.",
     "success_msg": "Your message was sent successfully! We will reply soon.",
     "error_msg": "An error occurred. Please try again.",
     "name_label": "Your Name",
@@ -398,6 +407,7 @@
     }
   },
   "not_found": {
+    "eyebrow": "404",
     "title": "Page Not Found",
     "desc": "Unfortunately, the page you are looking for does not exist or may have been deleted.",
     "go_back": "Go Back",

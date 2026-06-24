@@ -50,13 +50,17 @@
     "all_rights": "Barcha huquqlar himoyalangan."
   },
   "hero": {
+    "badge": "Intellektual mulk himoyasi",
     "title_prefix": "Intellektual Mulkingizni ",
     "title_highlight": "Himoya Qiling",
     "desc": "Mualliflik huquqlarini ro‘yxatdan o‘tkazing, boshqaring va raqamli platforma orqali ishonchli himoyalang.",
-    "cta": "A'zo bo'lish / Kirish"
+    "cta": "A'zo bo'lish / Kirish",
+    "cta_secondary": "Xizmatlar bilan tanishing",
+    "image_alt": "UzIntellekt — intellektual mulk himoyasi"
   },
   "services_preview": {
     "title": "Xizmatlarimiz",
+    "subtitle": "Intellektual mulk uchun to‘liq raqamli ekotizim.",
     "items": {
       "dep": {
         "title": "Deponentlash",
@@ -78,6 +82,7 @@
   },
   "how_it_works": {
     "title": "Qanday ishlaydi",
+    "subtitle": "Uch oddiy qadamda intellektual mulkingiz himoyalanadi.",
     "step_1": {
       "title": "O‘zingiz ishongan ishni yuklang",
       "desc": "Intellektual mulkingizni tizimga yuklaysiz."
@@ -93,7 +98,8 @@
   },
   "news_block": {
     "title": "So'nggi yangiliklar",
-    "more": "Batafsil →",
+    "subtitle": "Soha yangiliklari va e'lonlar",
+    "more": "Batafsil",
     "back_to_news": "← Yangiliklarga qaytish",
     "search_placeholder": "Yangilik qidirish...",
     "all_news": "Barchasini ko'rish",
@@ -144,6 +150,7 @@
     "title": "Hamkorlarimiz"
   },
   "about_page": {
+    "eyebrow": "UzIntellekt",
     "title": "Biz haqimizda",
     "desc": "UzIntellekt — intellektual mulk obyektlarini ro‘yxatdan o‘tkazish, huquqiy himoya qilish va raqamli boshqarish uchun yaratilgan zamonaviy milliy platforma.",
     "mission": "Bizning missiyamiz",
@@ -171,6 +178,8 @@
     "hours": "Ish vaqti",
     "hours_val": "Dushanba – Juma, 9:00 – 18:00",
     "send_message": "Xabar yuborish",
+    "send_mailto_btn": "Mail orqali yuborish",
+    "unconfigured_notice": "Forma hozircha sozlanmagan. Iltimos, pastdagi 'Mail orqali yuborish' tugmasini bosing.",
     "success_msg": "Xabaringiz muvaffaqiyatli yuborildi! Tez orada javob beramiz.",
     "error_msg": "Xatolik yuz berdi. Iltimos qayta urinib ko'ring.",
     "name_label": "Ismingiz",
@@ -399,6 +408,7 @@
     }
   },
   "not_found": {
+    "eyebrow": "404",
     "title": "Sahifa topilmadi",
     "desc": "Afsuski, siz qidirgan sahifa mavjud emas yoki o'chirilgan bo'lishi mumkin.",
     "go_back": "Orqaga qaytish",

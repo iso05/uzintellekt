@@ -1,4 +1,5 @@
 export const CONTRACT_STATUS = {
+  CREATED: 'CREATED',
   SIGNED: 'SIGNED',
   ACTIVE: 'ACTIVE',
   EXPIRED: 'EXPIRED',
@@ -13,6 +14,7 @@ export const CONTRACT_TYPE_LABELS = {
 
 // Maps backend status → UI presentation (label + Badge variant)
 export const CONTRACT_STATUS_CONFIG = {
+  CREATED: { label: 'Yaratilgan', variant: 'info' },
   SIGNED: { label: 'Imzolangan', variant: 'success' },
   ACTIVE: { label: 'Faol', variant: 'default' },
   EXPIRED: { label: "Muddati o'tgan", variant: 'warning' },
