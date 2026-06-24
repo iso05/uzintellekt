@@ -3,7 +3,7 @@ import { LogOut, X } from 'lucide-react'
 import { Button, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/shared/ui'
 import { cn } from '@/shared/lib/utils'
 import { NAV_ITEMS, ROUTES } from '@/shared/config/routes'
-import logo from '@/assets/logo/logo.png'
+import logo from '@/assets/logo/logo.svg'
 
 function NavItem({ item, collapsed }) {
   const Icon = item.icon
@@ -75,9 +75,7 @@ export default function Sidebar({
           isCompact && 'justify-center px-2'
         )}>
           <Link to={ROUTES.DASHBOARD} className="flex min-w-0 items-center gap-2.5">
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary-soft">
-              <img src={logo} alt="UzIntellekt" className="h-6 w-6 object-contain" />
-            </span>
+            <img src={logo} alt="UzIntellekt" className="h-9 w-9 shrink-0 object-contain" />
             {!isCompact && (
               <div className="flex min-w-0 flex-col leading-tight">
                 <span className="text-[15px] font-bold tracking-tight text-foreground">UzIntellekt</span>
