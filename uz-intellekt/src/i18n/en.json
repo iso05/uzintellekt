@@ -56,7 +56,8 @@
     "desc": "Register, manage, and secure copyright reliably through our digital platform.",
     "cta": "Join / Login",
     "cta_secondary": "Explore our services",
-    "image_alt": "UzIntellekt — intellectual property protection"
+    "image_alt": "UzIntellekt — intellectual property protection",
+    "trust": "Secure, fast sign-in with OneID"
   },
   "services_preview": {
     "title": "Our Services",
@@ -78,7 +79,9 @@
         "title": "Open Registries",
         "desc": "Searchable database of registered works."
       }
-    }
+    },
+    "eyebrow": "Services",
+    "more": "Details"
   },
   "how_it_works": {
     "title": "How It Works",
@@ -94,7 +97,8 @@
     "step_3": {
       "title": "Get the certificate",
       "desc": "Receive your official digital certificate."
-    }
+    },
+    "eyebrow": "Process"
   },
   "news_block": {
     "title": "Latest News",
@@ -144,10 +148,14 @@
       "title": "Legal Seminar",
       "desc": "Seminar successfully conducted.",
       "date": "May 01, 2026"
-    }
+    },
+    "eyebrow": "News",
+    "see_all": "All news"
   },
   "partners_block": {
-    "title": "Our Partners"
+    "title": "Our Partners",
+    "eyebrow": "Partners",
+    "subtitle": "Organizations and communities that trust us."
   },
   "about_page": {
     "eyebrow": "UzIntellekt",
@@ -167,7 +175,8 @@
     "val_3_title": "Innovation",
     "val_3_desc": "Simplifying rights management through digital technologies.",
     "final_title": "Your intellectual property is our responsibility",
-    "final_desc": "The UzIntellekt team harmonizes copyright protection, digital certification, and legal management with modern technologies."
+    "final_desc": "The UzIntellekt team harmonizes copyright protection, digital certification, and legal management with modern technologies.",
+    "values_eyebrow": "Values"
   },
   "contact_page": {
     "title": "Contact Us",

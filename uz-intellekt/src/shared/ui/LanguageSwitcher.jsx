@@ -3,6 +3,7 @@ import { Globe } from 'lucide-react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/ui'
 
 const LANGS = [
+  { code: 'uz-Cyrl', label: 'Ўзбекча', short: 'ЎЗ' },
   { code: 'uz', label: 'Oʻzbek', short: 'UZ' },
   { code: 'ru', label: 'Русский', short: 'RU' },
   { code: 'en', label: 'English', short: 'EN' },
@@ -11,11 +12,16 @@ const LANGS = [
 const LanguageSwitcher = ({ variant = 'desktop' }) => {
   const { i18n } = useTranslation()
 
-  const currentLang = i18n.language?.startsWith('ru')
-    ? 'ru'
-    : i18n.language?.startsWith('en')
-      ? 'en'
-      : 'uz'
+  const lng = i18n.language || 'uz-Cyrl'
+  const currentLang = lng.startsWith('uz-Cyrl')
+    ? 'uz-Cyrl'
+    : lng.startsWith('ru')
+      ? 'ru'
+      : lng.startsWith('en')
+        ? 'en'
+        : lng.startsWith('uz')
+          ? 'uz'
+          : 'uz-Cyrl'
 
   const handleLanguageChange = (lang) => {
     i18n.changeLanguage(lang)

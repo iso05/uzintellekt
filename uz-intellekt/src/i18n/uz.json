@@ -56,7 +56,8 @@
     "desc": "Mualliflik huquqlarini ro‘yxatdan o‘tkazing, boshqaring va raqamli platforma orqali ishonchli himoyalang.",
     "cta": "A'zo bo'lish / Kirish",
     "cta_secondary": "Xizmatlar bilan tanishing",
-    "image_alt": "UzIntellekt — intellektual mulk himoyasi"
+    "image_alt": "UzIntellekt — intellektual mulk himoyasi",
+    "trust": "OneID orqali xavfsiz va tez kirish"
   },
   "services_preview": {
     "title": "Xizmatlarimiz",
@@ -78,7 +79,9 @@
         "title": "Ochiq reestrlar",
         "desc": "Ro‘yxatdan o‘tgan asarlar bazasi."
       }
-    }
+    },
+    "eyebrow": "Xizmatlar",
+    "more": "Batafsil"
   },
   "how_it_works": {
     "title": "Qanday ishlaydi",
@@ -94,7 +97,8 @@
     "step_3": {
       "title": "Guvohnomani oling",
       "desc": "Rasmiy raqamli guvohnoma olasiz."
-    }
+    },
+    "eyebrow": "Jarayon"
   },
   "news_block": {
     "title": "So'nggi yangiliklar",
@@ -144,10 +148,14 @@
       "title": "Huquqiy seminar",
       "desc": "Seminar bo‘lib o‘tdi.",
       "date": "May 01, 2026"
-    }
+    },
+    "eyebrow": "Yangiliklar",
+    "see_all": "Barcha yangiliklar"
   },
   "partners_block": {
-    "title": "Hamkorlarimiz"
+    "title": "Hamkorlarimiz",
+    "eyebrow": "Hamkorlar",
+    "subtitle": "Bizga ishonadigan tashkilotlar va hamjamiyatlar."
   },
   "about_page": {
     "eyebrow": "UzIntellekt",
@@ -167,7 +175,8 @@
     "val_3_title": "Innovatsiya",
     "val_3_desc": "Raqamli texnologiyalar orqali huquqni soddalashtirish.",
     "final_title": "Intellektual mulkingiz — bizning mas’uliyatimiz",
-    "final_desc": "UzIntellekt jamoasi mualliflik huquqlarini himoyalash, raqamli sertifikatlash va huquqiy boshqaruvni zamonaviy texnologiyalar bilan uyg‘unlashtiradi."
+    "final_desc": "UzIntellekt jamoasi mualliflik huquqlarini himoyalash, raqamli sertifikatlash va huquqiy boshqaruvni zamonaviy texnologiyalar bilan uyg‘unlashtiradi.",
+    "values_eyebrow": "Qadriyatlar"
   },
   "contact_page": {
     "title": "Biz bilan bog'laning",
