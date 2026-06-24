@@ -1,363 +1,184 @@
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { ArrowRight } from 'lucide-react'
+import { Button, Card, CardContent } from '@/shared/ui'
 
 const partners = [
   {
-    name: "Intellektual mulk agentligi",
+    name: 'Intellektual mulk agentligi',
     desc: "Intellektual mulkni huquqiy himoyalash bo'yicha davlat tashkiloti.",
-    logo: "",
-    tag: "Davlat tashkiloti",
-    color: "#7C3AED",
+    tag: 'Davlat tashkiloti',
   },
   {
     name: "Oliy ta'lim vazirligi",
     desc: "Ilmiy va ta'lim muassasalari bilan hamkorlik.",
-    logo: "",
     tag: "Ta'lim",
-    color: "#6366F1",
   },
   {
-    name: "Raqamli texnologiyalar markazi",
-    desc: "Platformaning texnik infratuzilmasini rivojlantirish.",
-    logo: "",
-    tag: "Texnologiya",
-    color: "#8B5CF6",
+    name: 'Raqamli texnologiyalar markazi',
+    desc: 'Platformaning texnik infratuzilmasini rivojlantirish.',
+    tag: 'Texnologiya',
   },
   {
-    name: "Xalqaro ekspertlar guruhi",
-    desc: "Xalqaro standartlar va konsultatsiyalar.",
-    logo: "",
-    tag: "Xalqaro",
-    color: "#4F46E5",
+    name: 'Xalqaro ekspertlar guruhi',
+    desc: 'Xalqaro standartlar va konsultatsiyalar.',
+    tag: 'Xalqaro',
   },
-];
+]
 
 const stats = [
-  { value: "4+",   label: "Asosiy hamkorlar" },
-  { value: "12+",  label: "Loyihalar" },
-  { value: "3",    label: "Xalqaro shartnoma" },
-  { value: "100%", label: "Shaffoflik" },
-];
+  { value: '4+', label: 'Asosiy hamkorlar' },
+  { value: '12+', label: 'Loyihalar' },
+  { value: '3', label: 'Xalqaro shartnoma' },
+  { value: '100%', label: 'Shaffoflik' },
+]
 
 const Partners = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
 
   const localizedPartners = partners.map((item, idx) => ({
     ...item,
     name: t(`partners_page.items.p${idx}.name`, item.name),
     desc: t(`partners_page.items.p${idx}.desc`, item.desc),
     tag: t(`partners_page.items.p${idx}.tag`, item.tag),
-  }));
+  }))
 
   const localizedStats = stats.map((s, i) => ({
     ...s,
     label: t(`partners_page.stats.s${i + 1}_label`, s.label),
-  }));
+  }))
+
+  const pills = [
+    t('partners_page.banner.p1', 'Ochiqlik'),
+    t('partners_page.banner.p2', 'Shaffoflik'),
+    t('partners_page.banner.p3', 'Ishonchlilik'),
+    t('partners_page.banner.p4', 'Xalqaro standart'),
+  ]
 
   return (
-    <section style={S.page}>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=DM+Sans:wght@400;500;600&display=swap');
-
-        @media (max-width: 1024px) {
-          .p-hero   { flex-direction: column !important; align-items: flex-start !important; }
-          .p-stats  { width: 100% !important; }
-          .p-grid   { grid-template-columns: repeat(2, 1fr) !important; }
-          .p-banner { padding: 56px 40px !important; }
-          .p-join   { flex-direction: column !important; align-items: flex-start !important; gap: 24px !important; }
-        }
-        @media (max-width: 640px) {
-          .p-grid       { grid-template-columns: 1fr !important; }
-          .p-stats      { flex-wrap: wrap !important; }
-          .p-stat       { flex: 1 1 45% !important; border-right: none !important; border-bottom: 1px solid rgba(167,139,250,.15) !important; }
-          .p-banner     { padding: 44px 28px !important; border-radius: 24px !important; }
-          .p-banner-title { font-size: 1.5rem !important; }
-          .p-hero-h1    { font-size: 2.2rem !important; }
-          .p-join       { padding: 28px 24px !important; }
-          .p-wrap       { padding: 0 20px !important; }
-        }
-
-        .p-card {
-          transition: transform .32s cubic-bezier(.22,.68,0,1.2),
-                      box-shadow .32s ease, border-color .32s ease;
-        }
-        .p-card:hover { transform: translateY(-10px); }
-        .p-card:hover .p-card-inner-glow { opacity: 1 !important; }
-        .p-card:hover .p-logo-slot {
-          border-style: solid !important;
-          border-color: rgba(124,58,237,.3) !important;
-        }
-
-        .p-join-btn {
-          transition: transform .2s ease, box-shadow .2s ease;
-        }
-        .p-join-btn:hover {
-          transform: translateY(-3px);
-          box-shadow: 0 20px 48px rgba(124,58,237,.45) !important;
-        }
-
-        @keyframes floatUp {
-          0%,100% { transform: translateY(0); }
-          50%      { transform: translateY(-14px); }
-        }
-        .p-blob-a { animation: floatUp 8s ease-in-out infinite; }
-        .p-blob-b { animation: floatUp 11s ease-in-out infinite reverse; }
-      `}</style>
-
-      <div style={S.bgGrad} />
-      <div style={S.bgGrid} />
-      <div className="p-blob-a" style={{ ...S.blob, top: -60, right: -100, width: 500, height: 500, background: "radial-gradient(circle, rgba(167,139,250,.2) 0%, transparent 68%)" }} />
-      <div className="p-blob-b" style={{ ...S.blob, bottom: 0, left: -120, width: 440, height: 440, background: "radial-gradient(circle, rgba(99,102,241,.15) 0%, transparent 68%)" }} />
-      <div style={{ ...S.blob, top: "45%", left: "50%", width: 600, height: 300, background: "radial-gradient(ellipse, rgba(196,181,253,.08) 0%, transparent 70%)" }} />
-
-      <div style={S.wrap} className="p-wrap">
-
+    <section className="bg-background py-16 sm:py-24">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
         {/* HERO */}
-        <div style={S.hero} className="p-hero">
-          <div style={S.heroLeft}>
-            <div style={S.eyebrow}>
-              <span style={S.dot} />
+        <div className="grid grid-cols-1 items-end gap-10 lg:grid-cols-[1fr_auto]">
+          <div className="max-w-2xl space-y-5">
+            <span className="inline-flex items-center gap-2 rounded-full bg-primary-soft px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary-soft-foreground">
+              <span className="h-1.5 w-1.5 rounded-full bg-primary" />
               {t('partners_page.eyebrow', 'Hamkorlik')}
-            </div>
-            <h1 style={S.h1} className="p-hero-h1">
+            </span>
+            <h1 className="text-3xl font-extrabold leading-tight tracking-tight text-foreground sm:text-4xl lg:text-5xl">
               {t('partners_page.title_prefix', 'Bizning ')}
-              <span style={S.h1Grad}>{t('partners_page.title_highlight', 'hamkorlarimiz')}</span>
+              <span className="text-primary">
+                {t('partners_page.title_highlight', 'hamkorlarimiz')}
+              </span>
             </h1>
-            <p style={S.heroDesc}>
-              {t('partners_page.desc', 'UzIntellekt platformasi davlat tashkilotlari, ilmiy muassasalar va xalqaro ekspertlar bilan hamkorlikda faoliyat yuritadi — intellektual mulkni ishonchli va shaffof boshqarish uchun.')}
+            <p className="text-base leading-relaxed text-muted-foreground">
+              {t(
+                'partners_page.desc',
+                'UzIntellekt platformasi davlat tashkilotlari, ilmiy muassasalar va xalqaro ekspertlar bilan hamkorlikda faoliyat yuritadi — intellektual mulkni ishonchli va shaffof boshqarish uchun.'
+              )}
             </p>
           </div>
 
-          <div style={S.statPanel} className="p-stats">
-            {localizedStats.map((s, i) => (
-              <div
-                key={i}
-                style={{
-                  ...S.stat,
-                  borderRight: i < localizedStats.length - 1 ? "1px solid rgba(167,139,250,.15)" : "none",
-                }}
-                className="p-stat"
-              >
-                <span style={S.statVal}>{s.value}</span>
-                <span style={S.statLbl}>{s.label}</span>
-              </div>
-            ))}
-          </div>
+          <Card className="w-full lg:w-auto">
+            <CardContent className="grid grid-cols-2 divide-x divide-y divide-border p-0 lg:grid-cols-4 lg:divide-y-0">
+              {localizedStats.map((s) => (
+                <div key={s.label} className="flex flex-col items-center gap-1 px-6 py-5">
+                  <span className="text-2xl font-bold text-primary">{s.value}</span>
+                  <span className="text-center text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+                    {s.label}
+                  </span>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
         </div>
 
-        <div style={S.rule} />
+        <div className="my-12 h-px w-full bg-border" />
 
-        <div style={S.sectionRow}>
-          <span style={S.sectionNum}>01</span>
-          <span style={S.sectionLbl}>{t('partners_page.stats.s1_label', 'Asosiy hamkorlar')}</span>
+        <div className="mb-6 flex items-center gap-3">
+          <span className="text-xs font-bold tracking-wider text-muted-foreground/60">01</span>
+          <span className="text-xs font-semibold uppercase tracking-wide text-primary">
+            {t('partners_page.stats.s1_label', 'Asosiy hamkorlar')}
+          </span>
         </div>
 
-        {/* GRID */}
-        <div style={S.grid} className="p-grid">
-          {localizedPartners.map((item, idx) => (
-            <div key={idx} style={S.card} className="p-card">
-              <div
-                style={{ ...S.innerGlow, background: `radial-gradient(ellipse at 30% 20%, ${item.color}18, transparent 65%)` }}
-                className="p-card-inner-glow"
-              />
-              <div style={{ ...S.cardBar, background: `linear-gradient(90deg, ${item.color}, ${item.color}55, transparent)` }} />
-              <span style={{ ...S.tag, color: item.color, background: `${item.color}12`, borderColor: `${item.color}28` }}>
-                {item.tag}
-              </span>
-              <div style={S.logoSlot} className="p-logo-slot">
-                <img src={item.logo} alt={item.name} style={S.logoImg} />
-              </div>
-              <h3 style={S.cardTitle}>{item.name}</h3>
-              <p style={S.cardDesc}>{item.desc}</p>
-              <div style={S.cardFooter}>
-                <span style={{ ...S.footerLink, color: item.color }}>
-                  {t('news_block.more', 'Batafsil →').replace(' →', '')}
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {localizedPartners.map((item) => (
+            <Card key={item.name} className="h-full transition-all hover:-translate-y-1 hover:shadow-soft-md">
+              <CardContent className="flex h-full flex-col gap-4 p-6">
+                <span className="inline-flex w-fit rounded-full border border-primary/20 bg-primary-soft px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-primary-soft-foreground">
+                  {item.tag}
                 </span>
-              </div>
-            </div>
+                <div className="flex h-16 items-center justify-center rounded-lg border border-dashed border-border bg-muted/40 text-xs text-muted-foreground">
+                  Logo
+                </div>
+                <h3 className="text-base font-semibold text-foreground">{item.name}</h3>
+                <p className="text-sm leading-relaxed text-muted-foreground">{item.desc}</p>
+                <span className="mt-auto inline-flex items-center gap-1 border-t border-border pt-3 text-sm font-semibold text-primary">
+                  {t('news_block.more', 'Batafsil').replace(' →', '')}
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </span>
+              </CardContent>
+            </Card>
           ))}
         </div>
 
-        <div style={{ ...S.rule, margin: "72px 0 64px" }} />
-
-        {/* BANNER */}
-        <div style={S.banner} className="p-banner">
-          <div style={S.bannerGrid} />
-          <div style={{ ...S.ring, width: 260, height: 260, bottom: -70, right: -70, borderColor: "rgba(255,255,255,.1)" }} />
-          <div style={{ ...S.ring, width: 380, height: 380, bottom: -120, right: -120, borderColor: "rgba(255,255,255,.055)" }} />
-          <div style={{ ...S.ring, width: 180, height: 180, top: -50, left: -50, borderColor: "rgba(255,255,255,.07)" }} />
-          <div style={S.bannerBody}>
-            <p style={S.bannerEye}>{t('partners_page.banner.principles', 'Hamkorlik tamoyillari')}</p>
-            <h3 style={S.bannerTitle} className="p-banner-title">
-              {t('partners_page.banner.title', "Ishonchli hamkorlik —\nbarqaror rivojlanish asosi")
-                .split('\n')
-                .map((line, idx) => (
-                  <span key={idx}>
-                    {line}
-                    {idx === 0 && <br />}
-                  </span>
-                ))}
-            </h3>
-            <p style={S.bannerText}>
-              {t('partners_page.banner.desc', "UzIntellekt hamkorlikni ochiqlik, shaffoflik va huquqiy ishonchlilik tamoyillari asosida rivojlantiradi. Har bir hamkorlik kelishuvi xalqaro standartlarga to'liq mos keladi.")}
+        {/* Banner */}
+        <Card className="mt-16 overflow-hidden border-0 bg-primary text-primary-foreground shadow-soft-md">
+          <CardContent className="p-10 text-center sm:p-14">
+            <p className="text-[11px] font-bold uppercase tracking-widest text-primary-foreground/60">
+              {t('partners_page.banner.principles', 'Hamkorlik tamoyillari')}
             </p>
-            <div style={S.pillRow}>
-              {[
-                t('partners_page.banner.p1', 'Ochiqlik'),
-                t('partners_page.banner.p2', 'Shaffoflik'),
-                t('partners_page.banner.p3', 'Ishonchlilik'),
-                t('partners_page.banner.p4', 'Xalqaro standart'),
-              ].map((p, i) => (
-                <span key={i} style={S.pill}>{p}</span>
+            <h3 className="mx-auto mt-4 max-w-2xl text-2xl font-bold leading-tight sm:text-3xl">
+              {t(
+                'partners_page.banner.title',
+                'Ishonchli hamkorlik — barqaror rivojlanish asosi'
+              )}
+            </h3>
+            <p className="mx-auto mt-4 max-w-xl leading-relaxed text-primary-foreground/85">
+              {t(
+                'partners_page.banner.desc',
+                "UzIntellekt hamkorlikni ochiqlik, shaffoflik va huquqiy ishonchlilik tamoyillari asosida rivojlantiradi. Har bir hamkorlik kelishuvi xalqaro standartlarga to'liq mos keladi."
+              )}
+            </p>
+            <div className="mt-6 flex flex-wrap justify-center gap-2">
+              {pills.map((p) => (
+                <span
+                  key={p}
+                  className="rounded-full border border-primary-foreground/20 bg-primary-foreground/10 px-4 py-1.5 text-xs font-medium"
+                >
+                  {p}
+                </span>
               ))}
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
-        {/* JOIN */}
-        <div style={S.joinRow} className="p-join">
-          <div>
-            <h4 style={S.joinTitle}>{t('partners_page.join.title', "Hamkor bo'lishni xohlaysizmi?")}</h4>
-            <p style={S.joinDesc}>
-              {t('partners_page.join.desc', 'Biz bilan bog\'laning — hamkorlik shartlarini birgalikda muhokama qilamiz.')}
-            </p>
-          </div>
-          {/* ← href o'rniga Link — page reload bo'lmaydi */}
-          <Link to="/contact" style={S.joinBtn} className="p-join-btn">
-            {t('partners_page.join.btn', 'Bog\'lanish')}
-          </Link>
-        </div>
-
+        {/* Join */}
+        <Card className="mt-8">
+          <CardContent className="flex flex-col items-start justify-between gap-6 p-8 sm:flex-row sm:items-center">
+            <div>
+              <h4 className="text-lg font-semibold text-foreground">
+                {t('partners_page.join.title', "Hamkor bo'lishni xohlaysizmi?")}
+              </h4>
+              <p className="mt-1 text-sm text-muted-foreground">
+                {t(
+                  'partners_page.join.desc',
+                  "Biz bilan bog'laning — hamkorlik shartlarini birgalikda muhokama qilamiz."
+                )}
+              </p>
+            </div>
+            <Link to="/contact">
+              <Button size="lg">
+                {t('partners_page.join.btn', "Bog'lanish")}
+                <ArrowRight className="h-4 w-4" />
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
       </div>
     </section>
-  );
-};
+  )
+}
 
-/* STYLES */
-const S = {
-  page: {
-    position: "relative",
-    background: "linear-gradient(150deg, #FAF8FF 0%, #F3F0FF 40%, #EEF2FF 80%, #FAF8FF 100%)",
-    paddingTop: "112px",
-    paddingBottom: "140px",
-    overflow: "hidden",
-    fontFamily: "'DM Sans', sans-serif",
-  },
-  bgGrad: {
-    position: "absolute", inset: 0, pointerEvents: "none",
-    background: "radial-gradient(circle at 20% 20%, rgba(167,139,250,.09) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(99,102,241,.08) 0%, transparent 50%)",
-  },
-  bgGrid: {
-    position: "absolute", inset: 0, pointerEvents: "none",
-    backgroundImage: "linear-gradient(rgba(109,40,217,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(109,40,217,.035) 1px, transparent 1px)",
-    backgroundSize: "64px 64px",
-  },
-  blob: { position: "absolute", borderRadius: "50%", pointerEvents: "none" },
-  wrap: { position: "relative", maxWidth: "1200px", margin: "0 auto", padding: "0 32px", zIndex: 1 },
-  hero: { display: "flex", justifyContent: "space-between", alignItems: "flex-end", gap: "48px", marginBottom: "60px" },
-  heroLeft: { maxWidth: "560px", display: "flex", flexDirection: "column", gap: "22px" },
-  eyebrow: {
-    display: "inline-flex", alignItems: "center", gap: "8px",
-    fontSize: "11px", fontWeight: "700", letterSpacing: "0.2em", textTransform: "uppercase",
-    color: "#7C3AED", background: "rgba(124,58,237,.07)", border: "1px solid rgba(124,58,237,.18)",
-    padding: "6px 16px", borderRadius: "100px", width: "fit-content",
-  },
-  dot: { width: "6px", height: "6px", background: "#7C3AED", borderRadius: "50%", boxShadow: "0 0 8px rgba(124,58,237,.7)", display: "inline-block" },
-  h1: {
-    fontSize: "clamp(2.2rem, 4.5vw, 3.8rem)", fontWeight: "800", color: "#1E1B4B",
-    letterSpacing: "-0.04em", lineHeight: 1.08, margin: 0, fontFamily: "'Sora', sans-serif",
-  },
-  h1Grad: {
-    background: "linear-gradient(110deg, #7C3AED 0%, #6366F1 55%, #A78BFA 100%)",
-    WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
-  },
-  heroDesc: { fontSize: "16px", color: "#4B5563", lineHeight: 1.8, margin: 0 },
-  statPanel: {
-    display: "flex", background: "#FFFFFF",
-    border: "1px solid rgba(167,139,250,.2)", borderRadius: "24px",
-    boxShadow: "0 8px 40px rgba(109,40,217,.08)", overflow: "hidden", flexShrink: 0,
-  },
-  stat: { display: "flex", flexDirection: "column", alignItems: "center", gap: "5px", padding: "28px 30px" },
-  statVal: { fontSize: "26px", fontWeight: "800", color: "#5B21B6", fontFamily: "'Sora', sans-serif", letterSpacing: "-0.03em", lineHeight: 1 },
-  statLbl: { fontSize: "11px", color: "#9CA3AF", fontWeight: "500", letterSpacing: "0.04em", whiteSpace: "nowrap", textAlign: "center" },
-  rule: { height: "1px", background: "linear-gradient(90deg, transparent, rgba(124,58,237,.18), transparent)", margin: "0 0 48px" },
-  sectionRow: { display: "flex", alignItems: "center", gap: "14px", marginBottom: "36px" },
-  sectionNum: { fontSize: "12px", fontWeight: "800", color: "#C4B5FD", letterSpacing: "0.1em" },
-  sectionLbl: { fontSize: "13px", fontWeight: "600", color: "#6D28D9", letterSpacing: "0.06em", textTransform: "uppercase" },
-  grid: { display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "20px" },
-  card: {
-    position: "relative", background: "#FFFFFF",
-    border: "1px solid rgba(167,139,250,.16)", borderRadius: "28px",
-    padding: "32px 28px 28px", overflow: "hidden", display: "flex", flexDirection: "column",
-    boxShadow: "0 4px 24px rgba(109,40,217,.06)",
-  },
-  innerGlow: {
-    position: "absolute", inset: 0, opacity: 0, pointerEvents: "none",
-    transition: "opacity .35s ease", borderRadius: "inherit",
-  },
-  cardBar: { position: "absolute", top: 0, left: "28px", right: "28px", height: "2.5px", borderRadius: "0 0 6px 6px" },
-  tag: {
-    display: "inline-block", fontSize: "10px", fontWeight: "700",
-    letterSpacing: "0.14em", textTransform: "uppercase",
-    border: "1px solid", padding: "4px 12px", borderRadius: "100px",
-    marginBottom: "20px", width: "fit-content",
-  },
-  logoSlot: {
-    width: "100%", height: "72px", borderRadius: "14px",
-    background: "rgba(167,139,250,.05)", border: "1.5px dashed rgba(167,139,250,.28)",
-    display: "flex", alignItems: "center", justifyContent: "center",
-    overflow: "hidden", marginBottom: "22px",
-    transition: "border-color .25s ease, background .25s ease",
-  },
-  logoImg: { maxWidth: "130px", maxHeight: "44px", objectFit: "contain" },
-  cardTitle: {
-    fontSize: "15px", fontWeight: "700", color: "#1E1B4B", marginBottom: "10px",
-    lineHeight: 1.35, fontFamily: "'Sora', sans-serif", letterSpacing: "-0.02em",
-  },
-  cardDesc: { fontSize: "13.5px", color: "#6B7280", lineHeight: 1.75, flex: 1, marginBottom: "20px" },
-  cardFooter: { borderTop: "1px solid rgba(167,139,250,.1)", paddingTop: "14px", marginTop: "auto" },
-  footerLink: { fontSize: "13px", fontWeight: "700", letterSpacing: "0.01em" },
-  banner: {
-    position: "relative",
-    background: "linear-gradient(135deg, #5B21B6 0%, #4338CA 50%, #6D28D9 100%)",
-    borderRadius: "32px", padding: "72px 80px",
-    boxShadow: "0 32px 80px rgba(91,33,182,.28), 0 4px 16px rgba(91,33,182,.18)",
-    overflow: "hidden", textAlign: "center", marginBottom: "32px",
-  },
-  bannerGrid: {
-    position: "absolute", inset: 0, pointerEvents: "none",
-    backgroundImage: "linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px)",
-    backgroundSize: "36px 36px",
-  },
-  ring: { position: "absolute", borderRadius: "50%", border: "1px solid", pointerEvents: "none" },
-  bannerBody: { position: "relative", zIndex: 1 },
-  bannerEye: { fontSize: "11px", fontWeight: "700", letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(255,255,255,.5)", marginBottom: "18px" },
-  bannerTitle: {
-    fontSize: "clamp(1.5rem, 3vw, 2.4rem)", fontWeight: "800", color: "#FFFFFF",
-    letterSpacing: "-0.035em", lineHeight: 1.2, marginBottom: "18px", fontFamily: "'Sora', sans-serif",
-  },
-  bannerText: { fontSize: "15.5px", color: "rgba(255,255,255,.75)", lineHeight: 1.8, maxWidth: "540px", margin: "0 auto 32px" },
-  pillRow: { display: "flex", gap: "10px", justifyContent: "center", flexWrap: "wrap" },
-  pill: {
-    fontSize: "12px", fontWeight: "600", color: "rgba(255,255,255,.88)",
-    background: "rgba(255,255,255,.11)", border: "1px solid rgba(255,255,255,.2)",
-    padding: "7px 18px", borderRadius: "100px", letterSpacing: "0.04em",
-  },
-  joinRow: {
-    display: "flex", alignItems: "center", justifyContent: "space-between", gap: "32px",
-    background: "#FFFFFF", border: "1px solid rgba(167,139,250,.18)", borderRadius: "24px",
-    padding: "36px 48px", boxShadow: "0 4px 24px rgba(109,40,217,.07)",
-  },
-  joinTitle: { fontSize: "18px", fontWeight: "700", color: "#1E1B4B", margin: "0 0 8px", fontFamily: "'Sora', sans-serif", letterSpacing: "-0.02em" },
-  joinDesc: { fontSize: "14px", color: "#6B7280", margin: 0, lineHeight: 1.6 },
-  joinBtn: {
-    display: "inline-flex", alignItems: "center", justifyContent: "center",
-    padding: "14px 36px", flexShrink: 0,
-    background: "linear-gradient(135deg, #7C3AED, #6366F1)",
-    color: "#FFFFFF", borderRadius: "14px", fontWeight: "700",
-    fontSize: "15px", textDecoration: "none",
-    boxShadow: "0 8px 28px rgba(124,58,237,.32)", letterSpacing: "-0.01em",
-  },
-};
-
-export default Partners;
+export default Partners

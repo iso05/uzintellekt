@@ -1,21 +1,24 @@
 import { useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import emailjs from '@emailjs/browser'
+import { Clock, Info, Loader2, Mail, MapPin, Phone, Send } from 'lucide-react'
+import { Button, Card, CardContent, Input, Label, Textarea } from '@/shared/ui'
 
-const EMAILJS_SERVICE_ID = 'YOUR_SERVICE_ID'
-const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID'
-const EMAILJS_PUBLIC_KEY = 'YOUR_PUBLIC_KEY'
+const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID
+const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID
+const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+const EMAILJS_CONFIGURED = Boolean(
+  EMAILJS_SERVICE_ID && EMAILJS_TEMPLATE_ID && EMAILJS_PUBLIC_KEY
+)
 
-// form state keys match input name attributes exactly
 const INITIAL = { from_name: '', from_email: '', message: '' }
 
 const Contact = () => {
   const { t } = useTranslation()
   const formRef = useRef()
   const [form, setForm] = useState(INITIAL)
-  const [status, setStatus] = useState(null) // null | 'loading' | 'success' | 'error'
+  const [status, setStatus] = useState(null)
 
-  // name attr va state key bir xil — ishlaydi
   const handleChange = (e) => {
     const { name, value } = e.target
     setForm((prev) => ({ ...prev, [name]: value }))
@@ -24,6 +27,7 @@ const Contact = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    if (!EMAILJS_CONFIGURED) return
     setStatus('loading')
     try {
       await emailjs.sendForm(
@@ -39,95 +43,78 @@ const Contact = () => {
     }
   }
 
-  return (
-    <section className="relative pt-16 sm:pt-28 pb-20 sm:pb-32 overflow-hidden">
-      {/* BACKGROUND */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-700 via-purple-600 to-indigo-500" />
-      <div className="absolute -top-40 -left-40 w-[500px] h-[500px] bg-purple-400/30 rounded-full blur-[120px]" />
-      <div className="absolute -bottom-40 -right-40 w-[500px] h-[500px] bg-indigo-400/30 rounded-full blur-[120px]" />
+  const mailtoHref = `mailto:patentlextashkent@gmail.com?subject=${encodeURIComponent(
+    'UzIntellekt — aloqa formasi'
+  )}&body=${encodeURIComponent(
+    `Ismi: ${form.from_name}\nEmail: ${form.from_email}\n\n${form.message}`
+  )}`
 
-      <div className="relative max-w-7xl mx-auto px-3 sm:px-6">
-        {/* TITLE */}
-        <div className="text-center mb-12 sm:mb-16">
-          <h1 className="text-2x pt-8  text-5xl font-bold text-white mb-4">
+  const InfoTile = ({ icon: Icon, title, value, href }) => {
+    const Wrapper = href ? 'a' : 'div'
+    const wrapperProps = href ? { href, target: '_blank', rel: 'noopener noreferrer' } : {}
+    return (
+      <Wrapper {...wrapperProps} className="group flex items-start gap-4">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary-soft text-primary">
+          <Icon className="h-5 w-5" />
+        </div>
+        <div>
+          <h4 className="text-sm font-semibold text-foreground transition-colors group-hover:text-primary">
+            {title}
+          </h4>
+          <p className="text-sm text-muted-foreground">{value}</p>
+        </div>
+      </Wrapper>
+    )
+  }
+
+  return (
+    <section className="bg-background py-16 sm:py-24">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="mx-auto max-w-2xl text-center">
+          <h1 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
             {t('contact_page.title', "Biz bilan bog'laning")}
           </h1>
-          <p className="text-white/80 max-w-2xl mx-auto text-base sm:text-lg">
-            {t('contact_page.subtitle', "Savollaringiz bormi yoki hamkorlik qilmoqchimisiz? Biz sizni eshitishga tayyormiz.")}
+          <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
+            {t(
+              'contact_page.subtitle',
+              'Savollaringiz bormi yoki hamkorlik qilmoqchimisiz? Biz sizni eshitishga tayyormiz.'
+            )}
           </p>
         </div>
 
-        {/* CONTENT */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12">
-          {/* LEFT — INFO + MAP */}
-          <div className="space-y-6 text-white flex flex-col">
-            <a
+        <div className="mt-12 grid grid-cols-1 gap-8 lg:grid-cols-2">
+          <div className="space-y-5">
+            <InfoTile
+              icon={MapPin}
+              title={t('contact_page.address', 'Manzil')}
+              value={t('footer.address', "Toshkent shahri, O'zbekiston")}
               href="https://maps.google.com/?q=Toshkent,O'zbekiston"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-start gap-4 group"
-            >
-              <div className="w-12 h-12 rounded-xl bg-white/20 group-hover:bg-white/30 flex items-center justify-center text-xl transition-all shrink-0">
-                📍
-              </div>
-              <div>
-                <h4 className="font-semibold text-lg group-hover:text-purple-200 transition-colors">
-                  {t('contact_page.address', 'Manzil')}
-                </h4>
-                <p className="text-white/80">{t('footer.address', "Toshkent shahri, O'zbekiston")}</p>
-              </div>
-            </a>
+            />
+            <InfoTile
+              icon={Phone}
+              title={t('contact_page.phone', 'Telefon')}
+              value="+998 (88) 147-00-81"
+              href="tel:+998881470081"
+            />
+            <InfoTile
+              icon={Mail}
+              title={t('contact_page.email', 'Email')}
+              value="patentlextashkent@gmail.com"
+              href="mailto:patentlextashkent@gmail.com"
+            />
+            <InfoTile
+              icon={Clock}
+              title={t('contact_page.hours', 'Ish vaqti')}
+              value={t('contact_page.hours_val', 'Dushanba – Juma, 9:00 – 18:00')}
+            />
 
-            <a
-              href="tel:+998000000000"
-              className="flex items-start gap-4 group"
-            >
-              <div className="w-12 h-12 rounded-xl bg-white/20 group-hover:bg-white/30 flex items-center justify-center text-xl transition-all shrink-0">
-                📞
-              </div>
-              <div>
-                <h4 className="font-semibold text-lg group-hover:text-purple-200 transition-colors">
-                  {t('contact_page.phone', 'Telefon')}
-                </h4>
-                <p className="text-white/80">+998 (88) 147-00-81</p>
-              </div>
-            </a>
-
-            <a
-              href="https://mail.google.com/mail/?view=cm&fs=1&to=patentlextashkent@gmail.com"
-  target="_blank"
-    rel="noopener noreferrer"
-
-              className="flex items-start gap-4 group"
-            >
-              <div className="w-12 h-12 rounded-xl bg-white/20 group-hover:bg-white/30 flex items-center justify-center text-xl transition-all shrink-0">
-                ✉️
-              </div>
-              <div>
-                <h4 className="font-semibold text-lg group-hover:text-purple-200 transition-colors">
-                  {t('contact_page.email', 'Email')}
-                </h4>
-                <p className="text-white/80">patentlextashkent@gmail.com</p>
-              </div>
-            </a>
-
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center text-xl shrink-0">
-                🕐
-              </div>
-              <div>
-                <h4 className="font-semibold text-lg">{t('contact_page.hours', 'Ish vaqti')}</h4>
-                <p className="text-white/80">{t('contact_page.hours_val', 'Dushanba – Juma, 9:00 – 18:00')}</p>
-              </div>
-            </div>
-
-            <div className="flex-1 min-h-55 rounded-2xl overflow-hidden border border-white/20 shadow-xl mt-2">
+            <div className="mt-2 overflow-hidden rounded-lg border border-border shadow-soft">
               <iframe
                 title="UzIntellekt manzil"
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d191857.51866833637!2d69.1393703!3d41.2994958!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38ae8b0cc379e9c3%3A0xa5a9323b4aa5cb98!2sTashkent%2C%20Uzbekistan!5e0!3m2!1sen!2sus!4v1700000000000"
                 width="100%"
-                height="100%"
-                style={{ border: 0, minHeight: '220px' }}
+                height="260"
+                style={{ border: 0 }}
                 allowFullScreen=""
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
@@ -135,86 +122,118 @@ const Contact = () => {
             </div>
           </div>
 
-          {/* RIGHT — FORM */}
-          <div className="bg-white/10 backdrop-blur-xl rounded-3xl border border-white/20 shadow-2xl p-8 md:p-10">
-            <h2 className="text-2xl font-bold text-white mb-6">
-              {t('contact_page.send_message', 'Xabar yuborish')}
-            </h2>
+          <Card>
+            <CardContent className="p-6 sm:p-8">
+              <h2 className="text-xl font-bold text-foreground">
+                {t('contact_page.send_message', 'Xabar yuborish')}
+              </h2>
 
-            {status === 'success' && (
-              <div className="mb-6 p-4 rounded-xl bg-green-500/20 border border-green-400/40 text-green-100 text-sm">
-                ✅ {t('contact_page.success_msg', 'Xabaringiz muvaffaqiyatli yuborildi! Tez orada javob beramiz.')}
-              </div>
-            )}
+              {!EMAILJS_CONFIGURED && (
+                <div className="mt-5 flex items-start gap-2 rounded-lg border border-warning/30 bg-warning/10 p-3 text-sm text-foreground">
+                  <Info className="mt-0.5 h-4 w-4 shrink-0 text-warning" />
+                  <span>
+                    {t(
+                      'contact_page.unconfigured_notice',
+                      "Forma hozircha sozlanmagan. Iltimos, pastdagi 'Mail orqali yuborish' tugmasini bosing."
+                    )}
+                  </span>
+                </div>
+              )}
 
-            {status === 'error' && (
-              <div className="mb-6 p-4 rounded-xl bg-red-500/20 border border-red-400/40 text-red-100 text-sm">
-                ⚠️ {t('contact_page.error_msg', "Xatolik yuz berdi. Iltimos qayta urinib ko'ring.")}
-              </div>
-            )}
+              {status === 'success' && (
+                <div className="mt-5 rounded-lg border border-success/30 bg-success/10 p-3 text-sm text-success">
+                  {t(
+                    'contact_page.success_msg',
+                    'Xabaringiz muvaffaqiyatli yuborildi! Tez orada javob beramiz.'
+                  )}
+                </div>
+              )}
 
-            <form ref={formRef} onSubmit={handleSubmit} className="space-y-5">
-              <div className="flex flex-col gap-1.5">
-                <label className="text-sm font-medium text-white/90">
-                  {t('contact_page.name_label', 'Ismingiz')}
-                </label>
-                <input
-                  type="text"
-                  name="from_name"
-                  value={form.from_name}
-                  onChange={handleChange}
-                  placeholder={t('contact_page.name_placeholder', 'Ismingizni kiriting')}
-                  required
-                  className="px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/40 text-sm focus:outline-none focus:border-purple-300 focus:bg-white/15 transition-all"
-                />
-              </div>
+              {status === 'error' && (
+                <div className="mt-5 rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive">
+                  {t(
+                    'contact_page.error_msg',
+                    "Xatolik yuz berdi. Iltimos qayta urinib ko'ring."
+                  )}
+                </div>
+              )}
 
-              <div className="flex flex-col gap-1.5">
-                <label className="text-sm font-medium text-white/90">
-                  {t('contact_page.email', 'Email')}
-                </label>
-                <input
-                  type="email"
-                  name="from_email"
-                  value={form.from_email}
-                  onChange={handleChange}
-                  placeholder={t('contact_page.email_placeholder', 'example@mail.com')}
-                  required
-                  className="px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/40 text-sm focus:outline-none focus:border-purple-300 focus:bg-white/15 transition-all"
-                />
-              </div>
+              <form ref={formRef} onSubmit={handleSubmit} className="mt-5 space-y-4">
+                <div className="space-y-1.5">
+                  <Label htmlFor="from_name">
+                    {t('contact_page.name_label', 'Ismingiz')}
+                  </Label>
+                  <Input
+                    id="from_name"
+                    name="from_name"
+                    value={form.from_name}
+                    onChange={handleChange}
+                    placeholder={t('contact_page.name_placeholder', 'Ismingizni kiriting')}
+                    required
+                  />
+                </div>
 
-              <div className="flex flex-col gap-1.5">
-                <label className="text-sm font-medium text-white/90">
-                  {t('contact_page.message_label', 'Xabar')}
-                </label>
-                <textarea
-                  name="message"
-                  rows="5"
-                  value={form.message}
-                  onChange={handleChange}
-                  placeholder={t('contact_page.message_placeholder', 'Xabaringizni yozing...')}
-                  required
-                  className="px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/40 text-sm focus:outline-none focus:border-purple-300 focus:bg-white/15 transition-all resize-none"
-                />
-              </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="from_email">{t('contact_page.email', 'Email')}</Label>
+                  <Input
+                    id="from_email"
+                    type="email"
+                    name="from_email"
+                    value={form.from_email}
+                    onChange={handleChange}
+                    placeholder={t('contact_page.email_placeholder', 'example@mail.com')}
+                    required
+                  />
+                </div>
 
-              <button
-                type="submit"
-                disabled={status === 'loading'}
-                className="w-full py-4 rounded-xl bg-white text-purple-700 font-semibold text-base hover:bg-purple-50 active:scale-95 transition-all shadow-lg disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-              >
-                {status === 'loading' ? (
-                  <>
-                    <div className="w-4 h-4 border-2 border-purple-400 border-t-transparent rounded-full animate-spin" />
-                    {t('contact_page.sending_btn', 'Yuborilmoqda...')}
-                  </>
+                <div className="space-y-1.5">
+                  <Label htmlFor="message">
+                    {t('contact_page.message_label', 'Xabar')}
+                  </Label>
+                  <Textarea
+                    id="message"
+                    name="message"
+                    rows={5}
+                    value={form.message}
+                    onChange={handleChange}
+                    placeholder={t(
+                      'contact_page.message_placeholder',
+                      'Xabaringizni yozing...'
+                    )}
+                    required
+                  />
+                </div>
+
+                {EMAILJS_CONFIGURED ? (
+                  <Button
+                    type="submit"
+                    disabled={status === 'loading'}
+                    className="w-full"
+                    size="lg"
+                  >
+                    {status === 'loading' ? (
+                      <>
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        {t('contact_page.sending_btn', 'Yuborilmoqda...')}
+                      </>
+                    ) : (
+                      <>
+                        {t('contact_page.send_btn', 'Yuborish')}
+                        <Send className="h-4 w-4" />
+                      </>
+                    )}
+                  </Button>
                 ) : (
-                  t('contact_page.send_btn', 'Yuborish →')
+                  <Button asChild size="lg" className="w-full">
+                    <a href={mailtoHref}>
+                      <Mail className="h-4 w-4" />
+                      {t('contact_page.send_mailto_btn', 'Mail orqali yuborish')}
+                    </a>
+                  </Button>
                 )}
-              </button>
-            </form>
-          </div>
+              </form>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </section>

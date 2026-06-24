@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom'
-import MainLayout from '../components/layout/MainLayout'
+import { MainLayout } from '@/widgets/layout'
 
 import Home from '../pages/Home/Home'
 import Contact from '../pages/Contact/Contact'
@@ -12,8 +12,8 @@ import Structure from '../pages/About/Structure'
 import Board from '../pages/About/Board'
 import About from '../pages/About/About'
 import Partners from '../pages/About/Partners'
-import Depositing from '../pages/services/Depositing'
-import Services from '../pages/services/Services'
+import Depositing from '../pages/Services/Depositing'
+import Services from '../pages/Services/Services'
 import NotFound from '../pages/NotFound'
 
 const AppRouter = () => {

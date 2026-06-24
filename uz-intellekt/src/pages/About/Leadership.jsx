@@ -2,20 +2,19 @@ import { useTranslation } from 'react-i18next'
 
 const Leadership = () => {
   const { t } = useTranslation()
-
   return (
-    <section className="pt-28 pb-32 bg-gray-50">
-      <div className="max-w-6xl mx-auto px-3 sm:px-6">
-        <h1 className="text-4xl md:text-5xl font-bold gradient-title pb-6">
+    <section className="bg-background py-16 sm:py-24">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        <h1 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
           {t('leadership_page.title', 'Rahbariyat')}
         </h1>
-
-        <p className="text-gray-600 max-w-3xl mb-12">
-          {t('leadership_page.desc', 'Jamiyat rahbariyati, bosh direktor va asosiy mas’ul shaxslar haqida rasmiy ma’lumotlar.')}
+        <p className="mt-4 max-w-3xl text-base leading-relaxed text-muted-foreground">
+          {t(
+            'leadership_page.desc',
+            "Jamiyat rahbariyati, bosh direktor va asosiy mas'ul shaxslar haqida rasmiy ma'lumotlar."
+          )}
         </p>
-
-        {/* KEYIN: direktorlar cardlari */}
-        <div className="text-gray-400 italic">
+        <div className="mt-10 rounded-lg border border-dashed border-border bg-muted/40 p-8 text-center text-sm italic text-muted-foreground">
           {t('leadership_page.notice', 'Tez orada rahbariyat tarkibi joylanadi.')}
         </div>
       </div>

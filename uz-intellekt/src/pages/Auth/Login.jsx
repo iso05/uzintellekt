@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { Loader2, Lock, ShieldAlert, ShieldCheck, Zap } from 'lucide-react'
 import { useAuth } from '../../hooks/useAuth'
 import useScrollToTop from '../../hooks/useScrollToTop'
 import { cleanURLHistory, isValidAuthCode, sanitizeErrorMessage } from '../../utils/securityUtils'
+import { Button, Card, CardContent } from '@/shared/ui'
 
 export default function Login() {
   useScrollToTop()
@@ -16,12 +18,10 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
 
-  // StrictMode / double-mount himoyasi
   const callbackProcessed = useRef(false)
 
-  // Allaqachon kirgan (token bor, sessiya aktiv) → to'g'ri yo'naltirish
-  // FAQAT code parametri yo'q bo'lganda — aks holda callback o'zi navigate qiladi
-  const DASHBOARD_URL = import.meta.env.VITE_DASHBOARD_URL || 'https://dashboard.uzintellekt.uz'
+  const DASHBOARD_URL =
+    import.meta.env.VITE_DASHBOARD_URL || 'https://dashboard.uzintellekt.uz'
 
   useEffect(() => {
     const hasCode = Boolean(searchParams.get('code'))
@@ -34,7 +34,6 @@ export default function Login() {
     }
   }, [loading, user, searchParams, navigate])
 
-  // OneID callback: /login?code=...&state=...
   useEffect(() => {
     const code = searchParams.get('code')
     const state = searchParams.get('state')
@@ -46,16 +45,16 @@ export default function Login() {
     }
     if (!code) return
 
-    // Validatsiya: authorization kodini tekshirish
     if (!isValidAuthCode(code)) {
-      setError(t('login_page.err_invalid_code', "OneID orqali olingan kod formati noto'g'ri."))
+      setError(
+        t('login_page.err_invalid_code', "OneID orqali olingan kod formati noto'g'ri.")
+      )
       return
     }
 
     if (callbackProcessed.current) return
     callbackProcessed.current = true
 
-    // URL dan code/state ni tozalash — brauzer tarixida qolmasin
     cleanURLHistory('/login')
     setIsLoading(true)
     setError(null)
@@ -63,7 +62,6 @@ export default function Login() {
     handleCallback(code, state)
       .then(({ isMember }) => {
         setIsLoading(false)
-
         if (isMember) {
           window.location.replace(DASHBOARD_URL)
         } else {
@@ -71,304 +69,98 @@ export default function Login() {
         }
       })
       .catch((err) => {
-        setError(sanitizeErrorMessage(err.message || t('login_page.err_fallback', 'Xatolik yuz berdi. Qayta urining.')))
+        setError(
+          sanitizeErrorMessage(
+            err.message ||
+              t('login_page.err_fallback', 'Xatolik yuz berdi. Qayta urining.')
+          )
+        )
         setIsLoading(false)
         callbackProcessed.current = false
       })
-  }, [searchParams, handleCallback, navigate])
+  }, [searchParams, handleCallback, navigate, t])
 
   const handleLoginClick = () => {
     setError(null)
     loginWithOneId()
   }
 
+  const badges = [
+    { icon: ShieldCheck, label: t('login_page.badge_secure', 'Xavfsiz') },
+    { icon: Zap, label: t('login_page.badge_fast', 'Tez') },
+    { icon: Lock, label: t('login_page.badge_encrypted', 'Shifrlangan') },
+    { icon: ShieldCheck, label: t('login_page.badge_verified', 'Verified') },
+  ]
+
+  const isBusy = loading || isLoading
+
   return (
-    <section style={S.page}>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap');
-        @keyframes spin { to { transform: rotate(360deg); } }
-        @keyframes fadeUp {
-          from { opacity: 0; transform: translateY(24px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes glow {
-          0%, 100% { box-shadow: 0 8px 28px rgba(168,85,247,.4); }
-          50%       { box-shadow: 0 8px 40px rgba(168,85,247,.7); }
-        }
-        .login-card { animation: fadeUp .4s ease both; }
-        .oneid-btn  { transition: transform .15s, box-shadow .15s; }
-        .oneid-btn:hover:not(:disabled) {
-          transform: translateY(-2px);
-          box-shadow: 0 14px 36px rgba(168,85,247,.55) !important;
-        }
-        .oneid-btn:active:not(:disabled) { transform: scale(.97); }
-      `}</style>
-
-      {/* BG blobs */}
-      <div
-        style={{
-          ...S.blob,
-          top: '-120px',
-          left: '-80px',
-          width: 420,
-          height: 420,
-          background:
-            'radial-gradient(circle, rgba(99,102,241,.28) 0%, transparent 70%)',
-        }}
-      />
-      <div
-        style={{
-          ...S.blob,
-          bottom: '-100px',
-          right: '-80px',
-          width: 380,
-          height: 380,
-          background:
-            'radial-gradient(circle, rgba(168,85,247,.22) 0%, transparent 70%)',
-        }}
-      />
-      <div
-        style={{
-          ...S.blob,
-          top: '35%',
-          right: '5%',
-          width: 180,
-          height: 180,
-          background:
-            'radial-gradient(circle, rgba(59,130,246,.18) 0%, transparent 70%)',
-        }}
-      />
-
-      <div style={S.wrap}>
-        <div style={S.card} className="login-card">
-          {/* Lock icon */}
-          <div style={S.iconWrap}>
-            <div style={S.iconBox}>
-              <svg
-                width="34"
-                height="34"
-                fill="none"
-                stroke="white"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                viewBox="0 0 24 24"
-              >
-                <rect x="3" y="11" width="18" height="11" rx="2" />
-                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                <circle cx="12" cy="16" r="1" fill="white" />
-              </svg>
+    <section className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-background px-4 py-16">
+      <div className="w-full max-w-md space-y-4">
+        <Card className="overflow-hidden">
+          <CardContent className="space-y-6 p-8 sm:p-10">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-soft">
+              <Lock className="h-7 w-7" />
             </div>
-          </div>
 
-          {/* Title */}
-          <div style={S.titleBlock}>
-            <h1 style={S.h1}>
-              {(loading || isLoading) ? t('login_page.title_checking', 'Tekshirilmoqda...') : t('login_page.title_welcome', 'Xush kelibsiz')}
-            </h1>
-            <p style={S.subtitle}>{t('login_page.subtitle', 'uzintellekt.uz platformasiga kirish')}</p>
-          </div>
-
-          {/* Loading */}
-          {(loading || isLoading) && (
-            <div style={S.spinnerWrap}>
-              <div style={S.spinner} />
-              <p style={S.spinnerText}>
-                {isLoading
-                  ? t('login_page.oneid_loading', 'OneID orqali autentifikatsiya...')
-                  : t('login_page.checking_session', 'Avtorizatsiya tekshirilmoqda...')}
+            <div className="text-center">
+              <h1 className="text-2xl font-extrabold tracking-tight text-foreground">
+                {isBusy
+                  ? t('login_page.title_checking', 'Tekshirilmoqda...')
+                  : t('login_page.title_welcome', 'Xush kelibsiz')}
+              </h1>
+              <p className="mt-1.5 text-sm text-muted-foreground">
+                {t('login_page.subtitle', 'uzintellekt.uz platformasiga kirish')}
               </p>
             </div>
-          )}
 
-          {/* Error */}
-          {error && !isLoading && !loading && (
-            <div style={S.errorBox}>
-              <span>⚠️</span>
-              <span>{error}</span>
-            </div>
-          )}
+            {isBusy && (
+              <div className="flex flex-col items-center gap-3 py-2">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                <p className="text-sm text-muted-foreground">
+                  {isLoading
+                    ? t('login_page.oneid_loading', 'OneID orqali autentifikatsiya...')
+                    : t('login_page.checking_session', 'Avtorizatsiya tekshirilmoqda...')}
+                </p>
+              </div>
+            )}
 
-          {/* OneID button */}
-          {!loading && !isLoading && (
-            <>
-              <button
-                className="oneid-btn"
-                onClick={handleLoginClick}
-                style={S.oneIdBtn}
-              >
-                <svg
-                  width="22"
-                  height="22"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10
-                    10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34
-                    3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0
-                    14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08
-                    6-3.08 1.99 0 5.97 1.09 6 3.08-1.29
-                    1.94-3.5 3.22-6 3.22z"
-                  />
-                </svg>
-                {t('login_page.btn_oneid', 'OneID bilan kirish')}
-              </button>
-              <p style={S.hint}>
-                {t('login_page.hint', "🔐 O'zbekiston Davlat xizmatlari — id.egov.uz orqali xavfsiz kirish")}
-              </p>
-            </>
-          )}
-        </div>
+            {error && !isBusy && (
+              <div className="flex items-start gap-2 rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive">
+                <ShieldAlert className="mt-0.5 h-4 w-4 shrink-0" />
+                <span>{error}</span>
+              </div>
+            )}
 
-        {/* Security badges */}
-        <div style={S.badges}>
-          {[
-            ['🛡️', t('login_page.badge_secure', 'Xavfsiz')],
-            ['⚡', t('login_page.badge_fast', 'Tez')],
-            ['🔐', t('login_page.badge_encrypted', 'Shifrlangan')],
-            ['✓', t('login_page.badge_verified', 'Verified')],
-          ].map(([icon, label]) => (
-            <div key={label} style={S.badge}>
-              <span style={{ fontSize: '18px' }}>{icon}</span>
-              <span style={S.badgeLabel}>{label}</span>
+            {!isBusy && (
+              <>
+                <Button onClick={handleLoginClick} size="lg" className="w-full">
+                  <Lock className="h-4 w-4" />
+                  {t('login_page.btn_oneid', 'OneID bilan kirish')}
+                </Button>
+                <p className="text-center text-xs text-muted-foreground">
+                  {t(
+                    'login_page.hint',
+                    "O'zbekiston Davlat xizmatlari — id.egov.uz orqali xavfsiz kirish"
+                  )}
+                </p>
+              </>
+            )}
+          </CardContent>
+        </Card>
+
+        <div className="grid grid-cols-4 gap-2">
+          {badges.map(({ icon: Icon, label }) => (
+            <div
+              key={label}
+              className="flex flex-col items-center gap-1 rounded-lg border border-border bg-card p-3"
+            >
+              <Icon className="h-4 w-4 text-primary" />
+              <span className="text-[11px] font-medium text-muted-foreground">{label}</span>
             </div>
           ))}
         </div>
       </div>
     </section>
   )
-}
-
-const S = {
-  page: {
-    minHeight: '100vh',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    background:
-      'linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%)',
-    padding: '32px 16px',
-    position: 'relative',
-    overflow: 'hidden',
-    fontFamily: "'DM Sans', sans-serif",
-  },
-  blob: {
-    position: 'absolute',
-    borderRadius: '50%',
-    pointerEvents: 'none',
-    filter: 'blur(50px)',
-  },
-  wrap: {
-    position: 'relative',
-    zIndex: 1,
-    width: '100%',
-    maxWidth: '420px',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '16px',
-  },
-  card: {
-    background: 'rgba(255,255,255,.06)',
-    backdropFilter: 'blur(32px)',
-    WebkitBackdropFilter: 'blur(32px)',
-    border: '1px solid rgba(255,255,255,.12)',
-    borderRadius: '28px',
-    padding: '44px 36px',
-    boxShadow: '0 32px 80px rgba(0,0,0,.5)',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '24px',
-  },
-  iconWrap: { display: 'flex', justifyContent: 'center' },
-  iconBox: {
-    width: '76px',
-    height: '76px',
-    borderRadius: '22px',
-    background: 'linear-gradient(135deg, #a855f7, #6366f1)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    animation: 'glow 3s ease-in-out infinite',
-  },
-  titleBlock: { textAlign: 'center' },
-  h1: {
-    fontSize: '28px',
-    fontWeight: '800',
-    color: '#fff',
-    margin: '0 0 8px',
-    letterSpacing: '-0.02em',
-  },
-  subtitle: { fontSize: '14px', color: 'rgba(255,255,255,.45)', margin: 0 },
-  spinnerWrap: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    gap: '14px',
-    padding: '12px 0',
-  },
-  spinner: {
-    width: '48px',
-    height: '48px',
-    borderRadius: '50%',
-    border: '4px solid rgba(255,255,255,.12)',
-    borderTopColor: '#a855f7',
-    animation: 'spin 1s linear infinite',
-  },
-  spinnerText: { color: 'rgba(255,255,255,.55)', fontSize: '14px', margin: 0 },
-  errorBox: {
-    display: 'flex',
-    alignItems: 'flex-start',
-    gap: '10px',
-    padding: '14px 16px',
-    borderRadius: '14px',
-    background: 'rgba(239,68,68,.15)',
-    border: '1px solid rgba(239,68,68,.3)',
-    color: '#fecaca',
-    fontSize: '14px',
-    lineHeight: 1.5,
-  },
-  oneIdBtn: {
-    width: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: '10px',
-    padding: '16px 24px',
-    background: 'linear-gradient(135deg, #a855f7 0%, #6366f1 100%)',
-    border: 'none',
-    borderRadius: '14px',
-    color: '#fff',
-    fontSize: '16px',
-    fontWeight: '700',
-    cursor: 'pointer',
-    fontFamily: "'DM Sans', sans-serif",
-    boxShadow: '0 8px 28px rgba(168,85,247,.4)',
-  },
-  hint: {
-    textAlign: 'center',
-    fontSize: '12px',
-    color: 'rgba(147,197,253,.55)',
-    margin: 0,
-  },
-  badges: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(4, 1fr)',
-    gap: '10px',
-  },
-  badge: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    padding: '12px 8px',
-    background: 'rgba(255,255,255,.04)',
-    border: '1px solid rgba(255,255,255,.07)',
-    borderRadius: '12px',
-    gap: '4px',
-  },
-  badgeLabel: {
-    fontSize: '11px',
-    color: 'rgba(255,255,255,.4)',
-    fontWeight: '500',
-  },
 }

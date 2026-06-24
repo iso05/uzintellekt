@@ -1,0 +1,35 @@
+<svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Digital certificate">
+  <rect x="0" y="0" width="240" height="180" rx="20" fill="#eaf2fd"/>
+
+  <!-- back document (tilted) -->
+  <g transform="translate(140 38) rotate(8)">
+    <rect x="0" y="0" width="78" height="100" rx="6" fill="#ffffff" stroke="#e1e7ee" stroke-width="1.5"/>
+    <rect x="10" y="16" width="48" height="5" rx="2.5" fill="#e1e7ee"/>
+    <rect x="10" y="28" width="58" height="5" rx="2.5" fill="#e1e7ee"/>
+    <rect x="10" y="40" width="36" height="5" rx="2.5" fill="#e1e7ee"/>
+  </g>
+
+  <!-- front certificate -->
+  <g transform="translate(50 30)">
+    <rect x="0" y="0" width="120" height="120" rx="10" fill="#ffffff" stroke="#e1e7ee" stroke-width="1.5"/>
+    <!-- header bar -->
+    <rect x="10" y="14" width="60" height="6" rx="3" fill="#1f5cc7"/>
+    <rect x="10" y="26" width="80" height="4" rx="2" fill="#e1e7ee"/>
+    <!-- body lines -->
+    <rect x="10" y="44" width="100" height="4" rx="2" fill="#e1e7ee"/>
+    <rect x="10" y="54" width="90" height="4" rx="2" fill="#e1e7ee"/>
+    <rect x="10" y="64" width="70" height="4" rx="2" fill="#e1e7ee"/>
+    <!-- seal -->
+    <g transform="translate(86 84)">
+      <circle cx="0" cy="0" r="18" fill="#f59e0b"/>
+      <circle cx="0" cy="0" r="14" fill="none" stroke="#ffffff" stroke-width="1.5" opacity="0.7"/>
+      <path d="M-6 0 L-2 4 L6 -4" stroke="#ffffff" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <!-- ribbons -->
+      <path d="M-6 14 L-8 30 L-2 25 L0 30 L2 25 L8 30 L6 14" fill="#f59e0b"/>
+    </g>
+  </g>
+
+  <!-- accent dots -->
+  <circle cx="200" cy="30" r="5" fill="#f59e0b"/>
+  <circle cx="30" cy="140" r="4" fill="#1f5cc7" opacity="0.4"/>
+</svg>
