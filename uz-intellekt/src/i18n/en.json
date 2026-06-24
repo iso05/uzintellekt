@@ -1,0 +1,420 @@
+{
+  "home": "Home",
+  "about": "About Us",
+  "services": "Services",
+  "depositing": "Depositing",
+  "news": "News",
+  "contact": "Contacts",
+  "login": "Login",
+  "register": "Register",
+  "logout": "Logout",
+  "welcome": "Welcome to Uz Intellekt platform",
+  "loading": "Loading...",
+  "error": "Error",
+  "success": "Success",
+  "cancel": "Cancel",
+  "save": "Save",
+  "delete": "Delete",
+  "edit": "Edit",
+  "search": "Search",
+  "noResults": "No results found",
+  "nav": {
+    "about_society": "About Society",
+    "management": "Management",
+    "leadership": "Leadership",
+    "structure": "Structure",
+    "board": "Supervisory Board",
+    "about_us": "About Us",
+    "partners": "Partners",
+    "docs": "Documents",
+    "services": "Services",
+    "general_services": "General Services",
+    "depositing": "Depositing",
+    "registries": "Registries",
+    "works_registry": "Registry of Works",
+    "authors_registry": "Registry of Authors",
+    "contracts": "Contracts",
+    "certificates": "Certificates",
+    "news": "News",
+    "contacts": "Contacts",
+    "login_join": "Join / Login",
+    "coming_soon": "Coming soon",
+    "menu": "Menu"
+  },
+  "footer": {
+    "desc": "A modern digital platform for intellectual property protection, registration, and management.",
+    "quick_links": "Quick Links",
+    "contact": "Contact",
+    "address": "Tashkent City, Uzbekistan",
+    "address_val": "Tashkent, Uzbekistan",
+    "all_rights": "All rights reserved."
+  },
+  "hero": {
+    "title_prefix": "Protect Your ",
+    "title_highlight": "Intellectual Property",
+    "desc": "Register, manage, and secure copyright reliably through our digital platform.",
+    "cta": "Join / Login"
+  },
+  "services_preview": {
+    "title": "Our Services",
+    "items": {
+      "dep": {
+        "title": "Depositing",
+        "desc": "Secure registration of intellectual property objects."
+      },
+      "cert": {
+        "title": "Digital Certificate",
+        "desc": "Official digital verification for your work."
+      },
+      "rights": {
+        "title": "Rights Management",
+        "desc": "Control and manage copyrights easily."
+      },
+      "registry": {
+        "title": "Open Registries",
+        "desc": "Searchable database of registered works."
+      }
+    }
+  },
+  "how_it_works": {
+    "title": "How It Works",
+    "step_1": {
+      "title": "Upload your trusted work",
+      "desc": "Upload your intellectual property into the system."
+    },
+    "step_2": {
+      "title": "Data is verified",
+      "desc": "Uploaded information is checked by our specialists."
+    },
+    "step_3": {
+      "title": "Get the certificate",
+      "desc": "Receive your official digital certificate."
+    }
+  },
+  "news_block": {
+    "title": "Latest News",
+    "more": "Details →",
+    "back_to_news": "← Back to news",
+    "search_placeholder": "Search news...",
+    "all_news": "View All",
+    "no_news": "No news found",
+    "title_main": "News",
+    "desc_main": "All official news and announcements on the platform.",
+    "cats": {
+      "all": "All",
+      "event": "Event",
+      "news": "News",
+      "seminar": "Seminar"
+    },
+    "item_1": {
+      "title": "Digital Rights Meeting",
+      "desc": "Discussion of copyrights.",
+      "content": "Copyright issues and protection were discussed at this meeting.",
+      "date": "June 04, 2026"
+    },
+    "item_2": {
+      "title": "Digital Certificate Launched",
+      "desc": "A new system has gone live.",
+      "content": "The new digital copyright certificate system is now active.",
+      "date": "June 01, 2026"
+    },
+    "item_3": {
+      "title": "Partnership Meeting",
+      "desc": "International cooperation.",
+      "content": "Legal aspects of international partnership were discussed during the seminar.",
+      "date": "May 28, 2026"
+    },
+    "item_4": {
+      "title": "New Platform",
+      "desc": "The platform has been updated.",
+      "date": "May 20, 2026"
+    },
+    "item_5": {
+      "title": "Conference",
+      "desc": "Meeting of industry representatives.",
+      "date": "May 12, 2026"
+    },
+    "item_6": {
+      "title": "Legal Seminar",
+      "desc": "Seminar successfully conducted.",
+      "date": "May 01, 2026"
+    }
+  },
+  "partners_block": {
+    "title": "Our Partners"
+  },
+  "about_page": {
+    "title": "About Us",
+    "desc": "UzIntellekt is a modern national platform created for the registration, legal protection, and digital management of intellectual property objects.",
+    "mission": "Our Mission",
+    "mission_title": "Reliable intellectual property protection",
+    "mission_desc": "Creating a platform for authors, researchers, and organizations to manage their works in a legally protected, transparent, and digital environment.",
+    "vision": "Our Vision",
+    "vision_title": "Leading platform in Central Asia",
+    "vision_desc": "Developing the UzIntellekt platform as an integral, reliable, and international-standard part of the digital rights infrastructure.",
+    "values": "Our Values",
+    "val_1_title": "Transparency",
+    "val_1_desc": "All processes are open, understandable, and legally grounded.",
+    "val_2_title": "Security",
+    "val_2_desc": "Information is protected by modern cryptographic and technical standards.",
+    "val_3_title": "Innovation",
+    "val_3_desc": "Simplifying rights management through digital technologies.",
+    "final_title": "Your intellectual property is our responsibility",
+    "final_desc": "The UzIntellekt team harmonizes copyright protection, digital certification, and legal management with modern technologies."
+  },
+  "contact_page": {
+    "title": "Contact Us",
+    "subtitle": "Have questions or want to collaborate? We are ready to hear from you.",
+    "address": "Address",
+    "phone": "Phone",
+    "email": "Email",
+    "hours": "Working Hours",
+    "hours_val": "Monday – Friday, 9:00 – 18:00",
+    "send_message": "Send Message",
+    "success_msg": "Your message was sent successfully! We will reply soon.",
+    "error_msg": "An error occurred. Please try again.",
+    "name_label": "Your Name",
+    "name_placeholder": "Enter your name",
+    "email_placeholder": "example@mail.com",
+    "message_label": "Message",
+    "message_placeholder": "Write your message...",
+    "sending_btn": "Sending...",
+    "send_btn": "Send →"
+  },
+  "services_page": {
+    "hero_title": "Protect Your Intellectual Property",
+    "hero_desc": "We provide the simplest, fastest, and most secure depositing service. Protect your works completely and stand against future infringements.",
+    "start_btn": "Start →",
+    "details_btn": "More Details",
+    "users": "Users",
+    "deposited_works": "Deposited Works",
+    "support_24_7": "Service Support",
+    "upload_title": "Upload Work",
+    "review_title": "Verification",
+    "cert_title": "Certificate",
+    "security_title": "Protection",
+    "fast_badge": "Fast: Get your certificate in 1-3 days",
+    "grid_title": "Our Services",
+    "grid_subtitle": "Full solution for intellectual property protection and growth",
+    "accept_title": "What works do we accept?",
+    "accept_subtitle": "Any field, any type of intellectual property",
+    "step_title": "Deposit in 6 Steps",
+    "step_subtitle": "Simple, fast, and clear process",
+    "step_1": "Registration",
+    "step_1_desc": "Create a profile on the platform and enter basic information",
+    "step_2": "Upload Work",
+    "step_2_desc": "Upload a file or image of your work to the platform",
+    "step_3": "Fill Details",
+    "step_3_desc": "Enter detailed information about the work: title, author, description",
+    "step_4": "Verification",
+    "step_4_desc": "Information is verified by our experts (1-3 days)",
+    "step_5": "Payment",
+    "step_5_desc": "Pay the depositing fee (transparent and convenient methods)",
+    "step_6": "Get Certificate",
+    "step_6_desc": "Receive your official digital certificate via email",
+    "total_time": "Total Time: 3-5 days",
+    "why_title": "Why Choose Us?",
+    "why_subtitle": "6 key benefits and opportunities",
+    "cta_title": "Protect Your Work Today",
+    "cta_subtitle": "Thousands of professionals and creators trust us with their works. You can too.",
+    "cta_btn": "Start →",
+    "faq_btn": "Ask Questions",
+    "cta_no_card": "Register without credit cards. All data is encrypted.",
+    "faq_title": "Frequently Asked Questions",
+    "faq_q1": "How long does depositing take?",
+    "faq_a1": "Usually 1-3 days. After submitting documents, experts verify it and you receive the certificate.",
+    "faq_q2": "Can others see my works?",
+    "faq_a2": "No. All data is encrypted and can only be viewed by people you authorize.",
+    "faq_q3": "What is the legal power of the depositing certificate?",
+    "faq_a3": "It has full legal power in Uzbekistan. It can be used as evidence in court.",
+    "faq_q4": "How many works can I deposit?",
+    "faq_a4": "Unlimited. You can protect as many works as you want.",
+    "more_faq": "More Q&A →",
+    "cats": {
+      "text": "Written Works",
+      "music": "Audio & Music",
+      "visual": "Visual Arts",
+      "tech": "Technical Works",
+      "media": "Media Content",
+      "other": "Other Areas"
+    },
+    "items": {
+      "book": "Books",
+      "diss": "Dissertations",
+      "art": "Articles",
+      "proj": "Projects",
+      "pres": "Presentations",
+      "tune": "Tunes",
+      "vocal": "Vocal Tracks",
+      "arr": "Arrangements",
+      "pod": "Podcasts",
+      "remix": "Remixes",
+      "pic": "Pictures",
+      "ill": "Illustrations",
+      "design": "Design Projects",
+      "photo": "Photographs",
+      "logo": "Logos",
+      "code": "Source Code",
+      "site": "Websites",
+      "mob": "Mobile Apps",
+      "api": "APIs",
+      "course": "E-courses",
+      "video": "Videos",
+      "anim": "Animations",
+      "doc": "Documents",
+      "comp": "Compilations",
+      "trail": "Trailers",
+      "inv": "Inventions",
+      "pattern": "Patterns & Motifs",
+      "arch": "Architecture",
+      "history": "Current & Historical Works",
+      "idea": "Conceptual Ideas"
+    },
+    "benefits": {
+      "b1_title": "Legal Protection",
+      "b1_desc": "Your works are fully protected within the legal framework",
+      "b2_title": "Digital Certificate",
+      "b2_desc": "High-level document with QR-code and verification",
+      "b3_title": "Secure Storage",
+      "b3_desc": "Encrypted servers and 24/7 monitoring",
+      "b4_title": "Grow Your Business",
+      "b4_desc": "License works and generate additional income",
+      "b5_title": "Professional Analysis",
+      "b5_desc": "Detailed evaluation and recommendations by experts",
+      "b6_title": "State Recognition",
+      "b6_desc": "Fully recognized digital certificate under legal framework"
+    },
+    "packages": {
+      "p1_name": "Depositing",
+      "p1_desc": "Officially register your intellectual property",
+      "p2_name": "Rating Service",
+      "p2_desc": "Evaluate your works and get rating reports on the platform",
+      "p3_name": "Legal Consultation",
+      "p3_desc": "Connect with intellectual property legal experts",
+      "p4_name": "Licensing",
+      "p4_desc": "Create license terms for your works and monetize them"
+    }
+  },
+  "depositing_page": {
+    "title": "Depositing Service",
+    "desc": "Officially register intellectual property objects, strengthen your rights, and protect yourself against future legal disputes.",
+    "start_btn": "Start Depositing",
+    "ask_btn": "Ask a Question",
+    "bullet_1": "Official date and authorship confirmation",
+    "bullet_2": "Digital certificate",
+    "bullet_3": "Secure storage",
+    "bullet_4": "Legally valid document",
+    "why_title": "Why is depositing important?",
+    "how_title": "How it works?",
+    "works_title": "What works are accepted?",
+    "cta_title": "Protect your work today",
+    "cta_desc": "Depositing is not just a document; it is the ultimate protection for your intellectual property rights.",
+    "cta_btn": "Start Depositing →",
+    "features": {
+      "f1_title": "Legal Proof",
+      "f1_desc": "Obtain legal proof by registering your work with an exact date and author details.",
+      "f2_title": "Digital Certificate",
+      "f2_desc": "Upon completion, a digital certificate with a verification QR-code is issued.",
+      "f3_title": "Secure Storage",
+      "f3_desc": "Your works are stored securely in encrypted server vaults."
+    },
+    "steps": {
+      "s1_title": "Upload Work",
+      "s1_desc": "Upload your work to the platform and fill out the basic details.",
+      "s2_title": "Verification",
+      "s2_desc": "The submitted information is verified by experts.",
+      "s3_title": "Issue Certificate",
+      "s3_desc": "Obtain your official digital depositing certificate."
+    },
+    "accepted": [
+      "📄 Written works (books, articles, dissertations)",
+      "🎵 Music and audio works",
+      "🎨 Design, pictures, illustrations",
+      "💻 Source code and IT products",
+      "🎥 Video and media products"
+    ]
+  },
+  "board_page": {
+    "title": "Supervisory Board",
+    "desc": "Members and powers of the Supervisory Board supervising society activity.",
+    "notice": "The composition of the supervisory board will be announced soon."
+  },
+  "leadership_page": {
+    "title": "Leadership",
+    "desc": "Official information about the society leadership, director general, and key responsible personnel.",
+    "notice": "The leadership composition will be posted soon."
+  },
+  "structure_page": {
+    "title": "Structure",
+    "desc": "Organizational structure of the society and the links between departments.",
+    "notice": "The structure diagram will be added soon."
+  },
+  "partners_page": {
+    "eyebrow": "Partnership",
+    "title_prefix": "Our ",
+    "title_highlight": "partners",
+    "desc": "The UzIntellekt platform operates in cooperation with government agencies, scientific institutions, and international experts — for the reliable and transparent management of intellectual property.",
+    "stats": {
+      "s1_label": "Key Partners",
+      "s2_label": "Projects",
+      "s3_label": "Int'l Agreements",
+      "s4_label": "Transparency"
+    },
+    "items": {
+      "p0": {
+        "name": "Intellectual Property Agency",
+        "desc": "Government organization for the legal protection of intellectual property.",
+        "tag": "Government Agency"
+      },
+      "p1": {
+        "name": "Ministry of Higher Education",
+        "desc": "Cooperation with scientific and educational institutions.",
+        "tag": "Education"
+      },
+      "p2": {
+        "name": "Digital Technologies Center",
+        "desc": "Development of the platform's technical infrastructure.",
+        "tag": "Technology"
+      },
+      "p3": {
+        "name": "International Expert Group",
+        "desc": "International standards and consultations.",
+        "tag": "International"
+      }
+    },
+    "banner": {
+      "principles": "Partnership Principles",
+      "title": "Reliable Partnership —\nFoundation of Stable Development",
+      "desc": "UzIntellekt develops partnership on the principles of openness, transparency, and legal reliability. Every partnership agreement complies fully with international standards.",
+      "p1": "Openness",
+      "p2": "Transparency",
+      "p3": "Reliability",
+      "p4": "Int'l Standard"
+    },
+    "join": {
+      "title": "Want to become a partner?",
+      "desc": "Contact us — we will discuss the terms of partnership together.",
+      "btn": "Contact"
+    }
+  },
+  "not_found": {
+    "title": "Page Not Found",
+    "desc": "Unfortunately, the page you are looking for does not exist or may have been deleted.",
+    "go_back": "Go Back",
+    "go_home": "Back to Home",
+    "contact_notice": "If the issue persists, please contact us:",
+    "visit_contact": "Visit Contact Page →"
+  },
+  "login_page": {
+    "title_checking": "Verifying...",
+    "title_welcome": "Welcome",
+    "subtitle": "Sign in to uzintellekt.uz platform",
+    "oneid_loading": "Authentication via OneID...",
+    "btn_oneid": "Login with OneID",
+    "hint": "🔐 Secure login via Uzbekistan State Services — id.egov.uz",
+    "badge_secure": "Secure",
+    "badge_fast": "Fast",
+    "badge_encrypted": "Encrypted",
+    "badge_verified": "Verified"
+  }
+}

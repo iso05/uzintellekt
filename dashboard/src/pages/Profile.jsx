@@ -335,14 +335,6 @@ export default function Profile() {
         payload.pseudoname = trimmed || null
       }
 
-      if (user._isTestMode) {
-        const mockUpdated = { ...user, ...payload }
-        setUser(mockUpdated)
-        setEditingKey(null)
-        setUpdating(false)
-        return
-      }
-
       const updatedUser = await updateMe(payload)
       setUser(updatedUser)
       setEditingKey(null)
@@ -418,11 +410,7 @@ export default function Profile() {
                   <RiCheckLine size={13} /> A'zo
                 </span>
               )}
-              {user._isTestMode && (
-                <span style={{ ...S.badge, ...S.badgeOrange }}>
-                  🧪 Test rejimi
-                </span>
-              )}
+
             </div>
           </div>
         </div>
@@ -564,7 +552,7 @@ export default function Profile() {
                             className="edit-input"
                             style={{ ...S.editInput, paddingRight: '28px', maxWidth: 'none' }}
                             value={editValue}
-                            onChange={(e) => setEditValue(maskName(e.target.value))}
+                            onChange={(e) => setEditValue(e.target.value)}
                             placeholder="Tahallus"
                             disabled={updating}
                             autoFocus
@@ -848,11 +836,6 @@ const S = {
     background: '#E8F5E9',
     border: '1px solid #C8E6C9',
     color: '#2E7D32',
-  },
-  badgeOrange: {
-    background: '#FFF8E1',
-    border: '1px solid #FFE082',
-    color: '#C49A2A',
   },
   // Info card
   infoCard: {

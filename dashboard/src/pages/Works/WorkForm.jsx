@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { createWork, updateWork, getWork, getWorkTypes, getAuthorRoles, submitWork, adminUpdateWork } from '../../services/worksApi'
+import { createWork, updateWork, getWork, getWorkTypes, getAuthorRoles, submitWork } from '../../services/worksApi'
 import { useAuth } from '../../hooks/useAuth'
 import {
   RiAddLine, RiDeleteBinLine, RiArrowLeftLine, RiSaveLine,
@@ -26,7 +26,6 @@ export default function WorkForm() {
   const navigate = useNavigate()
   const { user } = useAuth()
   const isEdit = Boolean(id)
-  const isAdmin = window.location.pathname.startsWith('/admin')
 
   const [form, setForm] = useState({ name: '', description: '', workTypeId: '', rightHolders: [{ ...EMPTY_HOLDER }] })
   const [workState, setWorkState]   = useState('DRAFT')
@@ -284,16 +283,12 @@ export default function WorkForm() {
       isApiCall = true
       
       if (isEdit) {
-        if (isAdmin) {
-          await adminUpdateWork(id, payload)
-        } else {
-          await updateWork(id, payload)
-        }
+        await updateWork(id, payload)
       } else {
         await createWork(payload)
       }
       setSuccess("Muvaffaqiyatli saqlandi! Asarlar ro'yxatiga yo'naltirilmoqda...")
-      setTimeout(() => navigate(isAdmin ? '/admin/works' : '/works'), 1200)
+      setTimeout(() => navigate('/works'), 1200)
     } catch (e) {
       if (e.apiError && Array.isArray(e.apiError.errors)) {
         const errorsMap = {}
@@ -383,16 +378,12 @@ export default function WorkForm() {
         rightHolders: validRightHolders,
       }
 
-      if (isAdmin) {
-        await adminUpdateWork(id, payload)
-      } else {
-        await updateWork(id, payload)
-      }
+      await updateWork(id, payload)
       
       await submitWork(id)
       
       setSuccess("Asar ko'rib chiqish uchun yuborildi!")
-      setTimeout(() => navigate(isAdmin ? '/admin/works' : '/works'), 1500)
+      setTimeout(() => navigate('/works'), 1500)
     } catch (e) {
       if (e.apiError && Array.isArray(e.apiError.errors)) {
         const errorsMap = {}
@@ -442,7 +433,7 @@ export default function WorkForm() {
         <style>{STYLE_CSS}</style>
 
         <div style={S.header}>
-          <button className="gov-btn-back" onClick={() => navigate(isAdmin ? '/admin/works' : '/works')}>
+          <button className="gov-btn-back" onClick={() => navigate('/works')}>
             <RiArrowLeftLine size={17} /> Orqaga
           </button>
           <div>
@@ -476,7 +467,7 @@ export default function WorkForm() {
 
       {/* Header */}
       <div style={S.header}>
-        <button className="gov-btn-back" onClick={() => navigate(isAdmin ? '/admin/works' : '/works')}>
+        <button className="gov-btn-back" onClick={() => navigate('/works')}>
           <RiArrowLeftLine size={17} /> Orqaga
         </button>
         <div>

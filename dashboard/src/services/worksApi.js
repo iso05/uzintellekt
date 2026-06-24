@@ -91,33 +91,3 @@ export async function getAuthorRoles() {
   const res = await request('/api/v1/dictionaries/author-roles')
   return json(res)
 }
-
-// ── Admin Works ──────────────────────────────────────────────────
-/** PATCH /api/v1/admin/works/{workId}/decide */
-export async function decideWork(workId, decision, reason) {
-  const res = await request(`/api/v1/admin/works/${workId}/decide`, {
-    method: 'PATCH',
-    body: JSON.stringify({ decision, reason }),
-  })
-  invalidateCache('/api/v1/works/grid')
-  return json(res)
-}
-
-/** PATCH /api/v1/admin/works/{workId}/cancel */
-export async function adminCancelWork(workId) {
-  const res = await request(`/api/v1/admin/works/${workId}/cancel`, {
-    method: 'PATCH',
-  })
-  invalidateCache('/api/v1/works/grid')
-  return json(res)
-}
-
-/** PATCH /api/v1/admin/works/{workId} */
-export async function adminUpdateWork(workId, data) {
-  const res = await request(`/api/v1/admin/works/${workId}`, {
-    method: 'PATCH',
-    body: JSON.stringify(data),
-  })
-  invalidateCache('/api/v1/works/grid')
-  return json(res)
-}

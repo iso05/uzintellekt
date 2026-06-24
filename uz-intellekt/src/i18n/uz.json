@@ -1,0 +1,421 @@
+{
+  "home": "Bosh sahifa",
+  "about": "Biz haqimizda",
+  "services": "Xizmatlar",
+  "depositing": "Deponentlash",
+  "news": "Yangiliklar",
+  "contact": "Kontaktlar",
+  "login": "Kirish",
+  "register": "Ro'yxatdan o'tish",
+  "logout": "Chiqish",
+  "welcome": "Uz Intellekt platformasiga xush kelibsiz",
+  "loading": "Yuklanmoqda...",
+  "error": "Xatolik",
+  "success": "Muvaffaqiyatli",
+  "cancel": "Bekor qilish",
+  "save": "Saqlash",
+  "delete": "O'chirish",
+  "edit": "O'zgartirish",
+  "search": "Qidirish",
+  "noResults": "Natija topilmadi",
+  "nav": {
+    "about_society": "Jamiyat haqida",
+    "management": "Boshqaruv",
+    "leadership": "Rahbariyat",
+    "structure": "Tuzilma",
+    "board": "Kuzatuv kengashi",
+    "about_us": "Biz haqimizda",
+    "partners": "Hamkorlar",
+    "docs": "Hujjatlar",
+    "services": "Xizmatlar",
+    "general_services": "Umumiy Hizmatlar",
+    "depositing": "Deponentlash",
+    "registries": "Reestrlar",
+    "works_registry": "Asarlar reestri",
+    "authors_registry": "Mualliflar reestri",
+    "contracts": "Shartnomalar",
+    "certificates": "Sertifikatlar",
+    "news": "Yangiliklar",
+    "contacts": "Kontaktlar",
+    "login_join": "A'zo bo'lish/Kirish",
+    "coming_soon": "Tez kunda",
+    "menu": "Menyu"
+  },
+  "footer": {
+    "desc": "Intellektual mulkni himoyalash, ro'yxatdan o'tkazish va boshqarish uchun zamonaviy raqamli platforma.",
+    "quick_links": "Tezkor havolalar",
+    "contact": "Aloqa",
+    "address": "Toshkent shahri, O'zbekiston",
+    "address_val": "Toshkent, O'zbekiston",
+    "all_rights": "Barcha huquqlar himoyalangan."
+  },
+  "hero": {
+    "title_prefix": "Intellektual Mulkingizni ",
+    "title_highlight": "Himoya Qiling",
+    "desc": "Mualliflik huquqlarini ro‘yxatdan o‘tkazing, boshqaring va raqamli platforma orqali ishonchli himoyalang.",
+    "cta": "A'zo bo'lish / Kirish"
+  },
+  "services_preview": {
+    "title": "Xizmatlarimiz",
+    "items": {
+      "dep": {
+        "title": "Deponentlash",
+        "desc": "Intellektual mulk obyektlarini ishonchli ro‘yxatdan o‘tkazish."
+      },
+      "cert": {
+        "title": "Raqamli guvohnoma",
+        "desc": "Asaringiz uchun rasmiy raqamli tasdiq."
+      },
+      "rights": {
+        "title": "Huquqlarni boshqarish",
+        "desc": "Mualliflik huquqlarini nazorat qilish."
+      },
+      "registry": {
+        "title": "Ochiq reestrlar",
+        "desc": "Ro‘yxatdan o‘tgan asarlar bazasi."
+      }
+    }
+  },
+  "how_it_works": {
+    "title": "Qanday ishlaydi",
+    "step_1": {
+      "title": "O‘zingiz ishongan ishni yuklang",
+      "desc": "Intellektual mulkingizni tizimga yuklaysiz."
+    },
+    "step_2": {
+      "title": "Ma’lumotlar tasdiqlanadi",
+      "desc": "Yuklangan ma’lumotlar tekshiriladi."
+    },
+    "step_3": {
+      "title": "Guvohnomani oling",
+      "desc": "Rasmiy raqamli guvohnoma olasiz."
+    }
+  },
+  "news_block": {
+    "title": "So'nggi yangiliklar",
+    "more": "Batafsil →",
+    "back_to_news": "← Yangiliklarga qaytish",
+    "search_placeholder": "Yangilik qidirish...",
+    "all_news": "Barchasini ko'rish",
+    "no_news": "Hech qanday yangilik topilmadi",
+    "title_main": "Yangiliklar",
+    "desc_main": "Platformadagi barcha rasmiy yangiliklar va e’lonlar.",
+    "cats": {
+      "all": "Barchasi",
+      "event": "Tadbir",
+      "news": "Yangilik",
+      "seminar": "Seminar"
+    },
+    "item_1": {
+      "title": "Raqamli huquqlar yig‘ilishi",
+      "desc": "Mualliflik huquqlari muhokamasi.",
+      "content": "Ushbu yig‘ilishda mualliflik huquqlari muhokama qilindi.",
+      "date": "Iyun 04, 2026"
+    },
+    "item_2": {
+      "title": "Raqamli guvohnoma joriy etildi",
+      "desc": "Yangi tizim ishga tushdi.",
+      "content": "Yangi raqamli guvohnoma tizimi ishga tushdi.",
+      "date": "Iyun 01, 2026"
+    },
+    "item_3": {
+      "title": "Hamkorlik uchrashuvi",
+      "desc": "Xalqaro hamkorlik.",
+      "content": "Seminar davomida huquqiy masalalar muhokama qilindi.",
+      "date": "May 28, 2026"
+    },
+    "item_4": {
+      "title": "Yangi platforma",
+      "desc": "Platforma yangilandi.",
+      "date": "May 20, 2026"
+    },
+    "item_5": {
+      "title": "Konferensiya",
+      "desc": "Soha vakillari uchrashuvi.",
+      "date": "May 12, 2026"
+    },
+    "item_6": {
+      "title": "Huquqiy seminar",
+      "desc": "Seminar bo‘lib o‘tdi.",
+      "date": "May 01, 2026"
+    }
+  },
+  "partners_block": {
+    "title": "Hamkorlarimiz"
+  },
+  "about_page": {
+    "title": "Biz haqimizda",
+    "desc": "UzIntellekt — intellektual mulk obyektlarini ro‘yxatdan o‘tkazish, huquqiy himoya qilish va raqamli boshqarish uchun yaratilgan zamonaviy milliy platforma.",
+    "mission": "Bizning missiyamiz",
+    "mission_title": "Intellektual mulkni ishonchli himoyalash",
+    "mission_desc": "Mualliflar, tadqiqotchilar va tashkilotlar o‘z asarlarini huquqiy jihatdan himoyalangan, shaffof va raqamli muhitda boshqarish imkoniga ega bo‘lishi uchun platforma yaratish.",
+    "vision": "Bizning maqsadimiz",
+    "vision_title": "Markaziy Osiyodagi yetakchi platforma",
+    "vision_desc": "UzIntellekt platformasini xalqaro standartlarga mos, ishonchli va raqamli huquq infratuzilmasining ajralmas qismi sifatida rivojlantirish.",
+    "values": "Bizning qadriyatlarimiz",
+    "val_1_title": "Shaffoflik",
+    "val_1_desc": "Barcha jarayonlar ochiq, tushunarli va huquqiy asoslangan.",
+    "val_2_title": "Xavfsizlik",
+    "val_2_desc": "Ma’lumotlar zamonaviy kriptografik va texnik himoya bilan ta’minlanadi.",
+    "val_3_title": "Innovatsiya",
+    "val_3_desc": "Raqamli texnologiyalar orqali huquqni soddalashtirish.",
+    "final_title": "Intellektual mulkingiz — bizning mas’uliyatimiz",
+    "final_desc": "UzIntellekt jamoasi mualliflik huquqlarini himoyalash, raqamli sertifikatlash va huquqiy boshqaruvni zamonaviy texnologiyalar bilan uyg‘unlashtiradi."
+  },
+  "contact_page": {
+    "title": "Biz bilan bog'laning",
+    "subtitle": "Savollaringiz bormi yoki hamkorlik qilmoqchimisiz? Biz sizni eshitishga tayyormiz.",
+    "address": "Manzil",
+    "phone": "Telefon",
+    "email": "Email",
+    "hours": "Ish vaqti",
+    "hours_val": "Dushanba – Juma, 9:00 – 18:00",
+    "send_message": "Xabar yuborish",
+    "success_msg": "Xabaringiz muvaffaqiyatli yuborildi! Tez orada javob beramiz.",
+    "error_msg": "Xatolik yuz berdi. Iltimos qayta urinib ko'ring.",
+    "name_label": "Ismingiz",
+    "name_placeholder": "Ismingizni kiriting",
+    "email_placeholder": "example@mail.com",
+    "message_label": "Xabar",
+    "message_placeholder": "Xabaringizni yozing...",
+    "sending_btn": "Yuborilmoqda...",
+    "send_btn": "Yuborish →"
+  },
+  "services_page": {
+    "hero_title": "Intellektual mulkingizni himoya qiling",
+    "hero_desc": "Biz siz uchun eng sodda, eng tez va eng xavfsiz deponentlash xizmati taqdim etamiz. Asarlarni to'liq himoya qiling va kelajakda huquqbuzarliklarga qarshi turing.",
+    "start_btn": "Boshlash →",
+    "details_btn": "Batafsil ma'lumot",
+    "users": "Foydalanuvchilar",
+    "deposited_works": "Deponentlangan asarlar",
+    "support_24_7": "Xizmat ko'rsatish",
+    "upload_title": "Asarni yuklash",
+    "review_title": "Tekshiruv",
+    "cert_title": "Guvohnoma",
+    "security_title": "Himoya",
+    "fast_badge": "Tez: 1-3 kun ichida guvohnoma oling",
+    "grid_title": "Bizning xizmatlarimiz",
+    "grid_subtitle": "Intellektual mulkni himoya qilish va o'stirish uchun to'liq yechim",
+    "accept_title": "Qanday asarlarni qabul qilamiz?",
+    "accept_subtitle": "Har qanday soha, har qanday tipdagi intellektual mulk",
+    "step_title": "6 qadamda deponentlang",
+    "step_subtitle": "Sodda, tez va tushunarli jarayon",
+    "step_1": "Ro'yxatdan o'tish",
+    "step_1_desc": "Platformada profil yarating va asosiy ma'lumotlarni kiriting",
+    "step_2": "Asarni yuklash",
+    "step_2_desc": "Asarning fayl yoki tasvirini platformaga yuklaysiz",
+    "step_3": "Ma'lumotlarni to'ldirish",
+    "step_3_desc": "Asar haqida batafsil ma'lumotlar kiriting: nom, muallif, tavsifi",
+    "step_4": "Tekshiruv",
+    "step_4_desc": "Mutaxassislar tomonidan ma'lumotlar tasdiqlanadi (1-3 kun)",
+    "step_5": "To'lov",
+    "step_5_desc": "Deponentlash haqini to'lasiz (shaffof va qulay usullar)",
+    "step_6": "Guvohnoma olish",
+    "step_6_desc": "Rasmiy raqamli guvohnomani email orqali olasiz",
+    "total_time": "Umumiy vaqt: 3-5 kun",
+    "why_title": "Nima uchun bizni tanlaysiz?",
+    "why_subtitle": "6 ta asosiy manfa'at va imkoniyatlar",
+    "cta_title": "Asaringizni bugunoq himoya qiling",
+    "cta_subtitle": "Minglab mutaxassislar va ijodkorlar asarlarini bizga ishonmoqdalar. Siz ham qila olasiz.",
+    "cta_btn": "Boshlang →",
+    "faq_btn": "Savollar berish",
+    "cta_no_card": "Kredit kartasiz ro'yxatdan o'tish. Barcha ma'lumotlar shifrlangan.",
+    "faq_title": "Tez-tez so'raladigan savollar",
+    "faq_q1": "Deponentlash qanchalik uzoq vaqt oladi?",
+    "faq_a1": "Odatda 1-3 kun. Hujjatlarni kiritgach, mutaxassislar tekshiruv o'tkazadi va siz guvohnomasini olasiz.",
+    "faq_q2": "Mening asarlarini boshqalar ko'rishi mumkinmi?",
+    "faq_a2": "Yo'q. Barcha ma'lumotlar shifrlangan va faqat siz ruxsat bergan shaxslar ko'ra oladi.",
+    "faq_q3": "Deponentlash guvohnomasining huquqiy kuchi qancha?",
+    "faq_a3": "O'zbekistonda to'la qonuniy kuchga ega. Sudda dalil sifatida ishlatilishi mumkin.",
+    "faq_q4": "Nechta asarni deponentlash mumkin?",
+    "faq_a4": "Cheksiz. Siz xohlagancha ko'p asarni himoya qila olasiz.",
+    "more_faq": "Ko'proq savol-javoblar →",
+    "cats": {
+      "text": "Matnli asarlar",
+      "music": "Audio va musiqa",
+      "visual": "Vizual ijodiyot",
+      "tech": "Texnik asarlar",
+      "media": "Mediya kontenti",
+      "other": "Boshqa sohalar"
+    },
+    "items": {
+      "book": "Kitoblar",
+      "diss": "Dissertatsiyalar",
+      "art": "Maqolalar",
+      "proj": "Loyihalar",
+      "pres": "Taqdimotlar",
+      "tune": "Kuylar",
+      "vocal": "Vokal traklari",
+      "arr": "Arranjirovkalar",
+      "pod": "Podcast",
+      "remix": "Remikslari",
+      "pic": "Rasmlar",
+      "ill": "Ilustratsiyalar",
+      "design": "Dizayn loyihalar",
+      "photo": "Fotografiyalar",
+      "logo": "Logolar",
+      "code": "Dasturiy kod",
+      "site": "Veb-saytlar",
+      "mob": "Mobil ilovalar",
+      "api": "API'lar",
+      "course": "Elektron kurslar",
+      "video": "Videolar",
+      "anim": "Animatsiyalar",
+      "doc": "Hujjatlar",
+      "comp": "Kompilatsiyalar",
+      "trail": "Treylerlar",
+      "inv": "Ixtirolar",
+      "pattern": "Rasm naqshlari",
+      "arch": "Arxitektura",
+      "history": "Joriy va tarixiy asarlar",
+      "idea": "Tarkibiy g'oyalar"
+    },
+    "benefits": {
+      "b1_title": "Huquqiy himoya",
+      "b1_desc": "Asarlaringiz qonuniy doirada to'la himoya qilinadi",
+      "b2_title": "Raqamli guvohnoma",
+      "b2_desc": "QR-kod va verifikatsiya bilan yuqori darajadagi hujjat",
+      "b3_title": "Xavfsiz saqlash",
+      "b3_desc": "Shifrlangan serverlar va 24/7 monitoring",
+      "b4_title": "Biznesingizni o'stering",
+      "b4_desc": "Asarlarni litsenziyalang va qo'shimcha daromad oling",
+      "b5_title": "Professional tahlil",
+      "b5_desc": "Mutaxassislar tomonidan batafsil baholash va tavsiyalar",
+      "b6_title": "Davlatning tan olishi",
+      "b6_desc": "Qonuniy sharoitda to'la e'tirof etilgan raqamli guvohnoma"
+    },
+    "packages": {
+      "p1_name": "Deponentlash",
+      "p1_desc": "Intellektual mulkingizni rasmiy ravishda ro'yxatdan o'tkazing",
+      "p2_name": "Qaydnoma xizmati",
+      "p2_desc": "Asarlaringizni platformada baholang va reyting olasiz",
+      "p3_name": "Huquqiy maslahat",
+      "p3_desc": "Intellektual mulk huquqlari bo'yicha mutaxassislar bilan muloqot",
+      "p4_name": "Litsenziyalash",
+      "p4_desc": "Asarlaringiz uchun litsenziyaviy shartlar yarating va daromad oling"
+    }
+  },
+  "depositing_page": {
+    "title": "Deponentlash xizmati",
+    "desc": "Intellektual mulk obyektlarini rasmiy ravishda ro‘yxatdan o‘tkazing, huquqlaringizni mustahkamlang va kelajakdagi nizolardan himoyalaning.",
+    "start_btn": "Deponentlashni boshlash",
+    "ask_btn": "Savol berish",
+    "bullet_1": "Rasmiy sana va mualliflik tasdiqi",
+    "bullet_2": "Raqamli guvohnoma",
+    "bullet_3": "Xavfsiz saqlash",
+    "bullet_4": "Huquqiy kuchga ega hujjat",
+    "why_title": "Nima uchun deponentlash vaqtida deponentlash muhim?",
+    "why_title_val": "Nima uchun deponentlash muhim?",
+    "how_title": "Qanday ishlaydi?",
+    "works_title": "Qanday asarlar qabul qilinadi?",
+    "cta_title": "Asaringizni bugunoq himoyalang",
+    "cta_desc": "Deponentlash — bu faqat hujjat emas, bu sizning intellektual mulkingizga bo‘lgan huquqingizni himoya qilishdir.",
+    "cta_btn": "Deponentlashni boshlash →",
+    "features": {
+      "f1_title": "Huquqiy isbot",
+      "f1_desc": "Asaringizni aniq sana va muallif bilan rasmiy ro‘yxatdan o‘tkazish orqali huquqiy isbotga ega bo‘lasiz.",
+      "f2_title": "Raqamli guvohnoma",
+      "f2_desc": "Deponentlash yakunida QR-kodli va verifikatsiya qilinadigan raqamli guvohnoma beriladi.",
+      "f3_title": "Xavfsiz saqlash",
+      "f3_desc": "Asarlaringiz shifrlangan holda xavfsiz serverlarda saqlanadi."
+    },
+    "steps": {
+      "s1_title": "Asarni yuklash",
+      "s1_desc": "Asaringizni platformaga yuklaysiz va asosiy ma’lumotlarni to‘ldirasiz.",
+      "s2_title": "Tekshiruv",
+      "s2_desc": "Mutaxassislar tomonidan ma’lumotlar tekshiriladi.",
+      "s3_title": "Guvohnoma berish",
+      "s3_desc": "Rasmiy raqamli deponentlash guvohnomasini olasiz."
+    },
+    "accepted": [
+      "📄 Matnli asarlar (kitob, maqola, dissertatsiya)",
+      "🎵 Musiqa va audio asarlar",
+      "🎨 Dizayn, rasm, ilustratsiyalar",
+      "💻 Dasturiy kod va IT mahsulotlar",
+      "🎥 Video va media mahsulotlar"
+    ]
+  },
+  "board_page": {
+    "title": "Kuzatuv kengashi",
+    "desc": "Jamiyat faoliyati ustidan nazorat qiluvchi Kuzatuv kengashi a’zolari va ularning vakolatlari.",
+    "notice": "Kuzatuv kengashi tarkibi tez orada e’lon qilinadi."
+  },
+  "leadership_page": {
+    "title": "Rahbariyat",
+    "desc": "Jamiyat rahbariyati, bosh direktor va asosiy mas’ul shaxslar haqida rasmiy ma’lumotlar.",
+    "notice": "Tez orada rahbariyat tarkibi joylanadi."
+  },
+  "structure_page": {
+    "title": "Tuzilma",
+    "desc": "Jamiyatning tashkiliy tuzilmasi va bo‘limlar o‘rtasidagi bog‘liqlik.",
+    "notice": "Tuzilma sxemasi tez orada qo‘shiladi."
+  },
+  "partners_page": {
+    "eyebrow": "Hamkorlik",
+    "title_prefix": "Bizning ",
+    "title_highlight": "hamkorlarimiz",
+    "desc": "UzIntellekt platformasi davlat tashkilotlari, ilmiy muassasalar va xalqaro ekspertlar bilan hamkorlikda faoliyat yuritadi — intellektual mulkni ishonchli va shaffof boshqarish uchun.",
+    "stats": {
+      "s1_label": "Asosiy hamkorlar",
+      "s2_label": "Loyihalar",
+      "s3_label": "Xalqaro shartnoma",
+      "s4_label": "Shaffoflik"
+    },
+    "items": {
+      "p0": {
+        "name": "Intellektual mulk agentligi",
+        "desc": "Intellektual mulkni huquqiy himoyalash bo'yicha davlat tashkiloti.",
+        "tag": "Davlat tashkiloti"
+      },
+      "p1": {
+        "name": "Oliy ta'lim vazirligi",
+        "desc": "Ilmiy va ta'lim muassasalari bilan hamkorlik.",
+        "tag": "Ta'lim"
+      },
+      "p2": {
+        "name": "Raqamli texnologiyalar markazi",
+        "desc": "Platformaning texnik infratuzilmasini rivojlantirish.",
+        "tag": "Texnologiya"
+      },
+      "p3": {
+        "name": "Xalqaro ekspertlar guruhi",
+        "desc": "Xalqaro standartlar va konsultatsiyalar.",
+        "tag": "Xalqaro"
+      }
+    },
+    "banner": {
+      "principles": "Hamkorlik tamoyillari",
+      "title": "Ishonchli hamkorlik —\nbarqaror rivojlanish asosi",
+      "desc": "UzIntellekt hamkorlikni ochiqlik, shaffoflik va huquqiy ishonchlilik tamoyillari asosida rivojlantiradi. Har bir hamkorlik kelishuvi xalqaro standartlarga to'liq mos keladi.",
+      "p1": "Ochiqlik",
+      "p2": "Shaffoflik",
+      "p3": "Ishonchlilik",
+      "p4": "Xalqaro standart"
+    },
+    "join": {
+      "title": "Hamkor bo'lishni xohlaysizmi?",
+      "desc": "Biz bilan bog'laning — hamkorlik shartlarini birgalikda muhokama qilamiz.",
+      "btn": "Bog'lanish"
+    }
+  },
+  "not_found": {
+    "title": "Sahifa topilmadi",
+    "desc": "Afsuski, siz qidirgan sahifa mavjud emas yoki o'chirilgan bo'lishi mumkin.",
+    "go_back": "Orqaga qaytish",
+    "go_home": "Asosiy sahifaga",
+    "contact_notice": "Agar muammo davom etayotgan bo'lsa, iltimos biz bilan bog'laning:",
+    "visit_contact": "Aloqa sahifasiga tashrif buyuring →"
+  },
+  "login_page": {
+    "title_checking": "Tekshirilmoqda...",
+    "title_welcome": "Xush kelibsiz",
+    "subtitle": "uzintellekt.uz platformasiga kirish",
+    "oneid_loading": "OneID orqali autentifikatsiya...",
+    "btn_oneid": "OneID bilan kirish",
+    "hint": "🔐 O'zbekiston Davlat xizmatlari — id.egov.uz orqali xavfsiz kirish",
+    "badge_secure": "Xavfsiz",
+    "badge_fast": "Tez",
+    "badge_encrypted": "Shifrlangan",
+    "badge_verified": "Verified"
+  }
+}

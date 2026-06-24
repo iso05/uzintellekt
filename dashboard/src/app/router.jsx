@@ -7,8 +7,8 @@ import Dashboard from '../pages/Dashboard'
 import Profile from '../pages/Profile'
 import WorksList from '../pages/Works/WorksList'
 import WorkForm from '../pages/Works/WorkForm'
-import AdminWorksList from '../pages/Works/AdminWorksList'
 import ContractsList from '../pages/Contracts/ContractsList'
+import NotFound from '../pages/NotFound'
 
 export const router = createBrowserRouter([
   {
@@ -29,8 +29,7 @@ export const router = createBrowserRouter([
           { path: '/works/new',        element: <WorkForm /> },
           { path: '/works/:id/edit',   element: <WorkForm /> },
           { path: '/contracts',         element: <ContractsList /> },
-          { path: '/admin/works',      element: <AdminWorksList /> },
-          { path: '/admin/works/:id/edit', element: <WorkForm /> },
+          { path: '*',                 element: <NotFound /> },
         ],
       },
     ],
