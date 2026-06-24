@@ -20,14 +20,14 @@ export const NAV_ITEMS = [
 // Page title + breadcrumb resolution (one source of truth for header/breadcrumbs)
 export function resolveRouteMeta(pathname) {
   if (pathname === ROUTES.DASHBOARD) {
-    return { title: 'Asosiy', crumbs: [{ label: 'Bosh sahifa', to: ROUTES.DASHBOARD }] }
+    return { title: 'Asosiy', crumbs: [{ labelKey: 'crumbs.home', label: 'Bosh sahifa', to: ROUTES.DASHBOARD }] }
   }
   if (pathname === ROUTES.PROFILE) {
     return {
       title: 'Profil',
       crumbs: [
-        { label: 'Bosh sahifa', to: ROUTES.DASHBOARD },
-        { label: 'Profil', to: ROUTES.PROFILE },
+        { labelKey: 'crumbs.home', label: 'Bosh sahifa', to: ROUTES.DASHBOARD },
+        { labelKey: 'crumbs.profile', label: 'Profil', to: ROUTES.PROFILE },
       ],
     }
   }
@@ -35,8 +35,8 @@ export function resolveRouteMeta(pathname) {
     return {
       title: 'Asarlarim',
       crumbs: [
-        { label: 'Bosh sahifa', to: ROUTES.DASHBOARD },
-        { label: 'Asarlar', to: ROUTES.WORKS },
+        { labelKey: 'crumbs.home', label: 'Bosh sahifa', to: ROUTES.DASHBOARD },
+        { labelKey: 'crumbs.works', label: 'Asarlar', to: ROUTES.WORKS },
       ],
     }
   }
@@ -44,9 +44,9 @@ export function resolveRouteMeta(pathname) {
     return {
       title: 'Yangi asar',
       crumbs: [
-        { label: 'Bosh sahifa', to: ROUTES.DASHBOARD },
-        { label: 'Asarlar', to: ROUTES.WORKS },
-        { label: 'Yangi asar', to: ROUTES.WORK_NEW },
+        { labelKey: 'crumbs.home', label: 'Bosh sahifa', to: ROUTES.DASHBOARD },
+        { labelKey: 'crumbs.works', label: 'Asarlar', to: ROUTES.WORKS },
+        { labelKey: 'crumbs.new_work', label: 'Yangi asar', to: ROUTES.WORK_NEW },
       ],
     }
   }
@@ -54,9 +54,9 @@ export function resolveRouteMeta(pathname) {
     return {
       title: 'Asarni tahrirlash',
       crumbs: [
-        { label: 'Bosh sahifa', to: ROUTES.DASHBOARD },
-        { label: 'Asarlar', to: ROUTES.WORKS },
-        { label: 'Tahrirlash', to: pathname },
+        { labelKey: 'crumbs.home', label: 'Bosh sahifa', to: ROUTES.DASHBOARD },
+        { labelKey: 'crumbs.works', label: 'Asarlar', to: ROUTES.WORKS },
+        { labelKey: 'crumbs.edit', label: 'Tahrirlash', to: pathname },
       ],
     }
   }
@@ -64,10 +64,10 @@ export function resolveRouteMeta(pathname) {
     return {
       title: 'Shartnomalarim',
       crumbs: [
-        { label: 'Bosh sahifa', to: ROUTES.DASHBOARD },
-        { label: 'Shartnomalarim', to: ROUTES.CONTRACTS },
+        { labelKey: 'crumbs.home', label: 'Bosh sahifa', to: ROUTES.DASHBOARD },
+        { labelKey: 'crumbs.contracts', label: 'Shartnomalarim', to: ROUTES.CONTRACTS },
       ],
     }
   }
-  return { title: 'Dashboard', crumbs: [{ label: 'Bosh sahifa', to: ROUTES.DASHBOARD }] }
+  return { title: 'Dashboard', crumbs: [{ labelKey: 'crumbs.home', label: 'Bosh sahifa', to: ROUTES.DASHBOARD }] }
 }

@@ -25,5 +25,30 @@
     "registered": "Tasdiqlangan",
     "pending": "Ko'rib chiqilmoqda",
     "rejected": "Rad etilgan"
+  },
+  "work_status": {
+    "DRAFT": "Qoralama",
+    "PENDING": "Ko'rib chiqilmoqda",
+    "REGISTERED": "Tasdiqlangan",
+    "APPROVED": "Tasdiqlangan",
+    "REJECTED": "Rad etilgan",
+    "CANCELLED": "Bekor qilingan",
+    "unknown": "Noma'lum"
+  },
+  "recent": {
+    "title": "So'nggi arizalar",
+    "subtitle": "Oxirgi 5 ta yuborilgan ariza",
+    "all": "Barchasi",
+    "empty_title": "Hozircha arizalar yo'q",
+    "empty_desc": "Birinchi asaringizni ro'yxatdan o'tkazish uchun yangi ariza yarating.",
+    "empty_action": "Birinchi arizani yaratish"
+  },
+  "crumbs": {
+    "home": "Bosh sahifa",
+    "profile": "Profil",
+    "works": "Asarlar",
+    "new_work": "Yangi asar",
+    "edit": "Tahrirlash",
+    "contracts": "Shartnomalarim"
   }
 }

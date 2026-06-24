@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { useAuth } from '@/features/auth'
 import { Sidebar } from '@/widgets/sidebar'
 import { Header } from '@/widgets/header'
@@ -9,6 +10,7 @@ import { resolveRouteMeta } from '@/shared/config/routes'
 
 export default function DashboardLayout() {
   const { user, logout } = useAuth()
+  const { t } = useTranslation()
   const location = useLocation()
   const [collapsed, setCollapsed] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -24,7 +26,8 @@ export default function DashboardLayout() {
     }
   }, [mobileOpen])
 
-  const { crumbs } = resolveRouteMeta(location.pathname)
+  const { crumbs: rawCrumbs } = resolveRouteMeta(location.pathname)
+  const crumbs = rawCrumbs.map((c) => ({ ...c, label: t(c.labelKey, c.label) }))
 
   return (
     <div className="flex min-h-screen bg-background text-foreground">
