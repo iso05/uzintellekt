@@ -1,10 +1,12 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Check, X, Loader2 } from 'lucide-react'
 import { Input, Button, toast } from '@/shared/ui'
 import { maskName } from '@/shared/lib/input-masks'
 import { updateMeField } from '@/entities/user'
 
 export default function PseudonymEdit({ initialValue, onDone, onCancel }) {
+  const { t } = useTranslation()
   const [value, setValue] = useState(initialValue || '')
   const [saving, setSaving] = useState(false)
 
@@ -12,10 +14,10 @@ export default function PseudonymEdit({ initialValue, onDone, onCancel }) {
     setSaving(true)
     try {
       const updated = await updateMeField('pseudonym', value.trim() || null)
-      toast.success('Tahallus saqlandi')
+      toast.success(t('profile.pseudonym_saved'))
       onDone?.(updated)
     } catch (e) {
-      toast.error(e?.message || 'Saqlashda xatolik')
+      toast.error(e?.message || t('common.save_error'))
     } finally {
       setSaving(false)
     }
@@ -27,11 +29,11 @@ export default function PseudonymEdit({ initialValue, onDone, onCancel }) {
         autoFocus
         value={value}
         onChange={(e) => setValue(maskName(e.target.value))}
-        placeholder="Tahallus"
+        placeholder={t('profile.f_pseudonym')}
         disabled={saving}
         className="h-9"
       />
-      <Button size="icon" className="h-9 w-9" onClick={handleSave} disabled={saving} title="Saqlash">
+      <Button size="icon" className="h-9 w-9" onClick={handleSave} disabled={saving} title={t('common.save')}>
         {saving ? <Loader2 className="animate-spin" /> : <Check />}
       </Button>
       <Button
@@ -40,7 +42,7 @@ export default function PseudonymEdit({ initialValue, onDone, onCancel }) {
         className="h-9 w-9"
         onClick={onCancel}
         disabled={saving}
-        title="Bekor qilish"
+        title={t('common.cancel')}
       >
         <X />
       </Button>

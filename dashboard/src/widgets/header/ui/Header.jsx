@@ -17,7 +17,9 @@ export default function Header({
   const { t } = useTranslation()
   const initials = getUserInitials(user)
   const shortName = getUserShortName(user)
-  const roleLabel = getUserRoleLabel(user)
+  const roleLabel = t(`user.type_${user?.userType === 'LEGAL' ? 'legal' : 'physical'}`, {
+    defaultValue: getUserRoleLabel(user),
+  })
 
   const [query, setQuery] = useState('')
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false)

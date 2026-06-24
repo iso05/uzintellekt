@@ -1,25 +1,27 @@
+import { useTranslation } from 'react-i18next'
 import { Copy, Pencil, Check, X } from 'lucide-react'
 import { Badge, Button, toast } from '@/shared/ui'
 
-async function copyToClipboard(text) {
+async function copyToClipboard(text, okMsg, errMsg) {
   try {
     await navigator.clipboard.writeText(text)
-    toast.success('Nusxalandi')
+    toast.success(okMsg)
   } catch {
-    toast.error("Nusxa ko'chirilmadi")
+    toast.error(errMsg)
   }
 }
 
 function MemberBadge({ value }) {
+  const { t } = useTranslation()
   return value ? (
     <Badge variant="success" className="gap-1">
       <Check className="h-3 w-3" />
-      A&apos;zo
+      {t('user.member')}
     </Badge>
   ) : (
     <Badge variant="muted" className="gap-1">
       <X className="h-3 w-3" />
-      A&apos;zo emas
+      {t('user.member_no')}
     </Badge>
   )
 }
@@ -35,6 +37,7 @@ export default function ProfileFieldRow({
   isMember = false,
   copyable = false,
 }) {
+  const { t } = useTranslation()
   const hasValue = !!value
   const copyValue = typeof value === 'string' ? value : Array.isArray(value) ? value.join(', ') : ''
   return (
@@ -62,9 +65,9 @@ export default function ProfileFieldRow({
               variant="ghost"
               size="icon"
               className="h-8 w-8 text-muted-foreground/70 hover:bg-muted hover:text-foreground"
-              onClick={() => copyToClipboard(copyValue)}
-              title="Nusxa olish"
-              aria-label="Nusxa olish"
+              onClick={() => copyToClipboard(copyValue, t('profile.copied'), t('profile.copy_failed'))}
+              title={t('profile.copy')}
+              aria-label={t('profile.copy')}
             >
               <Copy className="h-3.5 w-3.5" />
             </Button>
@@ -75,8 +78,8 @@ export default function ProfileFieldRow({
               size="icon"
               className="h-8 w-8 text-muted-foreground/70 hover:bg-primary-soft hover:text-primary"
               onClick={onEdit}
-              title="Tahrirlash"
-              aria-label="Tahrirlash"
+              title={t('profile.edit')}
+              aria-label={t('profile.edit')}
             >
               <Pencil className="h-3.5 w-3.5" />
             </Button>

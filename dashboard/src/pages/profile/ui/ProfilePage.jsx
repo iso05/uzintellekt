@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   User2,
   UserCircle,
@@ -19,6 +20,7 @@ import { AddressEditDialog } from '@/features/user-update-address'
 
 export default function ProfilePage() {
   const { user, setUser } = useAuth()
+  const { t } = useTranslation()
   const [editingKey, setEditingKey] = useState(null)
   const [addressOpen, setAddressOpen] = useState(false)
 
@@ -35,30 +37,30 @@ export default function ProfilePage() {
 
   const identityFields = isLegal
     ? [
-        { label: 'Tashkilot nomi', value: user.legalName, icon: Building2 },
-        { label: 'INN', value: user.inn, icon: Hash, copyable: true },
+        { label: t('profile.f_legal_name'), value: user.legalName, icon: Building2 },
+        { label: t('profile.f_inn'), value: user.inn, icon: Hash, copyable: true },
       ]
     : [
-        { label: 'Familiya', value: user.lastName, icon: UserCircle },
-        { label: 'Ism', value: user.firstName, icon: UserCircle },
-        { label: 'Otasining ismi', value: user.middleName, icon: User2 },
+        { label: t('profile.f_last_name'), value: user.lastName, icon: UserCircle },
+        { label: t('profile.f_first_name'), value: user.firstName, icon: UserCircle },
+        { label: t('profile.f_middle_name'), value: user.middleName, icon: User2 },
         {
-          label: 'Tahallus',
+          label: t('profile.f_pseudonym'),
           value: user.pseudonym || user.pseudoname,
           icon: UserCircle,
           key: 'pseudonym',
         },
-        { label: 'PINFL', value: user.pinfl, icon: IdCard, copyable: true },
-        { label: 'Pasport', value: user.passportSeria, icon: FileText, copyable: true },
+        { label: t('profile.f_pinfl'), value: user.pinfl, icon: IdCard, copyable: true },
+        { label: t('profile.f_passport'), value: user.passportSeria, icon: FileText, copyable: true },
       ]
 
   const contactFields = [
-    { label: 'Telefon(lar)', value: user.phones?.join(', '), icon: Phone, key: 'phones' },
-    { label: 'Manzil', value: user.address, icon: MapPin, key: 'address' },
+    { label: t('profile.f_phones'), value: user.phones?.join(', '), icon: Phone, key: 'phones' },
+    { label: t('profile.f_address'), value: user.address, icon: MapPin, key: 'address' },
   ]
 
   const membershipFields = [
-    { label: "A'zolik holati", value: user.isMember, icon: Award, isMember: true },
+    { label: t('profile.f_membership'), value: user.isMember, icon: Award, isMember: true },
   ]
 
   const renderField = (f) => {
@@ -106,15 +108,15 @@ export default function ProfilePage() {
     <div className="flex max-w-[820px] flex-col gap-5">
       <ProfileHeader user={user} />
 
-      <ProfileFields title={isLegal ? "Tashkilot ma'lumotlari" : "Shaxsiy ma'lumotlar"} icon={User2}>
+      <ProfileFields title={isLegal ? t('profile.section_identity_legal') : t('profile.section_identity')} icon={User2}>
         {identityFields.map(renderField)}
       </ProfileFields>
 
-      <ProfileFields title="Aloqa ma'lumotlari" icon={Phone}>
+      <ProfileFields title={t('profile.section_contact')} icon={Phone}>
         {contactFields.map(renderField)}
       </ProfileFields>
 
-      <ProfileFields title="A'zolik" icon={Award}>
+      <ProfileFields title={t('profile.section_membership')} icon={Award}>
         {membershipFields.map(renderField)}
       </ProfileFields>
 

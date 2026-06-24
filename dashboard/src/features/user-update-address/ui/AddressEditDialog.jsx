@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Loader2 } from 'lucide-react'
 import {
   Dialog,
@@ -27,6 +28,7 @@ import {
 import { updateMeField } from '@/entities/user'
 
 export default function AddressEditDialog({ open, onOpenChange, initialAddress, onDone }) {
+  const { t } = useTranslation()
   const [regions, setRegions] = useState([])
   const [districts, setDistricts] = useState([])
   const [geoLoading, setGeoLoading] = useState(false)
@@ -64,7 +66,7 @@ export default function AddressEditDialog({ open, onOpenChange, initialAddress, 
         setHouse(parsed.house || '')
       })
       .catch(() => {
-        if (alive) setGeoError("Viloyat/tuman ma'lumotlarini yuklab bo'lmadi.")
+        if (alive) setGeoError(t('profile.geo_error'))
       })
       .finally(() => {
         if (alive) setGeoLoading(false)
@@ -84,7 +86,7 @@ export default function AddressEditDialog({ open, onOpenChange, initialAddress, 
     const region = regions.find((r) => String(r.id) === regionId)
     const district = districts.find((d) => String(d.id) === districtId)
     if (!region || !district) {
-      toast.error('Viloyat yoki tuman tanlanmagan')
+      toast.error(t('profile.region_district_required'))
       return
     }
     setSaving(true)
@@ -96,11 +98,11 @@ export default function AddressEditDialog({ open, onOpenChange, initialAddress, 
         house,
       })
       const updated = await updateMeField('address', address)
-      toast.success('Manzil saqlandi')
+      toast.success(t('profile.address_saved'))
       onDone?.(updated)
       onOpenChange(false)
     } catch (e) {
-      toast.error(e?.message || 'Saqlashda xatolik')
+      toast.error(e?.message || t('common.save_error'))
     } finally {
       setSaving(false)
     }
@@ -110,26 +112,26 @@ export default function AddressEditDialog({ open, onOpenChange, initialAddress, 
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>Manzilni tahrirlash</DialogTitle>
+          <DialogTitle>{t('profile.address_title')}</DialogTitle>
         </DialogHeader>
 
         {geoLoading ? (
           <div className="flex flex-col items-center justify-center gap-2 py-10">
             <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-            <p className="text-sm text-muted-foreground">Hududlar ro'yxati yuklanmoqda...</p>
+            <p className="text-sm text-muted-foreground">{t('profile.geo_loading')}</p>
           </div>
         ) : geoError ? (
           <div className="flex flex-col items-center gap-3 py-6 text-center text-sm text-destructive">
             <span>⚠️ {geoError}</span>
             <Button variant="outline" size="sm" onClick={() => onOpenChange(false)}>
-              Yopish
+              {t('common.close')}
             </Button>
           </div>
         ) : (
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-1.5">
               <Label>
-                Viloyat <span className="text-destructive">*</span>
+                {t('profile.region')} <span className="text-destructive">*</span>
               </Label>
               <Select
                 value={regionId}
@@ -140,7 +142,7 @@ export default function AddressEditDialog({ open, onOpenChange, initialAddress, 
                 disabled={saving}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Viloyatni tanlang" />
+                  <SelectValue placeholder={t('profile.region_ph')} />
                 </SelectTrigger>
                 <SelectContent>
                   {regions.map((r) => (
@@ -154,7 +156,7 @@ export default function AddressEditDialog({ open, onOpenChange, initialAddress, 
 
             <div className="flex flex-col gap-1.5">
               <Label>
-                Tuman/Shahar <span className="text-destructive">*</span>
+                {t('profile.district')} <span className="text-destructive">*</span>
               </Label>
               <Select
                 value={districtId}
@@ -163,7 +165,7 @@ export default function AddressEditDialog({ open, onOpenChange, initialAddress, 
               >
                 <SelectTrigger>
                   <SelectValue
-                    placeholder={regionId ? 'Tumanni tanlang' : 'Avval viloyat tanlang'}
+                    placeholder={regionId ? t('profile.district_ph') : t('profile.district_ph_region_first')}
                   />
                 </SelectTrigger>
                 <SelectContent>
@@ -178,24 +180,24 @@ export default function AddressEditDialog({ open, onOpenChange, initialAddress, 
 
             <div className="flex flex-col gap-1.5">
               <Label>
-                Ko'cha nomi <span className="text-destructive">*</span>
+                {t('profile.street')} <span className="text-destructive">*</span>
               </Label>
               <Input
                 value={street}
                 onChange={(e) => setStreet(e.target.value)}
-                placeholder="Masalan: Mustaqillik ko'chasi"
+                placeholder={t('profile.street_ph')}
                 disabled={saving}
               />
             </div>
 
             <div className="flex flex-col gap-1.5">
               <Label>
-                Uy raqami <span className="text-destructive">*</span>
+                {t('profile.house')} <span className="text-destructive">*</span>
               </Label>
               <Input
                 value={house}
                 onChange={(e) => setHouse(e.target.value)}
-                placeholder="Masalan: 45-uy"
+                placeholder={t('profile.house_ph')}
                 disabled={saving}
               />
             </div>
@@ -205,11 +207,11 @@ export default function AddressEditDialog({ open, onOpenChange, initialAddress, 
         {!geoLoading && !geoError && (
           <DialogFooter className="border-t border-border pt-4">
             <Button variant="outline" onClick={() => onOpenChange(false)} disabled={saving}>
-              Bekor qilish
+              {t('common.cancel')}
             </Button>
             <Button onClick={handleSave} disabled={!canSave}>
               {saving && <Loader2 className="animate-spin" />}
-              Saqlash
+              {t('common.save')}
             </Button>
           </DialogFooter>
         )}

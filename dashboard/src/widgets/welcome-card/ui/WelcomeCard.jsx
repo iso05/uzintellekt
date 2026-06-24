@@ -10,7 +10,9 @@ export default function WelcomeCard({ user }) {
   const navigate = useNavigate()
   const { t } = useTranslation()
   const name = getUserShortName(user)
-  const role = getUserRoleLabel(user)
+  const role = t(`user.type_${user?.userType === 'LEGAL' ? 'legal' : 'physical'}`, {
+    defaultValue: getUserRoleLabel(user),
+  })
 
   return (
     <section className="relative overflow-hidden rounded-xl border border-border bg-gradient-to-br from-primary via-primary to-[hsl(217_76%_35%)] p-6 text-primary-foreground shadow-soft-md md:p-8">
