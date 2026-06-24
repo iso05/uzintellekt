@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { Plus } from 'lucide-react'
 import {
   Button,
@@ -26,6 +27,7 @@ const DEFAULT_PAGE_SIZE = 10
 
 export default function WorksPage() {
   const navigate = useNavigate()
+  const { t } = useTranslation()
   const [searchParams, setSearchParams] = useSearchParams()
 
   const [works, setWorks] = useState([])
@@ -82,7 +84,7 @@ export default function WorksPage() {
       setWorks(res?.items ?? res?.data?.items ?? [])
       setTotal(res?.totalItems ?? res?.data?.totalItems ?? 0)
     } catch (e) {
-      toast.error(e?.message || 'Asarlarni yuklashda xatolik')
+      toast.error(e?.message || t('works.load_error'))
     } finally {
       setLoading(false)
     }
@@ -114,7 +116,7 @@ export default function WorksPage() {
       const full = await getWork(work.id)
       setDetailWork(full)
     } catch (e) {
-      toast.error(e?.message || 'Tafsilotlarni yuklashda xatolik')
+      toast.error(e?.message || t('common.detail_error'))
     } finally {
       setDetailLoading(false)
     }
@@ -128,12 +130,12 @@ export default function WorksPage() {
   return (
     <div className="flex flex-col gap-6">
       <PageHeader
-        title="Asarlarim"
-        subtitle="Tizimda ro'yxatdan o'tgan barcha intellektual mulk asarlaringiz"
+        title={t('works.title')}
+        subtitle={t('works.subtitle')}
         actions={
           <Button onClick={() => navigate(ROUTES.WORK_NEW)} size="lg" className="gap-2">
             <Plus className="h-5 w-5" />
-            Yangi asar
+            {t('works.new')}
           </Button>
         }
       />
@@ -141,13 +143,13 @@ export default function WorksPage() {
       <Tabs defaultValue="my-works">
         <TabsList>
           <TabsTrigger value="my-works" className="group">
-            Mening asarlarim
+            {t('works.tab_mine')}
             <span className="ml-2 rounded-full bg-muted px-2 py-0.5 text-[11px] font-bold text-muted-foreground group-data-[state=active]:bg-primary-soft group-data-[state=active]:text-primary">
               {total}
             </span>
           </TabsTrigger>
           <TabsTrigger value="contributions" className="group">
-            Qatnashgan asarlarim
+            {t('works.tab_contrib')}
             <span className="ml-2 rounded-full bg-muted px-2 py-0.5 text-[11px] font-bold text-muted-foreground group-data-[state=active]:bg-primary-soft group-data-[state=active]:text-primary">
               {contributions.length}
             </span>

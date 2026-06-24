@@ -15,6 +15,11 @@
     "close": "Yopish",
     "search_btn": "Qidirish"
   },
+  "common": {
+    "refresh": "Yangilash",
+    "clear": "Tozalash",
+    "detail_error": "Tafsilotlarni yuklashda xatolik"
+  },
   "dashboard": {
     "welcome": "Xush kelibsiz, {{name}}!",
     "welcome_desc": "Bu yerda siz o'z asarlaringizni ro'yxatdan o'tkazasiz va ariza holatini kuzatib borasiz.",
@@ -50,5 +55,56 @@
     "new_work": "Yangi asar",
     "edit": "Tahrirlash",
     "contracts": "Shartnomalarim"
+  },
+  "works": {
+    "title": "Asarlarim",
+    "subtitle": "Tizimda ro'yxatdan o'tgan barcha intellektual mulk asarlaringiz",
+    "new": "Yangi asar",
+    "tab_mine": "Mening asarlarim",
+    "tab_contrib": "Qatnashgan asarlarim",
+    "load_error": "Asarlarni yuklashda xatolik",
+    "all_states": "Barcha holatlar",
+    "search_ph": "Asar nomini qidirish...",
+    "page_size": "{{n}} ta",
+    "total": "Jami {{n}} ta asar",
+    "col_name": "Nomi",
+    "col_type": "Tur",
+    "col_status": "Status",
+    "col_holders": "Haq egalari",
+    "col_registered": "Ro'yxatga olingan",
+    "col_actions": "Amallar",
+    "reject_reason": "Rad etish sababi:",
+    "holders": "{{n}} kishi",
+    "item_label": "ta asar",
+    "empty_found_title": "Hech narsa topilmadi",
+    "empty_found_desc": "Filtrlarni o'zgartirib ko'ring yoki qidiruvni tozalang.",
+    "empty_title": "Hozircha asarlar yo'q",
+    "empty_desc": "Birinchi asaringizni qo'shib intellektual mulkni ro'yxatdan o'tkazing.",
+    "empty_action": "Birinchi asarni qo'shing"
+  },
+  "contracts": {
+    "title": "Shartnomalarim",
+    "subtitle": "Imzolangan a'zolik va litsenziya shartnomalaringiz",
+    "load_error": "Shartnomalar yuklanmadi",
+    "col_type": "Shartnoma turi",
+    "col_status": "Holati",
+    "col_date": "Imzolangan sana",
+    "col_actions": "Amallar",
+    "item_label": "ta shartnoma",
+    "empty_title": "Shartnomalar mavjud emas",
+    "empty_desc": "Hozircha imzolangan shartnomalar topilmadi. Yangi shartnomalar bu yerda paydo bo'ladi.",
+    "type_membership": "A'zolik shartnomasi",
+    "type_license": "Litsenziya shartnomasi",
+    "view": "Ko'rish",
+    "download": "Yuklab olish",
+    "status": {
+      "CREATED": "Imzolangan",
+      "SIGNED": "Imzolangan",
+      "ACTIVE": "Faol",
+      "EXPIRED": "Muddati o'tgan",
+      "PENDING": "Kutilmoqda",
+      "CANCELLED": "Bekor",
+      "unknown": "Noma'lum"
+    }
   }
 }

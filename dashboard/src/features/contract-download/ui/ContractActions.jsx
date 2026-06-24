@@ -1,7 +1,9 @@
+import { useTranslation } from 'react-i18next'
 import { Eye, Download, Loader2 } from 'lucide-react'
 import { Button } from '@/shared/ui'
 
 export default function ContractActions({ contract, busy, onView, onDownload }) {
+  const { t } = useTranslation()
   const isBusy = busy === contract.id
   return (
     <div className="flex flex-wrap justify-end gap-1.5">
@@ -12,7 +14,7 @@ export default function ContractActions({ contract, busy, onView, onDownload }) 
         onClick={() => onView(contract)}
       >
         {isBusy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Eye className="h-3.5 w-3.5" />}
-        Ko'rish
+        {t('contracts.view')}
       </Button>
       <Button
         variant="success"
@@ -21,7 +23,7 @@ export default function ContractActions({ contract, busy, onView, onDownload }) 
         onClick={() => onDownload(contract)}
       >
         {isBusy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Download className="h-3.5 w-3.5" />}
-        Yuklab olish
+        {t('contracts.download')}
       </Button>
     </div>
   )

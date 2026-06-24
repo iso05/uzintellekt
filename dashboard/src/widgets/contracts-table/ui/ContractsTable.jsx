@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { FileSignature } from 'lucide-react'
 import {
   Table,
@@ -18,7 +19,14 @@ import {
 import { ContractActions } from '@/features/contract-download'
 import { formatDate } from '@/shared/lib/format'
 
+function contractTypeLabel(t, c) {
+  return t(`contracts.type_${(c.type || 'MEMBERSHIP').toLowerCase()}`, {
+    defaultValue: getContractTypeLabel(c),
+  })
+}
+
 function ContractRowCard({ contract, busyId, onView, onDownload }) {
+  const { t } = useTranslation()
   return (
     <article className="flex flex-col gap-3 border-b border-border p-4 last:border-b-0">
       <div className="flex items-start gap-3">
@@ -27,7 +35,7 @@ function ContractRowCard({ contract, busyId, onView, onDownload }) {
         </span>
         <div className="flex min-w-0 flex-1 flex-col gap-1">
           <span className="truncate text-[14px] font-semibold text-foreground">
-            {getContractTypeLabel(contract)}
+            {contractTypeLabel(t, contract)}
           </span>
           <span className="text-[12px] text-muted-foreground">
             {formatDate(contract.signedAt || contract.createdAt)}
@@ -56,6 +64,7 @@ export default function ContractsTable({
   onView,
   onDownload,
 }) {
+  const { t } = useTranslation()
   return (
     <section className="overflow-hidden rounded-xl border border-border bg-card shadow-soft">
       {loading ? (
@@ -63,8 +72,8 @@ export default function ContractsTable({
       ) : contracts.length === 0 ? (
         <EmptyState
           icon={FileSignature}
-          title="Shartnomalar mavjud emas"
-          description="Hozircha imzolangan shartnomalar topilmadi. Yangi shartnomalar bu yerda paydo bo'ladi."
+          title={t('contracts.empty_title')}
+          description={t('contracts.empty_desc')}
         />
       ) : (
         <>
@@ -86,10 +95,10 @@ export default function ContractsTable({
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Shartnoma turi</TableHead>
-                  <TableHead>Holati</TableHead>
-                  <TableHead>Imzolangan sana</TableHead>
-                  <TableHead className="text-right">Amallar</TableHead>
+                  <TableHead>{t('contracts.col_type')}</TableHead>
+                  <TableHead>{t('contracts.col_status')}</TableHead>
+                  <TableHead>{t('contracts.col_date')}</TableHead>
+                  <TableHead className="text-right">{t('contracts.col_actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -101,7 +110,7 @@ export default function ContractsTable({
                           <FileSignature className="h-[18px] w-[18px]" />
                         </span>
                         <span className="text-[14px] font-semibold text-foreground">
-                          {getContractTypeLabel(c)}
+                          {contractTypeLabel(t, c)}
                         </span>
                       </div>
                     </TableCell>
@@ -130,7 +139,7 @@ export default function ContractsTable({
             pageSize={pageSize}
             total={total}
             onPageChange={onPageChange}
-            itemLabel="ta shartnoma"
+            itemLabel={t('contracts.item_label')}
           />
         </>
       )}

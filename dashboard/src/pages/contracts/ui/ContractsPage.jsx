@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 import { RefreshCw } from 'lucide-react'
 import { Button, toast, PageHeader } from '@/shared/ui'
 import { cn } from '@/shared/lib/utils'
@@ -10,6 +11,7 @@ import { useContractDownload } from '@/features/contract-download'
 const PAGE_SIZE = 10
 
 export default function ContractsPage() {
+  const { t } = useTranslation()
   const [contracts, setContracts] = useState([])
   const [total, setTotal] = useState(0)
   const [page, setPage] = useState(0)
@@ -25,7 +27,7 @@ export default function ContractsPage() {
       setContracts(data?.content ?? data?.items ?? [])
       setTotal(data?.totalElements ?? data?.totalItems ?? 0)
     } catch (e) {
-      toast.error(e.message || 'Shartnomalar yuklanmadi')
+      toast.error(e.message || t('contracts.load_error'))
     } finally {
       setLoading(false)
     }
@@ -38,16 +40,16 @@ export default function ContractsPage() {
   return (
     <div className="flex flex-col gap-6">
       <PageHeader
-        title="Shartnomalarim"
-        subtitle="Imzolangan a'zolik va litsenziya shartnomalaringiz"
+        title={t('contracts.title')}
+        subtitle={t('contracts.subtitle')}
         actions={
           <Button
             variant="outline"
             size="icon"
             disabled={loading}
             onClick={() => load(page)}
-            title="Yangilash"
-            aria-label="Yangilash"
+            title={t('common.refresh')}
+            aria-label={t('common.refresh')}
             className="h-10 w-10"
           >
             <RefreshCw className={cn('h-4 w-4', loading && 'animate-spin')} />

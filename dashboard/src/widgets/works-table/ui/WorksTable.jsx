@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { FileText, Plus, Inbox } from 'lucide-react'
 import {
   Table,
@@ -23,20 +24,17 @@ import { ROUTES } from '@/shared/config/routes'
 
 function WorksEmptyState({ hasFilters }) {
   const navigate = useNavigate()
+  const { t } = useTranslation()
   return (
     <EmptyState
       icon={Inbox}
-      title={hasFilters ? 'Hech narsa topilmadi' : "Hozircha asarlar yo'q"}
-      description={
-        hasFilters
-          ? "Filtrlarni o'zgartirib ko'ring yoki qidiruvni tozalang."
-          : "Birinchi asaringizni qo'shib intellektual mulkni ro'yxatdan o'tkazing."
-      }
+      title={hasFilters ? t('works.empty_found_title') : t('works.empty_title')}
+      description={hasFilters ? t('works.empty_found_desc') : t('works.empty_desc')}
       action={
         !hasFilters && (
           <Button onClick={() => navigate(ROUTES.WORK_NEW)} className="gap-2">
             <Plus className="h-4 w-4" />
-            Birinchi asarni qo&apos;shing
+            {t('works.empty_action')}
           </Button>
         )
       }
@@ -56,13 +54,12 @@ export default function WorksTable({
   onChanged,
 }) {
   const { workTypes } = useDictionaries()
+  const { t } = useTranslation()
 
   return (
     <section className="overflow-hidden rounded-xl border border-border bg-card shadow-soft">
       <header className="flex items-center justify-between border-b border-border px-5 py-3.5 text-[13px] font-medium text-muted-foreground md:px-6">
-        <span>
-          Jami <strong className="font-bold text-foreground">{total}</strong> ta asar
-        </span>
+        <span>{t('works.total', { n: total })}</span>
       </header>
 
       {loading ? (
@@ -74,12 +71,12 @@ export default function WorksTable({
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Nomi</TableHead>
-                <TableHead>Tur</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Haq egalari</TableHead>
-                <TableHead>Ro&apos;yxatga olingan</TableHead>
-                <TableHead className="text-right">Amallar</TableHead>
+                <TableHead>{t('works.col_name')}</TableHead>
+                <TableHead>{t('works.col_type')}</TableHead>
+                <TableHead>{t('works.col_status')}</TableHead>
+                <TableHead>{t('works.col_holders')}</TableHead>
+                <TableHead>{t('works.col_registered')}</TableHead>
+                <TableHead className="text-right">{t('works.col_actions')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -102,7 +99,7 @@ export default function WorksTable({
                           </span>
                           {status === 'REJECTED' && w.rejectionReason && (
                             <span className="mt-0.5 line-clamp-2 text-[11px] font-medium text-destructive">
-                              Rad etish sababi: {w.rejectionReason}
+                              {t('works.reject_reason')} {w.rejectionReason}
                             </span>
                           )}
                         </div>
@@ -115,7 +112,7 @@ export default function WorksTable({
                       <StatusBadge status={status} />
                     </TableCell>
                     <TableCell className="text-muted-foreground">
-                      {w.rightHolders?.length ?? 0} kishi
+                      {t('works.holders', { n: w.rightHolders?.length ?? 0 })}
                     </TableCell>
                     <TableCell className="text-muted-foreground">
                       {isRegistered ? w.registrationDate || '—' : '—'}
@@ -134,7 +131,7 @@ export default function WorksTable({
             pageSize={pageSize}
             total={total}
             onPageChange={(p) => onPageChange(p + 1)}
-            itemLabel="ta asar"
+            itemLabel={t('works.item_label')}
           />
         </>
       )}
