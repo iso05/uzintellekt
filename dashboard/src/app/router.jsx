@@ -1,36 +1,30 @@
-// src/app/router.jsx
 import { createBrowserRouter } from 'react-router-dom'
-import App from '../App'
-import DashboardLayout from '../layouts/DashboardLayout'
-import ProtectedRoute from '../components/ProtectedRoute'
-import Dashboard from '../pages/Dashboard'
-import Profile from '../pages/Profile'
-import WorksList from '../pages/Works/WorksList'
-import WorkForm from '../pages/Works/WorkForm'
-import AdminWorksList from '../pages/Works/AdminWorksList'
-import ContractsList from '../pages/Contracts/ContractsList'
+import App from '@/App'
+import { DashboardLayout } from '@/widgets/dashboard-layout'
+import { ProtectedRoute } from '@/features/auth'
+import { DashboardPage } from '@/pages/dashboard'
+import { ProfilePage } from '@/pages/profile'
+import { WorksPage } from '@/pages/works'
+import { WorkFormPage } from '@/pages/work-form'
+import { ContractsPage } from '@/pages/contracts'
 
 export const router = createBrowserRouter([
   {
-    // Root — provides AuthProvider via App
     element: <App />,
     children: [
       {
-        // Protected zone — requires token + isMember=true
         element: (
           <ProtectedRoute>
             <DashboardLayout />
           </ProtectedRoute>
         ),
         children: [
-          { path: '/',                 element: <Dashboard /> },
-          { path: '/profile',          element: <Profile /> },
-          { path: '/works',            element: <WorksList /> },
-          { path: '/works/new',        element: <WorkForm /> },
-          { path: '/works/:id/edit',   element: <WorkForm /> },
-          { path: '/contracts',         element: <ContractsList /> },
-          { path: '/admin/works',      element: <AdminWorksList /> },
-          { path: '/admin/works/:id/edit', element: <WorkForm /> },
+          { path: '/', element: <DashboardPage /> },
+          { path: '/profile', element: <ProfilePage /> },
+          { path: '/works', element: <WorksPage /> },
+          { path: '/works/new', element: <WorkFormPage /> },
+          { path: '/works/:id/edit', element: <WorkFormPage /> },
+          { path: '/contracts', element: <ContractsPage /> },
         ],
       },
     ],

@@ -1,6 +1,5 @@
-// src/App.jsx
 import { Outlet } from 'react-router-dom'
-import { AuthProvider } from './hooks/useAuth'
+import { AuthProvider } from '@/features/auth'
 
 export default function App() {
   return (
