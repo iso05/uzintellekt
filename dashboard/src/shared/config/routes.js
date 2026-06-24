@@ -11,10 +11,10 @@ export const ROUTES = {
 
 // Sidebar navigation — data-driven so we don't repeat <NavLink> blocks
 export const NAV_ITEMS = [
-  { to: ROUTES.DASHBOARD, label: 'Asosiy', icon: Home, end: true },
-  { to: ROUTES.WORKS, label: 'Asarlarim', icon: FileText },
-  { to: ROUTES.CONTRACTS, label: 'Shartnomalarim', icon: FileSignature },
-  { to: ROUTES.PROFILE, label: 'Profil', icon: User },
+  { to: ROUTES.DASHBOARD, key: 'dashboard', label: 'Asosiy', icon: Home, end: true },
+  { to: ROUTES.WORKS, key: 'works', label: 'Asarlarim', icon: FileText },
+  { to: ROUTES.CONTRACTS, key: 'contracts', label: 'Shartnomalarim', icon: FileSignature },
+  { to: ROUTES.PROFILE, key: 'profile', label: 'Profil', icon: User },
 ]
 
 // Page title + breadcrumb resolution (one source of truth for header/breadcrumbs)

@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { ChevronsLeft, ChevronsRight, Menu, Search, X } from 'lucide-react'
 import { Button } from '@/shared/ui'
+import LanguageSwitcher from '@/shared/ui/LanguageSwitcher'
 import { ROUTES } from '@/shared/config/routes'
 import { getUserShortName, getUserInitials, getUserRoleLabel } from '@/entities/user'
 
@@ -12,6 +14,7 @@ export default function Header({
   onOpenMobile,
 }) {
   const navigate = useNavigate()
+  const { t } = useTranslation()
   const initials = getUserInitials(user)
   const shortName = getUserShortName(user)
   const roleLabel = getUserRoleLabel(user)
@@ -40,7 +43,7 @@ export default function Header({
           size="icon"
           onClick={onOpenMobile}
           className="lg:hidden"
-          aria-label="Menyu"
+          aria-label={t('header.menu')}
         >
           <Menu className="h-5 w-5" />
         </Button>
@@ -51,7 +54,7 @@ export default function Header({
           size="icon"
           onClick={onToggleCollapse}
           className="hidden text-muted-foreground hover:bg-muted hover:text-foreground lg:flex"
-          aria-label={collapsed ? 'Yoyish' : "Yig'ish"}
+          aria-label={collapsed ? t('header.expand') : t('header.collapse')}
         >
           {collapsed ? <ChevronsRight className="h-5 w-5" /> : <ChevronsLeft className="h-5 w-5" />}
         </Button>
@@ -68,9 +71,9 @@ export default function Header({
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Asarlarni qidirish..."
+            placeholder={t('header.search')}
             className="h-full flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground"
-            aria-label="Asarlarni qidirish"
+            aria-label={t('header.search')}
           />
         </form>
 
@@ -81,10 +84,12 @@ export default function Header({
             size="icon"
             onClick={() => setMobileSearchOpen((v) => !v)}
             className="relative text-muted-foreground hover:bg-muted hover:text-foreground md:hidden"
-            aria-label="Qidirish"
+            aria-label={t('header.search_btn')}
           >
             <Search className="h-5 w-5" />
           </Button>
+
+          <LanguageSwitcher />
 
           <div className="mx-1 hidden h-8 w-px bg-border sm:block" />
 
@@ -118,16 +123,16 @@ export default function Header({
             ref={mobileInputRef}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Asarlarni qidirish..."
+            placeholder={t('header.search')}
             className="h-9 flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground"
-            aria-label="Asarlarni qidirish"
+            aria-label={t('header.search')}
           />
           <Button
             type="button"
             variant="ghost"
             size="icon"
             onClick={() => setMobileSearchOpen(false)}
-            aria-label="Yopish"
+            aria-label={t('header.close')}
             className="h-8 w-8 text-muted-foreground"
           >
             <X className="h-4 w-4" />

@@ -1,0 +1,29 @@
+{
+  "nav": {
+    "dashboard": "Asosiy",
+    "works": "Asarlarim",
+    "contracts": "Shartnomalarim",
+    "profile": "Profil",
+    "menu": "Menyu",
+    "logout": "Chiqish"
+  },
+  "header": {
+    "search": "Asarlarni qidirish...",
+    "expand": "Yoyish",
+    "collapse": "Yig'ish",
+    "menu": "Menyu",
+    "close": "Yopish",
+    "search_btn": "Qidirish"
+  },
+  "dashboard": {
+    "welcome": "Xush kelibsiz, {{name}}!",
+    "welcome_desc": "Bu yerda siz o'z asarlaringizni ro'yxatdan o'tkazasiz va ariza holatini kuzatib borasiz.",
+    "new_work": "Yangi asar qo'shish"
+  },
+  "stats": {
+    "total": "Jami asarlar",
+    "registered": "Tasdiqlangan",
+    "pending": "Ko'rib chiqilmoqda",
+    "rejected": "Rad etilgan"
+  }
+}
