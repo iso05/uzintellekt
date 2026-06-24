@@ -164,21 +164,25 @@ export default function Login() {
           {/* Title */}
           <div style={S.titleBlock}>
             <h1 style={S.h1}>
-              {isLoading ? t('login_page.title_checking', 'Tekshirilmoqda...') : t('login_page.title_welcome', 'Xush kelibsiz')}
+              {(loading || isLoading) ? t('login_page.title_checking', 'Tekshirilmoqda...') : t('login_page.title_welcome', 'Xush kelibsiz')}
             </h1>
             <p style={S.subtitle}>{t('login_page.subtitle', 'uzintellekt.uz platformasiga kirish')}</p>
           </div>
 
           {/* Loading */}
-          {isLoading && (
+          {(loading || isLoading) && (
             <div style={S.spinnerWrap}>
               <div style={S.spinner} />
-              <p style={S.spinnerText}>{t('login_page.oneid_loading', 'OneID orqali autentifikatsiya...')}</p>
+              <p style={S.spinnerText}>
+                {isLoading
+                  ? t('login_page.oneid_loading', 'OneID orqali autentifikatsiya...')
+                  : t('login_page.checking_session', 'Avtorizatsiya tekshirilmoqda...')}
+              </p>
             </div>
           )}
 
           {/* Error */}
-          {error && !isLoading && (
+          {error && !isLoading && !loading && (
             <div style={S.errorBox}>
               <span>⚠️</span>
               <span>{error}</span>
@@ -186,7 +190,7 @@ export default function Login() {
           )}
 
           {/* OneID button */}
-          {!isLoading && (
+          {!loading && !isLoading && (
             <>
               <button
                 className="oneid-btn"
