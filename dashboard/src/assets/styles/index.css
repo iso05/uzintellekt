@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Spectral:wght@500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -15,20 +15,20 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 11%;
 
-    --primary: 217 76% 42%;
+    --primary: 221 83% 53%;
     --primary-foreground: 0 0% 100%;
 
-    --primary-soft: 217 90% 96%;
-    --primary-soft-foreground: 217 76% 32%;
+    --primary-soft: 221 83% 95%;
+    --primary-soft-foreground: 222 72% 37%;
 
     --secondary: 215 30% 96%;
-    --secondary-foreground: 217 76% 38%;
+    --secondary-foreground: 222 72% 37%;
 
     --muted: 215 25% 95%;
     --muted-foreground: 215 16% 47%;
 
-    --accent: 38 92% 50%;
-    --accent-foreground: 26 50% 14%;
+    --accent: 16 96% 61%;
+    --accent-foreground: 20 90% 16%;
 
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
@@ -41,7 +41,7 @@
 
     --border: 214 25% 91%;
     --input: 214 25% 91%;
-    --ring: 217 76% 42%;
+    --ring: 221 83% 53%;
 
     --radius: 0.625rem;
 
