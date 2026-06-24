@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>UzIntellekt — Shield shapes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Spectral:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#13294B;--deep:#1A3FA0;--blue:#2563EB;--paper:#F7F8FB;--line:#E6E9F0;--muted:#5B6B86}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1160px;margin:0 auto;padding:48px 28px 90px}
+  .eyebrow{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--blue)}
+  h1{font-family:Spectral,serif;font-weight:700;font-size:clamp(28px,4vw,44px);line-height:1.05;margin:8px 0 12px}
+  .lead{color:var(--muted);font-size:16px;max-width:78ch;line-height:1.6;margin:0}
+  .sectlabel{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);border-top:1px solid var(--line);padding-top:14px;margin:44px 0 22px}
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .tile{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px;box-shadow:0 1px 2px rgba(19,41,75,.04)}
+  .icons{display:flex;align-items:center;gap:14px;min-height:78px}
+  .big{width:62px;flex:none;display:flex;align-items:center}
+  .big svg{width:100%;height:auto}
+  .chip{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex:none}
+  .chip svg{width:30px;height:auto}
+  .sm{width:22px;flex:none;display:flex;align-items:flex-end}
+  .sm svg{width:100%}
+  .name{margin-top:16px;font-weight:700;font-size:15px}
+  .name b{color:var(--blue)}
+  .desc{margin-top:5px;font-size:12.5px;color:var(--muted);line-height:1.5}
+  .note{font-size:13px;color:var(--muted);margin-top:18px;line-height:1.55}
+  .copyrow{display:flex;gap:18px;align-items:flex-end;flex-wrap:wrap}
+  .col{display:flex;flex-direction:column;align-items:center;gap:8px}
+  .col .cap{font-size:12px;color:var(--muted)}
+  .col .big{width:70px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">UzIntellekt · Формы щита (без оранжевого)</div>
+  <h1>Выбор формы щита</h1>
+  <p class="lead">Все варианты сине-белые, со знаком © (авторское право) внутри. Сравните силуэт: классический герб, гребень, широкий, узкий, скруглённый, с плоским низом, гранёный и др. Можно указать форму + отдельно стиль © (контур или сплошной диск).</p>
+
+  <div class="sectlabel">Силуэты (1–9)</div>
+  <div class="grid" id="shapes"></div>
+
+  <div class="sectlabel">Стиль знака © (на форме F2)</div>
+  <div class="copyrow" id="copies"></div>
+
+  <p class="note">Скажите номер формы (или «F2 низ как у F7» и т.п.) + стиль © — соберу финал, плитку для кабинета и фавикон.</p>
+</div>
+
+<script>
+const SH={
+  F1:"M12 10 H88 V58 C88 84 72 102 50 112 C28 102 12 84 12 58 Z",
+  F2:"M50 6 L84 17 Q90 19 90 25 L90 62 C90 90 73 107 50 115 C27 107 10 90 10 62 L10 25 Q10 19 16 17 Z",
+  F3:"M14 12 Q50 26 86 12 L86 60 C86 86 70 103 50 113 C30 103 14 86 14 60 Z",
+  F4:"M8 16 Q8 10 14 10 H86 Q92 10 92 16 V56 C92 84 70 101 50 109 C30 101 8 84 8 56 Z",
+  F5:"M24 8 Q24 6 26 6 H74 Q76 6 76 8 V64 C76 95 63 110 50 116 C37 110 24 95 24 64 Z",
+  F6:"M22 8 H78 Q92 8 92 24 V56 C92 86 50 116 50 116 C50 116 8 86 8 56 V24 Q8 8 22 8 Z",
+  F7:"M14 14 Q14 10 18 10 H82 Q86 10 86 14 V68 Q86 96 50 110 Q14 96 14 68 Z",
+  F8:"M50 5 L88 22 L82 76 L50 115 L18 76 L12 22 Z",
+  F9:"M14 12 H86 V58 C86 84 70 101 50 110 C30 101 14 84 14 58 Z",
+};
+function copyOutline(co,cx,cy,r){return `<g stroke="${co}" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="${cx}" cy="${cy}" r="${r}"/><path d="M${cx+r*0.43} ${cy-r*0.40} a${r*0.6} ${r*0.6} 0 1 0 0 ${r*0.8}"/></g>`;}
+function copySolid(disc,letter,cx,cy,r){return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${disc}"/><path d="M${cx+r*0.42} ${cy-r*0.40} a${r*0.58} ${r*0.58} 0 1 0 0 ${r*0.8}" fill="none" stroke="${letter}" stroke-width="6" stroke-linecap="round"/>`;}
+
+const GR=id=>`<linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2E68F0"/><stop offset="1" stop-color="#1A3FA0"/></linearGradient>`;
+
+function shield(path,id,fill,copyFn){
+  const cy = 58;
+  return `<svg viewBox="0 0 100 120" role="img" aria-label="UzIntellekt"><defs>${fill==='grad'?GR(id):''}</defs>
+    <path d="${path}" fill="${fill==='grad'?'url(#'+id+')':fill}"/>
+    ${copyFn}</svg>`;}
+
+function variant(key,path,fill){
+  const co = fill==='#13294B' ? '#fff' : '#fff';
+  return shield(path,'g'+key+(''+Math.random()).slice(2,6),fill,copyOutline(co,50,58,24));
+}
+function banner(path,id){ // F9 with ribbon base
+  return `<svg viewBox="0 0 100 124"><defs>${GR(id)}</defs><path d="${path}" fill="url(#${id})"/>${copyOutline('#fff',50,56,23)}<path d="M38 104 H62 L62 120 L50 113 L38 120 Z" fill="#1A3FA0"/></svg>`;}
+
+const data=[
+  {f:'F1',n:'Klassik gerb',d:'Плоский верх, V-низ. Самый «геральдический».',path:SH.F1},
+  {f:'F2',n:'Yumshoq',d:'Скруглённый верх + плавный низ (рекомендованный ранее).',path:SH.F2},
+  {f:'F3',n:'Grebenli',d:'Вогнутый верх (гребень/«chief»). Благороднее.',path:SH.F3},
+  {f:'F4',n:'Keng',d:'Широкий, приземистый. Устойчивее.',path:SH.F4},
+  {f:'F5',n:'Tor',d:'Узкий, вытянутый. Стройнее, элегантнее.',path:SH.F5},
+  {f:'F6',n:'Squircle',d:'Очень скруглённый, «app-like». Современный.',path:SH.F6},
+  {f:'F7',n:'Tekis tag',d:'Плоско-скруглённый низ, без острого носа. Мягкий.',path:SH.F7},
+  {f:'F8',n:'Qirrali',d:'Гранёный (как драгоценный камень/печать).',path:SH.F8},
+];
+function tile(o){return `<div class="tile"><div class="icons">
+  <span class="big">${variant(o.f,o.path,'grad')}</span>
+  <span class="chip" style="background:var(--ink)">${variant(o.f+'i',o.path,'grad')}</span>
+  <span class="sm">${variant(o.f+'s',o.path,'grad')}</span>
+  </div><div class="name"><b>${o.f}</b> · ${o.n}</div><div class="desc">${o.d}</div></div>`;}
+let html=data.map(tile).join('');
+// F9 banner tile
+html+=`<div class="tile"><div class="icons">
+  <span class="big">${banner(SH.F9,'gb1')}</span>
+  <span class="chip" style="background:var(--ink)">${banner(SH.F9,'gb2')}</span>
+  </div><div class="name"><b>F9</b> · Bannerli</div><div class="desc">Щит с лентой-подложкой снизу.</div></div>`;
+document.getElementById('shapes').innerHTML=html;
+
+// © styles on F2
+document.getElementById('copies').innerHTML=
+ `<div class="col"><span class="big">${shield(SH.F2,'gca','grad',copyOutline('#fff',50,58,24))}</span><span class="cap">© контур (тонкий)</span></div>`+
+ `<div class="col"><span class="big">${shield(SH.F2,'gcb','grad',`<g stroke="#fff" stroke-width="9" fill="none" stroke-linecap="round"><circle cx="50" cy="58" r="23"/><path d="M60 50 a14 14 0 1 0 0 17" /></g>`)}</span><span class="cap">© контур (жирный)</span></div>`+
+ `<div class="col"><span class="big">${shield(SH.F2,'gcc','grad',copySolid('#fff','#1A3FA0',50,58,24))}</span><span class="cap">© сплошной диск</span></div>`;
+</script>
+</body>
+</html>
