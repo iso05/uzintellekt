@@ -1,4 +1,6 @@
 import { useTranslation } from 'react-i18next'
+import { ShieldCheck } from 'lucide-react'
+import { EmptyState } from '@/shared/ui'
 
 const Board = () => {
   const { t } = useTranslation()
@@ -14,8 +16,11 @@ const Board = () => {
             "Jamiyat faoliyati ustidan nazorat qiluvchi Kuzatuv kengashi a'zolari va ularning vakolatlari."
           )}
         </p>
-        <div className="mt-10 rounded-lg border border-dashed border-border bg-muted/40 p-8 text-center text-sm italic text-muted-foreground">
-          {t('board_page.notice', "Kuzatuv kengashi tarkibi tez orada e'lon qilinadi.")}
+        <div className="mt-10 overflow-hidden rounded-lg border border-border bg-card">
+          <EmptyState
+            icon={ShieldCheck}
+            title={t('board_page.notice', "Kuzatuv kengashi tarkibi tez orada e'lon qilinadi.")}
+          />
         </div>
       </div>
     </section>

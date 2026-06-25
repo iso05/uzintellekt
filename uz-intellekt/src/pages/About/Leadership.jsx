@@ -1,4 +1,6 @@
 import { useTranslation } from 'react-i18next'
+import { Users } from 'lucide-react'
+import { EmptyState } from '@/shared/ui'
 
 const Leadership = () => {
   const { t } = useTranslation()
@@ -14,8 +16,11 @@ const Leadership = () => {
             "Jamiyat rahbariyati, bosh direktor va asosiy mas'ul shaxslar haqida rasmiy ma'lumotlar."
           )}
         </p>
-        <div className="mt-10 rounded-lg border border-dashed border-border bg-muted/40 p-8 text-center text-sm italic text-muted-foreground">
-          {t('leadership_page.notice', 'Tez orada rahbariyat tarkibi joylanadi.')}
+        <div className="mt-10 overflow-hidden rounded-lg border border-border bg-card">
+          <EmptyState
+            icon={Users}
+            title={t('leadership_page.notice', 'Tez orada rahbariyat tarkibi joylanadi.')}
+          />
         </div>
       </div>
     </section>

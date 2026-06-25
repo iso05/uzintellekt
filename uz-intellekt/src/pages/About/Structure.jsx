@@ -1,4 +1,6 @@
 import { useTranslation } from 'react-i18next'
+import { Network } from 'lucide-react'
+import { EmptyState } from '@/shared/ui'
 
 const Structure = () => {
   const { t } = useTranslation()
@@ -14,8 +16,11 @@ const Structure = () => {
             "Jamiyatning tashkiliy tuzilmasi va bo'limlar o'rtasidagi bog'liqlik."
           )}
         </p>
-        <div className="mt-10 rounded-lg border border-dashed border-border bg-muted/40 p-8 text-center text-sm italic text-muted-foreground">
-          {t('structure_page.notice', "Tuzilma sxemasi tez orada qo'shiladi.")}
+        <div className="mt-10 overflow-hidden rounded-lg border border-border bg-card">
+          <EmptyState
+            icon={Network}
+            title={t('structure_page.notice', "Tuzilma sxemasi tez orada qo'shiladi.")}
+          />
         </div>
       </div>
     </section>
