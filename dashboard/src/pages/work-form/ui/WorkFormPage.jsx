@@ -11,7 +11,6 @@ import {
   isEditableState,
   useWorkForm,
   fromBackend,
-  WORK_STATUS_CONFIG,
 } from '@/entities/work'
 import { BasicInfoSection } from '@/widgets/work-form-basic-info'
 import { RightHoldersSection } from '@/widgets/work-form-right-holders'
@@ -116,7 +115,7 @@ export default function WorkFormPage() {
 
   if (isReadOnly) {
     const stateLabel = t(`work_status.${workState}`, {
-      defaultValue: WORK_STATUS_CONFIG[workState]?.label || workState,
+      defaultValue: workState || t('work_status.unknown'),
     })
     return (
       <div className="flex flex-col gap-6">

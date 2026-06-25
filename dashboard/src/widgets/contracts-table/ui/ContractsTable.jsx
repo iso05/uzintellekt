@@ -11,17 +11,13 @@ import {
   Pagination,
   EmptyState,
 } from '@/shared/ui'
-import {
-  ContractStatusBadge,
-  getContractStatus,
-  getContractTypeLabel,
-} from '@/entities/contract'
+import { ContractStatusBadge, getContractStatus } from '@/entities/contract'
 import { ContractActions } from '@/features/contract-download'
 import { formatDate } from '@/shared/lib/format'
 
 function contractTypeLabel(t, c) {
   return t(`contracts.type_${(c.type || 'MEMBERSHIP').toLowerCase()}`, {
-    defaultValue: getContractTypeLabel(c),
+    defaultValue: t('contracts.type_membership'),
   })
 }
 

@@ -5,7 +5,7 @@ import { getStatusConfig } from '../model/status'
 export default function StatusBadge({ status, className }) {
   const { t } = useTranslation()
   const cfg = getStatusConfig(status)
-  const label = t(`work_status.${status}`, { defaultValue: cfg.label })
+  const label = t(`work_status.${status}`, { defaultValue: status || t('work_status.unknown') })
   return (
     <Badge variant={cfg.variant} className={className}>
       {label}

@@ -7,19 +7,15 @@ export const CONTRACT_STATUS = {
   CANCELLED: 'CANCELLED',
 }
 
-export const CONTRACT_TYPE_LABELS = {
-  MEMBERSHIP: "A'zolik shartnomasi",
-  LICENSE: 'Litsenziya shartnomasi',
-}
-
-// Maps backend status → UI presentation (label + Badge variant)
+// Maps backend status → a Badge variant. Labels are resolved via i18n
+// (contracts.status.*) at render time, not here.
 export const CONTRACT_STATUS_CONFIG = {
-  CREATED: { label: 'Imzolangan', variant: 'success' },
-  SIGNED: { label: 'Imzolangan', variant: 'success' },
-  ACTIVE: { label: 'Faol', variant: 'default' },
-  EXPIRED: { label: "Muddati o'tgan", variant: 'warning' },
-  PENDING: { label: 'Kutilmoqda', variant: 'warning' },
-  CANCELLED: { label: 'Bekor', variant: 'muted' },
+  CREATED: { variant: 'success' },
+  SIGNED: { variant: 'success' },
+  ACTIVE: { variant: 'default' },
+  EXPIRED: { variant: 'warning' },
+  PENDING: { variant: 'warning' },
+  CANCELLED: { variant: 'muted' },
 }
 
 export function getContractStatus(contract) {
@@ -27,9 +23,5 @@ export function getContractStatus(contract) {
 }
 
 export function getContractStatusConfig(status) {
-  return CONTRACT_STATUS_CONFIG[status] || { label: status || "Noma'lum", variant: 'muted' }
-}
-
-export function getContractTypeLabel(contract) {
-  return CONTRACT_TYPE_LABELS[contract?.type] || CONTRACT_TYPE_LABELS.MEMBERSHIP
+  return CONTRACT_STATUS_CONFIG[status] || { variant: 'muted' }
 }

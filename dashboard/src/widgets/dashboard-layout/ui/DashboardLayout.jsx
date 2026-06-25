@@ -27,7 +27,7 @@ export default function DashboardLayout() {
   }, [mobileOpen])
 
   const { crumbs: rawCrumbs } = resolveRouteMeta(location.pathname)
-  const crumbs = rawCrumbs.map((c) => ({ ...c, label: t(c.labelKey, c.label) }))
+  const crumbs = rawCrumbs.map((c) => ({ ...c, label: t(c.labelKey) }))
 
   return (
     <div className="flex min-h-screen bg-background text-foreground">

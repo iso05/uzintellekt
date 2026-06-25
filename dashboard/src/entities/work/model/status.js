@@ -7,14 +7,15 @@ export const WORK_STATUS = {
   CANCELLED: 'CANCELLED',
 }
 
-// Maps backend state to UI presentation: label + badge variant (matches @/shared/ui Badge)
+// Maps backend state to a Badge variant (matches @/shared/ui Badge).
+// Labels are resolved via i18n (work_status.*) at render time, not here.
 export const WORK_STATUS_CONFIG = {
-  DRAFT: { label: 'Qoralama', variant: 'muted' },
-  PENDING: { label: "Ko'rib chiqilmoqda", variant: 'warning' },
-  REGISTERED: { label: 'Tasdiqlangan', variant: 'success' },
-  APPROVED: { label: 'Tasdiqlangan', variant: 'success' },
-  REJECTED: { label: 'Rad etilgan', variant: 'destructive' },
-  CANCELLED: { label: 'Bekor qilingan', variant: 'muted' },
+  DRAFT: { variant: 'muted' },
+  PENDING: { variant: 'warning' },
+  REGISTERED: { variant: 'success' },
+  APPROVED: { variant: 'success' },
+  REJECTED: { variant: 'destructive' },
+  CANCELLED: { variant: 'muted' },
 }
 
 export function getWorkStatus(work) {
@@ -22,9 +23,7 @@ export function getWorkStatus(work) {
 }
 
 export function getStatusConfig(status) {
-  return (
-    WORK_STATUS_CONFIG[status] || { label: status || "Noma'lum", variant: 'muted' }
-  )
+  return WORK_STATUS_CONFIG[status] || { variant: 'muted' }
 }
 
 export function isEditableState(status) {
