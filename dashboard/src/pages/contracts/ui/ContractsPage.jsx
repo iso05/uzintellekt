@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { RefreshCw } from 'lucide-react'
 import { Button, toast, PageHeader } from '@/shared/ui'
@@ -16,20 +16,25 @@ export default function ContractsPage() {
   const [total, setTotal] = useState(0)
   const [page, setPage] = useState(0)
   const [loading, setLoading] = useState(true)
+  // Monotonic request id — a slow earlier response must not overwrite a newer one.
+  const reqIdRef = useRef(0)
 
   const { busyId, previewUrl, openPreview, triggerDownload, closePreview } =
     useContractDownload()
 
   const load = useCallback(async (p = 0) => {
+    const reqId = ++reqIdRef.current
     setLoading(true)
     try {
       const data = await getContractsGrid({ page: p, size: PAGE_SIZE })
+      if (reqId !== reqIdRef.current) return // superseded by a newer request
       setContracts(data?.content ?? data?.items ?? [])
       setTotal(data?.totalElements ?? data?.totalItems ?? 0)
     } catch (e) {
+      if (reqId !== reqIdRef.current) return
       toast.error(e.message || t('contracts.load_error'))
     } finally {
-      setLoading(false)
+      if (reqId === reqIdRef.current) setLoading(false)
     }
   }, [])
 
