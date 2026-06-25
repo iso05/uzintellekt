@@ -1,9 +1,12 @@
+import i18n from '@/i18n'
 import {
   validatePassport,
   validateName,
   validateShare,
   validateRequired,
 } from '@/shared/lib/validators'
+
+const t = (key, opts) => i18n.t(key, opts)
 
 export const EMPTY_HOLDER = {
   passportNo: '',
@@ -25,17 +28,17 @@ export function validateHolder(rh, idx) {
   const passErr = validatePassport(rh.passportNo)
   if (passErr) errors[buildHolderErrorKey(idx, 'passportNo')] = passErr
 
-  const fnErr = validateName(rh.firstName, 'Ism')
+  const fnErr = validateName(rh.firstName, t('validation.field_first_name'))
   if (fnErr) errors[buildHolderErrorKey(idx, 'firstName')] = fnErr
 
-  const lnErr = validateName(rh.lastName, 'Familiya')
+  const lnErr = validateName(rh.lastName, t('validation.field_last_name'))
   if (lnErr) errors[buildHolderErrorKey(idx, 'lastName')] = lnErr
 
   const shareErr = validateShare(rh.share)
   if (shareErr) errors[buildHolderErrorKey(idx, 'share')] = shareErr
 
   if (!rh.authorRoleIds || rh.authorRoleIds.length === 0) {
-    errors[buildHolderErrorKey(idx, 'authorRoleIds')] = 'Kamida bitta muallif roli tanlang'
+    errors[buildHolderErrorKey(idx, 'authorRoleIds')] = t('validation.role_required')
   }
 
   return errors
@@ -53,8 +56,7 @@ export function findDuplicatePassportErrors(rightHolders) {
     const pn = _normalizePassport(rh.passportNo)
     if (!pn) return
     if (firstSeenAt.has(pn)) {
-      errors[buildHolderErrorKey(idx, 'passportNo')] =
-        "Bu pasport allaqachon haq egalari ro'yxatida"
+      errors[buildHolderErrorKey(idx, 'passportNo')] = t('validation.passport_dup')
     } else {
       firstSeenAt.set(pn, idx)
     }
@@ -65,10 +67,10 @@ export function findDuplicatePassportErrors(rightHolders) {
 export function validateWorkForm(form) {
   const errors = {}
 
-  const nameErr = validateRequired(form.name, 'Asar nomi')
+  const nameErr = validateRequired(form.name, t('validation.field_work_name'))
   if (nameErr) errors.name = nameErr
 
-  if (!form.workTypeId) errors.workTypeId = 'Asar turini tanlang'
+  if (!form.workTypeId) errors.workTypeId = t('validation.type_required')
 
   form.rightHolders.forEach((rh, idx) => {
     Object.assign(errors, validateHolder(rh, idx))
@@ -87,7 +89,7 @@ export function computeShareTotal(rightHolders) {
 
 export function getShareTotalError(rightHolders) {
   const total = computeShareTotal(rightHolders)
-  if (total !== 100) return "Haq egalarining jami ulush foizi (%) 100 bo'lishi shart."
+  if (total !== 100) return t('validation.share_total_simple')
   return null
 }
 

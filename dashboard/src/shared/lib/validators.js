@@ -1,40 +1,39 @@
+import i18n from '@/i18n'
+
+const t = (key, opts) => i18n.t(key, opts)
+
 export const validatePassport = (value) => {
-  if (!value || value.trim() === '')
-    return 'Pasport seriya/raqami kiritilishi shart'
-  if (!/^[A-Z]{2}\d{7}$/.test(value))
-    return "Pasport noto'g'ri formatda (AA1234567)"
+  if (!value || value.trim() === '') return t('validation.passport_required')
+  if (!/^[A-Z]{2}\d{7}$/.test(value)) return t('validation.passport_format')
   return null
 }
 
-export const validateName = (value, fieldLabel = 'Maydon') => {
-  if (!value || value.trim() === '')
-    return `${fieldLabel} kiritilishi shart`
-  if (value.trim().length < 1)
-    return `${fieldLabel} kiritilishi shart`
+export const validateName = (value, fieldLabel) => {
+  const field = fieldLabel || 'Maydon'
+  if (!value || value.trim() === '') return t('validation.field_required', { field })
   return null
 }
 
 export const validatePhone = (value) => {
-  if (!value || value === '') return 'Telefon raqam kiritilishi shart'
-  if (!value.startsWith('998')) return 'Telefon raqam 998 bilan boshlanishi kerak'
-  if (value.length < 12) return "Telefon raqam to'liq kiritilmagan (998XXXXXXXXX)"
-  if (!/^998\d{9}$/.test(value)) return "Telefon raqam noto'g'ri (998XXXXXXXXX formatida)"
+  if (!value || value === '') return t('validation.phone_required')
+  if (!value.startsWith('998')) return t('validation.phone_998')
+  if (value.length < 12) return t('validation.phone_incomplete')
+  if (!/^998\d{9}$/.test(value)) return t('validation.phone_format')
   return null
 }
 
 export const validateShare = (value) => {
-  if (value === '' || value === null || value === undefined)
-    return 'Ulush foizi kiritilishi shart'
+  if (value === '' || value === null || value === undefined) return t('validation.share_required')
   const num = parseFloat(value)
-  if (isNaN(num)) return "Ulush foizi raqam bo'lishi kerak"
-  if (num < 0.01) return "Ulush foizi kamida 0.01% bo'lishi kerak"
-  if (num > 100) return "Ulush foizi 100% dan oshmasligi kerak"
+  if (isNaN(num)) return t('validation.share_number')
+  if (num < 0.01) return t('validation.share_min')
+  if (num > 100) return t('validation.share_over')
   return null
 }
 
-export const validateRequired = (value, label = 'Maydon') => {
-  if (!value || String(value).trim() === '')
-    return `${label} kiritilishi shart`
+export const validateRequired = (value, label) => {
+  const field = label || 'Maydon'
+  if (!value || String(value).trim() === '') return t('validation.field_required', { field })
   return null
 }
 
@@ -44,7 +43,6 @@ export const validateShareTotal = (holders) => {
     0
   )
   const rounded = Math.round(total * 100) / 100
-  if (rounded !== 100)
-    return `Jami ulush 100% bo'lishi shart. Hozirgi: ${rounded}%`
+  if (rounded !== 100) return t('validation.share_total', { n: rounded })
   return null
 }
