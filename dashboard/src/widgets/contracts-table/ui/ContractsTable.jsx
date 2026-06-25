@@ -94,7 +94,7 @@ export default function ContractsTable({
                   <TableHead>{t('contracts.col_type')}</TableHead>
                   <TableHead>{t('contracts.col_status')}</TableHead>
                   <TableHead>{t('contracts.col_date')}</TableHead>
-                  <TableHead className="text-right">{t('contracts.col_actions')}</TableHead>
+                  <TableHead>{t('contracts.col_actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -116,7 +116,7 @@ export default function ContractsTable({
                     <TableCell className="text-muted-foreground">
                       {formatDate(c.signedAt || c.createdAt)}
                     </TableCell>
-                    <TableCell className="text-right">
+                    <TableCell>
                       <ContractActions
                         contract={c}
                         busy={busyId}

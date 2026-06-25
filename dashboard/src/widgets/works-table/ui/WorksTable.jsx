@@ -76,7 +76,7 @@ export default function WorksTable({
                 <TableHead>{t('works.col_status')}</TableHead>
                 <TableHead>{t('works.col_holders')}</TableHead>
                 <TableHead>{t('works.col_registered')}</TableHead>
-                <TableHead className="text-right">{t('works.col_actions')}</TableHead>
+                <TableHead>{t('works.col_actions')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -117,7 +117,7 @@ export default function WorksTable({
                     <TableCell className="text-muted-foreground">
                       {isRegistered ? w.registrationDate || '—' : '—'}
                     </TableCell>
-                    <TableCell className="text-right">
+                    <TableCell>
                       <WorkActions work={w} onView={onView} onChanged={onChanged} />
                     </TableCell>
                   </TableRow>

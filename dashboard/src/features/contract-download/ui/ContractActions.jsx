@@ -6,7 +6,7 @@ export default function ContractActions({ contract, busy, onView, onDownload }) 
   const { t } = useTranslation()
   const isBusy = busy === contract.id
   return (
-    <div className="flex flex-wrap justify-end gap-1.5">
+    <div className="flex flex-wrap gap-1.5">
       <Button
         variant="outline"
         size="sm"
