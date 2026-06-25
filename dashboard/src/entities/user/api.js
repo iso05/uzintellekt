@@ -29,18 +29,12 @@ export async function updateMeField(field, value) {
     throw new Error(i18n.t('validation.address_required'))
   }
 
-  const cur = await getMe()
-  const payload = {
-    address: cur.address,
-    phones: cur.phones,
-    pseudonym: cur.pseudonym || cur.pseudoname || null,
-    pseudoname: cur.pseudonym || cur.pseudoname || null,
-  }
-  if (field === 'pseudonym' || field === 'pseudoname') {
-    payload.pseudonym = value || null
-    payload.pseudoname = value || null
-  } else {
-    payload[field] = value
-  }
+  // Send only the field(s) being changed. A full read-modify-write (GET the
+  // whole user, rebuild every field, PATCH it all back) silently reverts a
+  // concurrent edit to another field made from a fresher snapshot.
+  const payload =
+    field === 'pseudonym' || field === 'pseudoname'
+      ? { pseudonym: value || null, pseudoname: value || null } // backend aliases both
+      : { [field]: value }
   return updateMe(payload)
 }
