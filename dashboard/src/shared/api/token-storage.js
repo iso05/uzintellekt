@@ -1,3 +1,5 @@
+import { safeLocalStorage, safeSessionStorage } from '@/shared/lib/safe-storage'
+
 const ACCESS_KEY = 'access_token'
 const REFRESH_KEY = 'refresh_token'
 const ACCESS_EXP_KEY = 'access_expires_at'
@@ -34,11 +36,11 @@ function _deleteCookie(name) {
 }
 
 function _readToken(lsKey, cookieKey) {
-  const ls = localStorage.getItem(lsKey)
+  const ls = safeLocalStorage.getItem(lsKey)
   if (ls) return ls
   const ck = _readCookie(cookieKey)
   if (ck) {
-    localStorage.setItem(lsKey, ck)
+    safeLocalStorage.setItem(lsKey, ck)
     return ck
   }
   return null
@@ -51,7 +53,7 @@ function _expiryFromSeconds(expiresInSec) {
 }
 
 function _readExpiry(key) {
-  const raw = localStorage.getItem(key)
+  const raw = safeLocalStorage.getItem(key)
   if (!raw) return null
   const n = Number(raw)
   return Number.isFinite(n) ? n : null
@@ -61,17 +63,17 @@ export const tokenStorage = {
   get: () => _readToken(ACCESS_KEY, ACCESS_KEY),
   set: (token, expiresInSec) => {
     const ttl = Number.isFinite(expiresInSec) && expiresInSec > 0 ? expiresInSec : FALLBACK_ACCESS_TTL_SEC
-    localStorage.setItem(ACCESS_KEY, token)
+    safeLocalStorage.setItem(ACCESS_KEY, token)
     const expiry = _expiryFromSeconds(ttl)
-    if (expiry) localStorage.setItem(ACCESS_EXP_KEY, String(expiry))
+    if (expiry) safeLocalStorage.setItem(ACCESS_EXP_KEY, String(expiry))
     _writeCookie(ACCESS_KEY, token, ttl)
   },
   getRefresh: () => _readToken(REFRESH_KEY, REFRESH_KEY),
   setRefresh: (token, expiresInSec) => {
     const ttl = Number.isFinite(expiresInSec) && expiresInSec > 0 ? expiresInSec : FALLBACK_REFRESH_TTL_SEC
-    localStorage.setItem(REFRESH_KEY, token)
+    safeLocalStorage.setItem(REFRESH_KEY, token)
     const expiry = _expiryFromSeconds(ttl)
-    if (expiry) localStorage.setItem(REFRESH_EXP_KEY, String(expiry))
+    if (expiry) safeLocalStorage.setItem(REFRESH_EXP_KEY, String(expiry))
     _writeCookie(REFRESH_KEY, token, ttl)
   },
   getAccessExpiry: () => _readExpiry(ACCESS_EXP_KEY),
@@ -87,11 +89,11 @@ export const tokenStorage = {
     return Date.now() >= exp - leewaySec * 1000
   },
   clear: () => {
-    localStorage.removeItem(ACCESS_KEY)
-    localStorage.removeItem(REFRESH_KEY)
-    localStorage.removeItem(ACCESS_EXP_KEY)
-    localStorage.removeItem(REFRESH_EXP_KEY)
-    sessionStorage.clear()
+    safeLocalStorage.removeItem(ACCESS_KEY)
+    safeLocalStorage.removeItem(REFRESH_KEY)
+    safeLocalStorage.removeItem(ACCESS_EXP_KEY)
+    safeLocalStorage.removeItem(REFRESH_EXP_KEY)
+    safeSessionStorage.clear()
     _deleteCookie(ACCESS_KEY)
     _deleteCookie(REFRESH_KEY)
   },

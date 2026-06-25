@@ -1,5 +1,6 @@
 import { ENV, getMainSite } from '@/shared/config/env'
 import { tokenStorage } from './token-storage'
+import { safeLocalStorage } from '@/shared/lib/safe-storage'
 
 // In TEST_MODE we never redirect — just throw so the UI shows errors/empty states.
 function _bailOnAuth(message) {
@@ -129,7 +130,7 @@ async function _handleBlocked(res) {
     if (ENV.TEST_MODE) {
       throw new Error('Hisobingiz bloklangan.')
     }
-    const fullName = localStorage.getItem('user_fullname') || ''
+    const fullName = safeLocalStorage.getItem('user_fullname') || ''
     tokenStorage.clear()
     window.location.replace(
       `${getMainSite()}/login?action=blocked&name=${encodeURIComponent(fullName)}`

@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState, useRef } from 'react'
 import { ENV, getMainSite } from '@/shared/config/env'
+import { safeLocalStorage, safeSessionStorage } from '@/shared/lib/safe-storage'
 import {
   tokenStorage,
   tryRefreshSilently,
@@ -95,7 +96,7 @@ export function AuthProvider({ children }) {
       }
 
       const fullName = getUserFullName(data)
-      localStorage.setItem('user_fullname', fullName)
+      safeLocalStorage.setItem('user_fullname', fullName)
       setUser(data)
       setLoading(false)
     } catch (err) {
@@ -104,7 +105,7 @@ export function AuthProvider({ children }) {
         tokenStorage.clear()
         setAuthError('Siz administrator tomonidan bloklandingiz!')
         setTimeout(() => {
-          const name = localStorage.getItem('user_fullname') || ''
+          const name = safeLocalStorage.getItem('user_fullname') || ''
           window.location.replace(
             `${getMainSite()}/login?action=blocked&name=${encodeURIComponent(name)}`
           )
@@ -140,7 +141,7 @@ export function AuthProvider({ children }) {
           const data = await getMe()
           if (data) {
             const fullName = getUserFullName(data)
-            localStorage.setItem('user_fullname', fullName)
+            safeLocalStorage.setItem('user_fullname', fullName)
             setUser(data)
           } else {
             setUser(MOCK_USER)
@@ -173,7 +174,7 @@ export function AuthProvider({ children }) {
   const logout = () => {
     setUser(null)
     tokenStorage.clear()
-    sessionStorage.clear()
+    safeSessionStorage.clear()
     if (ENV.TEST_MODE) {
       // In test mode, just reload — no real site to redirect to.
       window.location.reload()
