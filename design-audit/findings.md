@@ -6,7 +6,7 @@ Severity: 🔴 баг/ломает · 🟠 заметное расхождени
 
 | # | Где | Проблема | Подтверждение |
 |---|---|---|---|
-| B1 | dashboard · Shartnomalarim | ⚠️ НЕ СООТВЕТСТВУЕТ ОПИСАНИЮ. В коде `contract/model/status.js` `CREATED` = `{ variant: 'success' }`, а лейбл `CREATED` во всех 4 локалях = «Подписан / Signed / Imzolangan» — визуально и текстово неотличим от реального `SIGNED`. Ключ `info`/«Yaratilgan» из исходного плана в коде отсутствует. Нужно подтверждение намерения: либо вернуть `info`+«Yaratilgan», либо это сознательный UX-выбор (тогда оставить как есть). |
+| B1 | dashboard · Shartnomalarim | ✅ ПОДТВЕРЖДЕНО. Сознательное решение: `CREATED` = `{ variant: 'success' }` с лейблом «Подписан / Signed / Imzolangan» (`contract/model/status.js`). Исходный план `info`/«Yaratilgan» отменён — статус намеренно отображается как `success`. Расхождения нет. |
 | B2 | uz-intellekt · Yangiliklar | ✅ РЕШЕНО. Все даты приведены к ISO; единый `formatDate()` (Intl) в `shared/lib/utils.js`, применён в NewsCard/NewsDetail. Перевод дат строкой убран — теперь локализуется по языку. |
 | B3 | uz-intellekt · newsData | ✅ ЧАСТИЧНО. Поля унифицированы (`content` везде, ISO-даты) в `newsData.js` и массиве главной. `img:null` (нет картинок) — это контент: нужны реальные изображения новостей от заказчика. |
 | B4 | uz-intellekt · Kontaktlar | ⏳ НУЖЕН ВВОД. EmailJS уже в зависимостях — форму можно включить, но нужны ваши `serviceId/templateId/publicKey`. Иначе переоформлю как явный mailto-CTA. |
