@@ -54,7 +54,11 @@ export async function cancelWork(workId) {
 }
 
 export async function getMyContributions() {
-  return requestJson('/api/v1/works/my-contributions')
+  const data = await requestJson('/api/v1/works/my-contributions')
+  // Always hand back an array — other list loaders defensively unwrap items/
+  // content shapes, and ContributionsTable.map would throw on a wrapped object.
+  if (Array.isArray(data)) return data
+  return data?.items ?? data?.content ?? data?.data?.items ?? []
 }
 
 export async function getWorkTypes() {
