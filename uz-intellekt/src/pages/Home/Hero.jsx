@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { ArrowRight, ShieldCheck, Lock } from 'lucide-react'
-import { Button } from '@/shared/ui'
+import { Button, HeroChip } from '@/shared/ui'
 import heroImg from '@/assets/illustrations/hero-f-c.svg'
 
 const Hero = () => {
@@ -13,10 +13,7 @@ const Hero = () => {
       <div className="absolute inset-x-0 top-0 -z-10 h-[420px] bg-gradient-to-b from-primary-soft via-background to-background" />
       <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:py-24">
         <div>
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-primary shadow-soft">
-            <ShieldCheck className="h-3.5 w-3.5" />
-            {t('hero.badge', 'Intellektual mulk himoyasi')}
-          </span>
+          <HeroChip icon={ShieldCheck}>{t('hero.badge', 'Intellektual mulk himoyasi')}</HeroChip>
 
           <h1 className="mt-5 text-4xl font-extrabold leading-tight tracking-tight text-foreground sm:text-5xl lg:text-6xl">
             {t('hero.title_prefix', 'Intellektual Mulkingizni ')}

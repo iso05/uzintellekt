@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { ArrowRight } from 'lucide-react'
 import { NewsCard } from '@/entities/news'
+import { Eyebrow } from '@/shared/ui'
 
 const news = [
   { id: 1, title: "Raqamli huquqlar yig'ilishi", date: '2026-06-04', desc: 'Mualliflik huquqlari muhokamasi.', img: null },
@@ -46,10 +47,7 @@ const NewsPreview = () => {
     <section id="news" className="bg-background py-16 sm:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="mx-auto max-w-2xl text-center">
-          <p className="flex items-center justify-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-primary">
-            <span className="h-1 w-1 rounded-full bg-accent" />
-            {t('news_block.eyebrow', 'Yangiliklar')}
-          </p>
+          <Eyebrow align="center">{t('news_block.eyebrow', 'Yangiliklar')}</Eyebrow>
           <h2 className="mt-3 text-2xl font-bold tracking-tight text-foreground sm:text-3xl md:text-4xl">
             {t('news_block.title', "So'nggi yangiliklar")}
           </h2>

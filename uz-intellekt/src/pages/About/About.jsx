@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { Card, CardContent } from '@/shared/ui'
+import { Card, CardContent, Eyebrow, HeroChip } from '@/shared/ui'
 
 const About = () => {
   const { t } = useTranslation()
@@ -7,9 +7,7 @@ const About = () => {
     <section className="bg-background py-16 sm:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="max-w-3xl">
-          <span className="inline-flex items-center rounded-full bg-primary-soft px-3 py-1 text-xs font-semibold text-primary-soft-foreground">
-            {t('about_page.eyebrow', 'UzIntellekt')}
-          </span>
+          <HeroChip>{t('about_page.eyebrow', 'UzIntellekt')}</HeroChip>
           <h1 className="mt-4 text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
             {t('about_page.title', 'Biz haqimizda')}
           </h1>
@@ -58,10 +56,7 @@ const About = () => {
         </div>
 
         <div className="mt-16">
-          <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-primary">
-            <span className="h-1 w-1 rounded-full bg-accent" />
-            {t('about_page.values_eyebrow', 'Qadriyatlar')}
-          </p>
+          <Eyebrow>{t('about_page.values_eyebrow', 'Qadriyatlar')}</Eyebrow>
           <h2 className="mt-3 text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
             {t('about_page.values', 'Bizning qadriyatlarimiz')}
           </h2>

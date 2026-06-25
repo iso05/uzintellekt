@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { ArrowRight } from 'lucide-react'
-import { Card, CardContent } from '@/shared/ui'
+import { Card, CardContent, Eyebrow } from '@/shared/ui'
 
 import serviceDeposit from '@/assets/illustrations/service-deposit.svg'
 import serviceCertificate from '@/assets/illustrations/service-certificate.svg'
@@ -45,10 +45,7 @@ const ServicesPreview = () => {
     <section id="services" className="bg-background py-16 sm:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="mx-auto max-w-2xl text-center">
-          <p className="flex items-center justify-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-primary">
-            <span className="h-1 w-1 rounded-full bg-accent" />
-            {t('services_preview.eyebrow', 'Xizmatlar')}
-          </p>
+          <Eyebrow align="center">{t('services_preview.eyebrow', 'Xizmatlar')}</Eyebrow>
           <h2 className="mt-3 text-2xl font-bold tracking-tight text-foreground sm:text-3xl md:text-4xl">
             {t('services_preview.title', 'Xizmatlarimiz')}
           </h2>

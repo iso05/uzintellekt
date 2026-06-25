@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { ArrowRight } from 'lucide-react'
-import { Button, Card, CardContent } from '@/shared/ui'
+import { Button, Card, CardContent, Eyebrow, HeroChip } from '@/shared/ui'
 
 const partners = [
   {
@@ -61,10 +61,7 @@ const Partners = () => {
         {/* HERO */}
         <div className="grid grid-cols-1 items-end gap-10 lg:grid-cols-[1fr_auto]">
           <div className="max-w-2xl space-y-5">
-            <span className="inline-flex items-center gap-2 rounded-full bg-primary-soft px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary-soft-foreground">
-              <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-              {t('partners_page.eyebrow', 'Hamkorlik')}
-            </span>
+            <HeroChip>{t('partners_page.eyebrow', 'Hamkorlik')}</HeroChip>
             <h1 className="text-3xl font-extrabold leading-tight tracking-tight text-foreground sm:text-4xl lg:text-5xl">
               {t('partners_page.title_prefix', 'Bizning ')}
               <span className="text-primary">
@@ -95,12 +92,7 @@ const Partners = () => {
 
         <div className="my-12 h-px w-full bg-border" />
 
-        <div className="mb-6 flex items-center gap-3">
-          <span className="text-xs font-bold tracking-wider text-muted-foreground/60">01</span>
-          <span className="text-xs font-semibold uppercase tracking-wide text-primary">
-            {t('partners_page.stats.s1_label', 'Asosiy hamkorlar')}
-          </span>
-        </div>
+        <Eyebrow className="mb-6">{t('partners_page.stats.s1_label', 'Asosiy hamkorlar')}</Eyebrow>
 
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {localizedPartners.map((item) => (

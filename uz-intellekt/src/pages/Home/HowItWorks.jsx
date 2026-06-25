@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { Upload, ShieldCheck, FileText } from 'lucide-react'
-import { Card, CardContent } from '@/shared/ui'
+import { Card, CardContent, Eyebrow } from '@/shared/ui'
 
 const steps = [
   {
@@ -32,10 +32,7 @@ const HowItWorks = () => {
     <section id="how-it-works" className="bg-muted/40 py-16 sm:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="mx-auto max-w-2xl text-center">
-          <p className="flex items-center justify-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-primary">
-            <span className="h-1 w-1 rounded-full bg-accent" />
-            {t('how_it_works.eyebrow', 'Jarayon')}
-          </p>
+          <Eyebrow align="center">{t('how_it_works.eyebrow', 'Jarayon')}</Eyebrow>
           <h2 className="mt-3 text-2xl font-bold tracking-tight text-foreground sm:text-3xl md:text-4xl">
             {t('how_it_works.title', 'Qanday ishlaydi')}
           </h2>
