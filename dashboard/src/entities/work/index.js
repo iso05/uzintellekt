@@ -5,6 +5,7 @@ export {
   updateWork,
   submitWork,
   cancelWork,
+  getWorksStat,
   getMyContributions,
   getWorkTypes,
   getAuthorRoles,

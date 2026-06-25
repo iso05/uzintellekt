@@ -53,6 +53,12 @@ export async function cancelWork(workId) {
   return data
 }
 
+export async function getWorksStat() {
+  // Role-scoped aggregate (admin: all works, user: own). Not cached: it is
+  // loaded once per dashboard mount and must reflect mutations made since.
+  return requestJson('/api/v1/works/stat')
+}
+
 export async function getMyContributions() {
   const data = await requestJson('/api/v1/works/my-contributions')
   // Always hand back an array — other list loaders defensively unwrap items/

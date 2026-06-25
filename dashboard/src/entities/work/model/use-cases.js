@@ -1,34 +1,24 @@
-import { getWorks } from '../api'
+import { getWorks, getWorksStat } from '../api'
 import { WORK_STATUS } from './status'
 
-function _count(res) {
-  return res?.totalItems ?? res?.data?.totalItems ?? 0
+function _num(v) {
+  return Number(v) || 0
 }
 
-// NOTE: today this fans out 4 grid queries with size:1 because the backend
-// does not yet expose a /works/stats endpoint. When it does, swap the body
-// for a single request — call sites stay the same.
+// Backed by GET /api/v1/works/stat — one role-scoped aggregate request that
+// replaced the old fan-out of 4 size:1 grid queries. Flattens byStatus into
+// the { total, registered, pending, rejected } keys the WorksStats cards
+// consume. (The endpoint also returns a per-type byType breakdown, omitted
+// here — it duplicates the cards on a single author's dashboard.)
 export async function getWorksStats() {
-  const stateQuery = (state) => ({
-    page: 1,
-    size: 1,
-    filters: [{ field: 'state', operator: 'eq', value: state }],
-  })
-
-  // Let failures propagate — swallowing them per-query silently under-reports
-  // counts, which is worse than surfacing the error to the caller.
-  const [totalRes, regRes, pendRes, rejRes] = await Promise.all([
-    getWorks({ page: 1, size: 1 }),
-    getWorks(stateQuery(WORK_STATUS.REGISTERED)),
-    getWorks(stateQuery(WORK_STATUS.PENDING)),
-    getWorks(stateQuery(WORK_STATUS.REJECTED)),
-  ])
+  const data = await getWorksStat()
+  const byStatus = data?.byStatus ?? {}
 
   return {
-    total: _count(totalRes),
-    registered: _count(regRes),
-    pending: _count(pendRes),
-    rejected: _count(rejRes),
+    total: _num(data?.total),
+    registered: _num(byStatus[WORK_STATUS.REGISTERED]),
+    pending: _num(byStatus[WORK_STATUS.PENDING]),
+    rejected: _num(byStatus[WORK_STATUS.REJECTED]),
   }
 }
 
