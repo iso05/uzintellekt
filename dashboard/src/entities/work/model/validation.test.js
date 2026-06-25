@@ -193,3 +193,30 @@ describe('toPayload', () => {
     expect(payload.description).toBeUndefined()
   })
 })
+
+// Bug #1: getShareTotalError compares the float sum to 100 with strict `!==`,
+// so valid 2-decimal shares that drift in IEEE-754 (e.g. 16.10+48.20+35.70 =
+// 100.00000000000001) are rejected and the work cannot be saved. The
+// rounding-safe validateShareTotal already exists in shared/lib/validators.js
+// but is dead code on the save path.
+describe('getShareTotalError — floating-point share total', () => {
+  const driftHolders = () => [
+    holder({ share: '16.10' }),
+    holder({ share: '48.20' }),
+    holder({ share: '35.70' }),
+  ]
+
+  it('rounds away IEEE-754 drift so 16.10 + 48.20 + 35.70 totals exactly 100', () => {
+    // Raw float sum is 100.00000000000001; computeShareTotal rounds to 2 decimals.
+    expect(computeShareTotal(driftHolders())).toBe(100)
+  })
+
+  it('accepts shares that mathematically total 100% (16.10 + 48.20 + 35.70)', () => {
+    expect(getShareTotalError(driftHolders())).toBeNull()
+  })
+
+  it('still rejects a genuine non-100 total', () => {
+    const holders = [holder({ share: '50' }), holder({ share: '40' })]
+    expect(getShareTotalError(holders)).not.toBeNull()
+  })
+})

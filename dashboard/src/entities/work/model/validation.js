@@ -81,7 +81,10 @@ export function validateWorkForm(form) {
 }
 
 export function computeShareTotal(rightHolders) {
-  return rightHolders.reduce((sum, rh) => sum + (Number(rh.share) || 0), 0)
+  const sum = rightHolders.reduce((acc, rh) => acc + (Number(rh.share) || 0), 0)
+  // Round to 2 decimals so IEEE-754 drift (e.g. 16.10+48.20+35.70 = 100.0000…1)
+  // does not reject a total that is mathematically 100%.
+  return Math.round(sum * 100) / 100
 }
 
 export function getShareTotalError(rightHolders) {
