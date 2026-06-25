@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { Save, Send, AlertCircle, Loader2 } from 'lucide-react'
 import { Button, toast, PageHeader } from '@/shared/ui'
 import { ListSkeleton } from '@/shared/ui'
@@ -37,6 +38,7 @@ export default function WorkFormPage() {
   const { id } = useParams()
   const navigate = useNavigate()
   const { user } = useAuth()
+  const { t } = useTranslation()
 
   const isEdit = Boolean(id)
 
@@ -74,7 +76,7 @@ export default function WorkFormPage() {
         setRejectionReason(data?.rejectionReason || '')
         setForm(fromBackend(data))
       })
-      .catch((e) => toast.error(e?.message || 'Asar yuklanmadi'))
+      .catch((e) => toast.error(e?.message || t('form.load_error')))
       .finally(() => alive && setLoading(false))
     return () => {
       alive = false
@@ -104,7 +106,7 @@ export default function WorkFormPage() {
   if (isEdit && loading) {
     return (
       <div className="flex flex-col gap-6">
-        <PageHeader title="Yuklanmoqda..." subtitle="Asar ma'lumotlari yuklanmoqda" />
+        <PageHeader title={t('form.loading')} subtitle={t('form.loading_sub')} />
         <div className="rounded-xl border border-border bg-card p-6 shadow-soft">
           <ListSkeleton rows={8} className="space-y-4 p-0" />
         </div>
@@ -113,15 +115,17 @@ export default function WorkFormPage() {
   }
 
   if (isReadOnly) {
-    const stateLabel = WORK_STATUS_CONFIG[workState]?.label || workState
+    const stateLabel = t(`work_status.${workState}`, {
+      defaultValue: WORK_STATUS_CONFIG[workState]?.label || workState,
+    })
     return (
       <div className="flex flex-col gap-6">
         <PageHeader
-          title="Tahrirlash taqiqlangan"
-          subtitle="Ushbu asar tahrir qilinadigan holatda emas"
+          title={t('form.readonly_title')}
+          subtitle={t('form.readonly_sub')}
         />
-        <Banner tone="destructive" title="Tahrirlab bo'lmaydi">
-          Bu asar ayni paytda <strong>{stateLabel}</strong> holatida. Tahrirlash uchun u qoralama yoki rad etilgan holatda bo&apos;lishi kerak.
+        <Banner tone="destructive" title={t('form.readonly_banner_title')}>
+          {t('form.readonly_banner', { state: stateLabel })}
         </Banner>
       </div>
     )
@@ -130,12 +134,12 @@ export default function WorkFormPage() {
   return (
     <div className="flex flex-col gap-6 pb-24">
       <PageHeader
-        title={isEdit ? 'Asarni tahrirlash' : "Yangi asar qo'shish"}
-        subtitle="Intellektual mulk asarini ro'yxatdan o'tkazish"
+        title={isEdit ? t('form.title_edit') : t('form.title_new')}
+        subtitle={t('form.subtitle')}
       />
 
       {workState === 'REJECTED' && rejectionReason && (
-        <Banner tone="destructive" title="Rad etilish sababi">
+        <Banner tone="destructive" title={t('form.reject_title')}>
           {rejectionReason}
         </Banner>
       )}
@@ -179,12 +183,12 @@ export default function WorkFormPage() {
 
         <div className="sticky bottom-4 z-10 flex flex-wrap items-center justify-end gap-3 rounded-xl border border-border bg-card/95 px-4 py-3 shadow-soft-md backdrop-blur supports-[backdrop-filter]:bg-card/80">
           <Button variant="outline" type="button" onClick={goBack} disabled={saving} className="gap-2">
-            Bekor qilish
+            {t('form.cancel')}
           </Button>
 
           <Button type="submit" disabled={saving} className="gap-2">
             {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
-            {isEdit ? 'Saqlash' : 'Yaratish'}
+            {isEdit ? t('form.save') : t('form.create')}
           </Button>
 
           {isEdit && workState === 'DRAFT' && (
@@ -196,7 +200,7 @@ export default function WorkFormPage() {
               className="gap-2"
             >
               {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
-              Ko&apos;rib chiqishga yuborish
+              {t('form.submit')}
             </Button>
           )}
         </div>

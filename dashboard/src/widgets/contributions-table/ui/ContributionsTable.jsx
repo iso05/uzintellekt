@@ -1,4 +1,5 @@
 import { FileText, Users } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import {
   Table,
   TableHeader,
@@ -12,6 +13,7 @@ import {
 import { StatusBadge, getWorkStatus } from '@/entities/work'
 
 export default function ContributionsTable({ contributions, loading, onView }) {
+  const { t } = useTranslation()
   return (
     <section className="overflow-hidden rounded-xl border border-border bg-card shadow-soft">
       {loading ? (
@@ -19,16 +21,16 @@ export default function ContributionsTable({ contributions, loading, onView }) {
       ) : contributions.length === 0 ? (
         <EmptyState
           icon={Users}
-          title="Qatnashgan asarlar yo'q"
-          description="Siz haq egasi sifatida kiritilgan asarlar bu yerda ko'rinadi."
+          title={t('contrib.empty_title')}
+          description={t('contrib.empty_desc')}
         />
       ) : (
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Nomi</TableHead>
-              <TableHead>Tavsif</TableHead>
-              <TableHead>Holati</TableHead>
+              <TableHead>{t('contrib.col_name')}</TableHead>
+              <TableHead>{t('contrib.col_desc')}</TableHead>
+              <TableHead>{t('contrib.col_status')}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

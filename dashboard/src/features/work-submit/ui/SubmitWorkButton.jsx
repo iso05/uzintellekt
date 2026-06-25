@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Send, Loader2 } from 'lucide-react'
 import {
   AlertDialog,
@@ -23,6 +24,7 @@ export default function SubmitWorkButton({
   iconOnly = false,
   disabled = false,
 }) {
+  const { t } = useTranslation()
   const [open, setOpen] = useState(false)
   const [submitting, setSubmitting] = useState(false)
 
@@ -30,11 +32,11 @@ export default function SubmitWorkButton({
     setSubmitting(true)
     try {
       await submitWork(workId)
-      toast.success("Asar ko'rib chiqish uchun yuborildi")
+      toast.success(t('work_actions.submit_ok'))
       setOpen(false)
       onDone?.()
     } catch (e) {
-      toast.error(e?.message || "Asarni yuborishda xatolik")
+      toast.error(e?.message || t('work_actions.submit_err'))
     } finally {
       setSubmitting(false)
     }
@@ -47,25 +49,23 @@ export default function SubmitWorkButton({
           variant={variant}
           size={iconOnly ? 'icon' : size}
           disabled={disabled || submitting}
-          title="Yuborish"
+          title={t('work_actions.submit')}
           className={iconOnly ? 'h-8 w-8' : undefined}
         >
           {submitting ? <Loader2 className="animate-spin" /> : <Send />}
-          {!iconOnly && 'Yuborish'}
+          {!iconOnly && t('work_actions.submit')}
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Asarni yuborasizmi?</AlertDialogTitle>
-          <AlertDialogDescription>
-            Asar ko'rib chiqishga yuboriladi. Yuborilgandan keyin uni tahrirlash mumkin emas.
-          </AlertDialogDescription>
+          <AlertDialogTitle>{t('work_actions.submit_q')}</AlertDialogTitle>
+          <AlertDialogDescription>{t('work_actions.submit_desc')}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={submitting}>Bekor</AlertDialogCancel>
+          <AlertDialogCancel disabled={submitting}>{t('work_actions.submit_dismiss')}</AlertDialogCancel>
           <AlertDialogAction onClick={handleConfirm} disabled={submitting} variant="success">
             {submitting && <Loader2 className="animate-spin" />}
-            Yuborish
+            {t('work_actions.submit')}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

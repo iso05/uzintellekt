@@ -1,4 +1,5 @@
 import { CheckCircle2, XCircle } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import {
   Dialog,
   DialogContent,
@@ -25,10 +26,11 @@ function DetailItem({ label, children, full }) {
 }
 
 function RightHoldersTable({ holders, authorRoles }) {
+  const { t } = useTranslation()
   if (!holders?.length) {
     return (
       <div className="rounded-lg border border-border bg-muted/40 px-4 py-3 text-center text-[13px] text-muted-foreground">
-        Ko&apos;rsatilmagan.
+        {t('detail.not_specified')}
       </div>
     )
   }
@@ -38,12 +40,12 @@ function RightHoldersTable({ holders, authorRoles }) {
       <table className="w-full text-[13px]">
         <thead className="border-b border-border bg-muted/60">
           <tr>
-            <th className="px-3 py-2.5 text-left text-[11px] font-bold uppercase tracking-wider text-muted-foreground">№</th>
-            <th className="px-3 py-2.5 text-left text-[11px] font-bold uppercase tracking-wider text-muted-foreground">Pasport</th>
-            <th className="px-3 py-2.5 text-left text-[11px] font-bold uppercase tracking-wider text-muted-foreground">Ism</th>
-            <th className="px-3 py-2.5 text-left text-[11px] font-bold uppercase tracking-wider text-muted-foreground">Familiya</th>
-            <th className="px-3 py-2.5 text-left text-[11px] font-bold uppercase tracking-wider text-muted-foreground">Ulush</th>
-            <th className="px-3 py-2.5 text-left text-[11px] font-bold uppercase tracking-wider text-muted-foreground">Muallif roli</th>
+            <th className="px-3 py-2.5 text-left text-[11px] font-bold uppercase tracking-wider text-muted-foreground">{t('detail.col_no')}</th>
+            <th className="px-3 py-2.5 text-left text-[11px] font-bold uppercase tracking-wider text-muted-foreground">{t('detail.col_passport')}</th>
+            <th className="px-3 py-2.5 text-left text-[11px] font-bold uppercase tracking-wider text-muted-foreground">{t('detail.col_first_name')}</th>
+            <th className="px-3 py-2.5 text-left text-[11px] font-bold uppercase tracking-wider text-muted-foreground">{t('detail.col_last_name')}</th>
+            <th className="px-3 py-2.5 text-left text-[11px] font-bold uppercase tracking-wider text-muted-foreground">{t('detail.col_share')}</th>
+            <th className="px-3 py-2.5 text-left text-[11px] font-bold uppercase tracking-wider text-muted-foreground">{t('detail.col_role')}</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-border">
@@ -67,6 +69,7 @@ function RightHoldersTable({ holders, authorRoles }) {
 
 export default function WorkDetailDialog({ work, open, onOpenChange, footer }) {
   const { workTypes, authorRoles } = useDictionaries()
+  const { t } = useTranslation()
   if (!work) return null
 
   const status = getWorkStatus(work)
@@ -76,27 +79,27 @@ export default function WorkDetailDialog({ work, open, onOpenChange, footer }) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl gap-0 p-0">
         <DialogHeader className="border-b border-border p-5">
-          <DialogTitle>Asar tafsilotlari</DialogTitle>
+          <DialogTitle>{t('detail.title')}</DialogTitle>
           <DialogDescription className="sr-only">
-            {work.name || 'Asar tafsilotlari'}
+            {work.name || t('detail.title')}
           </DialogDescription>
         </DialogHeader>
 
         <div className="max-h-[480px] overflow-y-auto p-5">
           <div className="grid grid-cols-2 gap-x-5 gap-y-4">
-            <DetailItem label="Nomi">{work.name || '—'}</DetailItem>
-            <DetailItem label="Asar turi">{typeName}</DetailItem>
-            <DetailItem label="Holati">
+            <DetailItem label={t('detail.name')}>{work.name || '—'}</DetailItem>
+            <DetailItem label={t('detail.type')}>{typeName}</DetailItem>
+            <DetailItem label={t('detail.status')}>
               <StatusBadge status={status} />
             </DetailItem>
-            <DetailItem label="Yaratilgan sana">{formatDateTime(work.createdAt)}</DetailItem>
-            <DetailItem label="O'zgartirilgan sana">{formatDateTime(work.updatedAt)}</DetailItem>
+            <DetailItem label={t('detail.created')}>{formatDateTime(work.createdAt)}</DetailItem>
+            <DetailItem label={t('detail.updated')}>{formatDateTime(work.updatedAt)}</DetailItem>
 
             {status === 'REGISTERED' && work.registrationDate && (
               <div className="col-span-2">
                 <div className="flex items-center gap-2.5 rounded-lg border border-success/30 bg-success/5 px-4 py-3 text-[13.5px] font-semibold text-success">
                   <CheckCircle2 className="h-4 w-4 shrink-0" />
-                  Ro&apos;yxatga olindi: {work.registrationDate}
+                  {t('detail.registered_on', { date: work.registrationDate })}
                 </div>
               </div>
             )}
@@ -105,18 +108,18 @@ export default function WorkDetailDialog({ work, open, onOpenChange, footer }) {
               <div className="col-span-2">
                 <div className="flex items-start gap-2.5 rounded-lg border border-destructive/30 bg-destructive/5 px-4 py-3 text-[13.5px] font-semibold text-destructive">
                   <XCircle className="mt-0.5 h-4 w-4 shrink-0" />
-                  <span>Rad etilish sababi: {work.rejectionReason}</span>
+                  <span>{t('detail.reject_reason', { reason: work.rejectionReason })}</span>
                 </div>
               </div>
             )}
 
-            <DetailItem label="Tavsifi" full>
+            <DetailItem label={t('detail.description')} full>
               <div className="mt-1 whitespace-pre-wrap rounded-lg border border-border bg-muted/40 p-3 text-[13.5px] font-normal text-foreground">
                 {work.description || '—'}
               </div>
             </DetailItem>
 
-            <DetailItem label="Haq egalari" full>
+            <DetailItem label={t('detail.holders')} full>
               <div className="mt-2">
                 <RightHoldersTable holders={work.rightHolders} authorRoles={authorRoles} />
               </div>

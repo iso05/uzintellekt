@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react'
+import i18n from '@/i18n'
 import { toast } from '@/shared/ui'
 import {
   createWork,
@@ -32,7 +33,7 @@ function _mapBackendErrors(apiError) {
   const map = {}
   apiError.errors.forEach((e) => {
     if (e.fieldName) {
-      map[e.fieldName] = e.message || e.defaultMessage || 'Xatolik'
+      map[e.fieldName] = e.message || e.defaultMessage || i18n.t('common.error')
     }
   })
   return Object.keys(map).length ? map : null
@@ -86,7 +87,7 @@ export function useSaveWork({
         _scrollToFirstError(mapped, null)
         return
       }
-      toast.error(e?.message || 'Saqlashda xatolik')
+      toast.error(e?.message || i18n.t('common.save_error'))
     },
     [setFieldErrors]
   )
@@ -97,7 +98,7 @@ export function useSaveWork({
       setSaving(true)
       try {
         const saved = await _doSave(form)
-        toast.success(isEdit ? 'Saqlandi' : 'Yaratildi')
+        toast.success(isEdit ? i18n.t('form.saved') : i18n.t('form.created'))
         return saved
       } catch (e) {
         _handleError(e)
@@ -116,7 +117,7 @@ export function useSaveWork({
       try {
         await _doSave(form)
         await submitWork(workId)
-        toast.success("Asar ko'rib chiqishga yuborildi")
+        toast.success(i18n.t('form.submitted'))
         return true
       } catch (e) {
         _handleError(e)

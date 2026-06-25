@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { ChevronDown } from 'lucide-react'
 import {
   Button,
@@ -22,11 +23,12 @@ export default function AuthorRolesMultiSelect({
   onClose,
 }) {
   const { authorRoles } = useDictionaries()
+  const { t } = useTranslation()
 
   const selectedIds = useMemo(() => value.map(String), [value])
 
   const summary = useMemo(() => {
-    if (!selectedIds.length) return '— Rolni tanlang —'
+    if (!selectedIds.length) return t('form.role_ph')
     return selectedIds
       .map((id) => {
         const r = authorRoles.find((x) => String(x.id) === id)
@@ -34,7 +36,7 @@ export default function AuthorRolesMultiSelect({
       })
       .filter(Boolean)
       .join(', ')
-  }, [selectedIds, authorRoles])
+  }, [selectedIds, authorRoles, t])
 
   const toggle = (roleId) => {
     const id = String(roleId)
@@ -70,7 +72,7 @@ export default function AuthorRolesMultiSelect({
         <div className="flex max-h-[240px] flex-col gap-0.5 overflow-y-auto">
           {authorRoles.length === 0 ? (
             <div className="px-3 py-2 text-sm text-muted-foreground">
-              Rollar mavjud emas
+              {t('form.roles_empty')}
             </div>
           ) : (
             authorRoles.map((ar) => {

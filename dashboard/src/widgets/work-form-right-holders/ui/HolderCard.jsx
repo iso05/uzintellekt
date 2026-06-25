@@ -1,4 +1,5 @@
 import { Trash2 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { Input, Label, Button, FieldError } from '@/shared/ui'
 import { cn } from '@/shared/lib/utils'
 import { AuthorRolesMultiSelect, buildHolderErrorKey } from '@/entities/work'
@@ -19,6 +20,7 @@ export default function HolderCard({
   disabled,
   canRemove,
 }) {
+  const { t } = useTranslation()
   const errKey = (field) => fieldErrors[buildHolderErrorKey(index, field)]
 
   return (
@@ -28,7 +30,7 @@ export default function HolderCard({
           <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] text-primary-foreground">
             {index + 1}
           </span>
-          Haq egasi
+          {t('form.holder')}
         </span>
         {!disabled && canRemove && (
           <Button
@@ -37,7 +39,7 @@ export default function HolderCard({
             className="h-8 w-8 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
             onClick={onRemove}
             type="button"
-            title="O'chirish"
+            title={t('form.remove')}
           >
             <Trash2 className="h-4 w-4" />
           </Button>
@@ -46,10 +48,10 @@ export default function HolderCard({
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <div className="flex flex-col gap-1.5">
-          <Label>Pasport seriya/raqam</Label>
+          <Label>{t('form.passport_label')}</Label>
           <Input
             id={`holder-field-${index}-passportNo`}
-            placeholder="AA1234567"
+            placeholder={t('form.passport_ph')}
             value={holder.passportNo}
             onChange={(e) => onChange('passportNo', e.target.value)}
             onBlur={(e) => onBlur('passportNo', e.target.value)}
@@ -61,10 +63,10 @@ export default function HolderCard({
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <Label>Ism</Label>
+          <Label>{t('form.first_name_label')}</Label>
           <Input
             id={`holder-field-${index}-firstName`}
-            placeholder="Ism"
+            placeholder={t('form.first_name_ph')}
             value={holder.firstName}
             onChange={(e) => onChange('firstName', e.target.value)}
             onBlur={(e) => onBlur('firstName', e.target.value)}
@@ -75,10 +77,10 @@ export default function HolderCard({
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <Label>Familiya</Label>
+          <Label>{t('form.last_name_label')}</Label>
           <Input
             id={`holder-field-${index}-lastName`}
-            placeholder="Familiya"
+            placeholder={t('form.last_name_ph')}
             value={holder.lastName}
             onChange={(e) => onChange('lastName', e.target.value)}
             onBlur={(e) => onBlur('lastName', e.target.value)}
@@ -89,7 +91,7 @@ export default function HolderCard({
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <Label>Ulush (%)</Label>
+          <Label>{t('form.share_label')}</Label>
           <Input
             id={`holder-field-${index}-sharePercentage`}
             type="text"
@@ -105,8 +107,8 @@ export default function HolderCard({
           {!disabled && (
             <span className="text-[11.5px] font-medium text-muted-foreground">
               {remainingShare > 0
-                ? `Maksimal: ${remainingShare}% • bo'sh: ${100 - totalShare}%`
-                : 'Barcha ulush taqsimlangan'}
+                ? t('form.share_max', { max: remainingShare, free: 100 - totalShare })
+                : t('form.share_all_done')}
             </span>
           )}
           <FieldError error={errKey('sharePercentage')} />
@@ -114,7 +116,7 @@ export default function HolderCard({
 
         <div className="flex flex-col gap-1.5 sm:col-span-2">
           <Label>
-            Muallif roli <Required />
+            {t('form.role_label')} <Required />
           </Label>
           <AuthorRolesMultiSelect
             value={holder.authorRoleIds || []}

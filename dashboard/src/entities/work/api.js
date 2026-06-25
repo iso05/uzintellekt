@@ -1,4 +1,5 @@
 import { requestJson, cachedGridGet, invalidateCache } from '@/shared/api'
+import i18n from '@/i18n'
 
 const WORKS_GRID = '/api/v1/works/grid'
 
@@ -18,7 +19,7 @@ export async function getWork(workId) {
     filters: [{ field: 'id', operator: 'eq', value: workId }],
   })
   const items = data?.items ?? []
-  if (!items.length) throw new Error('Asar topilmadi')
+  if (!items.length) throw new Error(i18n.t('works.not_found'))
   return items[0]
 }
 

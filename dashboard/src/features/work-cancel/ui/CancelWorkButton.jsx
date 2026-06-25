@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { X, Loader2 } from 'lucide-react'
 import {
   AlertDialog,
@@ -23,6 +24,7 @@ export default function CancelWorkButton({
   iconOnly = false,
   disabled = false,
 }) {
+  const { t } = useTranslation()
   const [open, setOpen] = useState(false)
   const [cancelling, setCancelling] = useState(false)
 
@@ -30,11 +32,11 @@ export default function CancelWorkButton({
     setCancelling(true)
     try {
       await cancelWork(workId)
-      toast.success('Asar bekor qilindi')
+      toast.success(t('work_actions.cancel_ok'))
       setOpen(false)
       onDone?.()
     } catch (e) {
-      toast.error(e?.message || 'Asarni bekor qilishda xatolik')
+      toast.error(e?.message || t('work_actions.cancel_err'))
     } finally {
       setCancelling(false)
     }
@@ -47,25 +49,23 @@ export default function CancelWorkButton({
           variant={variant}
           size={iconOnly ? 'icon' : size}
           disabled={disabled || cancelling}
-          title="Bekor qilish"
+          title={t('work_actions.cancel_title')}
           className={iconOnly ? 'h-8 w-8' : undefined}
         >
           {cancelling ? <Loader2 className="animate-spin" /> : <X />}
-          {!iconOnly && 'Bekor'}
+          {!iconOnly && t('work_actions.cancel')}
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Asarni bekor qilasizmi?</AlertDialogTitle>
-          <AlertDialogDescription>
-            Bu amalni qaytarib bo'lmaydi. Asar holati "Bekor qilingan" bo'lib o'zgartiriladi.
-          </AlertDialogDescription>
+          <AlertDialogTitle>{t('work_actions.cancel_q')}</AlertDialogTitle>
+          <AlertDialogDescription>{t('work_actions.cancel_desc')}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={cancelling}>Yopish</AlertDialogCancel>
+          <AlertDialogCancel disabled={cancelling}>{t('work_actions.cancel_dismiss')}</AlertDialogCancel>
           <AlertDialogAction onClick={handleConfirm} disabled={cancelling} variant="destructive">
             {cancelling && <Loader2 className="animate-spin" />}
-            Bekor qilish
+            {t('work_actions.cancel_confirm')}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

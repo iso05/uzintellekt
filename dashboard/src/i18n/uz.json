@@ -16,6 +16,7 @@
     "search_btn": "Qidirish"
   },
   "common": {
+    "error": "Xatolik",
     "refresh": "Yangilash",
     "clear": "Tozalash",
     "detail_error": "Tafsilotlarni yuklashda xatolik",
@@ -130,7 +131,8 @@
     "empty_found_desc": "Filtrlarni o'zgartirib ko'ring yoki qidiruvni tozalang.",
     "empty_title": "Hozircha asarlar yo'q",
     "empty_desc": "Birinchi asaringizni qo'shib intellektual mulkni ro'yxatdan o'tkazing.",
-    "empty_action": "Birinchi asarni qo'shing"
+    "empty_action": "Birinchi asarni qo'shing",
+    "not_found": "Asar topilmadi"
   },
   "contracts": {
     "title": "Shartnomalarim",
@@ -147,6 +149,8 @@
     "type_license": "Litsenziya shartnomasi",
     "view": "Ko'rish",
     "download": "Yuklab olish",
+    "file_not_found": "Shartnoma fayli topilmadi",
+    "download_error": "Yuklab olishda xatolik",
     "status": {
       "CREATED": "Imzolangan",
       "SIGNED": "Imzolangan",
@@ -181,6 +185,7 @@
     "holders_sub": "Asar mualliflari va ulushlar taqsimoti (jami 100%)",
     "holder": "Haq egasi",
     "passport_label": "Pasport seriya/raqam",
+    "passport_ph": "AA1234567",
     "first_name_label": "Ism",
     "first_name_ph": "Ism",
     "last_name_label": "Familiya",
@@ -225,6 +230,56 @@
     "share_total": "Jami ulush 100% bo'lishi shart. Hozirgi: {{n}}%",
     "share_total_simple": "Haq egalarining jami ulush foizi (%) 100 bo'lishi shart.",
     "type_required": "Asar turini tanlang",
-    "role_required": "Kamida bitta muallif roli tanlang"
+    "role_required": "Kamida bitta muallif roli tanlang",
+    "address_required": "Manzil bo'sh bo'lishi mumkin emas",
+    "phone_invalid": "Noto'g'ri telefon: {{phone}}",
+    "field_invalid": "Noto'g'ri maydon: {{field}}"
+  },
+  "work_actions": {
+    "cancel": "Bekor",
+    "cancel_title": "Bekor qilish",
+    "cancel_ok": "Asar bekor qilindi",
+    "cancel_err": "Asarni bekor qilishda xatolik",
+    "cancel_q": "Asarni bekor qilasizmi?",
+    "cancel_desc": "Bu amalni qaytarib bo'lmaydi. Asar holati \"Bekor qilingan\" bo'lib o'zgartiriladi.",
+    "cancel_dismiss": "Yopish",
+    "cancel_confirm": "Bekor qilish",
+    "submit": "Yuborish",
+    "submit_ok": "Asar ko'rib chiqish uchun yuborildi",
+    "submit_err": "Asarni yuborishda xatolik",
+    "submit_q": "Asarni yuborasizmi?",
+    "submit_desc": "Asar ko'rib chiqishga yuboriladi. Yuborilgandan keyin uni tahrirlash mumkin emas.",
+    "submit_dismiss": "Bekor"
+  },
+  "detail": {
+    "title": "Asar tafsilotlari",
+    "name": "Nomi",
+    "type": "Asar turi",
+    "status": "Holati",
+    "created": "Yaratilgan sana",
+    "updated": "O'zgartirilgan sana",
+    "description": "Tavsifi",
+    "holders": "Haq egalari",
+    "registered_on": "Ro'yxatga olindi: {{date}}",
+    "reject_reason": "Rad etilish sababi: {{reason}}",
+    "not_specified": "Ko'rsatilmagan.",
+    "col_no": "№",
+    "col_passport": "Pasport",
+    "col_first_name": "Ism",
+    "col_last_name": "Familiya",
+    "col_share": "Ulush",
+    "col_role": "Muallif roli"
+  },
+  "notfound": {
+    "title": "Sahifa topilmadi",
+    "desc": "Kechirasiz, siz qidirayotgan sahifa mavjud emas yoki boshqa manzilga ko'chirilgan bo'lishi mumkin.",
+    "home": "Bosh sahifaga qaytish"
+  },
+  "contrib": {
+    "empty_title": "Qatnashgan asarlar yo'q",
+    "empty_desc": "Siz haq egasi sifatida kiritilgan asarlar bu yerda ko'rinadi.",
+    "col_name": "Nomi",
+    "col_desc": "Tavsif",
+    "col_status": "Holati"
   }
 }

@@ -1,4 +1,5 @@
 import { FileText } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import {
   Input,
   Textarea,
@@ -44,6 +45,7 @@ export default function BasicInfoSection({
   disabled = false,
 }) {
   const { workTypes, loading: dictLoading } = useDictionaries()
+  const { t } = useTranslation()
 
   return (
     <section className="overflow-hidden rounded-xl border border-border bg-card shadow-soft">
@@ -53,22 +55,20 @@ export default function BasicInfoSection({
         </span>
         <div className="flex flex-col">
           <h2 className="m-0 text-[15px] font-bold leading-tight text-foreground">
-            Asosiy ma&apos;lumotlar
+            {t('form.basic_title')}
           </h2>
-          <p className="m-0 text-[12px] text-muted-foreground">
-            Asar nomi, turi va qisqacha tavsifi
-          </p>
+          <p className="m-0 text-[12px] text-muted-foreground">{t('form.basic_sub')}</p>
         </div>
       </header>
 
       <div className="flex flex-col gap-5 p-5 md:p-6">
         <div className="flex flex-col gap-1.5">
           <Label htmlFor="form-field-name">
-            Asar nomi <Required />
+            {t('form.name_label')} <Required />
           </Label>
           <Input
             id="form-field-name"
-            placeholder="Masalan: Bahor fasli"
+            placeholder={t('form.name_ph')}
             value={form.name}
             onChange={(e) => onFieldChange('name', e.target.value)}
             onBlur={(e) => onFieldBlur('name', e.target.value)}
@@ -82,9 +82,9 @@ export default function BasicInfoSection({
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <Label>Tavsif</Label>
+          <Label>{t('form.desc_label')}</Label>
           <Textarea
-            placeholder="Asar haqida qisqacha ma'lumot..."
+            placeholder={t('form.desc_ph')}
             value={form.description}
             onChange={(e) => onFieldChange('description', e.target.value)}
             maxLength={MAX}
@@ -96,7 +96,7 @@ export default function BasicInfoSection({
 
         <div className="flex flex-col gap-1.5">
           <Label htmlFor="form-field-workTypeId">
-            Asar turi <Required />
+            {t('form.type_label')} <Required />
           </Label>
           <Select
             value={String(form.workTypeId || '')}
@@ -110,7 +110,7 @@ export default function BasicInfoSection({
               id="form-field-workTypeId"
               className={cn(fieldErrors.workTypeId && 'border-destructive bg-destructive/5')}
             >
-              <SelectValue placeholder="— Turni tanlang —" />
+              <SelectValue placeholder={t('form.type_ph')} />
             </SelectTrigger>
             <SelectContent>
               {workTypes.map((wt) => (
