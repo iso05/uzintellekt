@@ -1,12 +1,14 @@
+import { useState } from 'react'
 import { useParams, NavLink } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, FileText } from 'lucide-react'
 import newsData from '../../data/newsData'
 import { formatDate } from '@/shared/lib/utils'
 
 const NewsDetail = () => {
   const { id } = useParams()
   const { t, i18n } = useTranslation()
+  const [imgFailed, setImgFailed] = useState(false)
 
   const newsItem = newsData.find((item) => item.id === Number(id))
 
@@ -61,11 +63,20 @@ const NewsDetail = () => {
         </p>
 
         <div className="mt-8 overflow-hidden rounded-lg border border-border">
-          <img
-            src={newsItem.img}
-            alt={title}
-            className="h-[360px] w-full object-cover sm:h-[420px]"
-          />
+          {newsItem.img && !imgFailed ? (
+            <img
+              src={newsItem.img}
+              alt={title}
+              loading="lazy"
+              decoding="async"
+              onError={() => setImgFailed(true)}
+              className="h-[360px] w-full object-cover sm:h-[420px]"
+            />
+          ) : (
+            <div className="flex h-[360px] w-full items-center justify-center bg-primary-soft/40 text-primary/50 sm:h-[420px]">
+              <FileText className="h-14 w-14" />
+            </div>
+          )}
         </div>
 
         <div className="prose prose-slate mt-8 max-w-none text-base leading-relaxed text-foreground/90">
