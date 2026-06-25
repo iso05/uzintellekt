@@ -109,6 +109,20 @@ export function toPayload(form) {
   }
 }
 
+/**
+ * Reads a right-holder's author-role ids from whatever shape the backend ships
+ * them in (`authorRoleIds` / `authorRoles` / `authorRoleId` / `authorRole.id`).
+ * Returns ids as strings. Use this anywhere raw backend holders are read so the
+ * UI never depends on a single field name.
+ */
+export function getHolderRoleIds(rh) {
+  if (rh?.authorRoleIds?.length) return rh.authorRoleIds.map(String)
+  if (rh?.authorRoles?.length) return rh.authorRoles.map(String)
+  if (rh?.authorRoleId) return [String(rh.authorRoleId)]
+  if (rh?.authorRole?.id) return [String(rh.authorRole.id)]
+  return []
+}
+
 /** Converts a backend work entity into UI form state. */
 export function fromBackend(data) {
   return {
@@ -122,16 +136,7 @@ export function fromBackend(data) {
             firstName: rh.firstName || '',
             lastName: rh.lastName || '',
             share: rh.sharePercentage || rh.share || '',
-            authorRoleIds:
-              rh.authorRoleIds && rh.authorRoleIds.length > 0
-                ? rh.authorRoleIds.map(String)
-                : rh.authorRoles && rh.authorRoles.length > 0
-                  ? rh.authorRoles.map(String)
-                  : rh.authorRoleId
-                    ? [String(rh.authorRoleId)]
-                    : rh.authorRole?.id
-                      ? [String(rh.authorRole.id)]
-                      : [],
+            authorRoleIds: getHolderRoleIds(rh),
           }))
         : [{ ...EMPTY_HOLDER }],
   }

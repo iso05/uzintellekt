@@ -10,6 +10,7 @@ import {
 import { formatDateTime } from '@/shared/lib/format'
 import StatusBadge from './StatusBadge'
 import { getWorkStatus } from '../model/status'
+import { getHolderRoleIds } from '../model/validation'
 import {
   useDictionaries,
   resolveWorkTypeName,
@@ -57,7 +58,7 @@ function RightHoldersTable({ holders, authorRoles }) {
               <td className="px-3 py-2.5 text-foreground">{rh.lastName || '—'}</td>
               <td className="px-3 py-2.5 font-bold tabular-nums text-foreground">{rh.sharePercentage ?? rh.share ?? 0}%</td>
               <td className="px-3 py-2.5 text-muted-foreground">
-                {resolveAuthorRoleNames(authorRoles, rh.authorRoleIds || [])}
+                {resolveAuthorRoleNames(authorRoles, getHolderRoleIds(rh))}
               </td>
             </tr>
           ))}
