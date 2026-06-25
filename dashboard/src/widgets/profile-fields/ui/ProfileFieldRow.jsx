@@ -64,7 +64,7 @@ export default function ProfileFieldRow({
             <Button
               variant="ghost"
               size="icon"
-              className="h-8 w-8 text-muted-foreground/70 hover:bg-muted hover:text-foreground"
+              className="h-9 w-9 text-muted-foreground/70 hover:bg-muted hover:text-foreground"
               onClick={() => copyToClipboard(copyValue, t('profile.copied'), t('profile.copy_failed'))}
               title={t('profile.copy')}
               aria-label={t('profile.copy')}
@@ -76,7 +76,7 @@ export default function ProfileFieldRow({
             <Button
               variant="ghost"
               size="icon"
-              className="h-8 w-8 text-muted-foreground/70 hover:bg-primary-soft hover:text-primary"
+              className="h-9 w-9 text-muted-foreground/70 hover:bg-primary-soft hover:text-primary"
               onClick={onEdit}
               title={t('profile.edit')}
               aria-label={t('profile.edit')}
