@@ -23,7 +23,11 @@
     "save": "Save",
     "cancel": "Cancel",
     "close": "Close",
-    "save_error": "Failed to save"
+    "save_error": "Failed to save",
+    "retry": "Retry",
+    "reload": "Reload page",
+    "crash_title": "Something went wrong",
+    "crash_desc": "An unexpected error occurred while rendering this page. Try reloading."
   },
   "user": {
     "type_physical": "Individual",
@@ -74,7 +78,8 @@
   "dashboard": {
     "welcome": "Welcome, {{name}}!",
     "welcome_desc": "Here you can register your works and track application status.",
-    "new_work": "Add new work"
+    "new_work": "Add new work",
+    "load_error": "Failed to load dashboard data"
   },
   "stats": {
     "total": "Total works",
@@ -281,6 +286,7 @@
     "empty_desc": "Works where you are listed as a rights holder will appear here.",
     "col_name": "Name",
     "col_desc": "Description",
-    "col_status": "Status"
+    "col_status": "Status",
+    "load_error": "Failed to load contributed works"
   }
 }

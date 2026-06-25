@@ -5,7 +5,7 @@ import { useAuth } from '@/features/auth'
 import { Sidebar } from '@/widgets/sidebar'
 import { Header } from '@/widgets/header'
 import { Breadcrumbs } from '@/widgets/breadcrumbs'
-import { Toaster } from '@/shared/ui'
+import { Toaster, ErrorBoundary } from '@/shared/ui'
 import { resolveRouteMeta } from '@/shared/config/routes'
 
 export default function DashboardLayout() {
@@ -56,7 +56,9 @@ export default function DashboardLayout() {
 
         <main className="mx-auto w-full max-w-[1200px] flex-1 px-4 py-6 md:px-6 md:py-8 lg:px-8">
           <Breadcrumbs items={crumbs} />
-          <Outlet />
+          <ErrorBoundary resetKey={location.pathname}>
+            <Outlet />
+          </ErrorBoundary>
         </main>
       </div>
 

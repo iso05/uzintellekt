@@ -23,7 +23,11 @@
     "save": "Saqlash",
     "cancel": "Bekor qilish",
     "close": "Yopish",
-    "save_error": "Saqlashda xatolik"
+    "save_error": "Saqlashda xatolik",
+    "retry": "Qayta urinish",
+    "reload": "Sahifani yangilash",
+    "crash_title": "Nimadir noto‘g‘ri ketdi",
+    "crash_desc": "Sahifani ko‘rsatishda kutilmagan xatolik yuz berdi. Sahifani yangilab ko‘ring."
   },
   "user": {
     "type_physical": "Jismoniy shaxs",
@@ -74,7 +78,8 @@
   "dashboard": {
     "welcome": "Xush kelibsiz, {{name}}!",
     "welcome_desc": "Bu yerda siz o'z asarlaringizni ro'yxatdan o'tkazasiz va ariza holatini kuzatib borasiz.",
-    "new_work": "Yangi asar qo'shish"
+    "new_work": "Yangi asar qo'shish",
+    "load_error": "Boshqaruv paneli ma‘lumotlarini yuklashda xatolik"
   },
   "stats": {
     "total": "Jami asarlar",
@@ -281,6 +286,7 @@
     "empty_desc": "Siz haq egasi sifatida kiritilgan asarlar bu yerda ko'rinadi.",
     "col_name": "Nomi",
     "col_desc": "Tavsif",
-    "col_status": "Holati"
+    "col_status": "Holati",
+    "load_error": "Qatnashgan asarlarni yuklashda xatolik"
   }
 }

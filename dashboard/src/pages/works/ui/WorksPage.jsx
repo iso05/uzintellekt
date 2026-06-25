@@ -112,6 +112,7 @@ export default function WorksPage() {
       setContributions(data ?? [])
     } catch (e) {
       console.error('Contributions load error:', e)
+      toast.error(e?.message || t('contrib.load_error'))
     } finally {
       setContribLoading(false)
     }

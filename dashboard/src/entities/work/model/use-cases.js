@@ -15,11 +15,13 @@ export async function getWorksStats() {
     filters: [{ field: 'state', operator: 'eq', value: state }],
   })
 
+  // Let failures propagate — swallowing them per-query silently under-reports
+  // counts, which is worse than surfacing the error to the caller.
   const [totalRes, regRes, pendRes, rejRes] = await Promise.all([
-    getWorks({ page: 1, size: 1 }).catch(() => null),
-    getWorks(stateQuery(WORK_STATUS.REGISTERED)).catch(() => null),
-    getWorks(stateQuery(WORK_STATUS.PENDING)).catch(() => null),
-    getWorks(stateQuery(WORK_STATUS.REJECTED)).catch(() => null),
+    getWorks({ page: 1, size: 1 }),
+    getWorks(stateQuery(WORK_STATUS.REGISTERED)),
+    getWorks(stateQuery(WORK_STATUS.PENDING)),
+    getWorks(stateQuery(WORK_STATUS.REJECTED)),
   ])
 
   return {
@@ -35,6 +37,6 @@ export async function getRecentWorks(size = 5) {
     page: 1,
     size,
     sort: { selector: 'createdAt', desc: true },
-  }).catch(() => null)
+  })
   return res?.items ?? res?.data?.items ?? []
 }
