@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { resolveLocalizedName } from '@/shared/lib/localized-name'
 import { getWorkTypes, getAuthorRoles } from '../api'
 
 let _cache = null
@@ -51,14 +52,15 @@ export function useDictionaries() {
 
 export function resolveWorkTypeName(workTypes, typeId) {
   const t = workTypes.find((x) => Number(x.id) === Number(typeId))
-  return t?.localizedName?.uz || t?.name || '—'
+  if (!t) return '—'
+  return resolveLocalizedName(t.localizedName, t.name) || '—'
 }
 
 export function resolveAuthorRoleNames(authorRoles, roleIds = []) {
   return roleIds
     .map((id) => {
       const r = authorRoles.find((x) => Number(x.id) === Number(id))
-      return r?.localizedName?.uz || r?.name || null
+      return r ? resolveLocalizedName(r.localizedName, r.name) || null : null
     })
     .filter(Boolean)
     .join(', ') || '—'

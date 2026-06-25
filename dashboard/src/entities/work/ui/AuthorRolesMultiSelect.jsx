@@ -9,6 +9,7 @@ import {
   Checkbox,
 } from '@/shared/ui'
 import { cn } from '@/shared/lib/utils'
+import { resolveLocalizedName } from '@/shared/lib/localized-name'
 import { useDictionaries } from '../model/use-dictionaries'
 
 /**
@@ -32,7 +33,7 @@ export default function AuthorRolesMultiSelect({
     return selectedIds
       .map((id) => {
         const r = authorRoles.find((x) => String(x.id) === id)
-        return r?.localizedName?.uz || r?.localizedName?.ru || r?.name || ''
+        return r ? resolveLocalizedName(r.localizedName, r.name) : ''
       })
       .filter(Boolean)
       .join(', ')
@@ -78,8 +79,7 @@ export default function AuthorRolesMultiSelect({
             authorRoles.map((ar) => {
               const id = String(ar.id)
               const checked = selectedIds.includes(id)
-              const label =
-                ar.localizedName?.uz || ar.localizedName?.ru || ar.name || ''
+              const label = resolveLocalizedName(ar.localizedName, ar.name)
               return (
                 <label
                   key={id}

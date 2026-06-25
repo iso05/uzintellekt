@@ -12,6 +12,7 @@ import {
   SelectValue,
 } from '@/shared/ui'
 import { cn } from '@/shared/lib/utils'
+import { resolveLocalizedName } from '@/shared/lib/localized-name'
 import { useDictionaries } from '@/entities/work'
 
 const MAX = 500
@@ -115,7 +116,7 @@ export default function BasicInfoSection({
             <SelectContent>
               {workTypes.map((wt) => (
                 <SelectItem key={wt.id} value={String(wt.id)}>
-                  {wt.localizedName?.uz || wt.localizedName?.ru || wt.name || ''}
+                  {resolveLocalizedName(wt.localizedName, wt.name)}
                 </SelectItem>
               ))}
             </SelectContent>
