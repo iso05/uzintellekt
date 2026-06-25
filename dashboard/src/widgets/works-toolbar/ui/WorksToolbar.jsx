@@ -84,8 +84,10 @@ export default function WorksToolbar({
       <Button
         variant="outline"
         size="icon"
+        disabled={loading}
         onClick={onRefresh}
         title={t('common.refresh')}
+        aria-label={t('common.refresh')}
         className="h-10 w-10 shrink-0 justify-self-end"
       >
         <RefreshCw className={cn('h-4 w-4', loading && 'animate-spin')} />
