@@ -33,13 +33,13 @@ export default function PseudonymEdit({ initialValue, onDone, onCancel }) {
         disabled={saving}
         className="h-9"
       />
-      <Button size="icon" className="h-9 w-9" onClick={handleSave} disabled={saving} title={t('common.save')}>
+      <Button size="icon" className="h-9 w-9 shrink-0" onClick={handleSave} disabled={saving} title={t('common.save')}>
         {saving ? <Loader2 className="animate-spin" /> : <Check />}
       </Button>
       <Button
         variant="outline"
         size="icon"
-        className="h-9 w-9"
+        className="h-9 w-9 shrink-0"
         onClick={onCancel}
         disabled={saving}
         title={t('common.cancel')}
