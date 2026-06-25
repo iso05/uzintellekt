@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import SignaturePad from 'signature_pad'
 import {
   AlertTriangle,
@@ -66,6 +67,7 @@ function applyCanvasClip(ctx, cw, ch) {
 }
 
 function SignatureModal({ open, onConfirm, onCancel }) {
+  const { t } = useTranslation()
   const canvasRef = useRef(null)
   const padRef = useRef(null)
   const containerRef = useRef(null)
@@ -180,11 +182,11 @@ function SignatureModal({ open, onConfirm, onCancel }) {
 
   const handleConfirm = async () => {
     if (!padRef.current) {
-      setSaveErr('Imzo maydoni tayyor emas')
+      setSaveErr(t('register_page.sig_err_notready'))
       return
     }
     if (padRef.current.isEmpty()) {
-      setSaveErr("Iltimos, imzo qo'ying")
+      setSaveErr(t('register_page.sig_err_empty'))
       return
     }
     if (saving) return
@@ -196,7 +198,7 @@ function SignatureModal({ open, onConfirm, onCancel }) {
       const compressedDataUrl = await compressImage(dataUrl, 100)
       onConfirm(compressedDataUrl)
     } catch (err) {
-      setSaveErr(err.message || 'Xatolik yuz berdi')
+      setSaveErr(err.message || t('register_page.sig_err_generic'))
     } finally {
       setSaving(false)
     }
@@ -211,18 +213,18 @@ function SignatureModal({ open, onConfirm, onCancel }) {
               <PenLine className="h-4 w-4" />
             </div>
             <div>
-              <p className="text-sm font-semibold text-foreground">Imzo qo&apos;ying</p>
+              <p className="text-sm font-semibold text-foreground">{t('register_page.sig_title')}</p>
               <p className="text-xs text-muted-foreground">
-                Barmoq yoki sichqoncha bilan imzolang
+                {t('register_page.sig_subtitle')}
               </p>
             </div>
           </div>
           <div className="flex items-center gap-2">
             <Button variant="outline" size="sm" onClick={handleClear}>
               <Trash2 className="h-3.5 w-3.5" />
-              Tozalash
+              {t('register_page.sig_clear')}
             </Button>
-            <Button variant="ghost" size="icon" onClick={onCancel} aria-label="Yopish">
+            <Button variant="ghost" size="icon" onClick={onCancel} aria-label={t('register_page.close')}>
               <X className="h-4 w-4" />
             </Button>
           </div>
@@ -233,10 +235,10 @@ function SignatureModal({ open, onConfirm, onCancel }) {
             <div className="pointer-events-none absolute inset-x-5 inset-y-4 z-10 flex flex-col items-center justify-center gap-1.5 opacity-60">
               <PenLine className="h-8 w-8 text-primary/40" />
               <p className="text-sm font-semibold text-muted-foreground">
-                Bu yerga imzo qo&apos;ying
+                {t('register_page.sig_placeholder_title')}
               </p>
               <p className="text-xs text-muted-foreground/70">
-                Barmoq yoki sichqoncha bilan
+                {t('register_page.sig_placeholder_sub')}
               </p>
             </div>
           )}
@@ -258,28 +260,28 @@ function SignatureModal({ open, onConfirm, onCancel }) {
             ) : hasSig ? (
               <span className="inline-flex items-center gap-1.5 font-semibold text-success">
                 <Check className="h-3.5 w-3.5" />
-                Imzo tayyor
+                {t('register_page.sig_ready')}
               </span>
             ) : (
               <span className="text-xs italic text-muted-foreground">
-                Imzo kutilmoqda...
+                {t('register_page.sig_waiting')}
               </span>
             )}
           </div>
           <div className="flex gap-2">
             <Button variant="outline" onClick={onCancel}>
-              Bekor qilish
+              {t('register_page.cancel')}
             </Button>
             <Button onClick={handleConfirm} disabled={!hasSig || saving}>
               {saving ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin" />
-                  Saqlanmoqda...
+                  {t('register_page.sig_saving')}
                 </>
               ) : (
                 <>
                   <Check className="h-4 w-4" />
-                  Tasdiqlash
+                  {t('register_page.sig_confirm')}
                 </>
               )}
             </Button>
@@ -293,6 +295,7 @@ function SignatureModal({ open, onConfirm, onCancel }) {
 /* ─────────────── CONTRACT MODAL ─────────────── */
 
 function ContractModal({ open, onAgree, onCancel, form, regions, allDistricts }) {
+  const { t } = useTranslation()
   const [agreed, setAgreed] = useState(false)
   const [scrolledToEnd, setScrolledToEnd] = useState(false)
   const [loadingPdf, setLoadingPdf] = useState(true)
@@ -415,7 +418,7 @@ function ContractModal({ open, onAgree, onCancel, form, regions, allDistricts })
     } catch {
       if (pdfWrapRef.current) {
         pdfWrapRef.current.innerHTML =
-          '<p class="p-10 text-center text-sm text-muted-foreground">Shartnomani yuklab bo\'lmadi</p>'
+          `<p class="p-10 text-center text-sm text-muted-foreground">${t('register_page.contract_load_err')}</p>`
       }
       setLoadingPdf(false)
     }
@@ -427,17 +430,17 @@ function ContractModal({ open, onAgree, onCancel, form, regions, allDistricts })
         <div className="flex items-start justify-between gap-4 border-b border-border bg-muted/40 px-6 py-4">
           <div>
             <h2 className="text-base font-bold text-foreground">
-              A&apos;zolik shartnomasi
+              {t('register_page.contract_title')}
             </h2>
             <p className="mt-0.5 text-xs text-muted-foreground">
-              Platformadan foydalanishdan oldin diqqat bilan o&apos;qib chiqing
+              {t('register_page.contract_subtitle')}
             </p>
           </div>
           <div className="flex items-center gap-2">
             <div className="hidden h-11 w-11 items-center justify-center rounded-lg bg-primary-soft text-primary sm:flex">
               <FileText className="h-5 w-5" />
             </div>
-            <Button variant="ghost" size="icon" onClick={onCancel} aria-label="Yopish">
+            <Button variant="ghost" size="icon" onClick={onCancel} aria-label={t('register_page.close')}>
               <X className="h-4 w-4" />
             </Button>
           </div>
@@ -452,7 +455,7 @@ function ContractModal({ open, onAgree, onCancel, form, regions, allDistricts })
           {loadingPdf && (
             <div className="flex flex-col items-center gap-3 py-12 text-muted-foreground">
               <Loader2 className="h-7 w-7 animate-spin text-primary" />
-              <p className="text-sm">Shartnoma yuklanmoqda...</p>
+              <p className="text-sm">{t('register_page.contract_loading')}</p>
             </div>
           )}
         </div>
@@ -461,7 +464,7 @@ function ContractModal({ open, onAgree, onCancel, form, regions, allDistricts })
           {!scrolledToEnd && (
             <p className="mb-3 flex items-center justify-center gap-1.5 text-xs text-muted-foreground">
               <ArrowDownToLine className="h-3.5 w-3.5" />
-              Shartnomani oxirigacha o&apos;qing
+              {t('register_page.contract_read_to_end')}
             </p>
           )}
           <div
@@ -491,7 +494,7 @@ function ContractModal({ open, onAgree, onCancel, form, regions, allDistricts })
                   agreed ? 'text-foreground' : 'text-muted-foreground'
                 )}
               >
-                Shartnomani o&apos;qidim va roziman
+                {t('register_page.contract_agree')}
               </span>
             </button>
 
@@ -503,7 +506,7 @@ function ContractModal({ open, onAgree, onCancel, form, regions, allDistricts })
               className="w-full"
             >
               <Check className="h-4 w-4" />
-              Davom etish
+              {t('register_page.contract_continue')}
             </Button>
           </div>
         </div>
@@ -515,6 +518,7 @@ function ContractModal({ open, onAgree, onCancel, form, regions, allDistricts })
 /* ─────────────── REGION/DISTRICT SELECT ─────────────── */
 
 function GeoSelect({ options, value, onChange, placeholder, disabled }) {
+  const { t } = useTranslation()
   const [open, setOpen] = useState(false)
   const ref = useRef(null)
   const selected = options.find((o) => o.value === value)
@@ -555,7 +559,7 @@ function GeoSelect({ options, value, onChange, placeholder, disabled }) {
         <div className="absolute left-0 right-0 top-full z-50 mt-1 max-h-52 overflow-y-auto rounded-md border border-border bg-popover py-1 shadow-soft-md">
           {options.length === 0 ? (
             <div className="px-3 py-3 text-center text-sm text-muted-foreground">
-              Ma&apos;lumot yo&apos;q
+              {t('register_page.geo_empty')}
             </div>
           ) : (
             options.map((opt) => {
@@ -590,6 +594,7 @@ function GeoSelect({ options, value, onChange, placeholder, disabled }) {
 /* ─────────────── MAIN REGISTER PAGE ─────────────── */
 
 export default function Register() {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const { user, loading: authLoading, setUser } = useAuth()
@@ -662,7 +667,7 @@ export default function Register() {
       })
       .catch((err) => {
         if (err.name !== 'AbortError') {
-          setError('Viloyat/tuman yuklanmadi. Yangilang.')
+          setError(t('register_page.err_geo'))
         }
       })
       .finally(() => {
@@ -717,7 +722,7 @@ export default function Register() {
   const handleBecomeMember = () => {
     setError(null)
     if (!formComplete()) {
-      setError("Barcha * maydonlarni to'g'ri to'ldiring.")
+      setError(t('register_page.err_fill'))
       return
     }
     setShowContractModal(true)
@@ -731,11 +736,11 @@ export default function Register() {
 
   const handleRegister = async (sigData) => {
     if (!formComplete()) {
-      setError("Barcha * maydonlarni to'g'ri to'ldiring.")
+      setError(t('register_page.err_fill'))
       return
     }
     if (!sigData) {
-      setError('Imzo talab qilinadi.')
+      setError(t('register_page.err_signature'))
       return
     }
     setError(null)
@@ -789,7 +794,7 @@ export default function Register() {
     } catch (err) {
       setError(
         sanitizeErrorMessage(
-          err.message || "Ro'yxatdan o'tishda xatolik. Qayta urining."
+          err.message || t('register_page.err_register')
         )
       )
       setSubmitLoading(false)
@@ -812,12 +817,12 @@ export default function Register() {
         : 30
 
   const progressText = success
-    ? "A'zo bo'ldingiz"
+    ? t('register_page.progress_success')
     : signatureData
-      ? 'Imzo qabul qilindi…'
+      ? t('register_page.progress_signed')
       : formComplete()
-        ? "A'zo bo'lish uchun tayyor"
-        : "Ma'lumotlarni kiriting"
+        ? t('register_page.progress_ready')
+        : t('register_page.progress_fill')
 
   return (
     <section className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-background px-4 py-12">
@@ -855,7 +860,7 @@ export default function Register() {
                 <UserPlus className="h-6 w-6" />
               </div>
               <h1 className="text-2xl font-extrabold tracking-tight text-foreground">
-                {success ? 'Muvaffaqiyatli!' : "A'zo bo'lish"}
+                {success ? t('register_page.title_success') : t('register_page.title')}
               </h1>
               {user && !success && (
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-primary-soft px-3 py-1 text-xs font-semibold text-primary-soft-foreground">
@@ -864,13 +869,13 @@ export default function Register() {
                     .filter(Boolean)
                     .join(' ') ||
                     user.pinfl ||
-                    'Autentifikatsiya qilingan foydalanuvchi'}
+                    t('register_page.auth_user_fallback')}
                 </span>
               )}
               <p className="text-sm text-muted-foreground">
                 {success
-                  ? "Dashboard'ga yo'naltirilmoqda..."
-                  : "Ma'lumotlaringizni kiriting"}
+                  ? t('register_page.redirecting')
+                  : t('register_page.subtitle')}
               </p>
             </div>
 
@@ -879,8 +884,8 @@ export default function Register() {
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
                 <p className="text-sm text-muted-foreground">
                   {submitLoading
-                    ? "Ma'lumotlar yuborilmoqda..."
-                    : 'Yuklanmoqda...'}
+                    ? t('register_page.submitting')
+                    : t('register_page.loading')}
                 </p>
               </div>
             )}
@@ -891,7 +896,7 @@ export default function Register() {
                   <CheckCircle2 className="h-7 w-7" />
                 </div>
                 <p className="text-sm font-semibold text-success">
-                  Ro&apos;yxatdan muvaffaqiyatli o&apos;tdingiz!
+                  {t('register_page.success_msg')}
                 </p>
               </div>
             )}
@@ -907,7 +912,7 @@ export default function Register() {
               <div className="space-y-4">
                 <div className="space-y-1.5">
                   <Label htmlFor="phoneRequired">
-                    Telefon raqami <span className="text-destructive">*</span>
+                    {t('register_page.phone_label')} <span className="text-destructive">*</span>
                   </Label>
                   <Input
                     id="phoneRequired"
@@ -915,49 +920,49 @@ export default function Register() {
                     name="phoneRequired"
                     value={form.phoneRequired}
                     onChange={handlePhoneChange}
-                    placeholder="+998 90 123 45 67"
+                    placeholder={t('register_page.phone_ph')}
                   />
                   {form.phoneRequired && !isValidPhone(form.phoneRequired) && (
                     <p className="text-xs text-destructive">
-                      Noto&apos;g&apos;ri format. Misol: +998901234567
+                      {t('register_page.phone_invalid')}
                     </p>
                   )}
                 </div>
 
                 <div className="space-y-1.5">
-                  <Label htmlFor="phoneOptional">Qo&apos;shimcha telefon</Label>
+                  <Label htmlFor="phoneOptional">{t('register_page.phone_opt_label')}</Label>
                   <Input
                     id="phoneOptional"
                     type="tel"
                     name="phoneOptional"
                     value={form.phoneOptional}
                     onChange={handlePhoneChange}
-                    placeholder="+998 91 234 56 78"
+                    placeholder={t('register_page.phone_opt_ph')}
                   />
                   {form.phoneOptional && !isValidPhone(form.phoneOptional) && (
-                    <p className="text-xs text-destructive">Noto&apos;g&apos;ri format</p>
+                    <p className="text-xs text-destructive">{t('register_page.phone_opt_invalid')}</p>
                   )}
                 </div>
 
                 <div className="space-y-1.5">
-                  <Label htmlFor="pseudonym">Taxallus (Pseudonym)</Label>
+                  <Label htmlFor="pseudonym">{t('register_page.pseudonym_label')}</Label>
                   <Input
                     id="pseudonym"
                     type="text"
                     name="pseudonym"
                     value={form.pseudonym}
                     onChange={handleChange}
-                    placeholder="Taxallusingiz (ixtiyoriy)"
+                    placeholder={t('register_page.pseudonym_ph')}
                   />
                 </div>
 
                 <div className="space-y-1.5">
                   <Label>
-                    Viloyat <span className="text-destructive">*</span>
+                    {t('register_page.region_label')} <span className="text-destructive">*</span>
                   </Label>
                   {regionsLoading ? (
                     <div className="flex h-10 items-center rounded-md border border-input bg-muted/40 px-3 text-sm text-muted-foreground">
-                      Yuklanmoqda...
+                      {t('register_page.loading')}
                     </div>
                   ) : (
                     <GeoSelect
@@ -967,14 +972,14 @@ export default function Register() {
                         setError(null)
                         setForm((p) => ({ ...p, region: v }))
                       }}
-                      placeholder="Viloyatni tanlang"
+                      placeholder={t('register_page.region_ph')}
                     />
                   )}
                 </div>
 
                 <div className="space-y-1.5">
                   <Label>
-                    Tuman <span className="text-destructive">*</span>
+                    {t('register_page.district_label')} <span className="text-destructive">*</span>
                   </Label>
                   <GeoSelect
                     options={districtOptions}
@@ -984,7 +989,9 @@ export default function Register() {
                       setForm((p) => ({ ...p, district: v }))
                     }}
                     placeholder={
-                      form.region ? 'Tumanni tanlang' : 'Avval viloyat tanlang'
+                      form.region
+                        ? t('register_page.district_ph')
+                        : t('register_page.district_ph_region_first')
                     }
                     disabled={!form.region}
                   />
@@ -993,7 +1000,7 @@ export default function Register() {
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                   <div className="space-y-1.5">
                     <Label htmlFor="street">
-                      Ko&apos;cha <span className="text-destructive">*</span>
+                      {t('register_page.street_label')} <span className="text-destructive">*</span>
                     </Label>
                     <Input
                       id="street"
@@ -1001,12 +1008,12 @@ export default function Register() {
                       name="street"
                       value={form.street}
                       onChange={handleChange}
-                      placeholder="Ko'cha nomi"
+                      placeholder={t('register_page.street_ph')}
                     />
                   </div>
                   <div className="space-y-1.5">
                     <Label htmlFor="houseNumber">
-                      Uy raqami <span className="text-destructive">*</span>
+                      {t('register_page.house_label')} <span className="text-destructive">*</span>
                     </Label>
                     <Input
                       id="houseNumber"
@@ -1014,15 +1021,13 @@ export default function Register() {
                       name="houseNumber"
                       value={form.houseNumber}
                       onChange={handleChange}
-                      placeholder="12A"
+                      placeholder={t('register_page.house_ph')}
                     />
                   </div>
                 </div>
 
                 <div className="rounded-lg border border-primary/20 bg-primary-soft/60 p-3 text-center text-xs leading-relaxed text-muted-foreground">
-                  Barcha <span className="text-destructive">*</span> maydonlarni to&apos;ldiring va{' '}
-                  <strong className="text-foreground">A&apos;zo bo&apos;lish</strong>{' '}
-                  tugmasini bosing
+                  {t('register_page.hint')}
                 </div>
 
                 <Button
@@ -1032,7 +1037,7 @@ export default function Register() {
                   disabled={!formComplete()}
                 >
                   <UserPlus className="h-4 w-4" />
-                  A&apos;zo bo&apos;lish
+                  {t('register_page.submit_btn')}
                   <ArrowRight className="h-4 w-4" />
                 </Button>
               </div>
@@ -1041,21 +1046,21 @@ export default function Register() {
         </Card>
 
         <p className="text-center text-sm text-muted-foreground">
-          Akkauntingiz bormi?{' '}
+          {t('register_page.have_account')}{' '}
           <button
             type="button"
             onClick={() => navigate('/login')}
             className="font-semibold text-primary hover:underline"
           >
-            Kirish
+            {t('register_page.login_link')}
           </button>
         </p>
 
         <div className="grid grid-cols-3 gap-2">
           {[
-            { icon: ShieldCheck, label: 'Xavfsiz' },
-            { icon: Smartphone, label: 'OneID' },
-            { icon: Check, label: 'Tezkor' },
+            { icon: ShieldCheck, label: t('register_page.tile_secure') },
+            { icon: Smartphone, label: t('register_page.tile_oneid') },
+            { icon: Check, label: t('register_page.tile_fast') },
           ].map(({ icon: Icon, label }) => (
             <div
               key={label}
