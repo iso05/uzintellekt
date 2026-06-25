@@ -37,11 +37,23 @@ export default function WorkActions({ work, onView, onChanged }) {
       )}
 
       {editable && (
-        <SubmitWorkButton workId={work.id} onDone={onChanged} iconOnly />
+        <SubmitWorkButton
+          workId={work.id}
+          onDone={onChanged}
+          iconOnly
+          variant="outline"
+          className="text-success hover:text-success"
+        />
       )}
 
       {cancellable && (
-        <CancelWorkButton workId={work.id} onDone={onChanged} iconOnly />
+        <CancelWorkButton
+          workId={work.id}
+          onDone={onChanged}
+          iconOnly
+          variant="outline"
+          className="text-destructive hover:text-destructive"
+        />
       )}
     </div>
   )

@@ -23,6 +23,7 @@ export default function SubmitWorkButton({
   size = 'sm',
   iconOnly = false,
   disabled = false,
+  className,
 }) {
   const { t } = useTranslation()
   const [open, setOpen] = useState(false)
@@ -50,7 +51,7 @@ export default function SubmitWorkButton({
           size={iconOnly ? 'icon' : size}
           disabled={disabled || submitting}
           title={t('work_actions.submit')}
-          className={iconOnly ? 'h-8 w-8' : undefined}
+          className={`${iconOnly ? 'h-8 w-8 ' : ''}${className ?? ''}`.trim() || undefined}
         >
           {submitting ? <Loader2 className="animate-spin" /> : <Send />}
           {!iconOnly && t('work_actions.submit')}

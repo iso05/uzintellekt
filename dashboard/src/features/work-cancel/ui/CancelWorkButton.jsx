@@ -23,6 +23,7 @@ export default function CancelWorkButton({
   size = 'sm',
   iconOnly = false,
   disabled = false,
+  className,
 }) {
   const { t } = useTranslation()
   const [open, setOpen] = useState(false)
@@ -50,7 +51,7 @@ export default function CancelWorkButton({
           size={iconOnly ? 'icon' : size}
           disabled={disabled || cancelling}
           title={t('work_actions.cancel_title')}
-          className={iconOnly ? 'h-8 w-8' : undefined}
+          className={`${iconOnly ? 'h-8 w-8 ' : ''}${className ?? ''}`.trim() || undefined}
         >
           {cancelling ? <Loader2 className="animate-spin" /> : <X />}
           {!iconOnly && t('work_actions.cancel')}
