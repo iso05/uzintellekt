@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Plus } from 'lucide-react'
@@ -24,6 +24,7 @@ import { ContributionsTable } from '@/widgets/contributions-table'
 
 const SEARCH_MIN_CHARS = 2
 const DEFAULT_PAGE_SIZE = 10
+const SEARCH_DEBOUNCE_MS = 300
 
 export default function WorksPage() {
   const navigate = useNavigate()
@@ -35,8 +36,18 @@ export default function WorksPage() {
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE)
   const [search, setSearch] = useState(() => searchParams.get('search') || '')
+  // Debounced mirror of `search` — the input updates instantly, but the fetch
+  // only fires once typing settles, instead of one request per keystroke.
+  const [debouncedSearch, setDebouncedSearch] = useState(search)
   const [stateFilter, setStateFilter] = useState(() => searchParams.get('state') || '')
   const [loading, setLoading] = useState(true)
+  // Monotonic request id — a slow earlier response must not overwrite a newer one.
+  const reqIdRef = useRef(0)
+
+  useEffect(() => {
+    const id = setTimeout(() => setDebouncedSearch(search), SEARCH_DEBOUNCE_MS)
+    return () => clearTimeout(id)
+  }, [search])
 
   // Sync filters when query params change (e.g. user navigates from stat card or header search)
   useEffect(() => {
@@ -66,14 +77,16 @@ export default function WorksPage() {
   const [detailLoading, setDetailLoading] = useState(false)
 
   const loadWorks = useCallback(async () => {
+    const reqId = ++reqIdRef.current
     setLoading(true)
     try {
       const filters = []
       if (stateFilter) {
         filters.push({ field: 'state', operator: 'eq', value: stateFilter })
       }
-      if (search.trim().length >= SEARCH_MIN_CHARS) {
-        filters.push({ field: 'name', operator: 'lk', value: search.trim() })
+      const q = debouncedSearch.trim()
+      if (q.length >= SEARCH_MIN_CHARS) {
+        filters.push({ field: 'name', operator: 'lk', value: q })
       }
       const res = await getWorks({
         page,
@@ -81,14 +94,16 @@ export default function WorksPage() {
         filters,
         sort: { selector: 'createdAt', desc: true },
       })
+      if (reqId !== reqIdRef.current) return // superseded by a newer request
       setWorks(res?.items ?? res?.data?.items ?? [])
       setTotal(res?.totalItems ?? res?.data?.totalItems ?? 0)
     } catch (e) {
+      if (reqId !== reqIdRef.current) return
       toast.error(e?.message || t('works.load_error'))
     } finally {
-      setLoading(false)
+      if (reqId === reqIdRef.current) setLoading(false)
     }
-  }, [page, pageSize, search, stateFilter])
+  }, [page, pageSize, debouncedSearch, stateFilter])
 
   const loadContributions = useCallback(async () => {
     setContribLoading(true)
