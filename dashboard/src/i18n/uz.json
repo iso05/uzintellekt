@@ -216,6 +216,7 @@
     "field_work_type": "Asar turi",
     "field_first_name": "Ism",
     "field_last_name": "Familiya",
+    "field_default": "Maydon",
     "passport_required": "Pasport seriya/raqami kiritilishi shart",
     "passport_format": "Pasport noto'g'ri formatda (AA1234567)",
     "passport_dup": "Bu pasport allaqachon haq egalari ro'yxatida",

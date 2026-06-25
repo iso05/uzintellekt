@@ -216,6 +216,7 @@
     "field_work_type": "Асар тури",
     "field_first_name": "Исм",
     "field_last_name": "Фамилия",
+    "field_default": "Майдон",
     "passport_required": "Паспорт серия/рақами киритилиши шарт",
     "passport_format": "Паспорт нотўғри форматда (АА1234567)",
     "passport_dup": "Бу паспорт аллақачон ҳақ эгалари рўйхатида",

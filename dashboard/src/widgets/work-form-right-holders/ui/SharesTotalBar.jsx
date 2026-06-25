@@ -1,9 +1,11 @@
 import { Check, AlertCircle } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { cn } from '@/shared/lib/utils'
+import { resolveValidationError } from '@/shared/lib/validation-error'
 
 export default function SharesTotalBar({ total, error }) {
   const { t } = useTranslation()
+  const errorMessage = resolveValidationError(t, error)
   const ok = total === 100
   const pct = Math.min(100, Math.max(0, Number(total) || 0))
 
@@ -39,7 +41,9 @@ export default function SharesTotalBar({ total, error }) {
           style={{ width: `${pct}%` }}
         />
       </div>
-      {error && <div className="text-[12px] font-medium text-destructive">{error}</div>}
+      {errorMessage && (
+        <div className="text-[12px] font-medium text-destructive">{errorMessage}</div>
+      )}
     </div>
   )
 }

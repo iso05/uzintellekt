@@ -36,8 +36,8 @@ describe('findDuplicatePassportErrors', () => {
       holder({ passportNo: 'AB1234567' }),
     ])
     expect(errors['rightHolders[0].passportNo']).toBeUndefined()
-    expect(errors['rightHolders[1].passportNo']).toContain("allaqachon")
-    expect(errors['rightHolders[2].passportNo']).toContain("allaqachon")
+    expect(errors['rightHolders[1].passportNo']).toEqual({ key: 'validation.passport_dup' })
+    expect(errors['rightHolders[2].passportNo']).toEqual({ key: 'validation.passport_dup' })
   })
 
   it('is case-insensitive and trims whitespace', () => {
@@ -73,8 +73,12 @@ describe('getShareTotalError', () => {
   })
 
   it('errors when total is not 100', () => {
-    expect(getShareTotalError([holder({ share: '50' })])).toContain('100')
-    expect(getShareTotalError([holder({ share: '120' })])).toContain('100')
+    expect(getShareTotalError([holder({ share: '50' })])).toEqual({
+      key: 'validation.share_total_simple',
+    })
+    expect(getShareTotalError([holder({ share: '120' })])).toEqual({
+      key: 'validation.share_total_simple',
+    })
   })
 })
 
@@ -104,7 +108,7 @@ describe('validateHolder', () => {
       }),
       0
     )
-    expect(errors['rightHolders[0].authorRoles']).toBeDefined()
+    expect(errors['rightHolders[0].authorRoles']).toEqual({ key: 'validation.role_required' })
   })
 })
 
@@ -130,7 +134,7 @@ describe('validateWorkForm', () => {
         }),
       ],
     })
-    expect(errors['rightHolders[1].passportNo']).toContain('allaqachon')
+    expect(errors['rightHolders[1].passportNo']).toEqual({ key: 'validation.passport_dup' })
   })
 
   it('flags missing top-level fields', () => {
@@ -139,8 +143,11 @@ describe('validateWorkForm', () => {
       workTypeId: '',
       rightHolders: [holder()],
     })
-    expect(errors.name).toBeDefined()
-    expect(errors.workTypeId).toBeDefined()
+    expect(errors.name).toEqual({
+      key: 'validation.field_required',
+      params: { field: { key: 'validation.field_work_name' } },
+    })
+    expect(errors.workTypeId).toEqual({ key: 'validation.type_required' })
   })
 })
 

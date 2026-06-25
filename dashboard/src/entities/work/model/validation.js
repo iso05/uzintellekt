@@ -1,12 +1,9 @@
-import i18n from '@/i18n'
 import {
   validatePassport,
   validateName,
   validateShare,
   validateRequired,
 } from '@/shared/lib/validators'
-
-const t = (key, opts) => i18n.t(key, opts)
 
 export const EMPTY_HOLDER = {
   passportNo: '',
@@ -28,17 +25,17 @@ export function validateHolder(rh, idx) {
   const passErr = validatePassport(rh.passportNo)
   if (passErr) errors[buildHolderErrorKey(idx, 'passportNo')] = passErr
 
-  const fnErr = validateName(rh.firstName, t('validation.field_first_name'))
+  const fnErr = validateName(rh.firstName, 'validation.field_first_name')
   if (fnErr) errors[buildHolderErrorKey(idx, 'firstName')] = fnErr
 
-  const lnErr = validateName(rh.lastName, t('validation.field_last_name'))
+  const lnErr = validateName(rh.lastName, 'validation.field_last_name')
   if (lnErr) errors[buildHolderErrorKey(idx, 'lastName')] = lnErr
 
   const shareErr = validateShare(rh.share)
   if (shareErr) errors[buildHolderErrorKey(idx, 'share')] = shareErr
 
   if (!rh.authorRoleIds || rh.authorRoleIds.length === 0) {
-    errors[buildHolderErrorKey(idx, 'authorRoleIds')] = t('validation.role_required')
+    errors[buildHolderErrorKey(idx, 'authorRoleIds')] = { key: 'validation.role_required' }
   }
 
   return errors
@@ -56,7 +53,7 @@ export function findDuplicatePassportErrors(rightHolders) {
     const pn = _normalizePassport(rh.passportNo)
     if (!pn) return
     if (firstSeenAt.has(pn)) {
-      errors[buildHolderErrorKey(idx, 'passportNo')] = t('validation.passport_dup')
+      errors[buildHolderErrorKey(idx, 'passportNo')] = { key: 'validation.passport_dup' }
     } else {
       firstSeenAt.set(pn, idx)
     }
@@ -67,10 +64,10 @@ export function findDuplicatePassportErrors(rightHolders) {
 export function validateWorkForm(form) {
   const errors = {}
 
-  const nameErr = validateRequired(form.name, t('validation.field_work_name'))
+  const nameErr = validateRequired(form.name, 'validation.field_work_name')
   if (nameErr) errors.name = nameErr
 
-  if (!form.workTypeId) errors.workTypeId = t('validation.type_required')
+  if (!form.workTypeId) errors.workTypeId = { key: 'validation.type_required' }
 
   form.rightHolders.forEach((rh, idx) => {
     Object.assign(errors, validateHolder(rh, idx))
@@ -89,7 +86,7 @@ export function computeShareTotal(rightHolders) {
 
 export function getShareTotalError(rightHolders) {
   const total = computeShareTotal(rightHolders)
-  if (total !== 100) return t('validation.share_total_simple')
+  if (total !== 100) return { key: 'validation.share_total_simple' }
   return null
 }
 

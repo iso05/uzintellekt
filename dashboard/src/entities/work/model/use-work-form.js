@@ -1,5 +1,4 @@
 import { useState, useCallback, useEffect, useRef } from 'react'
-import i18n from '@/i18n'
 import { maskName, maskPassport, maskShare } from '@/shared/lib/input-masks'
 import {
   validateRequired,
@@ -28,19 +27,17 @@ const HOLDER_FIELD_MASKS = {
   share: maskShare,
 }
 
-const t = (key, opts) => i18n.t(key, opts)
-
 const FIELD_BLUR_VALIDATORS = {
-  name: (v) => validateRequired(v, t('validation.field_work_name')),
-  workTypeId: (v) => validateRequired(v, t('validation.field_work_type')),
+  name: (v) => validateRequired(v, 'validation.field_work_name'),
+  workTypeId: (v) => validateRequired(v, 'validation.field_work_type'),
 }
 
 const HOLDER_BLUR_VALIDATORS = {
   passportNo: validatePassport,
-  firstName: (v) => validateName(v, t('validation.field_first_name')),
-  lastName: (v) => validateName(v, t('validation.field_last_name')),
+  firstName: (v) => validateName(v, 'validation.field_first_name'),
+  lastName: (v) => validateName(v, 'validation.field_last_name'),
   share: validateShare,
-  authorRoleIds: (v) => (!v || v.length === 0 ? t('validation.role_required') : null),
+  authorRoleIds: (v) => (!v || v.length === 0 ? { key: 'validation.role_required' } : null),
 }
 
 export function useWorkForm(initial = INITIAL_FORM) {
@@ -108,7 +105,6 @@ export function useWorkForm(initial = INITIAL_FORM) {
 
   const handleHolderBlur = useCallback((idx, field, value) => {
     const validator = HOLDER_BLUR_VALIDATORS[field]
-    const dupPassportMsg = t('validation.passport_dup')
     setFieldErrors((prev) => {
       const next = { ...prev }
       if (validator) {
@@ -132,7 +128,7 @@ export function useWorkForm(initial = INITIAL_FORM) {
         holders.forEach((_, i) => {
           const k = buildHolderErrorKey(i, 'passportNo')
           if (dup[k]) next[k] = dup[k]
-          else if (next[k] === dupPassportMsg) delete next[k]
+          else if (next[k]?.key === 'validation.passport_dup') delete next[k]
         })
       }
       return next

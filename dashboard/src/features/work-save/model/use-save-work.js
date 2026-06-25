@@ -33,7 +33,7 @@ function _mapBackendErrors(apiError) {
   const map = {}
   apiError.errors.forEach((e) => {
     if (e.fieldName) {
-      map[e.fieldName] = e.message || e.defaultMessage || i18n.t('common.error')
+      map[e.fieldName] = e.message || e.defaultMessage || { key: 'common.error' }
     }
   })
   return Object.keys(map).length ? map : null
