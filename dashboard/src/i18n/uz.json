@@ -89,11 +89,9 @@
   },
   "work_status": {
     "DRAFT": "Qoralama",
-    "PENDING": "Ko'rib chiqilmoqda",
-    "REGISTERED": "Tasdiqlangan",
-    "APPROVED": "Tasdiqlangan",
+    "UNDER_REVIEW": "Ko'rib chiqilmoqda",
     "REJECTED": "Rad etilgan",
-    "CANCELLED": "Bekor qilingan",
+    "REGISTERED": "Tasdiqlangan",
     "unknown": "Noma'lum"
   },
   "recent": {
@@ -110,7 +108,8 @@
     "works": "Asarlar",
     "new_work": "Yangi asar",
     "edit": "Tahrirlash",
-    "contracts": "Shartnomalarim"
+    "contracts": "Shartnomalarim",
+    "detail": "Ariza"
   },
   "works": {
     "title": "Asarlarim",
@@ -213,7 +212,14 @@
     "submit": "Ko'rib chiqishga yuborish",
     "saved": "Saqlandi",
     "created": "Yaratildi",
-    "submitted": "Asar ko'rib chiqishga yuborildi"
+    "submitted": "Asar ko'rib chiqishga yuborildi",
+    "autosave_saving": "Saqlanmoqda…",
+    "autosave_saved": "Saqlandi",
+    "autosave_saved_local": "Lokal saqlandi",
+    "autosave_error": "Serverga saqlanmadi",
+    "draft_restored": "Saqlanmagan qoralama tiklandi",
+    "back": "Orqaga",
+    "submit_need_file": "Yuborish uchun fayl biriktiring"
   },
   "validation": {
     "field_required": "{{field}} kiritilishi shart",
@@ -255,7 +261,15 @@
     "submit_err": "Asarni yuborishda xatolik",
     "submit_q": "Asarni yuborasizmi?",
     "submit_desc": "Asar ko'rib chiqishga yuboriladi. Yuborilgandan keyin uni tahrirlash mumkin emas.",
-    "submit_dismiss": "Bekor"
+    "submit_dismiss": "Bekor",
+    "delete": "O'chirish",
+    "delete_title": "Qoralamani o'chirish",
+    "delete_ok": "Qoralama o'chirildi",
+    "delete_err": "O'chirib bo'lmadi",
+    "delete_q": "Qoralama o'chirilsinmi?",
+    "delete_desc": "Asar va unga biriktirilgan fayllar o'chiriladi. Bu amalni qaytarib bo'lmaydi.",
+    "delete_dismiss": "Bekor qilish",
+    "delete_confirm": "O'chirish"
   },
   "detail": {
     "title": "Asar tafsilotlari",
@@ -274,7 +288,10 @@
     "col_first_name": "Ism",
     "col_last_name": "Familiya",
     "col_share": "Ulush",
-    "col_role": "Muallif roli"
+    "col_role": "Muallif roli",
+    "back": "Orqaga",
+    "edit": "Tahrirlash",
+    "subtitle": "Ariza tafsilotlari"
   },
   "notfound": {
     "title": "Sahifa topilmadi",
@@ -288,5 +305,43 @@
     "col_desc": "Tavsif",
     "col_status": "Holati",
     "load_error": "Qatnashgan asarlarni yuklashda xatolik"
+  },
+  "work_files": {
+    "title": "Ish fayllari",
+    "storage": "Xotira",
+    "units": "B,KB,MB,GB,TB",
+    "drop_hint": "Fayllarni shu yerga tashlang yoki tanlash uchun bosing",
+    "drop_types": "PDF, DOC, DOCX",
+    "uploading": "Yuklanmoqda…",
+    "queued": "Navbatda",
+    "done": "Tayyor",
+    "failed": "Xato",
+    "empty_title": "Hozircha fayllar yo'q",
+    "empty_desc": "Ishga hujjatlarni biriktiring.",
+    "empty_desc_readonly": "Bu ishga fayllar biriktirilmagan.",
+    "download": "Yuklab olish",
+    "delete": "O'chirish",
+    "deleted": "Fayl o'chirildi",
+    "delete_error": "Faylni o'chirib bo'lmadi",
+    "download_error": "Havolani olishda xato",
+    "delete_confirm_title": "Fayl o'chirilsinmi?",
+    "delete_confirm_desc": "«{{name}}» butunlay o'chiriladi.",
+    "reject_type": "«{{name}}»: ruxsat etilmagan fayl turi",
+    "reject_quota": "«{{name}}»: xotirada joy yetarli emas",
+    "load_error": "Fayllarni yuklab bo'lmadi",
+    "retry": "Qayta urinish",
+    "remove": "Olib tashlash",
+    "section_sub": "Ishga biriktirilgan hujjatlar",
+    "save_first": "Avval ishni saqlang — keyin fayl biriktirishingiz mumkin.",
+    "remaining": "Bo'sh: {{size}}",
+    "attach_on_create": "Fayl ish qoralamasini yaratadi va unga biriktiriladi",
+    "expired": "Saqlash muddati tugadi — qayta yuklang",
+    "upload_error": "Yuklashda xato"
+  },
+  "errors": {
+    "quota_exceeded": "Xotirada joy yetarli emas",
+    "rate_limit": "Juda tez-tez. Birozdan so'ng urinib ko'ring.",
+    "draft_limit": "Cheklov: eng ko'pi 3 ta qoralama.",
+    "submit_no_file": "Yuborishdan oldin kamida bitta fayl biriktiring."
   }
 }

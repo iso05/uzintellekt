@@ -89,11 +89,9 @@
   },
   "work_status": {
     "DRAFT": "Draft",
-    "PENDING": "Under review",
-    "REGISTERED": "Approved",
-    "APPROVED": "Approved",
+    "UNDER_REVIEW": "Under review",
     "REJECTED": "Rejected",
-    "CANCELLED": "Cancelled",
+    "REGISTERED": "Registered",
     "unknown": "Unknown"
   },
   "recent": {
@@ -110,7 +108,8 @@
     "works": "Works",
     "new_work": "New work",
     "edit": "Edit",
-    "contracts": "My Contracts"
+    "contracts": "My Contracts",
+    "detail": "Application"
   },
   "works": {
     "title": "My Works",
@@ -213,7 +212,14 @@
     "submit": "Submit for review",
     "saved": "Saved",
     "created": "Created",
-    "submitted": "Work submitted for review"
+    "submitted": "Work submitted for review",
+    "autosave_saving": "Saving…",
+    "autosave_saved": "Saved",
+    "autosave_saved_local": "Saved locally",
+    "autosave_error": "Not saved to server",
+    "draft_restored": "Unsaved draft restored",
+    "back": "Back",
+    "submit_need_file": "Attach a file to submit"
   },
   "validation": {
     "field_required": "{{field}} is required",
@@ -255,7 +261,15 @@
     "submit_err": "Failed to submit work",
     "submit_q": "Submit this work?",
     "submit_desc": "The work will be submitted for review. After submission it cannot be edited.",
-    "submit_dismiss": "Cancel"
+    "submit_dismiss": "Cancel",
+    "delete": "Delete",
+    "delete_title": "Delete draft",
+    "delete_ok": "Draft deleted",
+    "delete_err": "Could not delete",
+    "delete_q": "Delete draft?",
+    "delete_desc": "The work and its attached files will be deleted. This cannot be undone.",
+    "delete_dismiss": "Cancel",
+    "delete_confirm": "Delete"
   },
   "detail": {
     "title": "Work details",
@@ -274,7 +288,10 @@
     "col_first_name": "First name",
     "col_last_name": "Last name",
     "col_share": "Share",
-    "col_role": "Author role"
+    "col_role": "Author role",
+    "back": "Back",
+    "edit": "Edit",
+    "subtitle": "Application details"
   },
   "notfound": {
     "title": "Page not found",
@@ -288,5 +305,43 @@
     "col_desc": "Description",
     "col_status": "Status",
     "load_error": "Failed to load contributed works"
+  },
+  "work_files": {
+    "title": "Work files",
+    "storage": "Storage",
+    "units": "B,KB,MB,GB,TB",
+    "drop_hint": "Drag files here or click to choose",
+    "drop_types": "PDF, DOC, DOCX",
+    "uploading": "Uploading…",
+    "queued": "Queued",
+    "done": "Done",
+    "failed": "Failed",
+    "empty_title": "No files yet",
+    "empty_desc": "Attach documents to this work.",
+    "empty_desc_readonly": "No files are attached to this work.",
+    "download": "Download",
+    "delete": "Delete",
+    "deleted": "File deleted",
+    "delete_error": "Could not delete the file",
+    "download_error": "Could not get the link",
+    "delete_confirm_title": "Delete file?",
+    "delete_confirm_desc": "“{{name}}” will be permanently deleted.",
+    "reject_type": "“{{name}}”: file type not allowed",
+    "reject_quota": "“{{name}}”: not enough storage space",
+    "load_error": "Could not load files",
+    "retry": "Retry",
+    "remove": "Remove",
+    "section_sub": "Documents attached to this work",
+    "save_first": "Save the work first — then you can attach files.",
+    "remaining": "Free: {{size}}",
+    "attach_on_create": "Dropping a file creates the draft work and attaches it",
+    "expired": "Storage expired — please re-upload",
+    "upload_error": "Upload failed"
+  },
+  "errors": {
+    "quota_exceeded": "Not enough storage space",
+    "rate_limit": "Too many requests. Try again shortly.",
+    "draft_limit": "Limit reached: up to 3 drafts.",
+    "submit_no_file": "Attach at least one file before submitting."
   }
 }
