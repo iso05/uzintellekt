@@ -9,13 +9,19 @@ Loyiha frontend qismida zamonaviy **React + Vite** texnologiyalaridan foydalanil
 ### 1. `uz-intellekt` (Asosiy Veb-sayt)
 Foydalanuvchilar platformaga a'zo bo'lishi, ro'yxatdan o'tishi va tizim imkoniyatlari bilan tanishishi uchun xizmat qiladi.
 
-- `src/assets/styles/` - Tizimning umumiy va moslashtirilgan CSS uslublari (shu jumladan `index.css`).
-- `src/components/` - Takror ishlatiladigan UI komponentlar (masalan, Input, Button, Modal).
-- `src/pages/` - Alohida sahifalar (Auth, Home, About, Services va boshqalar).
+Tuzilma **Feature-Sliced Design (FSD)** tamoyiliga muvofiq tashkil etilgan:
+
+- `src/shared/` - Umumiy qatlam: UI primitivlari (`shared/ui` — Button, Input, Card va h.k.) va yordamchi kutubxonalar (`shared/lib`).
+- `src/entities/` - Biznes-entitilar (masalan, `entities/news`).
+- `src/widgets/` - Mustaqil UI bloklari (header, footer, layout, mobile-menu).
+- `src/pages/` - Alohida sahifalar (Auth, Home, About, Services, News, Contact).
 - `src/services/` - Tashqi API'larga so'rov yuborish uchun markazlashtirilgan funksiyalar (Axios orqali).
-- `src/hooks/` - Takrorlanuvchi logikalar uchun qulay bo'lgan "Custom Hook"lar (masalan, `useAuth`).
-- `src/utils/` - Yordamchi funksiyalar va doimiy o'zgaruvchilar (masalan, `navConfig.js`).
-- `src/router/` - Tizim bo'ylab marshrutlash (React Router v6).
+- `src/hooks/` - Takrorlanuvchi logikalar uchun "Custom Hook"lar (masalan, `useAuth`).
+- `src/config/` - Konfiguratsiya (masalan, `oneid.config.js`).
+- `src/data/` - Statik ma'lumotlar (masalan, `newsData.js`).
+- `src/i18n/` - Tarjimalar (uz, uz-Cyrl, ru, en).
+- `src/utils/` - Yordamchi funksiyalar.
+- `src/router/` - Tizim bo'ylab marshrutlash (React Router v7).
 
 ### 2. `dashboard` (Boshqaruv Paneli / Admin Panel)
 Platformaga OneID yoki tizim orqali kirgan a'zolar uchun xizmat ko'rsatish paneli.
@@ -36,13 +42,12 @@ Eski versiyada shartnomalar statik `.pdf` fayl sifatida saqlangan bo'lsa, tizim 
 - Uning o'rniga dinamik `POST /api/v1/contracts/preview` Swagger API yordamida har bir foydalanuvchi ma'lumotiga qarab real vaqtda PDF generatsiya qilinib ekranda aks etadi.
 
 ## 🚀 Texnologik Stack
-- **Framework**: React 18
+- **Framework**: React 19
 - **Build tool**: Vite
-- **Routing**: React Router DOM (v6)
+- **Routing**: React Router DOM (v7)
 - **API Muloqot**: Axios (interceptors bilan birga)
-- **Dizayn va Stil**: Vanilla CSS & TailwindCSS (kerakli qismlar uchun), shuningdek modern, responisve dizayn patternlari.
-- **Form va Validation**: Formik / React Hook Form / Zod (kerak bo'lgan joylarda)
-- **Holatni Boshqarish (State Management)**: React Context / Custom Hooks.
+- **Dizayn va Stil**: TailwindCSS + Radix UI primitivlari, modern, responsive dizayn patternlari.
+- **Holatni Boshqarish (State Management)**: React Context / Custom Hooks + Zustand.
 
 ## 💻 Asosiy Funksionalliklar
 1. Foydalanuvchi profilini boshqarish (`/api/v1/users/me`)
