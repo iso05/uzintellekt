@@ -17,7 +17,7 @@ export async function getWorksStats() {
   return {
     total: _num(data?.total),
     registered: _num(byStatus[WORK_STATUS.REGISTERED]),
-    pending: _num(byStatus[WORK_STATUS.PENDING]),
+    pending: _num(byStatus[WORK_STATUS.UNDER_REVIEW]),
     rejected: _num(byStatus[WORK_STATUS.REJECTED]),
   }
 }

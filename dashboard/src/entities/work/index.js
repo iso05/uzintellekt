@@ -4,7 +4,7 @@ export {
   createWork,
   updateWork,
   submitWork,
-  cancelWork,
+  deleteWork,
   getWorksStat,
   getMyContributions,
   getWorkTypes,
@@ -17,7 +17,7 @@ export {
   getWorkStatus,
   getStatusConfig,
   isEditableState,
-  isCancellableState,
+  isDeletableState,
 } from './model/status'
 
 export { getWorksStats, getRecentWorks } from './model/use-cases'
@@ -29,7 +29,7 @@ export {
 
 export { default as StatusBadge } from './ui/StatusBadge'
 export { default as WorkTypeBadge } from './ui/WorkTypeBadge'
-export { default as WorkDetailDialog } from './ui/WorkDetailDialog'
+export { default as WorkDetailContent } from './ui/WorkDetailContent'
 export { default as AuthorRolesMultiSelect } from './ui/AuthorRolesMultiSelect'
 
 export {

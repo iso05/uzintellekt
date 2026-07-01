@@ -8,7 +8,7 @@ import StatCard from './StatCard'
 const STATS = [
   { key: 'total', state: null, icon: FileText, tone: 'primary' },
   { key: 'registered', state: 'REGISTERED', icon: CheckCircle2, tone: 'success' },
-  { key: 'pending', state: 'PENDING', icon: Clock, tone: 'warning' },
+  { key: 'pending', state: 'UNDER_REVIEW', icon: Clock, tone: 'warning' },
   { key: 'rejected', state: 'REJECTED', icon: XCircle, tone: 'destructive' },
 ]
 

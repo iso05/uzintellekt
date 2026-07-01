@@ -47,10 +47,10 @@ export async function submitWork(workId) {
   return data
 }
 
-export async function cancelWork(workId) {
-  const data = await requestJson(`/api/v1/works/${workId}/cancel`, { method: 'PATCH' })
+// Soft-delete (backend enforces DRAFT/REJECTED only). Returns 204 (no body).
+export async function deleteWork(workId) {
+  await requestJson(`/api/v1/works/${workId}`, { method: 'DELETE' })
   invalidateCache(WORKS_GRID)
-  return data
 }
 
 export async function getWorksStat() {

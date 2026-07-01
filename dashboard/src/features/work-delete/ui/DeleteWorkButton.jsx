@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { X, Loader2 } from 'lucide-react'
+import { Trash2, Loader2 } from 'lucide-react'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -14,9 +14,10 @@ import {
   Button,
   toast,
 } from '@/shared/ui'
-import { cancelWork } from '@/entities/work'
+import { deleteWork } from '@/entities/work'
+import { apiErrorMessage } from '@/shared/lib/api-error'
 
-export default function CancelWorkButton({
+export default function DeleteWorkButton({
   workId,
   onDone,
   variant = 'destructive',
@@ -27,19 +28,19 @@ export default function CancelWorkButton({
 }) {
   const { t } = useTranslation()
   const [open, setOpen] = useState(false)
-  const [cancelling, setCancelling] = useState(false)
+  const [deleting, setDeleting] = useState(false)
 
   const handleConfirm = async () => {
-    setCancelling(true)
+    setDeleting(true)
     try {
-      await cancelWork(workId)
-      toast.success(t('work_actions.cancel_ok'))
+      await deleteWork(workId)
+      toast.success(t('work_actions.delete_ok'))
       setOpen(false)
       onDone?.()
     } catch (e) {
-      toast.error(e?.message || t('work_actions.cancel_err'))
+      toast.error(apiErrorMessage(e, t, 'work_actions.delete_err'))
     } finally {
-      setCancelling(false)
+      setDeleting(false)
     }
   }
 
@@ -49,24 +50,24 @@ export default function CancelWorkButton({
         <Button
           variant={variant}
           size={iconOnly ? 'icon' : size}
-          disabled={disabled || cancelling}
-          title={t('work_actions.cancel_title')}
+          disabled={disabled || deleting}
+          title={t('work_actions.delete_title')}
           className={`${iconOnly ? 'h-8 w-8 ' : ''}${className ?? ''}`.trim() || undefined}
         >
-          {cancelling ? <Loader2 className="animate-spin" /> : <X />}
-          {!iconOnly && t('work_actions.cancel')}
+          {deleting ? <Loader2 className="animate-spin" /> : <Trash2 />}
+          {!iconOnly && t('work_actions.delete')}
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{t('work_actions.cancel_q')}</AlertDialogTitle>
-          <AlertDialogDescription>{t('work_actions.cancel_desc')}</AlertDialogDescription>
+          <AlertDialogTitle>{t('work_actions.delete_q')}</AlertDialogTitle>
+          <AlertDialogDescription>{t('work_actions.delete_desc')}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={cancelling}>{t('work_actions.cancel_dismiss')}</AlertDialogCancel>
-          <AlertDialogAction onClick={handleConfirm} disabled={cancelling} variant="destructive">
-            {cancelling && <Loader2 className="animate-spin" />}
-            {t('work_actions.cancel_confirm')}
+          <AlertDialogCancel disabled={deleting}>{t('work_actions.delete_dismiss')}</AlertDialogCancel>
+          <AlertDialogAction onClick={handleConfirm} disabled={deleting} variant="destructive">
+            {deleting && <Loader2 className="animate-spin" />}
+            {t('work_actions.delete_confirm')}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

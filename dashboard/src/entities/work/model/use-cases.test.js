@@ -17,7 +17,7 @@ describe('getWorksStats — maps /works/stat into the dashboard shape', () => {
   it('flattens total and the consumed byStatus counts', async () => {
     getWorksStat.mockResolvedValue({
       total: 42,
-      byStatus: { DRAFT: 10, PENDING: 7, REGISTERED: 20, REJECTED: 3, CANCELLED: 2 },
+      byStatus: { DRAFT: 10, UNDER_REVIEW: 7, REGISTERED: 20, REJECTED: 3 },
     })
 
     expect(await getWorksStats()).toEqual({

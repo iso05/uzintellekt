@@ -15,6 +15,7 @@ import {
   toast,
 } from '@/shared/ui'
 import { submitWork } from '@/entities/work'
+import { apiErrorMessage } from '@/shared/lib/api-error'
 
 export default function SubmitWorkButton({
   workId,
@@ -37,7 +38,7 @@ export default function SubmitWorkButton({
       setOpen(false)
       onDone?.()
     } catch (e) {
-      toast.error(e?.message || t('work_actions.submit_err'))
+      toast.error(apiErrorMessage(e, t, 'work_actions.submit_err'))
     } finally {
       setSubmitting(false)
     }
