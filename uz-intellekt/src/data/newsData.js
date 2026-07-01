@@ -17,11 +17,11 @@ const newsData = [
   },
   {
     id: 3,
-    title: 'Huquqiy seminar',
-    date: '2026-05-01',
-    category: 'Seminar',
+    title: 'Hamkorlik uchrashuvi',
+    date: '2026-05-28',
+    category: 'Tadbir',
     img: null,
-    content: 'Seminar davomida huquqiy masalalar muhokama qilindi.',
+    content: 'Xalqaro hamkorlik bo‘yicha uchrashuv bo‘lib o‘tdi.',
   },
   {
     id: 4,

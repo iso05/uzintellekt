@@ -4,15 +4,10 @@ import { useTranslation } from 'react-i18next'
 import { ArrowRight } from 'lucide-react'
 import { NewsCard } from '@/entities/news'
 import { Eyebrow } from '@/shared/ui'
+import newsData from '@/data/newsData'
 
-const news = [
-  { id: 1, title: "Raqamli huquqlar yig'ilishi", date: '2026-06-04', desc: 'Mualliflik huquqlari muhokamasi.', img: null },
-  { id: 2, title: 'Raqamli guvohnoma joriy etildi', date: '2026-06-01', desc: 'Yangi tizim ishga tushdi.', img: null },
-  { id: 3, title: 'Hamkorlik uchrashuvi', date: '2026-05-28', desc: 'Xalqaro hamkorlik.', img: null },
-  { id: 4, title: 'Yangi platforma', date: '2026-05-20', desc: 'Platforma yangilandi.', img: null },
-  { id: 5, title: 'Konferensiya', date: '2026-05-12', desc: 'Soha vakillari uchrashuvi.', img: null },
-  { id: 6, title: 'Huquqiy seminar', date: '2026-05-01', desc: "Seminar bo'lib o'tdi.", img: null },
-]
+// Bosh sahifa preview — /news va /news/:id bilan bitta manbadan (newsData)
+const news = newsData
 
 const NewsPreview = () => {
   const { t } = useTranslation()
