@@ -28,6 +28,7 @@ import {
   Label,
 } from '@/shared/ui'
 import { cn } from '@/shared/lib/utils'
+import { downloadBlob } from '@/shared/lib/download'
 import {
   signContract,
   previewContract,
@@ -325,6 +326,11 @@ function ContractModal({ open, onAgree, onCancel, form, regions, allDistricts })
 
   useEffect(() => {
     if (!open) return
+    // pdf.js allaqachon yuklangan bo'lsa, qayta inject qilmaymiz
+    if (window.pdfjsLib) {
+      renderPDF()
+      return
+    }
     const s = document.createElement('script')
     s.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js'
     s.onload = () => {
@@ -333,6 +339,9 @@ function ContractModal({ open, onAgree, onCancel, form, regions, allDistricts })
       renderPDF()
     }
     document.head.appendChild(s)
+    return () => {
+      s.remove()
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open])
 
@@ -397,7 +406,10 @@ function ContractModal({ open, onAgree, onCancel, form, regions, allDistricts })
       const pdfUrl = URL.createObjectURL(pdfBlob)
       const pdf = await window.pdfjsLib.getDocument(pdfUrl).promise
       const container = pdfWrapRef.current
-      if (!container) return
+      if (!container) {
+        URL.revokeObjectURL(pdfUrl)
+        return
+      }
       container.innerHTML = ''
       for (let p = 1; p <= pdf.numPages; p++) {
         const page = await pdf.getPage(p)
@@ -414,6 +426,7 @@ function ContractModal({ open, onAgree, onCancel, form, regions, allDistricts })
         sep.style.height = '12px'
         container.appendChild(sep)
       }
+      URL.revokeObjectURL(pdfUrl)
       setLoadingPdf(false)
     } catch {
       if (pdfWrapRef.current) {
@@ -780,12 +793,7 @@ export default function Register() {
       const userData = await getMe()
       setUser(userData)
 
-      const pdfUrl = URL.createObjectURL(signedPdfBlob)
-      const link = document.createElement('a')
-      link.href = pdfUrl
-      link.download = `shartnoma_${Date.now()}.pdf`
-      link.click()
-      URL.revokeObjectURL(pdfUrl)
+      downloadBlob(signedPdfBlob, `shartnoma_${Date.now()}.pdf`)
 
       setSuccess(true)
       setTimeout(() => {
