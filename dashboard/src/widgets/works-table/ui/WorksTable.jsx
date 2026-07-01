@@ -21,6 +21,7 @@ import {
 } from '@/entities/work'
 import { WorkActions } from '@/widgets/work-actions'
 import { ROUTES } from '@/shared/config/routes'
+import { formatDate } from '@/shared/lib/format'
 
 function WorksEmptyState({ hasFilters }) {
   const navigate = useNavigate()
@@ -84,11 +85,12 @@ export default function WorksTable({
                 const status = getWorkStatus(w)
                 const isRegistered = status === 'REGISTERED'
                 return (
-                  <TableRow key={w.id} className="group">
-                    <TableCell
-                      className="max-w-[240px] cursor-pointer"
-                      onClick={() => onView(w)}
-                    >
+                  <TableRow
+                    key={w.id}
+                    className="group cursor-pointer"
+                    onClick={() => onView(w)}
+                  >
+                    <TableCell className="max-w-[240px]">
                       <div className="flex items-center gap-3">
                         <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground transition-colors group-hover:bg-primary-soft group-hover:text-primary">
                           <FileText className="h-4 w-4" />
@@ -115,9 +117,9 @@ export default function WorksTable({
                       {t('works.holders', { n: w.rightHolders?.length ?? 0 })}
                     </TableCell>
                     <TableCell className="text-muted-foreground">
-                      {isRegistered ? w.registrationDate || '—' : '—'}
+                      {isRegistered ? formatDate(w.registrationDate) : '—'}
                     </TableCell>
-                    <TableCell>
+                    <TableCell onClick={(e) => e.stopPropagation()}>
                       <WorkActions work={w} onView={onView} onChanged={onChanged} />
                     </TableCell>
                   </TableRow>

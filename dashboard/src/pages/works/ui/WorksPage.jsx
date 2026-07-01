@@ -12,12 +12,7 @@ import {
   PageHeader,
 } from '@/shared/ui'
 import { ROUTES } from '@/shared/config/routes'
-import {
-  getWorks,
-  getWork,
-  getMyContributions,
-  WorkDetailDialog,
-} from '@/entities/work'
+import { getWorks, getMyContributions } from '@/entities/work'
 import { WorksToolbar } from '@/widgets/works-toolbar'
 import { WorksTable } from '@/widgets/works-table'
 import { ContributionsTable } from '@/widgets/contributions-table'
@@ -73,9 +68,6 @@ export default function WorksPage() {
   const [contributions, setContributions] = useState([])
   const [contribLoading, setContribLoading] = useState(false)
 
-  const [detailWork, setDetailWork] = useState(null)
-  const [detailLoading, setDetailLoading] = useState(false)
-
   const loadWorks = useCallback(async () => {
     const reqId = ++reqIdRef.current
     setLoading(true)
@@ -126,21 +118,13 @@ export default function WorksPage() {
     loadContributions()
   }, [loadContributions])
 
-  const openDetail = useCallback(async (work) => {
-    setDetailLoading(true)
-    try {
-      const full = await getWork(work.id)
-      setDetailWork(full)
-    } catch (e) {
-      toast.error(e?.message || t('common.detail_error'))
-    } finally {
-      setDetailLoading(false)
-    }
-  }, [])
+  const openDetail = useCallback(
+    (work) => navigate(ROUTES.WORK_DETAIL(work.id)),
+    [navigate]
+  )
 
   const handleChanged = useCallback(() => {
     loadWorks()
-    setDetailWork(null)
   }, [loadWorks])
 
   return (
@@ -196,7 +180,7 @@ export default function WorksPage() {
           />
           <WorksTable
             works={works}
-            loading={loading || detailLoading}
+            loading={loading}
             hasFilters={!!(search || stateFilter)}
             page={page}
             pageSize={pageSize}
@@ -210,17 +194,11 @@ export default function WorksPage() {
         <TabsContent value="contributions">
           <ContributionsTable
             contributions={contributions}
-            loading={contribLoading || detailLoading}
+            loading={contribLoading}
             onView={openDetail}
           />
         </TabsContent>
       </Tabs>
-
-      <WorkDetailDialog
-        work={detailWork}
-        open={!!detailWork}
-        onOpenChange={(o) => !o && setDetailWork(null)}
-      />
     </div>
   )
 }

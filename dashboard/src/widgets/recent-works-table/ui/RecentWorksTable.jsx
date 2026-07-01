@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { FileText, ArrowRight, FilePlus2 } from 'lucide-react'
 import { Button, ListSkeleton, EmptyState } from '@/shared/ui'
-import { StatusBadge, getWorkStatus, isEditableState } from '@/entities/work'
+import { StatusBadge, getWorkStatus } from '@/entities/work'
 import { formatDateTime } from '@/shared/lib/format'
 import { ROUTES } from '@/shared/config/routes'
 
@@ -10,14 +10,9 @@ export default function RecentWorksTable({ works, loading, onView }) {
   const navigate = useNavigate()
   const { t } = useTranslation()
 
-  const goToWork = (work) => {
-    const status = getWorkStatus(work)
-    if (isEditableState(status)) {
-      navigate(ROUTES.WORK_EDIT(work.id))
-    } else {
-      onView?.(work)
-    }
-  }
+  // Row click always opens the detail page (which offers Edit for drafts) —
+  // same rule as the works list, so the interaction is uniform everywhere.
+  const goToWork = (work) => onView?.(work)
 
   return (
     <section className="overflow-hidden rounded-xl border border-border bg-card shadow-soft">

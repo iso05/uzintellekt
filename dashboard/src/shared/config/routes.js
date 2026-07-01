@@ -5,6 +5,7 @@ export const ROUTES = {
   PROFILE: '/profile',
   WORKS: '/works',
   WORK_NEW: '/works/new',
+  WORK_DETAIL: (id) => `/works/${id}`,
   WORK_EDIT: (id) => `/works/${id}/edit`,
   CONTRACTS: '/contracts',
 }
@@ -55,6 +56,15 @@ export function resolveRouteMeta(pathname) {
         { labelKey: 'crumbs.home', to: ROUTES.DASHBOARD },
         { labelKey: 'crumbs.works', to: ROUTES.WORKS },
         { labelKey: 'crumbs.edit', to: pathname },
+      ],
+    }
+  }
+  if (pathname.startsWith('/works/') && pathname !== ROUTES.WORK_NEW) {
+    return {
+      crumbs: [
+        { labelKey: 'crumbs.home', to: ROUTES.DASHBOARD },
+        { labelKey: 'crumbs.works', to: ROUTES.WORKS },
+        { labelKey: 'crumbs.detail', to: pathname },
       ],
     }
   }

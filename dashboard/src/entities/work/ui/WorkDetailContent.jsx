@@ -1,13 +1,6 @@
 import { CheckCircle2, XCircle } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from '@/shared/ui'
-import { formatDateTime } from '@/shared/lib/format'
+import { formatDate, formatDateTime } from '@/shared/lib/format'
 import StatusBadge from './StatusBadge'
 import { getWorkStatus } from '../model/status'
 import { getHolderRoleIds } from '../model/validation'
@@ -68,7 +61,8 @@ function RightHoldersTable({ holders, authorRoles }) {
   )
 }
 
-export default function WorkDetailDialog({ work, open, onOpenChange, footer }) {
+/** Read-only detail grid for a work. Used by the work detail page. */
+export default function WorkDetailContent({ work }) {
   const { workTypes, authorRoles } = useDictionaries()
   const { t } = useTranslation()
   if (!work) return null
@@ -77,63 +71,44 @@ export default function WorkDetailDialog({ work, open, onOpenChange, footer }) {
   const typeName = resolveWorkTypeName(workTypes, work.workTypeId)
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl gap-0 p-0">
-        <DialogHeader className="border-b border-border p-5">
-          <DialogTitle>{t('detail.title')}</DialogTitle>
-          <DialogDescription className="sr-only">
-            {work.name || t('detail.title')}
-          </DialogDescription>
-        </DialogHeader>
+    <div className="grid grid-cols-2 gap-x-5 gap-y-4">
+      <DetailItem label={t('detail.name')}>{work.name || '—'}</DetailItem>
+      <DetailItem label={t('detail.type')}>{typeName}</DetailItem>
+      <DetailItem label={t('detail.status')}>
+        <StatusBadge status={status} />
+      </DetailItem>
+      <DetailItem label={t('detail.created')}>{formatDateTime(work.createdAt)}</DetailItem>
+      <DetailItem label={t('detail.updated')}>{formatDateTime(work.updatedAt)}</DetailItem>
 
-        <div className="max-h-[480px] overflow-y-auto p-5">
-          <div className="grid grid-cols-2 gap-x-5 gap-y-4">
-            <DetailItem label={t('detail.name')}>{work.name || '—'}</DetailItem>
-            <DetailItem label={t('detail.type')}>{typeName}</DetailItem>
-            <DetailItem label={t('detail.status')}>
-              <StatusBadge status={status} />
-            </DetailItem>
-            <DetailItem label={t('detail.created')}>{formatDateTime(work.createdAt)}</DetailItem>
-            <DetailItem label={t('detail.updated')}>{formatDateTime(work.updatedAt)}</DetailItem>
-
-            {status === 'REGISTERED' && work.registrationDate && (
-              <div className="col-span-2">
-                <div className="flex items-center gap-2.5 rounded-lg border border-success/30 bg-success/5 px-4 py-3 text-[13.5px] font-semibold text-success">
-                  <CheckCircle2 className="h-4 w-4 shrink-0" />
-                  {t('detail.registered_on', { date: work.registrationDate })}
-                </div>
-              </div>
-            )}
-
-            {status === 'REJECTED' && work.rejectionReason && (
-              <div className="col-span-2">
-                <div className="flex items-start gap-2.5 rounded-lg border border-destructive/30 bg-destructive/5 px-4 py-3 text-[13.5px] font-semibold text-destructive">
-                  <XCircle className="mt-0.5 h-4 w-4 shrink-0" />
-                  <span>{t('detail.reject_reason', { reason: work.rejectionReason })}</span>
-                </div>
-              </div>
-            )}
-
-            <DetailItem label={t('detail.description')} full>
-              <div className="mt-1 whitespace-pre-wrap rounded-lg border border-border bg-muted/40 p-3 text-[13.5px] font-normal text-foreground">
-                {work.description || '—'}
-              </div>
-            </DetailItem>
-
-            <DetailItem label={t('detail.holders')} full>
-              <div className="mt-2">
-                <RightHoldersTable holders={work.rightHolders} authorRoles={authorRoles} />
-              </div>
-            </DetailItem>
+      {status === 'REGISTERED' && work.registrationDate && (
+        <div className="col-span-2">
+          <div className="flex items-center gap-2.5 rounded-lg border border-success/30 bg-success/5 px-4 py-3 text-[13.5px] font-semibold text-success">
+            <CheckCircle2 className="h-4 w-4 shrink-0" />
+            {t('detail.registered_on', { date: formatDate(work.registrationDate) })}
           </div>
         </div>
+      )}
 
-        {footer && (
-          <div className="flex items-center justify-start gap-3 border-t border-border bg-muted/30 p-4">
-            {footer}
+      {status === 'REJECTED' && work.rejectionReason && (
+        <div className="col-span-2">
+          <div className="flex items-start gap-2.5 rounded-lg border border-destructive/30 bg-destructive/5 px-4 py-3 text-[13.5px] font-semibold text-destructive">
+            <XCircle className="mt-0.5 h-4 w-4 shrink-0" />
+            <span>{t('detail.reject_reason', { reason: work.rejectionReason })}</span>
           </div>
-        )}
-      </DialogContent>
-    </Dialog>
+        </div>
+      )}
+
+      <DetailItem label={t('detail.description')} full>
+        <div className="mt-1 whitespace-pre-wrap rounded-lg border border-border bg-muted/40 p-3 text-[13.5px] font-normal text-foreground">
+          {work.description || '—'}
+        </div>
+      </DetailItem>
+
+      <DetailItem label={t('detail.holders')} full>
+        <div className="mt-2">
+          <RightHoldersTable holders={work.rightHolders} authorRoles={authorRoles} />
+        </div>
+      </DetailItem>
+    </div>
   )
 }
