@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, useRef } from 'react'
 import { ENV, getMainSite } from '@/shared/config/env'
 import { safeLocalStorage, safeSessionStorage } from '@/shared/lib/safe-storage'
+import { clearAllDrafts } from '@/shared/lib/draft-storage'
 import {
   tokenStorage,
   tryRefreshSilently,
@@ -175,6 +176,7 @@ export function AuthProvider({ children }) {
     setUser(null)
     tokenStorage.clear()
     safeSessionStorage.clear()
+    clearAllDrafts()
     if (ENV.TEST_MODE) {
       // In test mode, just reload — no real site to redirect to.
       window.location.reload()
