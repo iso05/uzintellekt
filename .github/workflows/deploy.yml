@@ -75,6 +75,10 @@ jobs:
 
       - name: 🏗️ Build
         run: npm run build -w dashboard
+        env:
+          VITE_TEST_MODE: 'false'
+          VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
+          VITE_MAIN_SITE_URL: ${{ secrets.VITE_MAIN_SITE_URL }}
 
       - name: 🔑 Setup SSH key
         run: |
@@ -114,6 +118,10 @@ jobs:
 
       - name: 🏗️ Build
         run: npm run build -w admin
+        env:
+          VITE_TEST_MODE: 'false'
+          VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
+          VITE_MAIN_SITE_URL: ${{ secrets.VITE_MAIN_SITE_URL }}
 
       - name: 🔑 Setup SSH key
         run: |
