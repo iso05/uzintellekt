@@ -68,15 +68,17 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-          cache-dependency-path: dashboard/package-lock.json
+          cache-dependency-path: package-lock.json
 
-      - name: 📦 Install dependencies
-        working-directory: ./dashboard
+      - name: 📦 Install dependencies (root workspaces)
         run: npm ci
 
       - name: 🏗️ Build
-        working-directory: ./dashboard
-        run: npm run build
+        run: npm run build -w dashboard
+        env:
+          VITE_TEST_MODE: 'false'
+          VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
+          VITE_MAIN_SITE_URL: ${{ secrets.VITE_MAIN_SITE_URL }}
 
       - name: 🔑 Setup SSH key
         run: |
@@ -94,10 +96,10 @@ jobs:
         # NGINX KONFIGURATSIYASIGA TEGMAYDI!
 
   # ─────────────────────────────────────────────
-  # JOB 3: Admin-panel → /www/admin  (yo'l noto'g'ri bo'lsa o'zgartiring)
+  # JOB 3: admin → /www/admin
   # ─────────────────────────────────────────────
   deploy-admin:
-    name: 🛠️ Admin-panel → /www/admin
+    name: 🛠️ admin → /www/admin
     runs-on: ubuntu-latest
 
     steps:
@@ -109,15 +111,17 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-          cache-dependency-path: Admin-panel/package-lock.json
+          cache-dependency-path: package-lock.json
 
-      - name: 📦 Install dependencies
-        working-directory: ./Admin-panel
+      - name: 📦 Install dependencies (root workspaces)
         run: npm ci
 
       - name: 🏗️ Build
-        working-directory: ./Admin-panel
-        run: npm run build
+        run: npm run build -w admin
+        env:
+          VITE_TEST_MODE: 'false'
+          VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
+          VITE_MAIN_SITE_URL: ${{ secrets.VITE_MAIN_SITE_URL }}
 
       - name: 🔑 Setup SSH key
         run: |
@@ -130,7 +134,6 @@ jobs:
         run: |
           rsync -avz --delete \
             -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.VPS_PORT }} -o StrictHostKeyChecking=no" \
-            Admin-panel/dist/ \
+            admin/dist/ \
             ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/www/admin/
         # NGINX KONFIGURATSIYASIGA TEGMAYDI!
-        # ⚠️ Agar Admin-panel uchun server papka boshqacha bo'lsa — yo'lni o'zgartiring

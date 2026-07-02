@@ -26,3 +26,7 @@ dist-ssr/
 
 # OS
 Thumbs.db
+
+# test-app skill credentials (secrets)
+.claude/skills/test-app/test_creds.txt
+.claude/skills/test-app/e2e/

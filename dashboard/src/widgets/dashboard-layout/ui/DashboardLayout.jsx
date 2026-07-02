@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { useAuth } from '@/features/auth'
 import { Sidebar } from '@/widgets/sidebar'
 import { Header } from '@/widgets/header'
 import { Breadcrumbs } from '@/widgets/breadcrumbs'
-import { Toaster } from '@/shared/ui'
-import { resolveRouteMeta } from '@/shared/config/routes'
+import { Toaster, ErrorBoundary } from '@shared/ui'
+import { resolveRouteMeta } from '@/config/routes'
 
 export default function DashboardLayout() {
   const { user, logout } = useAuth()
+  const { t } = useTranslation()
   const location = useLocation()
   const [collapsed, setCollapsed] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -24,7 +26,8 @@ export default function DashboardLayout() {
     }
   }, [mobileOpen])
 
-  const { crumbs } = resolveRouteMeta(location.pathname)
+  const { crumbs: rawCrumbs } = resolveRouteMeta(location.pathname)
+  const crumbs = rawCrumbs.map((c) => ({ ...c, label: t(c.labelKey) }))
 
   return (
     <div className="flex min-h-screen bg-background text-foreground">
@@ -53,7 +56,9 @@ export default function DashboardLayout() {
 
         <main className="mx-auto w-full max-w-[1200px] flex-1 px-4 py-6 md:px-6 md:py-8 lg:px-8">
           <Breadcrumbs items={crumbs} />
-          <Outlet />
+          <ErrorBoundary resetKey={location.pathname}>
+            <Outlet />
+          </ErrorBoundary>
         </main>
       </div>
 

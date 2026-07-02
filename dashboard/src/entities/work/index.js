@@ -4,7 +4,8 @@ export {
   createWork,
   updateWork,
   submitWork,
-  cancelWork,
+  deleteWork,
+  getWorksStat,
   getMyContributions,
   getWorkTypes,
   getAuthorRoles,
@@ -16,7 +17,7 @@ export {
   getWorkStatus,
   getStatusConfig,
   isEditableState,
-  isCancellableState,
+  isDeletableState,
 } from './model/status'
 
 export { getWorksStats, getRecentWorks } from './model/use-cases'
@@ -28,7 +29,7 @@ export {
 
 export { default as StatusBadge } from './ui/StatusBadge'
 export { default as WorkTypeBadge } from './ui/WorkTypeBadge'
-export { default as WorkDetailDialog } from './ui/WorkDetailDialog'
+export { default as WorkDetailContent } from './ui/WorkDetailContent'
 export { default as AuthorRolesMultiSelect } from './ui/AuthorRolesMultiSelect'
 
 export {
@@ -41,6 +42,7 @@ export {
   getShareTotalError,
   toPayload,
   fromBackend,
+  getHolderRoleIds,
 } from './model/validation'
 
 export { useWorkForm } from './model/use-work-form'

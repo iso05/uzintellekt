@@ -3,7 +3,7 @@ import {
   validateName,
   validateShare,
   validateRequired,
-} from '@/shared/lib/validators'
+} from '@shared/lib/validators'
 
 export const EMPTY_HOLDER = {
   passportNo: '',
@@ -25,17 +25,17 @@ export function validateHolder(rh, idx) {
   const passErr = validatePassport(rh.passportNo)
   if (passErr) errors[buildHolderErrorKey(idx, 'passportNo')] = passErr
 
-  const fnErr = validateName(rh.firstName, 'Ism')
+  const fnErr = validateName(rh.firstName, 'validation.field_first_name')
   if (fnErr) errors[buildHolderErrorKey(idx, 'firstName')] = fnErr
 
-  const lnErr = validateName(rh.lastName, 'Familiya')
+  const lnErr = validateName(rh.lastName, 'validation.field_last_name')
   if (lnErr) errors[buildHolderErrorKey(idx, 'lastName')] = lnErr
 
   const shareErr = validateShare(rh.share)
   if (shareErr) errors[buildHolderErrorKey(idx, 'share')] = shareErr
 
   if (!rh.authorRoleIds || rh.authorRoleIds.length === 0) {
-    errors[buildHolderErrorKey(idx, 'authorRoleIds')] = 'Kamida bitta muallif roli tanlang'
+    errors[buildHolderErrorKey(idx, 'authorRoleIds')] = { key: 'validation.role_required' }
   }
 
   return errors
@@ -53,8 +53,7 @@ export function findDuplicatePassportErrors(rightHolders) {
     const pn = _normalizePassport(rh.passportNo)
     if (!pn) return
     if (firstSeenAt.has(pn)) {
-      errors[buildHolderErrorKey(idx, 'passportNo')] =
-        "Bu pasport allaqachon haq egalari ro'yxatida"
+      errors[buildHolderErrorKey(idx, 'passportNo')] = { key: 'validation.passport_dup' }
     } else {
       firstSeenAt.set(pn, idx)
     }
@@ -65,10 +64,10 @@ export function findDuplicatePassportErrors(rightHolders) {
 export function validateWorkForm(form) {
   const errors = {}
 
-  const nameErr = validateRequired(form.name, 'Asar nomi')
+  const nameErr = validateRequired(form.name, 'validation.field_work_name')
   if (nameErr) errors.name = nameErr
 
-  if (!form.workTypeId) errors.workTypeId = 'Asar turini tanlang'
+  if (!form.workTypeId) errors.workTypeId = { key: 'validation.type_required' }
 
   form.rightHolders.forEach((rh, idx) => {
     Object.assign(errors, validateHolder(rh, idx))
@@ -82,12 +81,15 @@ export function validateWorkForm(form) {
 }
 
 export function computeShareTotal(rightHolders) {
-  return rightHolders.reduce((sum, rh) => sum + (Number(rh.share) || 0), 0)
+  const sum = rightHolders.reduce((acc, rh) => acc + (Number(rh.share) || 0), 0)
+  // Round to 2 decimals so IEEE-754 drift (e.g. 16.10+48.20+35.70 = 100.0000…1)
+  // does not reject a total that is mathematically 100%.
+  return Math.round(sum * 100) / 100
 }
 
 export function getShareTotalError(rightHolders) {
   const total = computeShareTotal(rightHolders)
-  if (total !== 100) return "Haq egalarining jami ulush foizi (%) 100 bo'lishi shart."
+  if (total !== 100) return { key: 'validation.share_total_simple' }
   return null
 }
 
@@ -107,6 +109,20 @@ export function toPayload(form) {
   }
 }
 
+/**
+ * Reads a right-holder's author-role ids from whatever shape the backend ships
+ * them in (`authorRoleIds` / `authorRoles` / `authorRoleId` / `authorRole.id`).
+ * Returns ids as strings. Use this anywhere raw backend holders are read so the
+ * UI never depends on a single field name.
+ */
+export function getHolderRoleIds(rh) {
+  if (rh?.authorRoleIds?.length) return rh.authorRoleIds.map(String)
+  if (rh?.authorRoles?.length) return rh.authorRoles.map(String)
+  if (rh?.authorRoleId) return [String(rh.authorRoleId)]
+  if (rh?.authorRole?.id) return [String(rh.authorRole.id)]
+  return []
+}
+
 /** Converts a backend work entity into UI form state. */
 export function fromBackend(data) {
   return {
@@ -120,16 +136,7 @@ export function fromBackend(data) {
             firstName: rh.firstName || '',
             lastName: rh.lastName || '',
             share: rh.sharePercentage || rh.share || '',
-            authorRoleIds:
-              rh.authorRoleIds && rh.authorRoleIds.length > 0
-                ? rh.authorRoleIds.map(String)
-                : rh.authorRoles && rh.authorRoles.length > 0
-                  ? rh.authorRoles.map(String)
-                  : rh.authorRoleId
-                    ? [String(rh.authorRoleId)]
-                    : rh.authorRole?.id
-                      ? [String(rh.authorRole.id)]
-                      : [],
+            authorRoleIds: getHolderRoleIds(rh),
           }))
         : [{ ...EMPTY_HOLDER }],
   }

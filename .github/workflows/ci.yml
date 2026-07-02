@@ -1,0 +1,36 @@
+name: ✅ CI (verify workspaces)
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  verify:
+    name: Drift-guard · Lint · Test · Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
+
+      - name: 📦 Install (root workspaces)
+        run: npm ci
+
+      - name: 🛡️ Drift-guard (no local src/shared, no @/shared imports)
+        run: npm run check:shared
+
+      - name: 🔎 Lint (admin + dashboard)
+        run: npm run lint
+
+      - name: 🧪 Test (admin + dashboard, incl. packages/ui)
+        run: npm run test
+
+      - name: 🏗️ Build (admin + dashboard)
+        run: npm run build

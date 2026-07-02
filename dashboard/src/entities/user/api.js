@@ -1,4 +1,5 @@
-import { requestJson } from '@/shared/api'
+import { requestJson } from '@shared/api'
+import i18n from '@/i18n'
 
 export async function getMe() {
   return requestJson('/api/v1/users/me')
@@ -14,31 +15,26 @@ export async function updateMe(data) {
 const ALLOWED_FIELDS = ['address', 'phones', 'pseudonym', 'pseudoname']
 
 export async function updateMeField(field, value) {
-  if (!ALLOWED_FIELDS.includes(field)) throw new Error(`Noto'g'ri maydon: ${field}`)
+  if (!ALLOWED_FIELDS.includes(field))
+    throw new Error(i18n.t('validation.field_invalid', { field }))
 
   if (field === 'phones') {
     const phones = Array.isArray(value) ? value : [value]
     for (const p of phones) {
-      if (!/^998\d{9}$/.test(p)) throw new Error(`Noto'g'ri telefon: ${p}`)
+      if (!/^998\d{9}$/.test(p)) throw new Error(i18n.t('validation.phone_invalid', { phone: p }))
     }
     value = phones
   }
   if (field === 'address' && (!value || !value.trim())) {
-    throw new Error("Manzil bo'sh bo'lishi mumkin emas")
+    throw new Error(i18n.t('validation.address_required'))
   }
 
-  const cur = await getMe()
-  const payload = {
-    address: cur.address,
-    phones: cur.phones,
-    pseudonym: cur.pseudonym || cur.pseudoname || null,
-    pseudoname: cur.pseudonym || cur.pseudoname || null,
-  }
-  if (field === 'pseudonym' || field === 'pseudoname') {
-    payload.pseudonym = value || null
-    payload.pseudoname = value || null
-  } else {
-    payload[field] = value
-  }
+  // Send only the field(s) being changed. A full read-modify-write (GET the
+  // whole user, rebuild every field, PATCH it all back) silently reverts a
+  // concurrent edit to another field made from a fresher snapshot.
+  const payload =
+    field === 'pseudonym' || field === 'pseudoname'
+      ? { pseudonym: value || null, pseudoname: value || null } // backend aliases both
+      : { [field]: value }
   return updateMe(payload)
 }

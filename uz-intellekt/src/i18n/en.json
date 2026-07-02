@@ -50,13 +50,18 @@
     "all_rights": "All rights reserved."
   },
   "hero": {
+    "badge": "Intellectual property protection",
     "title_prefix": "Protect Your ",
     "title_highlight": "Intellectual Property",
     "desc": "Register, manage, and secure copyright reliably through our digital platform.",
-    "cta": "Join / Login"
+    "cta": "Join / Login",
+    "cta_secondary": "Explore our services",
+    "image_alt": "UzIntellekt — intellectual property protection",
+    "trust": "Secure, fast sign-in with OneID"
   },
   "services_preview": {
     "title": "Our Services",
+    "subtitle": "A complete digital ecosystem for intellectual property.",
     "items": {
       "dep": {
         "title": "Depositing",
@@ -74,10 +79,13 @@
         "title": "Open Registries",
         "desc": "Searchable database of registered works."
       }
-    }
+    },
+    "eyebrow": "Services",
+    "more": "Details"
   },
   "how_it_works": {
     "title": "How It Works",
+    "subtitle": "Protect your intellectual property in three simple steps.",
     "step_1": {
       "title": "Upload your trusted work",
       "desc": "Upload your intellectual property into the system."
@@ -89,12 +97,14 @@
     "step_3": {
       "title": "Get the certificate",
       "desc": "Receive your official digital certificate."
-    }
+    },
+    "eyebrow": "Process"
   },
   "news_block": {
     "title": "Latest News",
-    "more": "Details →",
-    "back_to_news": "← Back to news",
+    "subtitle": "Industry news and announcements",
+    "more": "Details",
+    "back_to_news": "Back to news",
     "search_placeholder": "Search news...",
     "all_news": "View All",
     "no_news": "No news found",
@@ -138,12 +148,17 @@
       "title": "Legal Seminar",
       "desc": "Seminar successfully conducted.",
       "date": "May 01, 2026"
-    }
+    },
+    "eyebrow": "News",
+    "see_all": "All news"
   },
   "partners_block": {
-    "title": "Our Partners"
+    "title": "Our Partners",
+    "eyebrow": "Partners",
+    "subtitle": "Organizations and communities that trust us."
   },
   "about_page": {
+    "eyebrow": "UzIntellekt",
     "title": "About Us",
     "desc": "UzIntellekt is a modern national platform created for the registration, legal protection, and digital management of intellectual property objects.",
     "mission": "Our Mission",
@@ -160,7 +175,8 @@
     "val_3_title": "Innovation",
     "val_3_desc": "Simplifying rights management through digital technologies.",
     "final_title": "Your intellectual property is our responsibility",
-    "final_desc": "The UzIntellekt team harmonizes copyright protection, digital certification, and legal management with modern technologies."
+    "final_desc": "The UzIntellekt team harmonizes copyright protection, digital certification, and legal management with modern technologies.",
+    "values_eyebrow": "Values"
   },
   "contact_page": {
     "title": "Contact Us",
@@ -171,6 +187,8 @@
     "hours": "Working Hours",
     "hours_val": "Monday – Friday, 9:00 – 18:00",
     "send_message": "Send Message",
+    "send_mailto_btn": "Send via Email",
+    "unconfigured_notice": "The form is not configured yet. Please use the 'Send via Email' button below.",
     "success_msg": "Your message was sent successfully! We will reply soon.",
     "error_msg": "An error occurred. Please try again.",
     "name_label": "Your Name",
@@ -179,12 +197,12 @@
     "message_label": "Message",
     "message_placeholder": "Write your message...",
     "sending_btn": "Sending...",
-    "send_btn": "Send →"
+    "send_btn": "Send"
   },
   "services_page": {
     "hero_title": "Protect Your Intellectual Property",
     "hero_desc": "We provide the simplest, fastest, and most secure depositing service. Protect your works completely and stand against future infringements.",
-    "start_btn": "Start →",
+    "start_btn": "Start",
     "details_btn": "More Details",
     "users": "Users",
     "deposited_works": "Deposited Works",
@@ -217,7 +235,7 @@
     "why_subtitle": "6 key benefits and opportunities",
     "cta_title": "Protect Your Work Today",
     "cta_subtitle": "Thousands of professionals and creators trust us with their works. You can too.",
-    "cta_btn": "Start →",
+    "cta_btn": "Start",
     "faq_btn": "Ask Questions",
     "cta_no_card": "Register without credit cards. All data is encrypted.",
     "faq_title": "Frequently Asked Questions",
@@ -229,7 +247,7 @@
     "faq_a3": "It has full legal power in Uzbekistan. It can be used as evidence in court.",
     "faq_q4": "How many works can I deposit?",
     "faq_a4": "Unlimited. You can protect as many works as you want.",
-    "more_faq": "More Q&A →",
+    "more_faq": "More Q&A",
     "cats": {
       "text": "Written Works",
       "music": "Audio & Music",
@@ -309,7 +327,7 @@
     "works_title": "What works are accepted?",
     "cta_title": "Protect your work today",
     "cta_desc": "Depositing is not just a document; it is the ultimate protection for your intellectual property rights.",
-    "cta_btn": "Start Depositing →",
+    "cta_btn": "Start Depositing",
     "features": {
       "f1_title": "Legal Proof",
       "f1_desc": "Obtain legal proof by registering your work with an exact date and author details.",
@@ -398,6 +416,7 @@
     }
   },
   "not_found": {
+    "eyebrow": "404",
     "title": "Page Not Found",
     "desc": "Unfortunately, the page you are looking for does not exist or may have been deleted.",
     "go_back": "Go Back",
@@ -416,5 +435,69 @@
     "badge_fast": "Fast",
     "badge_encrypted": "Encrypted",
     "badge_verified": "Verified"
+  },
+  "register_page": {
+    "progress_fill": "Enter your details",
+    "progress_ready": "Ready to join",
+    "progress_signed": "Signature accepted…",
+    "progress_success": "You are now a member",
+    "title": "Become a member",
+    "title_success": "Success!",
+    "subtitle": "Enter your details",
+    "redirecting": "Redirecting to dashboard...",
+    "auth_user_fallback": "Authenticated user",
+    "loading": "Loading...",
+    "submitting": "Submitting data...",
+    "success_msg": "You have registered successfully!",
+    "phone_label": "Phone number",
+    "phone_ph": "+998 90 123 45 67",
+    "phone_invalid": "Invalid format. Example: +998901234567",
+    "phone_opt_label": "Additional phone",
+    "phone_opt_ph": "+998 91 234 56 78",
+    "phone_opt_invalid": "Invalid format",
+    "pseudonym_label": "Pseudonym",
+    "pseudonym_ph": "Your pseudonym (optional)",
+    "region_label": "Region",
+    "region_ph": "Select region",
+    "district_label": "District",
+    "district_ph": "Select district",
+    "district_ph_region_first": "Select region first",
+    "street_label": "Street",
+    "street_ph": "Street name",
+    "house_label": "House number",
+    "house_ph": "12A",
+    "hint": "Fill in all * fields and click «Become a member»",
+    "submit_btn": "Become a member",
+    "have_account": "Already have an account?",
+    "login_link": "Sign in",
+    "tile_secure": "Secure",
+    "tile_oneid": "OneID",
+    "tile_fast": "Fast",
+    "geo_empty": "No data",
+    "err_fill": "Fill in all * fields correctly.",
+    "err_signature": "Signature is required.",
+    "err_register": "Registration error. Please try again.",
+    "err_geo": "Regions/districts failed to load. Refresh.",
+    "sig_title": "Sign here",
+    "sig_subtitle": "Sign with your finger or mouse",
+    "sig_clear": "Clear",
+    "close": "Close",
+    "sig_placeholder_title": "Sign here",
+    "sig_placeholder_sub": "With finger or mouse",
+    "sig_ready": "Signature ready",
+    "sig_waiting": "Waiting for signature...",
+    "cancel": "Cancel",
+    "sig_saving": "Saving...",
+    "sig_confirm": "Confirm",
+    "sig_err_notready": "Signature pad is not ready",
+    "sig_err_empty": "Please provide a signature",
+    "sig_err_generic": "An error occurred",
+    "contract_title": "Membership agreement",
+    "contract_subtitle": "Please read carefully before using the platform",
+    "contract_loading": "Loading agreement...",
+    "contract_read_to_end": "Read the agreement to the end",
+    "contract_agree": "I have read and agree to the agreement",
+    "contract_continue": "Continue",
+    "contract_load_err": "Failed to load the agreement"
   }
 }

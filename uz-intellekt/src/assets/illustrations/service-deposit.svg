@@ -1,0 +1,39 @@
+<svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Depositing">
+  <defs>
+    <linearGradient id="dep-shield" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2f7adb"/>
+      <stop offset="1" stop-color="#1f5cc7"/>
+    </linearGradient>
+  </defs>
+
+  <!-- soft glow -->
+  <circle cx="125" cy="92" r="68" fill="#1f5cc7" opacity="0.07"/>
+
+  <!-- doc peeking from LEFT (behind shield) -->
+  <g transform="translate(30 50) rotate(-12)">
+    <rect x="0" y="0" width="62" height="80" rx="8" fill="#ffffff" stroke="#e1e7ee" stroke-width="1.4"/>
+    <rect x="9" y="12" width="36" height="4" rx="2" fill="#1f5cc7"/>
+    <rect x="9" y="22" width="44" height="3.5" rx="1.75" fill="#e1e7ee"/>
+    <rect x="9" y="30" width="36" height="3.5" rx="1.75" fill="#e1e7ee"/>
+    <rect x="9" y="38" width="40" height="3.5" rx="1.75" fill="#e1e7ee"/>
+  </g>
+
+  <!-- shadow under shield -->
+  <ellipse cx="135" cy="158" rx="42" ry="5" fill="#1f5cc7" opacity="0.15"/>
+
+  <!-- SHIELD with UP arrow = submit/deposit -->
+  <g transform="translate(92 38) scale(0.72)">
+    <path d="M60 0 L120 22 L120 88 C120 120 96 138 60 148 C24 138 0 120 0 88 L0 22 Z"
+          fill="url(#dep-shield)"/>
+    <path d="M60 10 L110 28 L110 86 C110 112 88 128 60 136 C32 128 10 112 10 86 L10 28 Z"
+          fill="none" stroke="#ffffff" stroke-width="1" opacity="0.22"/>
+    <g stroke="#ffffff" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M60 102 L60 46"/>
+      <path d="M38 68 L60 46 L82 68"/>
+    </g>
+  </g>
+
+  <!-- accent dots -->
+  <circle cx="200" cy="40" r="5" fill="#f59e0b"/>
+  <circle cx="40" cy="150" r="3" fill="#1f5cc7" opacity="0.45"/>
+</svg>

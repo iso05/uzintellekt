@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Unify shared UI (dashboard + admin) — Спецификация</title>
+  <style>
+    :root {
+      --fg: #1a1a1a; --muted: #6b6b6b; --bg: #ffffff; --surface: #f6f7f9;
+      --border: #e3e6ea; --accent: #2f6feb; --accent-soft: #e7efff;
+      --ok: #1f9d57; --warn: #c9820b;
+    }
+    * { box-sizing: border-box; }
+    html, body { background: var(--bg); color: var(--fg); }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.55; max-width: 900px; margin: 2rem auto; padding: 0 1.25rem; }
+    h1 { font-size: 2rem; margin-bottom: 0.25rem; }
+    h2 { font-size: 1.35rem; margin-top: 2.25rem; border-bottom: 1px solid var(--border); padding-bottom: 0.35rem; }
+    h3 { font-size: 1.05rem; margin-top: 1.5rem; }
+    p, li { font-size: 1rem; }
+    code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.9em; }
+    pre { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 0.75rem 1rem; overflow-x: auto; }
+    code { background: var(--surface); padding: 0.1em 0.35em; border-radius: 4px; }
+    pre code { background: transparent; padding: 0; }
+    table { width: 100%; border-collapse: collapse; margin: 0.5rem 0 1rem; }
+    th, td { border: 1px solid var(--border); padding: 0.5rem 0.65rem; text-align: left; vertical-align: top; font-size: 0.92rem; }
+    th { background: var(--surface); }
+    .svg-figure { margin: 1.5rem 0; padding: 1rem; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; }
+    .svg-figure svg { width: 100%; height: auto; display: block; font-family: inherit; }
+    .svg-figure figcaption { color: var(--muted); font-size: 0.9rem; margin-top: 0.5rem; text-align: center; }
+    .meta { color: var(--muted); margin-top: 0; }
+    ul.tight, ol.tight { margin: 0.25rem 0 0.75rem 1.25rem; }
+    .callout { background: var(--accent-soft); border: 1px solid #bcd3ff; border-radius: 8px; padding: 0.75rem 1rem; margin: 1rem 0; }
+    .ok { color: var(--ok); font-weight: 600; }
+  </style>
+</head>
+<body>
+  <h1>Унификация общего UI-слоя: <code>dashboard</code> + <code>admin</code></h1>
+  <p class="meta">Developer-ready specification · извлечь общий слой в <code>packages/ui/</code>, оба Vite/React-приложения потребляют один источник через alias <code>@shared</code></p>
+
+  <section>
+    <h2>Обзор</h2>
+    <p>Два приложения UzIntellekt — <code>dashboard/</code> (пользовательский кабинет) и <code>admin/</code> (админ-панель) — сегодня держат <strong>две копии</strong> общего слоя (<code>shared/ui</code>, дизайн-токены, <code>tailwind.config</code>, i18n-движок, часть <code>shared/api</code>/<code>shared/lib</code>). Цель — вынести этот слой в единый каталог <code>packages/ui/</code>, чтобы правка компонента/токена делалась <strong>в одном месте</strong> и автоматически применялась к обоим приложениям.</p>
+    <div class="callout"><strong>Ключевой факт:</strong> <span class="ok">общий слой уже байт-в-байт синхронизирован</span> — все 24 компонента <code>shared/ui</code>, токены (<code>assets/styles/index.css</code>), <code>tailwind.config.js</code> и <code>i18n/index.js</code> идентичны. <code>admin/src/shared</code> — <strong>строгое надмножество</strong> <code>dashboard/src/shared</code>. Конфликтов слияния нет: канон = admin-версия, dashboard ничего не теряет (получает <code>formatBytes</code>/<code>formatNumber</code>).</p></div>
+  </section>
+
+  <section>
+    <h2>Требования</h2>
+    <h3>Функциональные</h3>
+    <ol class="tight">
+      <li>Единый физический источник общего слоя: <code>packages/ui/</code> в корне репозитория.</li>
+      <li>Оба приложения импортируют общее через новый alias <code>@shared/*</code> (Vite + jsconfig); app-local код остаётся под <code>@/*</code>.</li>
+      <li>Канонический общий слой = admin-суперсет: <code>ui</code>, <code>api</code> (impl: http, grid, cache, token-storage, sso, geo, <strong>auth</strong>), <code>lib</code> (incl. <strong>activity-log</strong>, <strong>csv</strong>, format c <code>formatBytes</code>/<code>formatNumber</code>), <code>data/geo</code>, <code>config/env</code>.</li>
+      <li>Общий <code>tailwind</code>-preset и общие токены (<code>@shared/styles/index.css</code>) — один источник дизайна.</li>
+      <li>i18n: общая фабрика <code>createI18n(resources)</code> в <code>@shared/i18n</code>; переводы (JSON) остаются <strong>per-app</strong>.</li>
+      <li>Per-app остаётся: <code>config/routes.js</code> (разная навигация) → переезжает в <code>@/config/routes.js</code>; app-local <code>pages</code>/<code>widgets</code>/<code>features</code>/<code>entities</code>/<code>app</code>.</li>
+      <li>После миграции оба приложения собираются, проходят тесты и работают <strong>без визуальных/поведенческих регрессий</strong>.</li>
+      <li>CI drift-guard: проверка, что ни в одном приложении не появился локальный <code>src/shared</code> (защита от повторного расхождения).</li>
+    </ol>
+    <h3>Нефункциональные</h3>
+    <ul class="tight">
+      <li>Единый root <code>node_modules</code> (npm workspaces): зависимости общего слоя объявлены в <code>packages/ui/package.json</code> (react/react-dom/react-i18next — peer) и хойстятся в корень одним <code>npm install</code>; один экземпляр React на монорепо.</li>
+      <li>Две независимые сборки: каждый app по-прежнему собирается своим <code>vite build</code> в свой <code>dist/</code>; общий код инлайнится в оба бандла (tree-shaking убирает неиспользуемое, напр. <code>login</code> в dashboard).</li>
+      <li>Обратная совместимость дизайна: токены/компоненты не меняются — оба UI рендерятся идентично до/после.</li>
+      <li>Строго по UI-контракту проекта: только токены + <code>shared/ui</code>, без выдуманных палитр.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Архитектура</h2>
+    <p>Монорепо на <strong>npm workspaces</strong>: каталог <code>packages/ui/</code> — workspace-пакет (<code>@uzintellekt/ui</code>) с каноническим общим слоем; оба приложения ссылаются на него через Vite-alias <code>@shared</code> (резолв путей) и общий tailwind-preset, а зависимости хойстятся в единый root <code>node_modules</code> (резолв деп + один React). Публикации в реестр нет — пакет <code>private</code>.</p>
+    <figure class="svg-figure">
+      <svg viewBox="0 0 820 520" role="img" aria-labelledby="arch-title">
+        <title id="arch-title">Структура шеринга: packages/ui, потребляемый двумя приложениями</title>
+        <defs>
+          <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#6b6b6b"/></marker>
+        </defs>
+        <!-- packages/ui shared core -->
+        <rect x="250" y="30" width="320" height="196" rx="10" fill="#e7efff" stroke="#bcd3ff"/>
+        <text x="410" y="54" font-size="15" font-weight="700" fill="#2f6feb" text-anchor="middle">packages/ui  (общий канон)</text>
+        <rect x="268" y="66" width="140" height="30" rx="6" fill="#fff" stroke="#e3e6ea"/><text x="278" y="86" font-size="12">ui/ (24 компонента)</text>
+        <rect x="412" y="66" width="140" height="30" rx="6" fill="#fff" stroke="#e3e6ea"/><text x="422" y="86" font-size="12">api/ (http·grid·auth…)</text>
+        <rect x="268" y="102" width="140" height="30" rx="6" fill="#fff" stroke="#e3e6ea"/><text x="278" y="122" font-size="12">lib/ (csv·activity·fmt)</text>
+        <rect x="412" y="102" width="140" height="30" rx="6" fill="#fff" stroke="#e3e6ea"/><text x="422" y="122" font-size="12">data/geo · config/env</text>
+        <rect x="268" y="138" width="140" height="30" rx="6" fill="#fff" stroke="#e3e6ea"/><text x="278" y="158" font-size="12">styles/index.css (токены)</text>
+        <rect x="412" y="138" width="140" height="30" rx="6" fill="#fff" stroke="#e3e6ea"/><text x="422" y="158" font-size="12">i18n/ createI18n()</text>
+        <rect x="268" y="174" width="284" height="30" rx="6" fill="#fff" stroke="#e3e6ea"/><text x="278" y="194" font-size="12">tailwind.preset.js  ·  api barrel (superset)</text>
+
+        <!-- dashboard app -->
+        <rect x="20" y="300" width="360" height="200" rx="10" fill="#ffffff" stroke="#e3e6ea"/>
+        <text x="200" y="324" font-size="14" font-weight="700" text-anchor="middle">dashboard/  (Vite app)</text>
+        <rect x="40" y="338" width="150" height="30" rx="6" fill="#f6f7f9" stroke="#e3e6ea"/><text x="50" y="358" font-size="12">app · pages · widgets</text>
+        <rect x="200" y="338" width="160" height="30" rx="6" fill="#f6f7f9" stroke="#e3e6ea"/><text x="210" y="358" font-size="12">features · entities</text>
+        <rect x="40" y="374" width="150" height="30" rx="6" fill="#f6f7f9" stroke="#e3e6ea"/><text x="50" y="394" font-size="12">@/config/routes.js</text>
+        <rect x="200" y="374" width="160" height="30" rx="6" fill="#f6f7f9" stroke="#e3e6ea"/><text x="210" y="394" font-size="12">i18n/ translations (JSON)</text>
+        <text x="40" y="430" font-size="12" fill="#6b6b6b">vite alias: @ → ./src ·  @shared → ../packages/ui</text>
+        <text x="40" y="450" font-size="12" fill="#6b6b6b">tailwind: presets:[ui/preset]</text>
+        <text x="40" y="478" font-size="12" fill="#2f6feb">import { Button } from '@shared/ui'</text>
+
+        <!-- admin app -->
+        <rect x="440" y="300" width="360" height="200" rx="10" fill="#ffffff" stroke="#e3e6ea"/>
+        <text x="620" y="324" font-size="14" font-weight="700" text-anchor="middle">admin/  (Vite app)</text>
+        <rect x="460" y="338" width="150" height="30" rx="6" fill="#f6f7f9" stroke="#e3e6ea"/><text x="470" y="358" font-size="12">app · pages · widgets</text>
+        <rect x="620" y="338" width="160" height="30" rx="6" fill="#f6f7f9" stroke="#e3e6ea"/><text x="630" y="358" font-size="12">features · entities</text>
+        <rect x="460" y="374" width="150" height="30" rx="6" fill="#f6f7f9" stroke="#e3e6ea"/><text x="470" y="394" font-size="12">@/config/routes.js</text>
+        <rect x="620" y="374" width="160" height="30" rx="6" fill="#f6f7f9" stroke="#e3e6ea"/><text x="630" y="394" font-size="12">i18n/ translations (JSON)</text>
+        <text x="460" y="430" font-size="12" fill="#6b6b6b">vite alias: @ → ./src ·  @shared → ../packages/ui</text>
+        <text x="460" y="450" font-size="12" fill="#6b6b6b">tailwind: presets:[ui/preset]</text>
+        <text x="460" y="478" font-size="12" fill="#2f6feb">import { Button } from '@shared/ui'</text>
+
+        <!-- edges -->
+        <path d="M320 300 L360 226" stroke="#2f6feb" fill="none" marker-end="url(#arrow)"/>
+        <text x="250" y="270" font-size="12" fill="#2f6feb">@shared → packages/ui</text>
+        <path d="M540 300 L470 226" stroke="#2f6feb" fill="none" marker-end="url(#arrow)"/>
+        <text x="540" y="270" font-size="12" fill="#2f6feb">@shared → packages/ui</text>
+      </svg>
+      <figcaption>Один общий канон (packages/ui) потребляется обоими приложениями; per-app остаются routes и переводы.</figcaption>
+    </figure>
+    <h3>Технологический стек</h3>
+    <ul class="tight">
+      <li>Каталог <code>packages/ui/</code> — npm workspace-пакет <code>@uzintellekt/ui</code> со своим <code>package.json</code> (<code>private</code>).</li>
+      <li>Vite 5 alias (<code>resolve.alias</code>) + <code>server.fs.allow</code> для импорта вне корня приложения.</li>
+      <li>Tailwind 3.4 <code>presets</code> — общий <code>packages/ui/tailwind.preset.js</code>; <code>content</code>-глоб включает <code>../packages/ui/**</code>.</li>
+      <li>i18next фабрика <code>createI18n(resources)</code> — общая инициализация, per-app ресурсы.</li>
+      <li>jsconfig <code>paths</code> для DX/IDE-резолва <code>@shared/*</code>.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Граница: общее vs per-app</h2>
+    <table>
+      <thead><tr><th>Модуль</th><th>Где живёт</th><th>Импорт</th><th>Примечание</th></tr></thead>
+      <tbody>
+        <tr><td>shared/ui (24)</td><td>packages/ui/ui</td><td><code>@shared/ui</code></td><td>идентичны — просто перенос</td></tr>
+        <tr><td>api impl (http/grid/cache/token-storage/sso/geo/auth)</td><td>packages/ui/api</td><td><code>@shared/api</code></td><td>барель — суперсет (incl. login)</td></tr>
+        <tr><td>lib (utils/format/validators/csv/activity-log/…)</td><td>packages/ui/lib</td><td><code>@shared/lib/*</code></td><td>admin-only утилиты тоже сюда</td></tr>
+        <tr><td>data/geo, config/env</td><td>packages/ui</td><td><code>@shared/data</code>, <code>@shared/config/env</code></td><td>env читает VITE_* потребителя</td></tr>
+        <tr><td>токены (index.css)</td><td>packages/ui/styles</td><td><code>@shared/styles/index.css</code></td><td>импорт в main.jsx обоих</td></tr>
+        <tr><td>tailwind preset</td><td>packages/ui/tailwind.preset.js</td><td><code>presets:[…]</code></td><td>оба tailwind.config</td></tr>
+        <tr><td>i18n init</td><td>packages/ui/i18n</td><td><code>@shared/i18n</code> (createI18n)</td><td>переводы per-app</td></tr>
+        <tr><td>i18n переводы (JSON)</td><td>&lt;app&gt;/src/i18n/*.json</td><td><code>@/i18n</code></td><td><strong>per-app</strong></td></tr>
+        <tr><td>config/routes.js</td><td>&lt;app&gt;/src/config/routes.js</td><td><code>@/config/routes</code></td><td><strong>per-app</strong> (разная навигация)</td></tr>
+        <tr><td>app/pages/widgets/features/entities</td><td>&lt;app&gt;/src/*</td><td><code>@/*</code></td><td><strong>per-app</strong></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Резолв модулей и сборка</h2>
+    <p>Каждое приложение собирается независимо; Vite резолвит <code>@shared</code> в <code>packages/ui</code> на этапе бандлинга, а bare-импорты (radix и т.п.) — из единого root <code>node_modules</code> (хойст npm workspaces). Итог — два самостоятельных статических бандла.</p>
+    <figure class="svg-figure">
+      <svg viewBox="0 0 820 470" role="img" aria-labelledby="flow-title">
+        <title id="flow-title">Резолв @shared при сборке приложения</title>
+        <defs><marker id="f-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#2f6feb"/></marker></defs>
+        <g font-size="12" font-weight="700">
+          <rect x="20" y="30" width="150" height="30" rx="6" fill="#e7efff" stroke="#bcd3ff"/><text x="42" y="50">app source</text>
+          <rect x="230" y="30" width="150" height="30" rx="6" fill="#e7efff" stroke="#bcd3ff"/><text x="252" y="50">vite.config alias</text>
+          <rect x="440" y="30" width="150" height="30" rx="6" fill="#e7efff" stroke="#bcd3ff"/><text x="462" y="50">packages/ui</text>
+          <rect x="650" y="30" width="150" height="30" rx="6" fill="#e7efff" stroke="#bcd3ff"/><text x="672" y="50">app/node_modules</text>
+        </g>
+        <g stroke="#e3e6ea" stroke-dasharray="4 4">
+          <line x1="95" y1="60" x2="95" y2="440"/><line x1="305" y1="60" x2="305" y2="440"/><line x1="515" y1="60" x2="515" y2="440"/><line x1="725" y1="60" x2="725" y2="440"/>
+        </g>
+        <g font-size="12">
+          <line x1="95" y1="95" x2="305" y2="95" stroke="#2f6feb" marker-end="url(#f-arrow)"/><text x="105" y="89">import { Button } from '@shared/ui'</text>
+          <line x1="305" y1="135" x2="515" y2="135" stroke="#2f6feb" marker-end="url(#f-arrow)"/><text x="315" y="129">alias @shared → ../packages/ui</text>
+          <line x1="515" y1="175" x2="515" y2="175" stroke="#2f6feb"/><text x="325" y="170" fill="#6b6b6b">(server.fs.allow допускает путь вне корня)</text>
+          <line x1="515" y1="205" x2="725" y2="205" stroke="#2f6feb" marker-end="url(#f-arrow)"/><text x="525" y="199">ui/button.jsx: import '@radix-ui/react-slot'</text>
+          <line x1="725" y1="245" x2="515" y2="245" stroke="#1f9d57" marker-end="url(#f-arrow)"/><text x="525" y="239" fill="#1f9d57">bare import резолвится из node_modules app</text>
+          <line x1="515" y1="285" x2="95" y2="285" stroke="#1f9d57" marker-end="url(#f-arrow)"/><text x="150" y="279" fill="#1f9d57">общий код инлайнится в бандл app</text>
+          <line x1="95" y1="325" x2="95" y2="325"/><text x="105" y="320" fill="#6b6b6b">tailwind content включает ../packages/ui/** → классы не выпадают</text>
+          <line x1="95" y1="365" x2="725" y2="365" stroke="#2f6feb" marker-end="url(#f-arrow)"/><text x="150" y="359" fill="#2f6feb">vite build → dist/ (независимый статический бандл на каждый app)</text>
+          <text x="105" y="405" fill="#6b6b6b">tree-shake: неиспользуемое (login в dashboard) не попадает в бандл</text>
+        </g>
+      </svg>
+      <figcaption>Резолв alias при сборке: общий код — из packages/ui, зависимости — из единого root node_modules (workspaces); два независимых dist.</figcaption>
+    </figure>
+    <h3>Ключевые конфиги</h3>
+    <pre><code>// &lt;app&gt;/vite.config.js
+resolve: { alias: {
+  '@': path.resolve(__dirname, './src'),
+  '@shared': path.resolve(__dirname, '../packages/ui'),
+} },
+server: { fs: { allow: ['..'] } },   // разрешить импорт из packages/ui вне корня app
+
+// &lt;app&gt;/jsconfig.json → compilerOptions.paths
+"@/*": ["./src/*"],
+"@shared/*": ["../packages/ui/*"]
+
+// &lt;app&gt;/tailwind.config.js
+import uiPreset from '../packages/ui/tailwind.preset.js'
+export default {
+  presets: [uiPreset],
+  content: ['./index.html', './src/**/*.{js,jsx}', '../packages/ui/**/*.{js,jsx}'],
+}
+
+// &lt;app&gt;/src/i18n/index.js  (per-app: свои JSON + общая фабрика)
+import { createI18n } from '@shared/i18n'
+import ru from './ru.json'; /* … uz, uz-Cyrl, en */
+export default createI18n({ ru, uz, 'uz-Cyrl': uzCyrl, en })</code></pre>
+  </section>
+
+  <section>
+    <h2>Миграция — объём</h2>
+    <ul class="tight">
+      <li><code>@/shared/…</code> → <code>@shared/…</code>: <strong>admin — 72 файла, dashboard — 85 файлов</strong> (механическая замена, кроме routes).</li>
+      <li><code>@/shared/config/routes</code> → <code>@/config/routes</code>: <strong>admin — 12</strong> импортёров (Sidebar, AdminLayout, ProtectedRoute, все pages), <strong>dashboard — 13</strong> (Sidebar, DashboardLayout, Header, works-виджеты).</li>
+      <li>Удалить <code>&lt;app&gt;/src/shared</code> после перевода (обе копии), оставив только per-app <code>config/routes.js</code> (перенесён в <code>src/config/</code>).</li>
+      <li>Порядок замен важен: сначала routes-импортёры → <code>@/config/routes</code>, затем bulk <code>@/shared/</code> → <code>@shared/</code> (иначе routes уедет в packages/ui).</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Тестирование</h2>
+    <h3>Unit / компонентные</h3>
+    <ul class="tight">
+      <li>Тесты <code>packages/ui</code> (перенесённые cache/token-storage/csv/activity-log/format/error-boundary) — запускаются из обоих приложений через <code>@shared</code> alias в <code>vitest.config</code>.</li>
+      <li>Оба приложения: полный <code>npm test</code> зелёный после перевода (admin — 110 тестов, dashboard — свой набор).</li>
+    </ul>
+    <h3>Интеграционные / сборка</h3>
+    <ul class="tight">
+      <li><code>npm run build</code> в обоих приложениях успешен; <code>npm run lint</code> — 0 (eslint-boundaries понимает <code>@shared</code>).</li>
+      <li>Проверка, что tailwind не выкинул классы общего слоя (визуальный diff-скриншот до/после).</li>
+    </ul>
+    <h3>E2E / smoke</h3>
+    <ul class="tight">
+      <li>Живой smoke обоих приложений (dashboard + admin) — ключевые экраны рендерятся идентично, 0 ошибок в консоли, дизайн не поехал.</li>
+      <li>CI drift-guard: скрипт падает, если появился <code>&lt;app&gt;/src/shared</code>.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Риски и обработка</h2>
+    <ul class="tight">
+      <li><strong>Tailwind purge:</strong> если <code>content</code>-глоб не включит <code>../packages/ui/**</code>, классы общего слоя выпадут → сломается стиль. Митигация: обязательный глоб + скриншот-diff.</li>
+      <li><strong>server.fs.allow:</strong> без него Vite dev запретит импорт вне корня app. Митигация: <code>fs.allow:['..']</code> в обоих.</li>
+      <li><strong>eslint-boundaries:</strong> FSD-правила настроены на <code>src/**</code>; <code>@shared</code> вне <code>src</code> — убедиться, что boundaries не ругается (общий слой = внешняя граница, как node_modules).</li>
+      <li><strong>Дубли зависимостей:</strong> решено — npm workspaces хойстят зависимости в единый root <code>node_modules</code> (один React), рассинхрон версий исключён.</li>
+      <li><strong>Повторное расхождение:</strong> кто-то снова создаст <code>src/shared</code>. Митигация: CI drift-guard.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Open Questions</h2>
+    <ul class="tight">
+      <li>Имя каталога: <code>packages/ui</code> vs <code>shared/</code> vs <code>packages/core</code>? (спека исходит из <code>packages/ui</code>.)</li>
+      <li>Нужен ли общий ESLint/Prettier-конфиг для <code>packages/ui</code> (сейчас правила в каждом app) — advanced.</li>
+      <li>Решено: приняты <strong>npm</strong> workspaces в v1 (folder+alias без общего node_modules не резолвил зависимости). Переход на pnpm или на импорт по имени пакета (<code>@uzintellekt/ui</code> вместо alias) — опционально на потом.</li>
+      <li>Держать ли <code>tailwind.config.js</code> полностью в preset или часть (content) неизбежно per-app — content per-app (пути разные), theme/plugins в preset.</li>
+      <li>Vitest: единый <code>vitest.config</code> с <code>@shared</code>-alias в каждом app (нужно добавить alias и туда, не только в vite.config).</li>
+    </ul>
+  </section>
+</body>
+</html>

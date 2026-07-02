@@ -1,20 +1,17 @@
 export const WORK_STATUS = {
   DRAFT: 'DRAFT',
-  PENDING: 'PENDING',
-  REGISTERED: 'REGISTERED',
-  APPROVED: 'APPROVED',
+  UNDER_REVIEW: 'UNDER_REVIEW',
   REJECTED: 'REJECTED',
-  CANCELLED: 'CANCELLED',
+  REGISTERED: 'REGISTERED',
 }
 
-// Maps backend state to UI presentation: label + badge variant (matches @/shared/ui Badge)
+// Maps backend state to a Badge variant (matches @shared/ui Badge).
+// Labels are resolved via i18n (work_status.*) at render time, not here.
 export const WORK_STATUS_CONFIG = {
-  DRAFT: { label: 'Qoralama', variant: 'muted' },
-  PENDING: { label: "Ko'rib chiqilmoqda", variant: 'warning' },
-  REGISTERED: { label: 'Tasdiqlangan', variant: 'success' },
-  APPROVED: { label: 'Tasdiqlangan', variant: 'success' },
-  REJECTED: { label: 'Rad etilgan', variant: 'destructive' },
-  CANCELLED: { label: 'Bekor qilingan', variant: 'muted' },
+  DRAFT: { variant: 'muted' },
+  UNDER_REVIEW: { variant: 'warning' },
+  REJECTED: { variant: 'destructive' },
+  REGISTERED: { variant: 'success' },
 }
 
 export function getWorkStatus(work) {
@@ -22,15 +19,14 @@ export function getWorkStatus(work) {
 }
 
 export function getStatusConfig(status) {
-  return (
-    WORK_STATUS_CONFIG[status] || { label: status || "Noma'lum", variant: 'muted' }
-  )
+  return WORK_STATUS_CONFIG[status] || { variant: 'muted' }
 }
 
 export function isEditableState(status) {
   return status === WORK_STATUS.DRAFT || status === WORK_STATUS.REJECTED
 }
 
-export function isCancellableState(status) {
-  return status === WORK_STATUS.DRAFT
+// Soft-delete is allowed only for not-yet-reviewed works (DRAFT/REJECTED).
+export function isDeletableState(status) {
+  return status === WORK_STATUS.DRAFT || status === WORK_STATUS.REJECTED
 }

@@ -6,6 +6,7 @@ import { DashboardPage } from '@/pages/dashboard'
 import { ProfilePage } from '@/pages/profile'
 import { WorksPage } from '@/pages/works'
 import { WorkFormPage } from '@/pages/work-form'
+import { WorkDetailPage } from '@/pages/work-detail'
 import { ContractsPage } from '@/pages/contracts'
 import NotFound from '@/pages/NotFound'
 
@@ -24,6 +25,7 @@ export const router = createBrowserRouter([
           { path: '/profile', element: <ProfilePage /> },
           { path: '/works', element: <WorksPage /> },
           { path: '/works/new', element: <WorkFormPage /> },
+          { path: '/works/:id', element: <WorkDetailPage /> },
           { path: '/works/:id/edit', element: <WorkFormPage /> },
           { path: '/contracts', element: <ContractsPage /> },
           { path: '*', element: <NotFound /> },

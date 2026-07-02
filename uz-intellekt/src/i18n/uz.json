@@ -50,13 +50,18 @@
     "all_rights": "Barcha huquqlar himoyalangan."
   },
   "hero": {
+    "badge": "Intellektual mulk himoyasi",
     "title_prefix": "Intellektual Mulkingizni ",
     "title_highlight": "Himoya Qiling",
     "desc": "Mualliflik huquqlarini ro‘yxatdan o‘tkazing, boshqaring va raqamli platforma orqali ishonchli himoyalang.",
-    "cta": "A'zo bo'lish / Kirish"
+    "cta": "A'zo bo'lish / Kirish",
+    "cta_secondary": "Xizmatlar bilan tanishing",
+    "image_alt": "UzIntellekt — intellektual mulk himoyasi",
+    "trust": "OneID orqali xavfsiz va tez kirish"
   },
   "services_preview": {
     "title": "Xizmatlarimiz",
+    "subtitle": "Intellektual mulk uchun to‘liq raqamli ekotizim.",
     "items": {
       "dep": {
         "title": "Deponentlash",
@@ -74,10 +79,13 @@
         "title": "Ochiq reestrlar",
         "desc": "Ro‘yxatdan o‘tgan asarlar bazasi."
       }
-    }
+    },
+    "eyebrow": "Xizmatlar",
+    "more": "Batafsil"
   },
   "how_it_works": {
     "title": "Qanday ishlaydi",
+    "subtitle": "Uch oddiy qadamda intellektual mulkingiz himoyalanadi.",
     "step_1": {
       "title": "O‘zingiz ishongan ishni yuklang",
       "desc": "Intellektual mulkingizni tizimga yuklaysiz."
@@ -89,12 +97,14 @@
     "step_3": {
       "title": "Guvohnomani oling",
       "desc": "Rasmiy raqamli guvohnoma olasiz."
-    }
+    },
+    "eyebrow": "Jarayon"
   },
   "news_block": {
     "title": "So'nggi yangiliklar",
-    "more": "Batafsil →",
-    "back_to_news": "← Yangiliklarga qaytish",
+    "subtitle": "Soha yangiliklari va e'lonlar",
+    "more": "Batafsil",
+    "back_to_news": "Yangiliklarga qaytish",
     "search_placeholder": "Yangilik qidirish...",
     "all_news": "Barchasini ko'rish",
     "no_news": "Hech qanday yangilik topilmadi",
@@ -138,12 +148,17 @@
       "title": "Huquqiy seminar",
       "desc": "Seminar bo‘lib o‘tdi.",
       "date": "May 01, 2026"
-    }
+    },
+    "eyebrow": "Yangiliklar",
+    "see_all": "Barcha yangiliklar"
   },
   "partners_block": {
-    "title": "Hamkorlarimiz"
+    "title": "Hamkorlarimiz",
+    "eyebrow": "Hamkorlar",
+    "subtitle": "Bizga ishonadigan tashkilotlar va hamjamiyatlar."
   },
   "about_page": {
+    "eyebrow": "UzIntellekt",
     "title": "Biz haqimizda",
     "desc": "UzIntellekt — intellektual mulk obyektlarini ro‘yxatdan o‘tkazish, huquqiy himoya qilish va raqamli boshqarish uchun yaratilgan zamonaviy milliy platforma.",
     "mission": "Bizning missiyamiz",
@@ -160,7 +175,8 @@
     "val_3_title": "Innovatsiya",
     "val_3_desc": "Raqamli texnologiyalar orqali huquqni soddalashtirish.",
     "final_title": "Intellektual mulkingiz — bizning mas’uliyatimiz",
-    "final_desc": "UzIntellekt jamoasi mualliflik huquqlarini himoyalash, raqamli sertifikatlash va huquqiy boshqaruvni zamonaviy texnologiyalar bilan uyg‘unlashtiradi."
+    "final_desc": "UzIntellekt jamoasi mualliflik huquqlarini himoyalash, raqamli sertifikatlash va huquqiy boshqaruvni zamonaviy texnologiyalar bilan uyg‘unlashtiradi.",
+    "values_eyebrow": "Qadriyatlar"
   },
   "contact_page": {
     "title": "Biz bilan bog'laning",
@@ -171,6 +187,8 @@
     "hours": "Ish vaqti",
     "hours_val": "Dushanba – Juma, 9:00 – 18:00",
     "send_message": "Xabar yuborish",
+    "send_mailto_btn": "Mail orqali yuborish",
+    "unconfigured_notice": "Forma hozircha sozlanmagan. Iltimos, pastdagi 'Mail orqali yuborish' tugmasini bosing.",
     "success_msg": "Xabaringiz muvaffaqiyatli yuborildi! Tez orada javob beramiz.",
     "error_msg": "Xatolik yuz berdi. Iltimos qayta urinib ko'ring.",
     "name_label": "Ismingiz",
@@ -179,12 +197,12 @@
     "message_label": "Xabar",
     "message_placeholder": "Xabaringizni yozing...",
     "sending_btn": "Yuborilmoqda...",
-    "send_btn": "Yuborish →"
+    "send_btn": "Yuborish"
   },
   "services_page": {
     "hero_title": "Intellektual mulkingizni himoya qiling",
     "hero_desc": "Biz siz uchun eng sodda, eng tez va eng xavfsiz deponentlash xizmati taqdim etamiz. Asarlarni to'liq himoya qiling va kelajakda huquqbuzarliklarga qarshi turing.",
-    "start_btn": "Boshlash →",
+    "start_btn": "Boshlash",
     "details_btn": "Batafsil ma'lumot",
     "users": "Foydalanuvchilar",
     "deposited_works": "Deponentlangan asarlar",
@@ -217,7 +235,7 @@
     "why_subtitle": "6 ta asosiy manfa'at va imkoniyatlar",
     "cta_title": "Asaringizni bugunoq himoya qiling",
     "cta_subtitle": "Minglab mutaxassislar va ijodkorlar asarlarini bizga ishonmoqdalar. Siz ham qila olasiz.",
-    "cta_btn": "Boshlang →",
+    "cta_btn": "Boshlang",
     "faq_btn": "Savollar berish",
     "cta_no_card": "Kredit kartasiz ro'yxatdan o'tish. Barcha ma'lumotlar shifrlangan.",
     "faq_title": "Tez-tez so'raladigan savollar",
@@ -229,7 +247,7 @@
     "faq_a3": "O'zbekistonda to'la qonuniy kuchga ega. Sudda dalil sifatida ishlatilishi mumkin.",
     "faq_q4": "Nechta asarni deponentlash mumkin?",
     "faq_a4": "Cheksiz. Siz xohlagancha ko'p asarni himoya qila olasiz.",
-    "more_faq": "Ko'proq savol-javoblar →",
+    "more_faq": "Ko'proq savol-javoblar",
     "cats": {
       "text": "Matnli asarlar",
       "music": "Audio va musiqa",
@@ -310,7 +328,7 @@
     "works_title": "Qanday asarlar qabul qilinadi?",
     "cta_title": "Asaringizni bugunoq himoyalang",
     "cta_desc": "Deponentlash — bu faqat hujjat emas, bu sizning intellektual mulkingizga bo‘lgan huquqingizni himoya qilishdir.",
-    "cta_btn": "Deponentlashni boshlash →",
+    "cta_btn": "Deponentlashni boshlash",
     "features": {
       "f1_title": "Huquqiy isbot",
       "f1_desc": "Asaringizni aniq sana va muallif bilan rasmiy ro‘yxatdan o‘tkazish orqali huquqiy isbotga ega bo‘lasiz.",
@@ -399,6 +417,7 @@
     }
   },
   "not_found": {
+    "eyebrow": "404",
     "title": "Sahifa topilmadi",
     "desc": "Afsuski, siz qidirgan sahifa mavjud emas yoki o'chirilgan bo'lishi mumkin.",
     "go_back": "Orqaga qaytish",
@@ -416,6 +435,70 @@
     "badge_secure": "Xavfsiz",
     "badge_fast": "Tez",
     "badge_encrypted": "Shifrlangan",
-    "badge_verified": "Verified"
+    "badge_verified": "Tasdiqlangan"
+  },
+  "register_page": {
+    "progress_fill": "Ma'lumotlarni kiriting",
+    "progress_ready": "A'zo bo'lish uchun tayyor",
+    "progress_signed": "Imzo qabul qilindi…",
+    "progress_success": "A'zo bo'ldingiz",
+    "title": "A'zo bo'lish",
+    "title_success": "Muvaffaqiyatli!",
+    "subtitle": "Ma'lumotlaringizni kiriting",
+    "redirecting": "Dashboard'ga yo'naltirilmoqda...",
+    "auth_user_fallback": "Autentifikatsiya qilingan foydalanuvchi",
+    "loading": "Yuklanmoqda...",
+    "submitting": "Ma'lumotlar yuborilmoqda...",
+    "success_msg": "Ro'yxatdan muvaffaqiyatli o'tdingiz!",
+    "phone_label": "Telefon raqami",
+    "phone_ph": "+998 90 123 45 67",
+    "phone_invalid": "Noto'g'ri format. Misol: +998901234567",
+    "phone_opt_label": "Qo'shimcha telefon",
+    "phone_opt_ph": "+998 91 234 56 78",
+    "phone_opt_invalid": "Noto'g'ri format",
+    "pseudonym_label": "Taxallus (Pseudonym)",
+    "pseudonym_ph": "Taxallusingiz (ixtiyoriy)",
+    "region_label": "Viloyat",
+    "region_ph": "Viloyatni tanlang",
+    "district_label": "Tuman",
+    "district_ph": "Tumanni tanlang",
+    "district_ph_region_first": "Avval viloyat tanlang",
+    "street_label": "Ko'cha",
+    "street_ph": "Ko'cha nomi",
+    "house_label": "Uy raqami",
+    "house_ph": "12A",
+    "hint": "Barcha * maydonlarni to'ldiring va «A'zo bo'lish» tugmasini bosing",
+    "submit_btn": "A'zo bo'lish",
+    "have_account": "Akkauntingiz bormi?",
+    "login_link": "Kirish",
+    "tile_secure": "Xavfsiz",
+    "tile_oneid": "OneID",
+    "tile_fast": "Tezkor",
+    "geo_empty": "Ma'lumot yo'q",
+    "err_fill": "Barcha * maydonlarni to'g'ri to'ldiring.",
+    "err_signature": "Imzo talab qilinadi.",
+    "err_register": "Ro'yxatdan o'tishda xatolik. Qayta urining.",
+    "err_geo": "Viloyat/tuman yuklanmadi. Yangilang.",
+    "sig_title": "Imzo qo'ying",
+    "sig_subtitle": "Barmoq yoki sichqoncha bilan imzolang",
+    "sig_clear": "Tozalash",
+    "close": "Yopish",
+    "sig_placeholder_title": "Bu yerga imzo qo'ying",
+    "sig_placeholder_sub": "Barmoq yoki sichqoncha bilan",
+    "sig_ready": "Imzo tayyor",
+    "sig_waiting": "Imzo kutilmoqda...",
+    "cancel": "Bekor qilish",
+    "sig_saving": "Saqlanmoqda...",
+    "sig_confirm": "Tasdiqlash",
+    "sig_err_notready": "Imzo maydoni tayyor emas",
+    "sig_err_empty": "Iltimos, imzo qo'ying",
+    "sig_err_generic": "Xatolik yuz berdi",
+    "contract_title": "A'zolik shartnomasi",
+    "contract_subtitle": "Platformadan foydalanishdan oldin diqqat bilan o'qib chiqing",
+    "contract_loading": "Shartnoma yuklanmoqda...",
+    "contract_read_to_end": "Shartnomani oxirigacha o'qing",
+    "contract_agree": "Shartnomani o'qidim va roziman",
+    "contract_continue": "Davom etish",
+    "contract_load_err": "Shartnomani yuklab bo'lmadi"
   }
 }

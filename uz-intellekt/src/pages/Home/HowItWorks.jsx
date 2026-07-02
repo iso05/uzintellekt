@@ -1,62 +1,71 @@
+import { useTranslation } from 'react-i18next'
+import { Upload, ShieldCheck, FileText } from 'lucide-react'
+import { Card, CardContent, Eyebrow } from '@/shared/ui'
+
 const steps = [
   {
-    title: 'O‘zingiz ishongan ishni yuklang',
-    desc: 'Intellektual mulkingizni tizimga yuklaysiz.',
-    icon: '⬆️',
+    icon: Upload,
+    titleKey: 'how_it_works.step_1.title',
+    titleFallback: "O'zingiz ishongan ishni yuklang",
+    descKey: 'how_it_works.step_1.desc',
+    descFallback: 'Intellektual mulkingizni tizimga yuklaysiz.',
   },
   {
-    title: 'Ma’lumotlar tasdiqlanadi',
-    desc: 'Yuklangan ma’lumotlar tekshiriladi.',
-    icon: '✔️',
+    icon: ShieldCheck,
+    titleKey: 'how_it_works.step_2.title',
+    titleFallback: "Ma'lumotlar tasdiqlanadi",
+    descKey: 'how_it_works.step_2.desc',
+    descFallback: "Yuklangan ma'lumotlar tekshiriladi.",
   },
   {
-    title: 'Guvohnomani oling',
-    desc: 'Rasmiy raqamli guvohnoma olasiz.',
-    icon: '📄',
+    icon: FileText,
+    titleKey: 'how_it_works.step_3.title',
+    titleFallback: 'Guvohnomani oling',
+    descKey: 'how_it_works.step_3.desc',
+    descFallback: 'Rasmiy raqamli guvohnoma olasiz.',
   },
 ]
-
-import { useTranslation } from 'react-i18next'
 
 const HowItWorks = () => {
   const { t } = useTranslation()
   return (
-    <section
-      id="how-it-works"
-      className="relative how-bg py-28 overflow-hidden"
-    >
-      {/* BACK ILLUSTRATION */}
-      <div className="how-illustration" />
+    <section id="how-it-works" className="bg-muted/40 py-16 sm:py-24">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="mx-auto max-w-2xl text-center">
+          <Eyebrow align="center">{t('how_it_works.eyebrow', 'Jarayon')}</Eyebrow>
+          <h2 className="mt-3 text-2xl font-bold tracking-tight text-foreground sm:text-3xl md:text-4xl">
+            {t('how_it_works.title', 'Qanday ishlaydi')}
+          </h2>
+          <p className="mt-3 text-base text-muted-foreground">
+            {t(
+              'how_it_works.subtitle',
+              'Uch oddiy qadamda intellektual mulkingiz himoyalanadi.'
+            )}
+          </p>
+        </div>
 
-      <div className="relative max-w-7xl mx-auto px-3 sm:px-6">
-        {/* TITLE */}
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold gradient-title mb-8 sm:mb-16 pb-3">
-          {t('how_it_works.title', 'Qanday ishlaydi')}
-        </h2>
-
-        {/* STEPS */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 md:gap-13 relative">
-          {steps.map((item, idx) => (
-            <div key={idx} className="how-card relative">
-              {/* STEP NUMBER */}
-              <div className="step-badge">{idx + 1}</div>
-
-              {/* ICON */}
-              <div className="how-icon">{item.icon}</div>
-
-              {/* TEXT */}
-              <h3 className="text-lg font-semibold text-gray-900">
-                {t(`how_it_works.step_${idx + 1}.title`, item.title)}
-              </h3>
-
-              <p className="mt-2 text-sm text-gray-600 leading-relaxed">
-                {t(`how_it_works.step_${idx + 1}.desc`, item.desc)}
-              </p>
-
-              {/* ARROW (except last) */}
-              {idx !== steps.length - 1 && <div className="step-arrow" />}
-            </div>
-          ))}
+        <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-3">
+          {steps.map((step, idx) => {
+            const Icon = step.icon
+            return (
+              <Card key={step.titleKey} className="relative h-full">
+                <span className="absolute -left-3 -top-3 flex h-9 w-9 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground shadow-soft">
+                  {idx + 1}
+                </span>
+                <CardContent className="p-6">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary-soft text-primary">
+                    <Icon className="h-6 w-6" />
+                  </div>
+                  <h3 className="mt-4 text-base font-semibold text-foreground">
+                    {t(step.titleKey, step.titleFallback)}
+                  </h3>
+                  <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+                    {t(step.descKey, step.descFallback)}
+                  </p>
+                </CardContent>
+              </Card>
+            )
+          })}
         </div>
       </div>
     </section>

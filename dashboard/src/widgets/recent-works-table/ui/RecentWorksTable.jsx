@@ -1,21 +1,18 @@
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { FileText, ArrowRight, FilePlus2 } from 'lucide-react'
-import { Button, ListSkeleton, EmptyState } from '@/shared/ui'
-import { StatusBadge, getWorkStatus, isEditableState } from '@/entities/work'
-import { formatDateTime } from '@/shared/lib/format'
-import { ROUTES } from '@/shared/config/routes'
+import { Button, ListSkeleton, EmptyState } from '@shared/ui'
+import { StatusBadge, getWorkStatus } from '@/entities/work'
+import { formatDateTime } from '@shared/lib/format'
+import { ROUTES } from '@/config/routes'
 
 export default function RecentWorksTable({ works, loading, onView }) {
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
-  const goToWork = (work) => {
-    const status = getWorkStatus(work)
-    if (isEditableState(status)) {
-      navigate(ROUTES.WORK_EDIT(work.id))
-    } else {
-      onView?.(work)
-    }
-  }
+  // Row click always opens the detail page (which offers Edit for drafts) —
+  // same rule as the works list, so the interaction is uniform everywhere.
+  const goToWork = (work) => onView?.(work)
 
   return (
     <section className="overflow-hidden rounded-xl border border-border bg-card shadow-soft">
@@ -25,8 +22,8 @@ export default function RecentWorksTable({ works, loading, onView }) {
             <FileText className="h-[18px] w-[18px]" />
           </span>
           <div className="flex flex-col">
-            <h2 className="text-[15px] font-bold leading-tight text-foreground">So&apos;nggi arizalar</h2>
-            <p className="text-[12px] text-muted-foreground">Oxirgi 5 ta yuborilgan ariza</p>
+            <h2 className="text-[15px] font-bold leading-tight text-foreground">{t('recent.title')}</h2>
+            <p className="text-[12px] text-muted-foreground">{t('recent.subtitle')}</p>
           </div>
         </div>
         <Button
@@ -35,7 +32,7 @@ export default function RecentWorksTable({ works, loading, onView }) {
           onClick={() => navigate(ROUTES.WORKS)}
           className="gap-1.5 text-primary hover:bg-primary-soft hover:text-primary"
         >
-          Barchasi
+          {t('recent.all')}
           <ArrowRight className="h-4 w-4" />
         </Button>
       </header>
@@ -45,12 +42,12 @@ export default function RecentWorksTable({ works, loading, onView }) {
       ) : works.length === 0 ? (
         <EmptyState
           icon={FilePlus2}
-          title="Hozircha arizalar yo'q"
-          description="Birinchi asaringizni ro'yxatdan o'tkazish uchun yangi ariza yarating."
+          title={t('recent.empty_title')}
+          description={t('recent.empty_desc')}
           action={
             <Button onClick={() => navigate(ROUTES.WORK_NEW)} className="gap-2">
               <FilePlus2 className="h-4 w-4" />
-              Birinchi arizani yaratish
+              {t('recent.empty_action')}
             </Button>
           }
         />

@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { ChevronDown } from 'lucide-react'
 import {
   Button,
@@ -6,8 +7,9 @@ import {
   PopoverContent,
   PopoverTrigger,
   Checkbox,
-} from '@/shared/ui'
-import { cn } from '@/shared/lib/utils'
+} from '@shared/ui'
+import { cn } from '@shared/lib/utils'
+import { resolveLocalizedName } from '@shared/lib/localized-name'
 import { useDictionaries } from '../model/use-dictionaries'
 
 /**
@@ -22,19 +24,20 @@ export default function AuthorRolesMultiSelect({
   onClose,
 }) {
   const { authorRoles } = useDictionaries()
+  const { t } = useTranslation()
 
   const selectedIds = useMemo(() => value.map(String), [value])
 
   const summary = useMemo(() => {
-    if (!selectedIds.length) return '— Rolni tanlang —'
+    if (!selectedIds.length) return t('form.role_ph')
     return selectedIds
       .map((id) => {
         const r = authorRoles.find((x) => String(x.id) === id)
-        return r?.localizedName?.uz || r?.localizedName?.ru || r?.name || ''
+        return r ? resolveLocalizedName(r.localizedName, r.name) : ''
       })
       .filter(Boolean)
       .join(', ')
-  }, [selectedIds, authorRoles])
+  }, [selectedIds, authorRoles, t])
 
   const toggle = (roleId) => {
     const id = String(roleId)
@@ -70,14 +73,13 @@ export default function AuthorRolesMultiSelect({
         <div className="flex max-h-[240px] flex-col gap-0.5 overflow-y-auto">
           {authorRoles.length === 0 ? (
             <div className="px-3 py-2 text-sm text-muted-foreground">
-              Rollar mavjud emas
+              {t('form.roles_empty')}
             </div>
           ) : (
             authorRoles.map((ar) => {
               const id = String(ar.id)
               const checked = selectedIds.includes(id)
-              const label =
-                ar.localizedName?.uz || ar.localizedName?.ru || ar.name || ''
+              const label = resolveLocalizedName(ar.localizedName, ar.name)
               return (
                 <label
                   key={id}

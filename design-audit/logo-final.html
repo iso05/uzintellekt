@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>UzIntellekt — Logo final (F2 compact)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Spectral:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#13294B;--deep:#1A3FA0;--blue:#2563EB;--paper:#F7F8FB;--line:#E6E9F0;--muted:#5B6B86}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1060px;margin:0 auto;padding:48px 28px 90px}
+  .eyebrow{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--blue)}
+  h1{font-family:Spectral,serif;font-weight:700;font-size:clamp(28px,4vw,42px);line-height:1.05;margin:8px 0 12px}
+  .lead{color:var(--muted);font-size:16px;max-width:74ch;line-height:1.6;margin:0}
+  .sectlabel{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);border-top:1px solid var(--line);padding-top:14px;margin:40px 0 22px}
+  .row{display:flex;gap:36px;align-items:flex-end;flex-wrap:wrap}
+  .col{display:flex;flex-direction:column;align-items:center;gap:9px}
+  .col .cap{font-size:12px;color:var(--muted)}
+  .card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px}
+  .compare .col svg{height:96px;width:auto}
+  .lockups{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .lk{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px;display:flex;align-items:center;gap:13px}
+  .lk.dark{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .lk .wm{font-weight:700;font-size:22px;letter-spacing:-.01em}
+  .lk .wm small{display:block;font-size:11px;font-weight:500;color:var(--muted)}
+  .lk.dark .wm small{color:#9DB2D6}
+  .note{font-size:13px;color:var(--muted);margin-top:18px;line-height:1.55}
+  .favs{display:flex;gap:24px;align-items:flex-end}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">UzIntellekt · Финальный знак</div>
+  <h1>Щит F2 — компактнее по высоте</h1>
+  <p class="lead">Та же дружелюбная форма F2, но ниже: короче «нос» и более устойчивая пропорция (≈1.18 вместо 1.36). Знак © — контур. Ниже: сравнение по высоте, плитка-app-icon, фавикон-размеры, моно и локапы.</p>
+
+  <div class="sectlabel">Высота: было (F2) → стало (F2 compact)</div>
+  <div class="row compare card">
+    <div class="col"><span id="old"></span><span class="cap">F2 (высокий)</span></div>
+    <div class="col" style="color:var(--muted);font-size:24px">→</div>
+    <div class="col"><span id="new"></span><span class="cap">F2 compact</span></div>
+  </div>
+
+  <div class="sectlabel">Применение</div>
+  <div class="row">
+    <div class="col"><span id="master"></span><span class="cap">мастер (90px)</span></div>
+    <div class="col"><span id="tile"></span><span class="cap">плитка / app-icon</span></div>
+    <div class="col"><span id="mono"></span><span class="cap">моно (ink)</span></div>
+    <div class="col"><span id="white"></span><span class="cap">на синем</span></div>
+  </div>
+
+  <div class="sectlabel">Фавикон / мелкие размеры</div>
+  <div class="favs" id="favs"></div>
+
+  <div class="sectlabel">Лого-локап</div>
+  <div class="lockups">
+    <div class="lk"><span id="lkA"></span><span class="wm">UzIntellekt<small>Ijodkorlar hamjamiyati</small></span></div>
+    <div class="lk dark"><span id="lkB"></span><span class="wm">UzIntellekt<small>Shaxsiy kabinet</small></span></div>
+  </div>
+  <p class="note">Ок? Тогда сохраню SVG (мастер + плитка + фавикон) и поставлю единый знак в шапку сайта и сайдбар кабинета. Если нужно ещё ниже/выше — скажите.</p>
+</div>
+
+<script>
+const F2_TALL="M50 6 L84 17 Q90 19 90 25 L90 62 C90 90 73 107 50 115 C27 107 10 90 10 62 L10 25 Q10 19 16 17 Z";
+const F2="M50 10 L83 19 Q89 21 89 27 L89 56 C89 81 72 96 50 102 C28 96 11 81 11 56 L11 27 Q11 21 17 19 Z";
+const VB_TALL="0 0 100 120", VB="0 0 100 112";
+const GR=id=>`<linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2E68F0"/><stop offset="1" stop-color="#1A3FA0"/></linearGradient>`;
+function cpy(co,cx,cy,r,sw){return `<g stroke="${co}" stroke-width="${sw||7}" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="${cx}" cy="${cy}" r="${r}"/><path d="M${cx+r*0.43} ${cy-r*0.40} a${r*0.6} ${r*0.6} 0 1 0 0 ${r*0.8}"/></g>`;}
+function logo(h,opt){opt=opt||{};const id='g'+(''+Math.random()).slice(2,7);
+  const fill=opt.fill||('url(#'+id+')');
+  const co=opt.co||'#fff';
+  const cy=opt.cy||52, r=opt.r||23;
+  const path=opt.tall?F2_TALL:F2, vb=opt.tall?VB_TALL:VB;
+  return `<svg viewBox="${vb}" style="height:${h}px;width:auto" role="img" aria-label="UzIntellekt"><defs>${opt.fill?'':GR(id)}</defs><path d="${path}" fill="${fill}"/>${cpy(co,50,opt.tall?58:cy,r,opt.sw)}</svg>`;}
+function tile(h){const id='t'+(''+Math.random()).slice(2,7);
+  return `<svg viewBox="0 0 100 100" style="height:${h}px;width:auto"><defs>${GR(id)}</defs><rect x="2" y="2" width="96" height="96" rx="26" fill="url(#${id})"/><g transform="translate(27,22) scale(0.46)"><path d="${F2}" fill="#fff"/>${cpy('#1A3FA0',50,52,23,7)}</g></svg>`;}
+
+document.getElementById('old').innerHTML=logo(96,{tall:true});
+document.getElementById('new').innerHTML=logo(96,{});
+document.getElementById('master').innerHTML=logo(90,{});
+document.getElementById('tile').innerHTML=tile(76);
+document.getElementById('mono').innerHTML=logo(80,{fill:'#13294B',co:'#fff'});
+document.getElementById('white').innerHTML=`<span style="background:#2563EB;border-radius:14px;padding:14px;display:inline-flex">${logo(70,{fill:'#fff',co:'#2563EB'})}</span>`;
+document.getElementById('favs').innerHTML=[16,24,32,48].map(s=>`<div class="col"><span>${tile(s)}</span><span class="cap">${s}px tile</span></div>`).join('')
+  +[20,28].map(s=>`<div class="col"><span>${logo(s,{})}</span><span class="cap">${s}px знак</span></div>`).join('');
+document.getElementById('lkA').innerHTML=logo(40,{});
+document.getElementById('lkB').innerHTML=logo(36,{});
+</script>
+</body>
+</html>

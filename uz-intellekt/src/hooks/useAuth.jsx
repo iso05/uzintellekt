@@ -7,21 +7,9 @@ import {
   useContext,
 } from 'react'
 import { loginWithOneIdCode, getMe, tokenStorage } from '../services/api'
+import { ONEID_CONFIG, generateState } from '../config/oneid.config'
 
 const AuthContext = createContext(null)
-
-// ── OneID config ───────────────────────────────────────────────
-const ONEID_CONFIG = {
-  clientId: import.meta.env.VITE_ONEID_CLIENT_ID,
-  redirectUri: import.meta.env.VITE_ONEID_REDIRECT_URI,
-  authUrl: 'https://sso.egov.uz/sso/oauth/Authorization.do',
-}
-
-const generateState = () => {
-  const arr = new Uint32Array(8)
-  crypto.getRandomValues(arr)
-  return Array.from(arr, (n) => n.toString(16)).join('')
-}
 
 // ══════════════════════════════════════════════════════════════
 export function AuthProvider({ children }) {
@@ -52,7 +40,18 @@ export function AuthProvider({ children }) {
   //   &scope=uzintellekt_uz
   //   &state=<random>
   const loginWithOneId = useCallback(() => {
-    window.location.href = 'https://sso.egov.uz/sso/oauth/Authorization.do?response_type=one_code&client_id=uzintellekt_uz&redirect_uri=https://dashboard.uzintellekt.uz&scope=uzintellekt_uz&state=testState'
+    // CSRF himoya: random state yaratamiz, callback tekshiruvi uchun saqlaymiz
+    const state = generateState()
+    sessionStorage.setItem('oneid_state', state)
+
+    const params = new URLSearchParams({
+      response_type: ONEID_CONFIG.responseType,
+      client_id: ONEID_CONFIG.clientId,
+      redirect_uri: ONEID_CONFIG.redirectUri,
+      scope: ONEID_CONFIG.scope,
+      state,
+    })
+    window.location.href = `${ONEID_CONFIG.authUrl}?${params.toString()}`
   }, [])
 
   // ── OneID callback ─────────────────────────────────────────

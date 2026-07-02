@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>UzIntellekt — Brand Board v2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Spectral:wght@500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Bricolage+Grotesque:wght@600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Manrope:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#13294B;
+    --deep:#1A3FA0;
+    --blue:#2563EB;
+    --spark:#FB6E3B;
+    --paper:#F7F8FB;
+    --line:#E6E9F0;
+    --muted:#5B6B86;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1120px;margin:0 auto;padding:56px 28px 96px}
+  .eyebrow{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--blue)}
+  h1{font-family:Spectral,Georgia,serif;font-weight:700;font-size:clamp(34px,5vw,54px);line-height:1.04;letter-spacing:-.01em;margin:10px 0 12px}
+  .lead{color:var(--muted);font-size:17px;max-width:64ch;line-height:1.6;margin:0}
+  section{margin-top:64px}
+  .sectlabel{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);border-top:1px solid var(--line);padding-top:14px;margin-bottom:24px}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:0 1px 2px rgba(19,41,75,.04)}
+  .lockup{display:flex;align-items:center;gap:12px}
+  .lockup .name{font-weight:700;font-size:20px;letter-spacing:-.01em}
+  .lockup .name small{display:block;font-size:11px;font-weight:500;color:var(--muted);letter-spacing:.02em}
+  .pick{font-size:12.5px;color:var(--muted);margin-top:18px;line-height:1.5}
+  .pick b{color:var(--ink)}
+  .swatches{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+  .sw{border-radius:12px;border:1px solid var(--line);overflow:hidden;background:#fff}
+  .sw .chip{height:64px}
+  .sw .meta{padding:10px 12px;font-size:11px}
+  .sw .meta b{display:block;font-size:12px;margin-bottom:2px}
+  .mono{font-family:'IBM Plex Mono',monospace}
+  .fpgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .fp{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px}
+  .fp-tag{font-size:12px;font-weight:600;color:var(--ink)}
+  .fp-tag span{display:block;font-weight:500;color:var(--muted);font-size:11.5px;margin-top:3px}
+  .fp-h{font-weight:700;font-size:30px;line-height:1.08;letter-spacing:-.01em;margin:14px 0 10px;color:var(--ink)}
+  .fp-h em{font-style:normal;color:var(--spark)}
+  .fp-b{font-size:14px;color:#33425c;line-height:1.5}
+  .specimen .d{font-family:Spectral,serif;font-weight:700;font-size:40px;line-height:1.05;letter-spacing:-.01em}
+  .specimen .d em{font-style:normal;color:var(--spark)}
+  .specimen .b{font-size:16px;color:#33425c;max-width:60ch;line-height:1.65;margin-top:10px}
+  .row{display:flex;gap:48px;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;gap:8px;border-radius:11px;padding:12px 19px;font-weight:600;font-size:14px;border:1px solid transparent;cursor:pointer}
+  .btn-primary{background:var(--blue);color:#fff}
+  .btn-primary:hover{background:var(--deep)}
+  .btn-ghost{background:#fff;color:var(--ink);border-color:var(--line)}
+  .btn-spark{background:var(--spark);color:#fff}
+  .badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:4px 11px;font-size:12px;font-weight:600}
+  .dot{width:6px;height:6px;border-radius:999px;background:currentColor}
+  .b-success{background:#e7f6ec;color:#1c7a45}
+  .b-warn{background:#fdf1dd;color:#9a6712}
+  .b-info{background:#e8eefc;color:var(--blue)}
+  .b-muted{background:#eef1f6;color:#54627a}
+  /* hero — light & friendly */
+  .hero{position:relative;overflow:hidden;border-radius:22px;border:1px solid var(--line);background:
+      radial-gradient(1100px 380px at 88% -10%, #EAF0FE 0%, rgba(234,240,254,0) 60%),
+      #fff;padding:52px 44px}
+  .hero .eyebrow{display:inline-flex;align-items:center;gap:7px}
+  .hero h3{font-family:Spectral,serif;font-weight:700;font-size:42px;line-height:1.04;margin:12px 0 14px;max-width:15ch}
+  .hero h3 em{font-style:normal;color:var(--spark)}
+  .hero p{color:var(--muted);max-width:44ch;line-height:1.6;margin:0 0 24px;font-size:16px}
+  .herobtns{display:flex;gap:12px}
+  .heroart{position:absolute;right:40px;top:50%;transform:translateY(-50%);width:300px;height:300px}
+  /* dashboard tone — light & convenient */
+  .dash{display:grid;grid-template-columns:210px 1fr;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#fff}
+  .side{background:#fff;border-right:1px solid var(--line);padding:18px 14px}
+  .side .li{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:14px;font-weight:500;color:var(--muted)}
+  .side .li.active{background:#EAF0FE;color:var(--deep);font-weight:600}
+  .dashmain{padding:24px;background:var(--paper)}
+  .wcard{position:relative;overflow:hidden;border-radius:16px;background:linear-gradient(120deg,#1A3FA0,#2563EB);color:#fff;padding:22px 24px;margin-bottom:16px}
+  .wcard h4{font-family:Spectral,serif;font-weight:700;font-size:24px;margin:6px 0 4px}
+  .wcard p{margin:0;color:#cfe;opacity:.85;font-size:13px;color:#D7E2FB}
+  .wcard .seal{position:absolute;right:18px;top:50%;transform:translateY(-50%);opacity:.9}
+  .stat{border:1px solid var(--line);border-radius:14px;padding:16px;background:#fff}
+  .stat .n{font-size:28px;font-weight:700}
+  .stat .l{font-size:12px;color:var(--muted)}
+  .note{font-size:13px;color:var(--muted);margin-top:12px;line-height:1.5}
+  .changed{background:#fff;border:1px solid var(--line);border-left:3px solid var(--spark);border-radius:10px;padding:14px 16px;font-size:13.5px;color:#33425c;line-height:1.55}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="eyebrow">UzIntellekt · Brand direction v2 — некоммерческое общество авторов и изобретателей</div>
+  <h1>Ijodkorlar hamjamiyati — тепло, ясно, по-человечески</h1>
+  <p class="lead">Пересобрано под верный бриф: платформой пользуются изобретатели и авторы, организация — некоммерческое негосударственное общество. Поэтому не «казённая печать», а дружелюбный современный бренд сообщества: легко зарегистрировать и защитить свою идею, чувство «это моё», поддержка, а не бюрократия. Доверие сохраняем синим; искра-акцент даёт энергию идеи.</p>
+
+  <section>
+    <div class="sectlabel">1 · Логотип — 3 новые концепции (не печать/щит)</div>
+    <div class="grid3">
+      <div class="card">
+        <div class="lockup"><span id="logoA"></span><span class="name">UzIntellekt<small>Ijodkorlar hamjamiyati</small></span></div>
+        <div class="pick"><b>A · Iskra (искра идеи).</b> Четырёхлучевая искра = момент «придумал». Дружелюбно, про творчество и изобретение; подходит и автору, и изобретателю.</div>
+      </div>
+      <div class="card">
+        <div class="lockup"><span id="logoB"></span><span class="name">UzIntellekt<small>Ijodkorlar hamjamiyati</small></span></div>
+        <div class="pick"><b>B · Imzo (подпись автора).</b> Уверенный росчерк-«U» с искрой на конце = авторство, «подписано и закреплено за вами». Человечно и лично.</div>
+      </div>
+      <div class="card">
+        <div class="lockup"><span id="logoC"></span><span class="name">UzIntellekt<small>Ijodkorlar hamjamiyati</small></span></div>
+        <div class="pick"><b>C · Hamjamiyat (сообщество).</b> Две пересекающиеся формы + искра в центре = общество членов, общий вклад. Про «мы вместе защищаем».</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sectlabel">2 · Палитра — дружелюбнее, без гос-золота</div>
+    <div class="swatches">
+      <div class="sw"><div class="chip" style="background:#13294B"></div><div class="meta"><b>Ink</b><span class="mono">#13294B</span></div></div>
+      <div class="sw"><div class="chip" style="background:#1A3FA0"></div><div class="meta"><b>Deep blue</b><span class="mono">#1A3FA0</span></div></div>
+      <div class="sw"><div class="chip" style="background:#2563EB"></div><div class="meta"><b>Blue (trust)</b><span class="mono">#2563EB</span></div></div>
+      <div class="sw"><div class="chip" style="background:#FB6E3B"></div><div class="meta"><b>Spark (идея)</b><span class="mono">#FB6E3B</span></div></div>
+      <div class="sw"><div class="chip" style="background:#F7F8FB;border-bottom:1px solid #E6E9F0"></div><div class="meta"><b>Paper</b><span class="mono">#F7F8FB</span></div></div>
+      <div class="sw"><div class="chip" style="background:#E6E9F0"></div><div class="meta"><b>Line</b><span class="mono">#E6E9F0</span></div></div>
+    </div>
+    <p class="note">Синий = доверие и защита. Тёплая искра — энергия идеи/творчества, точечно (CTA-вторичный, акценты, «новое»). Светлый воздух вместо тёмных плит → ощущение простоты и удобства.</p>
+  </section>
+
+  <section>
+    <div class="sectlabel">3 · Типографика — сравните и выберите (1–5)</div>
+    <div class="fpgrid">
+      <div class="fp">
+        <div class="fp-tag">1 · Spectral + Inter <span>сериф · editorial, тёплый-классический</span></div>
+        <div class="fp-h" style="font-family:Spectral,serif">G'oyangiz — <em>o'zingizniki</em></div>
+        <div class="fp-b">Asaringizni yuklang va himoyalang — sodda va tushunarli.</div>
+      </div>
+      <div class="fp">
+        <div class="fp-tag">2 · Fraunces + Inter <span>сериф · характерный, «ручной» тёплый</span></div>
+        <div class="fp-h" style="font-family:Fraunces,serif">G'oyangiz — <em>o'zingizniki</em></div>
+        <div class="fp-b">Asaringizni yuklang va himoyalang — sodda va tushunarli.</div>
+      </div>
+      <div class="fp">
+        <div class="fp-tag">3 · Bricolage Grotesque + Inter <span>гротеск-дисплей · современный, узнаваемый</span></div>
+        <div class="fp-h" style="font-family:'Bricolage Grotesque',sans-serif">G'oyangiz — <em>o'zingizniki</em></div>
+        <div class="fp-b">Asaringizni yuklang va himoyalang — sodda va tushunarli.</div>
+      </div>
+      <div class="fp">
+        <div class="fp-tag">4 · Plus Jakarta Sans <span>дисплей + текст одним · дружелюбный продуктовый</span></div>
+        <div class="fp-h" style="font-family:'Plus Jakarta Sans',sans-serif">G'oyangiz — <em>o'zingizniki</em></div>
+        <div class="fp-b" style="font-family:'Plus Jakarta Sans',sans-serif">Asaringizni yuklang va himoyalang — sodda va tushunarli.</div>
+      </div>
+      <div class="fp">
+        <div class="fp-tag">5 · Manrope <span>дисплей + текст одним · чистый нейтральный</span></div>
+        <div class="fp-h" style="font-family:Manrope,sans-serif">G'oyangiz — <em>o'zingizniki</em></div>
+        <div class="fp-b" style="font-family:Manrope,sans-serif">Asaringizni yuklang va himoyalang — sodda va tushunarli.</div>
+      </div>
+      <div class="fp" style="background:#13294B;color:#fff;border-color:#13294B">
+        <div class="fp-tag" style="color:#9DBBFF">Data / IDs (во всех) · IBM Plex Mono</div>
+        <div class="mono" style="font-size:16px;margin-top:14px">Guvohnoma №UZ-2026-004128</div>
+        <div class="mono" style="font-size:16px;margin-top:6px;color:#C9D5EC">PINFL 53107016520024</div>
+        <div style="font-size:12.5px;color:#9DBBFF;margin-top:14px;line-height:1.5">Моноширинный — только для номеров/ID/дат сертификатов. Опционально.</div>
+      </div>
+    </div>
+    <p class="note">Сериф (1–2) = тепло + характер; гротеск-дисплей (3) = современно и узнаваемо; 4–5 = один шрифт на всё (проще, очень «продуктово» и удобно). «Тело/UI» по умолчанию — Inter, кроме вариантов 4–5.</p>
+  </section>
+
+  <section>
+    <div class="sectlabel">4 · Компоненты</div>
+    <div class="row" style="align-items:center;gap:24px">
+      <button class="btn btn-primary">A'zo bo'lish / Kirish</button>
+      <button class="btn btn-spark">Asar qo'shish</button>
+      <button class="btn btn-ghost">Batafsil</button>
+      <span class="badge b-success"><span class="dot"></span>Tasdiqlangan</span>
+      <span class="badge b-warn"><span class="dot"></span>Ko'rib chiqilmoqda</span>
+      <span class="badge b-info"><span class="dot"></span>Yaratilgan</span>
+      <span class="badge b-muted"><span class="dot"></span>Bekor</span>
+    </div>
+  </section>
+
+  <section>
+    <div class="sectlabel">5 · Тон — hero сайта (светлый, дружелюбный)</div>
+    <div class="hero">
+      <div class="eyebrow"><span id="sparkEy"></span> Ixtirochilar va mualliflar uchun</div>
+      <h3>G'oyangizni daqiqalarda <em>himoyalang</em></h3>
+      <p>Asaringizni yuklang, mualliflikni tasdiqlang va raqamli guvohnoma oling. Sodda, tez va ishonchli — hamjamiyat bilan birga.</p>
+      <div class="herobtns">
+        <button class="btn btn-primary">Boshlash</button>
+        <button class="btn btn-ghost">Qanday ishlaydi</button>
+      </div>
+      <span class="heroart" id="heroart"></span>
+    </div>
+  </section>
+
+  <section>
+    <div class="sectlabel">6 · Тон — кабинет (светлый, удобный)</div>
+    <div class="dash">
+      <div class="side">
+        <div class="lockup" style="padding:6px 8px 16px"><span id="logoSide"></span><span class="name" style="font-size:16px">UzIntellekt</span></div>
+        <div class="li active"><span id="iA"></span> Asosiy</div>
+        <div class="li"><span id="iB"></span> Asarlarim</div>
+        <div class="li"><span id="iC"></span> Shartnomalarim</div>
+        <div class="li"><span id="iD"></span> Profil</div>
+      </div>
+      <div class="dashmain">
+        <div class="wcard">
+          <div class="eyebrow" style="color:#9DBBFF">Bosh sahifa</div>
+          <h4>Xush kelibsiz, Shohruh</h4>
+          <p>Asarlaringizni ro'yxatdan o'tkazing va holatini kuzating.</p>
+          <span class="seal" id="wseal"></span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+          <div class="stat"><div class="n">1</div><div class="l">Jami asarlar</div></div>
+          <div class="stat"><div class="n" style="color:#1c7a45">1</div><div class="l">Tasdiqlangan</div></div>
+          <div class="stat"><div class="n">0</div><div class="l">Ko'rib chiqilmoqda</div></div>
+          <div class="stat"><div class="n">0</div><div class="l">Rad etilgan</div></div>
+        </div>
+        <p class="note">Светлый sidebar + мягкий синий active = удобно и не давит. Цвет-бренд живёт в welcome-карточке и акцентах.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sectlabel">Что изменилось против v1</div>
+    <div class="changed">Убрал гос-эстетику (печать-розетка / гильош / золото). Логотипы переориентированы на <b>идею, авторство и сообщество</b>, а не на «официальную печать». Палитра теплее (искра вместо золота), герои и кабинет — светлые и воздушные ради простоты для изобретателей. Сериф Spectral сохранён.</div>
+  </section>
+
+</div>
+
+<script>
+function spark(size,color){ // 4-point sparkle path in 48 viewbox, scaled
+  return `<path d="M24 3 C25.5 14 34 22.5 45 24 C34 25.5 25.5 34 24 45 C22.5 34 14 25.5 3 24 C14 22.5 22.5 14 24 3Z" fill="${color}"/>`;
+}
+function sparkSVG(s,color){return `<svg width="${s}" height="${s}" viewBox="0 0 48 48">${spark(48,color)}</svg>`;}
+
+// A — Iskra tile
+function logoA(s){return `<svg width="${s}" height="${s}" viewBox="0 0 48 48">
+  <rect x="2" y="2" width="44" height="44" rx="13" fill="#2563EB"/>
+  <g transform="translate(7,7) scale(0.71)">${spark(48,'#fff')}</g>
+  <circle cx="36" cy="12" r="4" fill="#FB6E3B"/>
+</svg>`;}
+// B — Imzo (U flourish + spark)
+function logoB(s){return `<svg width="${s}" height="${s}" viewBox="0 0 48 48">
+  <rect x="2" y="2" width="44" height="44" rx="13" fill="#13294B"/>
+  <path d="M15 14 V26 a9 9 0 0 0 18 0 V16" fill="none" stroke="#fff" stroke-width="4.6" stroke-linecap="round"/>
+  <g transform="translate(28,7) scale(0.34)">${spark(48,'#FB6E3B')}</g>
+</svg>`;}
+// C — Hamjamiyat (two overlapping rings + spark)
+function logoC(s){return `<svg width="${s}" height="${s}" viewBox="0 0 48 48">
+  <rect x="2" y="2" width="44" height="44" rx="13" fill="#EAF0FE"/>
+  <circle cx="20" cy="24" r="11" fill="none" stroke="#2563EB" stroke-width="3.2"/>
+  <circle cx="28" cy="24" r="11" fill="none" stroke="#1A3FA0" stroke-width="3.2"/>
+  <g transform="translate(17,17) scale(0.30)">${spark(48,'#FB6E3B')}</g>
+</svg>`;}
+
+document.getElementById('logoA').innerHTML=logoA(46);
+document.getElementById('logoB').innerHTML=logoB(46);
+document.getElementById('logoC').innerHTML=logoC(46);
+document.getElementById('logoSide').innerHTML=logoA(30);
+document.getElementById('sparkEy').innerHTML=sparkSVG(13,'#FB6E3B');
+
+// hero art — overlapping "work" cards with a spark seal
+document.getElementById('heroart').innerHTML=`<svg width="300" height="300" viewBox="0 0 300 300" fill="none">
+  <rect x="70" y="70" width="150" height="180" rx="16" fill="#EAF0FE"/>
+  <rect x="48" y="48" width="150" height="180" rx="16" fill="#fff" stroke="#E6E9F0"/>
+  <rect x="70" y="78" width="86" height="9" rx="4.5" fill="#1A3FA0"/>
+  <rect x="70" y="100" width="106" height="7" rx="3.5" fill="#C9D5EC"/>
+  <rect x="70" y="116" width="92" height="7" rx="3.5" fill="#C9D5EC"/>
+  <rect x="70" y="132" width="100" height="7" rx="3.5" fill="#C9D5EC"/>
+  <circle cx="176" cy="196" r="30" fill="#fff" stroke="#FB6E3B" stroke-width="1.5"/>
+  <g transform="translate(160,180) scale(0.66)">${spark(48,'#FB6E3B')}</g>
+</svg>`;
+// welcome card seal
+document.getElementById('wseal').innerHTML=`<svg width="64" height="64" viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="rgba(255,255,255,.10)"/><g transform="translate(16,16) scale(0.66)">${spark(48,'#FFFFFF')}</g></svg>`;
+
+// sidebar tiny glyphs (simple)
+const g=(d)=>`<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
+document.getElementById('iA').innerHTML=g('<path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/>');
+document.getElementById('iB').innerHTML=g('<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/>');
+document.getElementById('iC').innerHTML=g('<path d="M5 3h9l5 5v13H5z"/><path d="M14 3v5h5"/>');
+document.getElementById('iD').innerHTML=g('<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>');
+</script>
+</body>
+</html>

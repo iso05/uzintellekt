@@ -1,0 +1,45 @@
+<svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Open registries">
+  <rect x="0" y="0" width="240" height="180" rx="20" fill="#eaf2fd"/>
+
+  <!-- stack: back card -->
+  <g transform="translate(50 36) rotate(-6)">
+    <rect x="0" y="0" width="120" height="100" rx="10" fill="#ffffff" stroke="#e1e7ee" stroke-width="1.5" opacity="0.7"/>
+  </g>
+
+  <!-- middle card -->
+  <g transform="translate(60 38)">
+    <rect x="0" y="0" width="120" height="100" rx="10" fill="#ffffff" stroke="#e1e7ee" stroke-width="1.5"/>
+  </g>
+
+  <!-- front card with grid -->
+  <g transform="translate(60 50)">
+    <rect x="0" y="0" width="120" height="100" rx="10" fill="#ffffff" stroke="#1f5cc7" stroke-width="1.5"/>
+    <!-- table header -->
+    <rect x="10" y="14" width="100" height="10" rx="4" fill="#eaf2fd"/>
+    <!-- table rows -->
+    <g>
+      <rect x="10" y="32" width="36" height="6" rx="2" fill="#cfdcef"/>
+      <rect x="50" y="32" width="56" height="6" rx="2" fill="#e1e7ee"/>
+
+      <rect x="10" y="46" width="30" height="6" rx="2" fill="#cfdcef"/>
+      <rect x="44" y="46" width="60" height="6" rx="2" fill="#e1e7ee"/>
+
+      <rect x="10" y="60" width="40" height="6" rx="2" fill="#cfdcef"/>
+      <rect x="54" y="60" width="52" height="6" rx="2" fill="#e1e7ee"/>
+
+      <rect x="10" y="74" width="28" height="6" rx="2" fill="#cfdcef"/>
+      <rect x="42" y="74" width="64" height="6" rx="2" fill="#e1e7ee"/>
+    </g>
+    <!-- check dot -->
+    <circle cx="106" cy="35" r="4" fill="#f59e0b"/>
+  </g>
+
+  <!-- search badge floating -->
+  <g transform="translate(168 30)">
+    <circle cx="0" cy="0" r="18" fill="#f59e0b"/>
+    <g transform="translate(-6 -6)" stroke="#ffffff" stroke-width="2.5" fill="none" stroke-linecap="round">
+      <circle cx="4" cy="4" r="4"/>
+      <path d="M8 8 L12 12"/>
+    </g>
+  </g>
+</svg>

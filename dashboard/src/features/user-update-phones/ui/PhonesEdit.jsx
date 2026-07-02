@@ -1,11 +1,13 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Check, X, Loader2 } from 'lucide-react'
-import { Input, Button, FieldError, toast } from '@/shared/ui'
-import { maskPhone } from '@/shared/lib/input-masks'
-import { validatePhone } from '@/shared/lib/validators'
+import { Input, Button, FieldError, toast } from '@shared/ui'
+import { maskPhone } from '@shared/lib/input-masks'
+import { validatePhone } from '@shared/lib/validators'
 import { updateMeField } from '@/entities/user'
 
 function PhoneRow({ label, value, onChange, error, onBlur, disabled, optional }) {
+  const { t } = useTranslation()
   return (
     <div className="flex flex-col gap-1">
       <div className="flex items-center gap-2">
@@ -21,7 +23,7 @@ function PhoneRow({ label, value, onChange, error, onBlur, disabled, optional })
             onFocus={(e) => {
               if (!e.target.value) onChange('998')
             }}
-            placeholder={optional ? '998912345678 (ixtiyoriy)' : '998901234567'}
+            placeholder={optional ? t('profile.phone2_ph') : t('profile.phone1_ph')}
             disabled={disabled}
             className="h-9 pr-9"
           />
@@ -31,7 +33,7 @@ function PhoneRow({ label, value, onChange, error, onBlur, disabled, optional })
               variant="ghost"
               size="icon"
               onClick={() => onChange('')}
-              title="Tozalash"
+              title={t('common.clear')}
               className="absolute right-1 top-1/2 h-7 w-7 -translate-y-1/2 text-muted-foreground"
             >
               <X />
@@ -45,6 +47,7 @@ function PhoneRow({ label, value, onChange, error, onBlur, disabled, optional })
 }
 
 export default function PhonesEdit({ initialPhones = [], onDone, onCancel }) {
+  const { t } = useTranslation()
   const [phone1, setPhone1] = useState(initialPhones[0] || '')
   const [phone2, setPhone2] = useState(initialPhones[1] || '')
   const [phone1Err, setPhone1Err] = useState(null)
@@ -70,10 +73,10 @@ export default function PhonesEdit({ initialPhones = [], onDone, onCancel }) {
     setSaving(true)
     try {
       const updated = await updateMeField('phones', phones)
-      toast.success('Telefon raqamlar saqlandi')
+      toast.success(t('profile.phones_saved'))
       onDone?.(updated)
     } catch (e) {
-      toast.error(e?.message || 'Saqlashda xatolik')
+      toast.error(e?.message || t('common.save_error'))
     } finally {
       setSaving(false)
     }
@@ -108,7 +111,7 @@ export default function PhonesEdit({ initialPhones = [], onDone, onCancel }) {
       />
 
       <div className="mt-1 flex justify-end gap-1.5">
-        <Button size="icon" className="h-9 w-9" onClick={handleSave} disabled={!canSave} title="Saqlash">
+        <Button size="icon" className="h-9 w-9" onClick={handleSave} disabled={!canSave} title={t('common.save')}>
           {saving ? <Loader2 className="animate-spin" /> : <Check />}
         </Button>
         <Button
@@ -117,7 +120,7 @@ export default function PhonesEdit({ initialPhones = [], onDone, onCancel }) {
           className="h-9 w-9"
           onClick={onCancel}
           disabled={saving}
-          title="Bekor qilish"
+          title={t('common.cancel')}
         >
           <X />
         </Button>

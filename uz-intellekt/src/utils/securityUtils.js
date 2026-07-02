@@ -55,38 +55,6 @@ export const sanitizeErrorMessage = (error) => {
 }
 
 /**
- * Validate state parameter against stored state
- * Includes timestamp validation to prevent replay
- * @param {string} receivedState - State from URL
- * @param {object} storedState - {state, timestamp}
- * @param {number} maxAge - Max age in milliseconds
- * @returns {boolean}
- */
-export const validateStateParam = (
-  receivedState,
-  storedState,
-  maxAge = 10 * 60 * 1000
-) => {
-  if (!receivedState || !storedState) return false
-
-  // Timing attack resistance — constant-time comparison
-  const isStateValid = crypto.subtle
-    .timingSafeEqual(
-      new TextEncoder().encode(receivedState),
-      new TextEncoder().encode(storedState.state)
-    )
-    .valueOf()
-
-  if (!isStateValid) return false
-
-  // Check expiry
-  const age = Date.now() - storedState.timestamp
-  if (age > maxAge) return false
-
-  return true
-}
-
-/**
  * Sanitize form data before storing — prevent XSS
  * @param {object} formData - Form data object
  * @returns {object}

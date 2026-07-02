@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>UzIntellekt — Logo exploration v3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Spectral:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#13294B;--deep:#1A3FA0;--blue:#2563EB;--spark:#FB6E3B;--paper:#F7F8FB;--line:#E6E9F0;--muted:#5B6B86}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1180px;margin:0 auto;padding:48px 28px 90px}
+  .eyebrow{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--blue)}
+  h1{font-family:Spectral,serif;font-weight:700;font-size:clamp(30px,4vw,46px);line-height:1.05;margin:8px 0 12px}
+  .lead{color:var(--muted);font-size:16px;max-width:78ch;line-height:1.65;margin:0}
+  .lead b{color:var(--ink)}
+  .sectlabel{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);border-top:1px solid var(--line);padding-top:14px;margin:46px 0 8px}
+  .sectnote{font-size:13.5px;color:var(--muted);max-width:80ch;line-height:1.55;margin:0 0 22px}
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .tile{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:0 1px 2px rgba(19,41,75,.04)}
+  .icons{display:flex;align-items:center;gap:14px}
+  .big{width:62px;height:62px;flex:none}
+  .chip{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex:none}
+  .chip svg{width:27px;height:27px}
+  .name{margin-top:16px;font-weight:700;font-size:15px}
+  .name b{color:var(--spark)}
+  .desc{margin-top:5px;font-size:12.5px;color:var(--muted);line-height:1.5}
+  .lockups{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:24px}
+  .lk{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;align-items:center;gap:12px}
+  .lk .wm{font-weight:700;font-size:19px;letter-spacing:-.01em}
+  .lk .wm small{display:block;font-size:10.5px;font-weight:500;color:var(--muted)}
+  .note{font-size:13px;color:var(--muted);margin-top:18px;line-height:1.55}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">UzIntellekt · Logo exploration v3 — не банально</div>
+  <h1>Знак из мира предмета, а не из стока</h1>
+  <p class="lead">Без лампочек, щитов и «искр». Каждое направление укоренено в том, что есть <b>именно у этого продукта</b>: общество узбекских изобретателей и авторов, защита права собственности на идею. Сравните форму: цветная / на тёмной плитке (sidebar) / на синей.</p>
+
+  <div class="sectlabel">A · Tamga — знак собственности</div>
+  <p class="sectnote">Тамга — древний центральноазиатский знак рода и <b>собственности</b> (предок клейм, тавро и гербов): «это принадлежит мне». Прямой смысл для общества защиты интеллектуальной собственности — и это про регион, а не универсальный сток.</p>
+  <div class="grid" id="tamga"></div>
+
+  <div class="sectlabel">B · Girih — узбекская геометрия</div>
+  <p class="sectnote">Гирих — геометрия узбекских изразцов (Самарканд/Бухара): 8-конечная звезда и плетение. Смысл: структура реестра, прочность защиты и «вместе» (сообщество). Наследие + цифровое.</p>
+  <div class="grid" id="girih"></div>
+
+  <div class="sectlabel">C · Монограмма и реестр</div>
+  <p class="sectnote">Типографика без метафор (собственная буква-знак U·i) и мотив «внесено/закреплено» (скобки удерживают знак). Узнаваемо и нейтрально-современно.</p>
+  <div class="grid" id="mono"></div>
+
+  <div class="sectlabel">В лого-локапе</div>
+  <div class="lockups" id="lockups"></div>
+  <p class="note">Какое направление/номер ближе? Можно «дожать» любой: смешать (например, тамга, вписанная в гирих-звезду), сменить акцент-цвет, упростить. Скажите — и доведу до финального вектора + фавикон, затем встрою в оба приложения.</p>
+</div>
+
+<script>
+// star path (girih)
+function starPath(cx,cy,outer,inner,points,rot){let p='';for(let i=0;i<points*2;i++){const r=i%2?inner:outer;const a=(rot||0)+(Math.PI/points)*i;const x=cx+r*Math.cos(a),y=cy+r*Math.sin(a);p+=(i?'L':'M')+x.toFixed(1)+' '+y.toFixed(1);}return p+'Z';}
+
+// ---- A · TAMGA variants ----
+function tamgaStandard(m,a){ // stem + top disc + crossbar + splayed feet
+  return `<svg viewBox="0 0 64 64" fill="none">
+    <circle cx="32" cy="13" r="4.5" fill="${a}"/>
+    <line x1="32" y1="18" x2="32" y2="45" stroke="${m}" stroke-width="4.5" stroke-linecap="round"/>
+    <line x1="21" y1="27" x2="43" y2="27" stroke="${m}" stroke-width="4.5" stroke-linecap="round"/>
+    <path d="M32 45 L21 56 M32 45 L43 56" stroke="${m}" stroke-width="4.5" stroke-linecap="round"/>
+  </svg>`;}
+function tamgaEye(m,a){ // crescent over U-cup (owner's mark / eye)
+  return `<svg viewBox="0 0 64 64" fill="none">
+    <path d="M19 23 a13 13 0 0 1 26 0" stroke="${m}" stroke-width="4.5" stroke-linecap="round"/>
+    <path d="M19 30 V37 a13 13 0 0 0 26 0 V30" stroke="${m}" stroke-width="4.5" stroke-linecap="round"/>
+    <circle cx="32" cy="30" r="3.6" fill="${a}"/>
+  </svg>`;}
+function tamgaHook(m,a){ // forked top + ringed base — branded mark
+  return `<svg viewBox="0 0 64 64" fill="none">
+    <path d="M22 16 Q32 26 42 16" stroke="${m}" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+    <line x1="32" y1="22" x2="32" y2="40" stroke="${m}" stroke-width="4.5" stroke-linecap="round"/>
+    <circle cx="32" cy="46" r="7" stroke="${m}" stroke-width="4.5"/>
+    <circle cx="32" cy="46" r="1.5" fill="${a}"/>
+  </svg>`;}
+
+// ---- B · GIRIH variants ----
+function girihStar(m,a){ // 8-point star filled + inner cut
+  return `<svg viewBox="0 0 64 64" fill="none">
+    <path d="${starPath(32,32,23,10,8,-Math.PI/2)}" fill="${m}"/>
+    <path d="${starPath(32,32,9,4.2,8,-Math.PI/2)}" fill="${a}"/>
+  </svg>`;}
+function girihSquares(m,a){ // two overlapping rounded squares = 8-point outline
+  return `<svg viewBox="0 0 64 64" fill="none">
+    <rect x="15" y="15" width="34" height="34" rx="7" stroke="${m}" stroke-width="3.4"/>
+    <rect x="15" y="15" width="34" height="34" rx="7" stroke="${a}" stroke-width="3.4" transform="rotate(45 32 32)"/>
+  </svg>`;}
+function girihKnot(m,a){ // interlaced star lines (woven)
+  let lines='';const pts=[];for(let i=0;i<8;i++){const ang=-Math.PI/2+i*Math.PI/4;pts.push([32+22*Math.cos(ang),32+22*Math.sin(ang)]);}
+  // connect each point to the one 3 steps away -> octagram {8/3}
+  for(let i=0;i<8;i++){const p=pts[i],q=pts[(i+3)%8];lines+=`<line x1="${p[0].toFixed(1)}" y1="${p[1].toFixed(1)}" x2="${q[0].toFixed(1)}" y2="${q[1].toFixed(1)}" stroke="${m}" stroke-width="2.6" stroke-linecap="round"/>`;}
+  return `<svg viewBox="0 0 64 64" fill="none">${lines}<circle cx="32" cy="32" r="3.4" fill="${a}"/></svg>`;}
+
+// ---- C · MONO / REESTR ----
+function monoUi(m,a){ // bold U + i-dot (spark)
+  return `<svg viewBox="0 0 64 64" fill="none">
+    <path d="M19 16 V33 a13 13 0 0 0 26 0 V16" stroke="${m}" stroke-width="6" stroke-linecap="round"/>
+    <circle cx="45" cy="11" r="4.5" fill="${a}"/>
+  </svg>`;}
+function monoLigature(m,a){ // U cradling a vertical i bar
+  return `<svg viewBox="0 0 64 64" fill="none">
+    <path d="M16 18 V34 a16 16 0 0 0 32 0 V18" stroke="${m}" stroke-width="5" stroke-linecap="round"/>
+    <line x1="32" y1="20" x2="32" y2="40" stroke="${a}" stroke-width="5" stroke-linecap="round"/>
+    <circle cx="32" cy="13" r="3.6" fill="${a}"/>
+  </svg>`;}
+function reestrHold(m,a){ // brackets holding a diamond = filed/registered
+  return `<svg viewBox="0 0 64 64" fill="none">
+    <path d="M24 15 H15 V49 H24" stroke="${m}" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M40 15 H49 V49 H40" stroke="${m}" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M32 24 L40 32 L32 40 L24 32 Z" fill="${a}"/>
+  </svg>`;}
+function reestrCoord(m,a){ // a unique position marker in a grid (registry coordinate)
+  return `<svg viewBox="0 0 64 64" fill="none">
+    <path d="M14 26 H50 M14 38 H50 M26 14 V50 M38 14 V50" stroke="${m}" stroke-width="2.2" opacity="0.45" stroke-linecap="round"/>
+    <circle cx="38" cy="26" r="6.5" fill="${a}"/>
+  </svg>`;}
+
+const A=[
+  {f:'A1',fn:tamgaStandard,n:'Tamga · standart',d:'Знак-«штандарт»: диск, стержень, перекладина, развилка. Древнее клеймо собственности.'},
+  {f:'A2',fn:tamgaEye,n:'Tamga · nazar',d:'Полумесяц над чашей-«U» = личный знак/«око». Тепло и регионально.'},
+  {f:'A3',fn:tamgaHook,n:'Tamga · halqa',d:'Развилка + кольцо-печать. Намёк на «закреплено за владельцем».'},
+];
+const B=[
+  {f:'B1',fn:girihStar,n:'Girih · yulduz',d:'8-конечная звезда изразца. Защита + наследие, цельно и узнаваемо.'},
+  {f:'B2',fn:girihSquares,n:'Girih · ikki',d:'Два повёрнутых квадрата = звезда из плетения. «Двое/сообщество + структура».'},
+  {f:'B3',fn:girihKnot,n:'Girih · tugun',d:'Плетёная октаграмма {8/3}: «узел/реестр», всё связано и защищено.'},
+];
+const C=[
+  {f:'C1',fn:monoUi,n:'Mono · U·i',d:'Жирная U + точка-i. Собственная буква-знак, без метафор.'},
+  {f:'C2',fn:monoLigature,n:'Mono · lig',d:'U, держащая «i». Авторство внутри сообщества.'},
+  {f:'C3',fn:reestrHold,n:'Reestr · hold',d:'Скобки удерживают ромб = «внесено в реестр / закреплено».'},
+  {f:'C4',fn:reestrCoord,n:'Reestr · point',d:'Уникальная точка в сетке = «ваша позиция в реестре».'},
+];
+
+function tile(o){return `<div class="tile">
+  <div class="icons">
+    <span class="big">${o.fn('#1A3FA0','#FB6E3B')}</span>
+    <span class="chip" style="background:var(--ink)">${o.fn('#FFFFFF','#FB6E3B')}</span>
+    <span class="chip" style="background:var(--blue)">${o.fn('#FFFFFF','#FFFFFF')}</span>
+  </div>
+  <div class="name"><b>${o.f}</b> · ${o.n}</div>
+  <div class="desc">${o.d}</div>
+</div>`;}
+document.getElementById('tamga').innerHTML=A.map(tile).join('');
+document.getElementById('girih').innerHTML=B.map(tile).join('');
+document.getElementById('mono').innerHTML=C.map(tile).join('');
+
+function lockup(o){return `<div class="lk">
+  <span class="chip" style="width:46px;height:46px;border-radius:13px;background:var(--blue)">${o.fn('#FFFFFF','#FB6E3B')}</span>
+  <span class="wm">UzIntellekt<small>Ijodkorlar hamjamiyati</small></span>
+</div>`;}
+document.getElementById('lockups').innerHTML=[A[0],B[0],C[0]].map(lockup).join('');
+</script>
+</body>
+</html>

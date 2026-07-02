@@ -4,7 +4,7 @@ import {
   DialogContent,
   DialogTitle,
   DialogDescription,
-} from '@/shared/ui'
+} from '@shared/ui'
 
 export default function PdfPreviewModal({ url, title = "Shartnomani ko'rish", open, onOpenChange }) {
   return (

@@ -1,9 +1,11 @@
 // src/pages/NotFound.jsx
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { RiCompass3Line, RiHome4Line } from 'react-icons/ri'
 
 export default function NotFound() {
+  const { t } = useTranslation()
   return (
     <div style={S.container}>
       <style>{`
@@ -44,10 +46,8 @@ export default function NotFound() {
         </div>
 
         <h1 style={S.errorCode}>404</h1>
-        <h2 style={S.title}>Sahifa topilmadi</h2>
-        <p style={S.description}>
-          Kechirasiz, siz qidirayotgan sahifa mavjud emas yoki boshqa manzilga ko'chirilgan bo'lishi mumkin.
-        </p>
+        <h2 style={S.title}>{t('notfound.title')}</h2>
+        <p style={S.description}>{t('notfound.desc')}</p>
 
         <Link
           id="back-to-dashboard-btn"
@@ -56,7 +56,7 @@ export default function NotFound() {
           style={S.button}
         >
           <RiHome4Line size={18} />
-          Bosh sahifaga qaytish
+          {t('notfound.home')}
         </Link>
       </div>
     </div>

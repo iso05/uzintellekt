@@ -1,5 +1,6 @@
-import { Checkbox } from '@/shared/ui'
-import { maskName, maskPassport } from '@/shared/lib/input-masks'
+import { useTranslation } from 'react-i18next'
+import { Checkbox } from '@shared/ui'
+import { maskName, maskPassport } from '@shared/lib/input-masks'
 
 /**
  * Pre-fills holder #0 with the current user's identity when checked.
@@ -7,6 +8,7 @@ import { maskName, maskPassport } from '@/shared/lib/input-masks'
  * so existing records (edit mode) reflect the right initial state.
  */
 export default function AuthorSelfCheckbox({ user, holders, onApply, onClear, disabled }) {
+  const { t } = useTranslation()
   const userPassport = maskPassport(user?.passportSeria || user?.passportNo || '')
   const firstHolderPassport = (holders?.[0]?.passportNo || '').trim().toUpperCase()
   const checked = !!userPassport && firstHolderPassport === userPassport.toUpperCase()
@@ -33,12 +35,12 @@ export default function AuthorSelfCheckbox({ user, holders, onApply, onClear, di
         checked={checked}
         onCheckedChange={handleChange}
         disabled={disabled || !canCheck}
-        aria-label="Men muallifman"
+        aria-label={t('form.i_am_author')}
       />
-      <span>Men muallifman</span>
+      <span>{t('form.i_am_author')}</span>
       {!canCheck && (
         <span className="ml-1 text-[11px] font-normal text-muted-foreground">
-          (Profilda pasport/F.I.O. to&apos;ldirilmagan)
+          {t('form.i_am_author_hint')}
         </span>
       )}
     </label>

@@ -1,5 +1,6 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { Plus } from 'lucide-react'
 import {
   Button,
@@ -9,23 +10,20 @@ import {
   TabsContent,
   toast,
   PageHeader,
-} from '@/shared/ui'
-import { ROUTES } from '@/shared/config/routes'
-import {
-  getWorks,
-  getWork,
-  getMyContributions,
-  WorkDetailDialog,
-} from '@/entities/work'
+} from '@shared/ui'
+import { ROUTES } from '@/config/routes'
+import { getWorks, getMyContributions } from '@/entities/work'
 import { WorksToolbar } from '@/widgets/works-toolbar'
 import { WorksTable } from '@/widgets/works-table'
 import { ContributionsTable } from '@/widgets/contributions-table'
 
 const SEARCH_MIN_CHARS = 2
 const DEFAULT_PAGE_SIZE = 10
+const SEARCH_DEBOUNCE_MS = 300
 
 export default function WorksPage() {
   const navigate = useNavigate()
+  const { t } = useTranslation()
   const [searchParams, setSearchParams] = useSearchParams()
 
   const [works, setWorks] = useState([])
@@ -33,8 +31,18 @@ export default function WorksPage() {
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE)
   const [search, setSearch] = useState(() => searchParams.get('search') || '')
+  // Debounced mirror of `search` — the input updates instantly, but the fetch
+  // only fires once typing settles, instead of one request per keystroke.
+  const [debouncedSearch, setDebouncedSearch] = useState(search)
   const [stateFilter, setStateFilter] = useState(() => searchParams.get('state') || '')
   const [loading, setLoading] = useState(true)
+  // Monotonic request id — a slow earlier response must not overwrite a newer one.
+  const reqIdRef = useRef(0)
+
+  useEffect(() => {
+    const id = setTimeout(() => setDebouncedSearch(search), SEARCH_DEBOUNCE_MS)
+    return () => clearTimeout(id)
+  }, [search])
 
   // Sync filters when query params change (e.g. user navigates from stat card or header search)
   useEffect(() => {
@@ -60,18 +68,17 @@ export default function WorksPage() {
   const [contributions, setContributions] = useState([])
   const [contribLoading, setContribLoading] = useState(false)
 
-  const [detailWork, setDetailWork] = useState(null)
-  const [detailLoading, setDetailLoading] = useState(false)
-
   const loadWorks = useCallback(async () => {
+    const reqId = ++reqIdRef.current
     setLoading(true)
     try {
       const filters = []
       if (stateFilter) {
         filters.push({ field: 'state', operator: 'eq', value: stateFilter })
       }
-      if (search.trim().length >= SEARCH_MIN_CHARS) {
-        filters.push({ field: 'name', operator: 'lk', value: search.trim() })
+      const q = debouncedSearch.trim()
+      if (q.length >= SEARCH_MIN_CHARS) {
+        filters.push({ field: 'name', operator: 'lk', value: q })
       }
       const res = await getWorks({
         page,
@@ -79,14 +86,16 @@ export default function WorksPage() {
         filters,
         sort: { selector: 'createdAt', desc: true },
       })
+      if (reqId !== reqIdRef.current) return // superseded by a newer request
       setWorks(res?.items ?? res?.data?.items ?? [])
       setTotal(res?.totalItems ?? res?.data?.totalItems ?? 0)
     } catch (e) {
-      toast.error(e?.message || 'Asarlarni yuklashda xatolik')
+      if (reqId !== reqIdRef.current) return
+      toast.error(e?.message || t('works.load_error'))
     } finally {
-      setLoading(false)
+      if (reqId === reqIdRef.current) setLoading(false)
     }
-  }, [page, pageSize, search, stateFilter])
+  }, [page, pageSize, debouncedSearch, stateFilter])
 
   const loadContributions = useCallback(async () => {
     setContribLoading(true)
@@ -95,6 +104,7 @@ export default function WorksPage() {
       setContributions(data ?? [])
     } catch (e) {
       console.error('Contributions load error:', e)
+      toast.error(e?.message || t('contrib.load_error'))
     } finally {
       setContribLoading(false)
     }
@@ -108,32 +118,24 @@ export default function WorksPage() {
     loadContributions()
   }, [loadContributions])
 
-  const openDetail = useCallback(async (work) => {
-    setDetailLoading(true)
-    try {
-      const full = await getWork(work.id)
-      setDetailWork(full)
-    } catch (e) {
-      toast.error(e?.message || 'Tafsilotlarni yuklashda xatolik')
-    } finally {
-      setDetailLoading(false)
-    }
-  }, [])
+  const openDetail = useCallback(
+    (work) => navigate(ROUTES.WORK_DETAIL(work.id)),
+    [navigate]
+  )
 
   const handleChanged = useCallback(() => {
     loadWorks()
-    setDetailWork(null)
   }, [loadWorks])
 
   return (
     <div className="flex flex-col gap-6">
       <PageHeader
-        title="Asarlarim"
-        subtitle="Tizimda ro'yxatdan o'tgan barcha intellektual mulk asarlaringiz"
+        title={t('works.title')}
+        subtitle={t('works.subtitle')}
         actions={
           <Button onClick={() => navigate(ROUTES.WORK_NEW)} size="lg" className="gap-2">
             <Plus className="h-5 w-5" />
-            Yangi asar
+            {t('works.new')}
           </Button>
         }
       />
@@ -141,13 +143,13 @@ export default function WorksPage() {
       <Tabs defaultValue="my-works">
         <TabsList>
           <TabsTrigger value="my-works" className="group">
-            Mening asarlarim
+            {t('works.tab_mine')}
             <span className="ml-2 rounded-full bg-muted px-2 py-0.5 text-[11px] font-bold text-muted-foreground group-data-[state=active]:bg-primary-soft group-data-[state=active]:text-primary">
               {total}
             </span>
           </TabsTrigger>
           <TabsTrigger value="contributions" className="group">
-            Qatnashgan asarlarim
+            {t('works.tab_contrib')}
             <span className="ml-2 rounded-full bg-muted px-2 py-0.5 text-[11px] font-bold text-muted-foreground group-data-[state=active]:bg-primary-soft group-data-[state=active]:text-primary">
               {contributions.length}
             </span>
@@ -178,7 +180,7 @@ export default function WorksPage() {
           />
           <WorksTable
             works={works}
-            loading={loading || detailLoading}
+            loading={loading}
             hasFilters={!!(search || stateFilter)}
             page={page}
             pageSize={pageSize}
@@ -192,17 +194,11 @@ export default function WorksPage() {
         <TabsContent value="contributions">
           <ContributionsTable
             contributions={contributions}
-            loading={contribLoading || detailLoading}
+            loading={contribLoading}
             onView={openDetail}
           />
         </TabsContent>
       </Tabs>
-
-      <WorkDetailDialog
-        work={detailWork}
-        open={!!detailWork}
-        onOpenChange={(o) => !o && setDetailWork(null)}
-      />
     </div>
   )
 }

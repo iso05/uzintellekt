@@ -1,4 +1,6 @@
+import { useState } from 'react'
 import { FileText, Users } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import {
   Table,
   TableHeader,
@@ -8,10 +10,24 @@ import {
   TableCell,
   ListSkeleton,
   EmptyState,
-} from '@/shared/ui'
+  Pagination,
+} from '@shared/ui'
 import { StatusBadge, getWorkStatus } from '@/entities/work'
 
+const PAGE_SIZE = 10
+
+// The /my-contributions endpoint returns the full array (no server paging), so
+// we page it on the client to keep the DOM bounded when a user participates in
+// many works. Pagination is 0-based and hides itself for a single page.
 export default function ContributionsTable({ contributions, loading, onView }) {
+  const { t } = useTranslation()
+  const [page, setPage] = useState(0)
+
+  const total = contributions.length
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE))
+  const safePage = Math.min(page, totalPages - 1)
+  const rows = contributions.slice(safePage * PAGE_SIZE, safePage * PAGE_SIZE + PAGE_SIZE)
+
   return (
     <section className="overflow-hidden rounded-xl border border-border bg-card shadow-soft">
       {loading ? (
@@ -19,20 +35,21 @@ export default function ContributionsTable({ contributions, loading, onView }) {
       ) : contributions.length === 0 ? (
         <EmptyState
           icon={Users}
-          title="Qatnashgan asarlar yo'q"
-          description="Siz haq egasi sifatida kiritilgan asarlar bu yerda ko'rinadi."
+          title={t('contrib.empty_title')}
+          description={t('contrib.empty_desc')}
         />
       ) : (
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Nomi</TableHead>
-              <TableHead>Tavsif</TableHead>
-              <TableHead>Holati</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {contributions.map((w) => (
+        <>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>{t('contrib.col_name')}</TableHead>
+                <TableHead>{t('contrib.col_desc')}</TableHead>
+                <TableHead>{t('contrib.col_status')}</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {rows.map((w) => (
               <TableRow
                 key={w.id}
                 className="group cursor-pointer"
@@ -58,8 +75,16 @@ export default function ContributionsTable({ contributions, loading, onView }) {
                 </TableCell>
               </TableRow>
             ))}
-          </TableBody>
-        </Table>
+            </TableBody>
+          </Table>
+          <Pagination
+            page={safePage}
+            pageSize={PAGE_SIZE}
+            total={total}
+            onPageChange={setPage}
+            itemLabel={t('contrib.item_label')}
+          />
+        </>
       )}
     </section>
   )

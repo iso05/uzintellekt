@@ -1,4 +1,5 @@
-import { requestJson, cachedGridGet, invalidateCache } from '@/shared/api'
+import { requestJson, cachedGridGet, invalidateCache } from '@shared/api'
+import i18n from '@/i18n'
 
 const WORKS_GRID = '/api/v1/works/grid'
 
@@ -18,7 +19,7 @@ export async function getWork(workId) {
     filters: [{ field: 'id', operator: 'eq', value: workId }],
   })
   const items = data?.items ?? []
-  if (!items.length) throw new Error('Asar topilmadi')
+  if (!items.length) throw new Error(i18n.t('works.not_found'))
   return items[0]
 }
 
@@ -46,14 +47,24 @@ export async function submitWork(workId) {
   return data
 }
 
-export async function cancelWork(workId) {
-  const data = await requestJson(`/api/v1/works/${workId}/cancel`, { method: 'PATCH' })
+// Soft-delete (backend enforces DRAFT/REJECTED only). Returns 204 (no body).
+export async function deleteWork(workId) {
+  await requestJson(`/api/v1/works/${workId}`, { method: 'DELETE' })
   invalidateCache(WORKS_GRID)
-  return data
+}
+
+export async function getWorksStat() {
+  // Role-scoped aggregate (admin: all works, user: own). Not cached: it is
+  // loaded once per dashboard mount and must reflect mutations made since.
+  return requestJson('/api/v1/works/stat')
 }
 
 export async function getMyContributions() {
-  return requestJson('/api/v1/works/my-contributions')
+  const data = await requestJson('/api/v1/works/my-contributions')
+  // Always hand back an array — other list loaders defensively unwrap items/
+  // content shapes, and ContributionsTable.map would throw on a wrapped object.
+  if (Array.isArray(data)) return data
+  return data?.items ?? data?.content ?? data?.data?.items ?? []
 }
 
 export async function getWorkTypes() {

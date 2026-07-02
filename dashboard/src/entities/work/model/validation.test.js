@@ -36,8 +36,8 @@ describe('findDuplicatePassportErrors', () => {
       holder({ passportNo: 'AB1234567' }),
     ])
     expect(errors['rightHolders[0].passportNo']).toBeUndefined()
-    expect(errors['rightHolders[1].passportNo']).toContain("allaqachon")
-    expect(errors['rightHolders[2].passportNo']).toContain("allaqachon")
+    expect(errors['rightHolders[1].passportNo']).toEqual({ key: 'validation.passport_dup' })
+    expect(errors['rightHolders[2].passportNo']).toEqual({ key: 'validation.passport_dup' })
   })
 
   it('is case-insensitive and trims whitespace', () => {
@@ -73,8 +73,12 @@ describe('getShareTotalError', () => {
   })
 
   it('errors when total is not 100', () => {
-    expect(getShareTotalError([holder({ share: '50' })])).toContain('100')
-    expect(getShareTotalError([holder({ share: '120' })])).toContain('100')
+    expect(getShareTotalError([holder({ share: '50' })])).toEqual({
+      key: 'validation.share_total_simple',
+    })
+    expect(getShareTotalError([holder({ share: '120' })])).toEqual({
+      key: 'validation.share_total_simple',
+    })
   })
 })
 
@@ -104,7 +108,7 @@ describe('validateHolder', () => {
       }),
       0
     )
-    expect(errors['rightHolders[0].authorRoles']).toBeDefined()
+    expect(errors['rightHolders[0].authorRoles']).toEqual({ key: 'validation.role_required' })
   })
 })
 
@@ -130,7 +134,7 @@ describe('validateWorkForm', () => {
         }),
       ],
     })
-    expect(errors['rightHolders[1].passportNo']).toContain('allaqachon')
+    expect(errors['rightHolders[1].passportNo']).toEqual({ key: 'validation.passport_dup' })
   })
 
   it('flags missing top-level fields', () => {
@@ -139,8 +143,11 @@ describe('validateWorkForm', () => {
       workTypeId: '',
       rightHolders: [holder()],
     })
-    expect(errors.name).toBeDefined()
-    expect(errors.workTypeId).toBeDefined()
+    expect(errors.name).toEqual({
+      key: 'validation.field_required',
+      params: { field: { key: 'validation.field_work_name' } },
+    })
+    expect(errors.workTypeId).toEqual({ key: 'validation.type_required' })
   })
 })
 
@@ -184,5 +191,32 @@ describe('toPayload', () => {
       rightHolders: [],
     })
     expect(payload.description).toBeUndefined()
+  })
+})
+
+// Bug #1: getShareTotalError compares the float sum to 100 with strict `!==`,
+// so valid 2-decimal shares that drift in IEEE-754 (e.g. 16.10+48.20+35.70 =
+// 100.00000000000001) are rejected and the work cannot be saved. The
+// rounding-safe validateShareTotal already exists in shared/lib/validators.js
+// but is dead code on the save path.
+describe('getShareTotalError — floating-point share total', () => {
+  const driftHolders = () => [
+    holder({ share: '16.10' }),
+    holder({ share: '48.20' }),
+    holder({ share: '35.70' }),
+  ]
+
+  it('rounds away IEEE-754 drift so 16.10 + 48.20 + 35.70 totals exactly 100', () => {
+    // Raw float sum is 100.00000000000001; computeShareTotal rounds to 2 decimals.
+    expect(computeShareTotal(driftHolders())).toBe(100)
+  })
+
+  it('accepts shares that mathematically total 100% (16.10 + 48.20 + 35.70)', () => {
+    expect(getShareTotalError(driftHolders())).toBeNull()
+  })
+
+  it('still rejects a genuine non-100 total', () => {
+    const holders = [holder({ share: '50' }), holder({ share: '40' })]
+    expect(getShareTotalError(holders)).not.toBeNull()
   })
 })

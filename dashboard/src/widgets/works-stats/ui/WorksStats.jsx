@@ -1,18 +1,20 @@
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { FileText, CheckCircle2, Clock, XCircle } from 'lucide-react'
-import { Skeleton } from '@/shared/ui'
-import { ROUTES } from '@/shared/config/routes'
+import { Skeleton } from '@shared/ui'
+import { ROUTES } from '@/config/routes'
 import StatCard from './StatCard'
 
 const STATS = [
-  { key: 'total', state: null, icon: FileText, label: 'Jami asarlar', tone: 'primary' },
-  { key: 'registered', state: 'REGISTERED', icon: CheckCircle2, label: 'Tasdiqlangan', tone: 'success' },
-  { key: 'pending', state: 'PENDING', icon: Clock, label: "Ko'rib chiqilmoqda", tone: 'warning' },
-  { key: 'rejected', state: 'REJECTED', icon: XCircle, label: 'Rad etilgan', tone: 'destructive' },
+  { key: 'total', state: null, icon: FileText, tone: 'primary' },
+  { key: 'registered', state: 'REGISTERED', icon: CheckCircle2, tone: 'success' },
+  { key: 'pending', state: 'UNDER_REVIEW', icon: Clock, tone: 'warning' },
+  { key: 'rejected', state: 'REJECTED', icon: XCircle, tone: 'destructive' },
 ]
 
 export default function WorksStats({ stats, loading }) {
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   if (loading) {
     return (
@@ -30,7 +32,7 @@ export default function WorksStats({ stats, loading }) {
         <StatCard
           key={s.key}
           icon={s.icon}
-          label={s.label}
+          label={t(`stats.${s.key}`)}
           tone={s.tone}
           value={stats[s.key] ?? 0}
           onClick={() => navigate(s.state ? `${ROUTES.WORKS}?state=${s.state}` : ROUTES.WORKS)}

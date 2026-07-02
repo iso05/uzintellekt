@@ -1,17 +1,20 @@
 import { Link, NavLink } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { LogOut, X } from 'lucide-react'
-import { Button, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/shared/ui'
-import { cn } from '@/shared/lib/utils'
-import { NAV_ITEMS, ROUTES } from '@/shared/config/routes'
-import logo from '@/assets/logo/logo.png'
+import { Button, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@shared/ui'
+import { cn } from '@shared/lib/utils'
+import { NAV_ITEMS, ROUTES } from '@/config/routes'
+import logo from '@/assets/logo/logo.svg'
 
 function NavItem({ item, collapsed }) {
+  const { t } = useTranslation()
   const Icon = item.icon
+  const label = t(`nav.${item.key}`)
   const link = (
     <NavLink
       to={item.to}
       end={item.end}
-      title={item.label}
+      title={label}
       className={({ isActive }) =>
         cn(
           'group relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-[14px] font-medium transition-all',
@@ -32,7 +35,7 @@ function NavItem({ item, collapsed }) {
               isActive ? 'text-primary' : 'text-muted-foreground group-hover:text-foreground'
             )}
           />
-          {!collapsed && <span className="truncate">{item.label}</span>}
+          {!collapsed && <span className="truncate">{label}</span>}
         </>
       )}
     </NavLink>
@@ -44,7 +47,7 @@ function NavItem({ item, collapsed }) {
     <Tooltip>
       <TooltipTrigger asChild>{link}</TooltipTrigger>
       <TooltipContent side="right" sideOffset={12}>
-        {item.label}
+        {label}
       </TooltipContent>
     </Tooltip>
   )
@@ -56,6 +59,7 @@ export default function Sidebar({
   onCloseMobile,
   onLogout,
 }) {
+  const { t } = useTranslation()
   const items = NAV_ITEMS
   const isCompact = collapsed && !mobileOpen
 
@@ -75,9 +79,7 @@ export default function Sidebar({
           isCompact && 'justify-center px-2'
         )}>
           <Link to={ROUTES.DASHBOARD} className="flex min-w-0 items-center gap-2.5">
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary-soft">
-              <img src={logo} alt="UzIntellekt" className="h-6 w-6 object-contain" />
-            </span>
+            <img src={logo} alt="UzIntellekt" className="h-9 w-9 shrink-0 object-contain" />
             {!isCompact && (
               <div className="flex min-w-0 flex-col leading-tight">
                 <span className="text-[15px] font-bold tracking-tight text-foreground">UzIntellekt</span>
@@ -89,7 +91,7 @@ export default function Sidebar({
             variant="ghost"
             size="icon"
             onClick={onCloseMobile}
-            aria-label="Yopish"
+            aria-label={t('header.close')}
             className="ml-auto text-muted-foreground hover:bg-muted lg:hidden"
           >
             <X />
@@ -100,7 +102,7 @@ export default function Sidebar({
         <nav className="flex flex-1 flex-col gap-1 overflow-y-auto overflow-x-hidden p-3">
           {!isCompact && (
             <p className="px-3 pb-2 pt-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/70">
-              Menyu
+              {t('nav.menu')}
             </p>
           )}
           {items.map((item) => (
@@ -113,14 +115,14 @@ export default function Sidebar({
           <Button
             variant="ghost"
             onClick={onLogout}
-            title="Chiqish"
+            title={t('nav.logout')}
             className={cn(
               'w-full justify-start gap-3 rounded-lg text-destructive hover:bg-destructive/10 hover:text-destructive',
               isCompact && 'justify-center'
             )}
           >
             <LogOut className="!h-5 !w-5 shrink-0" />
-            {!isCompact && <span className="font-medium">Chiqish</span>}
+            {!isCompact && <span className="font-medium">{t('nav.logout')}</span>}
           </Button>
         </div>
       </aside>

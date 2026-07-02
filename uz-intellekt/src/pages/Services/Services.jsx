@@ -1,283 +1,175 @@
 import { NavLink } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import {
+  ArrowRight,
+  BarChart3,
+  BookOpen,
+  Briefcase,
+  Check,
+  CheckCircle,
+  ClipboardList,
+  Clock,
+  FileBadge,
+  FileText,
+  Gavel,
+  HelpCircle,
+  Lock,
+  Medal,
+  Music,
+  Palette,
+  PenTool,
+  Scale,
+  ShieldCheck,
+  Sparkles,
+  Trophy,
+  Video,
+} from 'lucide-react'
+import { Button, Card, CardContent } from '@/shared/ui'
 
-// SERVICE PACKAGES
 const services = [
   {
     id: 1,
+    icon: Briefcase,
     name: 'Deponentlash',
-    icon: '🏛️',
     desc: "Intellektual mulkingizni rasmiy ravishda ro'yxatdan o'tkazing",
-    features: [
-      'Rasmiy sana tasdiqi',
-      'Raqamli guvohnoma',
-      'Huquqiy kuchga ega',
-      'Xavfsiz saqlash',
-    ],
+    features: ['Rasmiy sana tasdiqi', 'Raqamli guvohnoma', 'Huquqiy kuchga ega', 'Xavfsiz saqlash'],
     highlight: true,
   },
   {
     id: 2,
+    icon: ClipboardList,
     name: 'Qaydnoma hizmati',
-    icon: '📋',
     desc: 'Asarlaringizni platformada baholang va reyting olasiz',
-    features: [
-      'Asarni qayd etish',
-      'Reyting tizimi',
-      'Detaliy xulosa',
-      'Sertifikat',
-    ],
+    features: ['Asarni qayd etish', 'Reyting tizimi', 'Detaliy xulosa', 'Sertifikat'],
   },
   {
     id: 3,
+    icon: Scale,
     name: 'Huquqiy maslahati',
-    icon: '⚖️',
     desc: "Intellektual mulk huquqlari bo'yicha mutaxassislar bilan muloqot",
-    features: [
-      'Onlayn maslaha',
-      'Hujjatlar tahlili',
-      'Huquq himoyasi',
-      'Nizolarni hal etish',
-    ],
+    features: ['Onlayn maslaha', 'Hujjatlar tahlili', 'Huquq himoyasi', 'Nizolarni hal etish'],
   },
   {
     id: 4,
+    icon: FileBadge,
     name: 'Litsenziyalash',
-    icon: '📜',
     desc: 'Asarlaringiz uchun litsenziyaviy shartlar yarating va daromad oling',
-    features: [
-      'Litsenziya shartlari',
-      "To'lov tizimi",
-      'Monitoring',
-      'Hisobot',
-    ],
+    features: ['Litsenziya shartlari', "To'lov tizimi", 'Monitoring', 'Hisobot'],
   },
 ]
 
-// WHAT WE CAN PROVIDE
 const providedWorks = [
-  {
-    category: '📚 Matnli asarlar',
-    items: [
-      'Kitoblar',
-      'Dissertatsiyalar',
-      'Maqolalar',
-      'Loyihalar',
-      'Taqdimotlar',
-    ],
-  },
-  {
-    category: '🎵 Audio va musiqa',
-    items: [
-      'Kuylar',
-      'Vokal traklari',
-      'Arranjirovkalar',
-      'Podcast',
-      'Remikslari',
-    ],
-  },
-  {
-    category: '🎨 Vizual ijodiyot',
-    items: [
-      'Rasmlar',
-      'Ilustratsiyalar',
-      'Dizayn loyal',
-      'Fotografiyalar',
-      'Logolar',
-    ],
-  },
-  {
-    category: '💻 Texnik asarlar',
-    items: [
-      'Dasturiy kod',
-      'Veb-saytlar',
-      'Mobilka',
-      "API'lar",
-      'Elektron kurstalar',
-    ],
-  },
-  {
-    category: '🎬 Mediya kontenti',
-    items: [
-      'Videolar',
-      'Animasiyalar',
-      'Dokumentlar',
-      'Kompilatsiyalar',
-      'Trailerlar',
-    ],
-  },
-  {
-    category: '🏆 Boshqa solalar',
-    items: [
-      'Ixtirolar',
-      'Rasm naqshlari',
-      'Arxitektura',
-      'Joriy va tarixiy',
-      'Tarkibiy noyalar',
-    ],
-  },
+  { icon: BookOpen, category: 'Matnli asarlar', key: 'text', items: ['Kitoblar', 'Dissertatsiyalar', 'Maqolalar', 'Loyihalar', 'Taqdimotlar'] },
+  { icon: Music, category: 'Audio va musiqa', key: 'music', items: ['Kuylar', 'Vokal traklari', 'Arranjirovkalar', 'Podcast', 'Remikslari'] },
+  { icon: Palette, category: 'Vizual ijodiyot', key: 'visual', items: ['Rasmlar', 'Ilustratsiyalar', 'Dizayn loyal', 'Fotografiyalar', 'Logolar'] },
+  { icon: PenTool, category: 'Texnik asarlar', key: 'tech', items: ['Dasturiy kod', 'Veb-saytlar', 'Mobilka', "API'lar", 'Elektron kurstalar'] },
+  { icon: Video, category: 'Mediya kontenti', key: 'media', items: ['Videolar', 'Animasiyalar', 'Dokumentlar', 'Kompilatsiyalar', 'Trailerlar'] },
+  { icon: Trophy, category: 'Boshqa solalar', key: 'other', items: ['Ixtirolar', 'Rasm naqshlari', 'Arxitektura', 'Joriy va tarixiy', 'Tarkibiy noyalar'] },
 ]
 
-// PROCESS STEPS
 const processSteps = [
-  {
-    number: '01',
-    title: "Ro'yxatdan o'tish",
-    desc: "Platformada profil yarating va asosiy ma'lumotlarni kiriting",
-    icon: '👤',
-  },
-  {
-    number: '02',
-    title: 'Asarni yuklash',
-    desc: 'Asarning fayl yoki tasvirini platformaga yuklaysiz',
-    icon: '⬆️',
-  },
-  {
-    number: '03',
-    title: "Ma'lumotlarni to'ldirish",
-    desc: "Asar haqida batafsil ma'lumotlar kiriting: nom, muallif, tavsifi",
-    icon: '📝',
-  },
-  {
-    number: '04',
-    title: 'Tekshiruv',
-    desc: "Mutaxassislar tomonidan ma'lumotlar tasdiqlanadi (1-3 kun)",
-    icon: '✓',
-  },
-  {
-    number: '05',
-    title: "To'lov",
-    desc: "Deponentlash haqini to'lasiz (shaffof va qulay usullar)",
-    icon: '💳',
-  },
-  {
-    number: '06',
-    title: 'Guvohnoma olish',
-    desc: 'Rasmiy raqamli guvohnomani email orqali olasiz',
-    icon: '🎖️',
-  },
+  { number: '01', title: "Ro'yxatdan o'tish", desc: "Platformada profil yarating va asosiy ma'lumotlarni kiriting" },
+  { number: '02', title: 'Asarni yuklash', desc: 'Asarning fayl yoki tasvirini platformaga yuklaysiz' },
+  { number: '03', title: "Ma'lumotlarni to'ldirish", desc: "Asar haqida batafsil ma'lumotlar kiriting" },
+  { number: '04', title: 'Tekshiruv', desc: "Mutaxassislar tomonidan ma'lumotlar tasdiqlanadi (1-3 kun)" },
+  { number: '05', title: "To'lov", desc: "Deponentlash haqini to'lasiz" },
+  { number: '06', title: 'Guvohnoma olish', desc: 'Rasmiy raqamli guvohnomani email orqali olasiz' },
 ]
 
-// BENEFITS
 const benefits = [
-  {
-    title: 'Huquqiy himoya',
-    desc: "Asarlaringiz qonuniy hovuzda to'la himoya qilinadi",
-    icon: '🛡️',
-  },
-  {
-    title: 'Raqamli guvohnoma',
-    desc: 'QR-kod va verifikatsiya bilan yuqori darajadagi hujjat',
-    icon: '🏅',
-  },
-  {
-    title: 'Xavfsiz saqlash',
-    desc: 'Shifrlangan serverlar va 24/7 ziyonet monitoring',
-    icon: '🔐',
-  },
-  {
-    title: "Biznesingizni o'stering",
-    desc: "Asarlarni litsenziyalang va qo'shimcha daromad oling",
-    icon: '📈',
-  },
-  {
-    title: 'Professional tahlil',
-    desc: 'Mutaxassislar tomonidan batafsil baholash va tavsiyalar',
-    icon: '🔍',
-  },
-  {
-    title: "Davlatning tan'olishi",
-    desc: "Qonuniy sharoitda to'la e'tirof etilgan raqamli guvohnoma",
-    icon: '✅',
-  },
+  { icon: ShieldCheck, title: 'Huquqiy himoya', desc: "Asarlaringiz qonuniy hovuzda to'la himoya qilinadi" },
+  { icon: Medal, title: 'Raqamli guvohnoma', desc: 'QR-kod va verifikatsiyali yuqori darajadagi hujjat' },
+  { icon: Lock, title: 'Xavfsiz saqlash', desc: 'Shifrlangan serverlar va 24/7 monitoring' },
+  { icon: BarChart3, title: "Biznesingizni o'stiring", desc: "Asarlarni litsenziyalang va qo'shimcha daromad oling" },
+  { icon: Sparkles, title: 'Professional tahlil', desc: 'Mutaxassislar tomonidan batafsil baholash va tavsiyalar' },
+  { icon: Gavel, title: "Davlatning tan'olishi", desc: "Qonuniy sharoitda to'la e'tirof etilgan raqamli guvohnoma" },
 ]
+
+const featureMap = {
+  'Rasmiy sana tasdiqi': { ns: 'depositing_page.bullet_1' },
+  'Raqamli guvohnoma': { ns: 'depositing_page.bullet_2' },
+  'Huquqiy kuchga ega': { ns: 'depositing_page.bullet_4' },
+  'Xavfsiz saqlash': { ns: 'depositing_page.bullet_3' },
+  'Asarni qayd etish': { key: 'book' },
+  'Reyting tizimi': { key: 'mob' },
+  'Detaliy xulosa': { key: 'proj' },
+  Sertifikat: { key: 'logo' },
+  'Onlayn maslaha': { key: 'pres' },
+  'Hujjatlar tahlili': { key: 'doc' },
+  'Huquq himoyasi': { key: 'inv' },
+  'Nizolarni hal etish': { key: 'idea' },
+  'Litsenziya shartlari': { key: 'pattern' },
+  "To'lov tizimi": { key: 'trail' },
+  Monitoring: { key: 'photo' },
+  Hisobot: { key: 'api' },
+}
+
+const itemKeyMap = {
+  Kitoblar: 'book', Dissertatsiyalar: 'diss', Maqolalar: 'art', Loyihalar: 'proj', Taqdimotlar: 'pres',
+  Kuylar: 'tune', 'Vokal traklari': 'vocal', Arranjirovkalar: 'arr', Podcast: 'pod', Remikslari: 'remix',
+  Rasmlar: 'pic', Ilustratsiyalar: 'ill', 'Dizayn loyal': 'design', Fotografiyalar: 'photo', Logolar: 'logo',
+  'Dasturiy kod': 'code', 'Veb-saytlar': 'site', Mobilka: 'mob', "API'lar": 'api', 'Elektron kurstalar': 'course',
+  Videolar: 'video', Animasiyalar: 'anim', Dokumentlar: 'doc', Kompilatsiyalar: 'comp', Trailerlar: 'trail',
+  Ixtirolar: 'inv', 'Rasm naqshlari': 'pattern', Arxitektura: 'arch', 'Joriy va tarixiy': 'history', 'Tarkibiy noyalar': 'idea',
+}
 
 const Services = () => {
   const { t } = useTranslation()
-  return (
-    <main className="bg-white">
-      {/* HERO SECTION */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-purple-600 via-indigo-600 to-blue-600 pt-32 pb-24">
-        {/* ANIMATED BACKGROUND */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-40 -right-40 w-80 h-80 bg-white opacity-10 rounded-full blur-3xl animate-pulse"></div>
-          <div
-            className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-400 opacity-5 rounded-full blur-3xl animate-pulse"
-            style={{ animationDelay: '1s' }}
-          ></div>
-        </div>
 
-        <div className="relative max-w-7xl mx-auto px-3 sm:px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center">
-            {/* LEFT CONTENT */}
-            <div className="text-white">
-              <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+  const tFeature = (feature) => {
+    const cfg = featureMap[feature]
+    if (!cfg) return feature
+    return cfg.ns ? t(cfg.ns, feature) : t(`services_page.items.${cfg.key}`, feature)
+  }
+
+  return (
+    <main className="bg-background">
+      {/* HERO */}
+      <section className="bg-primary text-primary-foreground">
+        <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:py-24">
+          <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-2">
+            <div>
+              <h1 className="text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl">
                 {t('services_page.hero_title', 'Intellektual mulkingizni himoya qiling')}
               </h1>
-              <p className="text-lg text-white/90 mb-10 leading-relaxed max-w-xl">
-                {t('services_page.hero_desc', "Biz siz uchun eng sodda, eng tez va eng xavfsiz deponentlash xizmati taqdim etamiz. Asarlarni to'liq himoya qiling va kelajakda huquqbuzarliklarga qarshi turing.")}
+              <p className="mt-5 max-w-xl leading-relaxed text-primary-foreground/85">
+                {t(
+                  'services_page.hero_desc',
+                  "Biz siz uchun eng sodda, eng tez va eng xavfsiz deponentlash xizmati taqdim etamiz."
+                )}
               </p>
-
-              <div className="flex flex-col sm:flex-row gap-4">
-                <NavLink
-                  to="/login"
-                  className="px-8 py-4 bg-white text-purple-600 font-bold rounded-xl hover:bg-purple-50 transition shadow-xl text-center"
-                >
-                  {t('services_page.start_btn', 'Boshlash →')}
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                <NavLink to="/login">
+                  <Button size="lg" variant="secondary">
+                    {t('services_page.start_btn', 'Boshlash')}
+                    <ArrowRight className="h-4 w-4" />
+                  </Button>
                 </NavLink>
-                <NavLink
-                  to="/contact"
-                  className="px-8 py-4 bg-white/20 backdrop-blur text-white font-semibold rounded-xl hover:bg-white/30 transition border border-white/30 text-center"
-                >
-                  {t('services_page.details_btn', "Batafsil ma'lumot")}
+                <NavLink to="/contact">
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="border-primary-foreground/30 bg-transparent text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground"
+                  >
+                    {t('services_page.details_btn', "Batafsil ma'lumot")}
+                  </Button>
                 </NavLink>
               </div>
 
-              {/* STATS */}
-              <div className="mt-16 grid grid-cols-3 gap-6 pt-8 border-t border-white/20">
-                <div>
-                  <p className="text-3xl font-bold">10K+</p>
-                  <p className="text-white/80 text-sm">{t('services_page.users', 'Foydalanuvchilar')}</p>
-                </div>
-                <div>
-                  <p className="text-3xl font-bold">50K+</p>
-                  <p className="text-white/80 text-sm">
-                    {t('services_page.deposited_works', 'Deponentlangan asarlar')}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-3xl font-bold">24/7</p>
-                  <p className="text-white/80 text-sm">{t('services_page.support_24_7', 'Xizmat ko\'rsatish')}</p>
-                </div>
+              <div className="mt-12 grid grid-cols-3 gap-6 border-t border-primary-foreground/20 pt-6">
+                <Stat value="10K+" label={t('services_page.users', 'Foydalanuvchilar')} />
+                <Stat value="50K+" label={t('services_page.deposited_works', 'Asarlar')} />
+                <Stat value="24/7" label={t('services_page.support_24_7', "Xizmat ko'rsatish")} />
               </div>
             </div>
 
-            {/* RIGHT - VISUAL CARD */}
-            <div className="relative">
-              <div className="bg-white/10 backdrop-blur-3xl rounded-3xl p-8 border border-white/20 shadow-2xl">
-                <div className="grid grid-cols-2 gap-4 mb-6">
-                  <div className="bg-gradient-to-br from-purple-400 to-purple-600 rounded-2xl p-6 text-white">
-                    <div className="text-4xl mb-2">📄</div>
-                    <p className="font-semibold">{t('services_page.upload_title', 'Asarni yuklash')}</p>
-                  </div>
-                  <div className="bg-gradient-to-br from-blue-400 to-blue-600 rounded-2xl p-6 text-white">
-                    <div className="text-4xl mb-2">✓</div>
-                    <p className="font-semibold">{t('services_page.review_title', 'Tekshiruv')}</p>
-                  </div>
-                  <div className="bg-gradient-to-br from-indigo-400 to-indigo-600 rounded-2xl p-6 text-white">
-                    <div className="text-4xl mb-2">🎖️</div>
-                    <p className="font-semibold">{t('services_page.cert_title', 'Guvohnoma')}</p>
-                  </div>
-                  <div className="bg-gradient-to-br from-pink-400 to-pink-600 rounded-2xl p-6 text-white">
-                    <div className="text-4xl mb-2">🔐</div>
-                    <p className="font-semibold">{t('services_page.security_title', 'Himoya')}</p>
-                  </div>
-                </div>
-                <div className="bg-white/5 backdrop-blur rounded-xl p-4 border border-white/10">
-                  <p className="text-white/90 text-sm">
-                    <strong>⚡ {t('services_page.fast_badge', 'Tez: 1-3 kun ichida guvohnoma oling')}</strong>
-                  </p>
-                </div>
+            <div className="grid grid-cols-2 gap-3">
+              <MiniTile icon={FileText} label={t('services_page.upload_title', 'Asarni yuklash')} />
+              <MiniTile icon={CheckCircle} label={t('services_page.review_title', 'Tekshiruv')} />
+              <MiniTile icon={Medal} label={t('services_page.cert_title', 'Guvohnoma')} />
+              <MiniTile icon={Lock} label={t('services_page.security_title', 'Himoya')} />
+              <div className="col-span-2 rounded-lg border border-primary-foreground/20 bg-primary-foreground/10 p-4 text-sm">
+                <strong>{t('services_page.fast_badge', 'Tez: 1-3 kun ichida guvohnoma oling')}</strong>
               </div>
             </div>
           </div>
@@ -285,284 +177,275 @@ const Services = () => {
       </section>
 
       {/* SERVICES GRID */}
-      <section className="py-16 sm:py-24 px-3 sm:px-6 bg-gray-50">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent mb-4 pb-2.5">
+      <section className="bg-muted/40 py-16 sm:py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl md:text-4xl">
               {t('services_page.grid_title', 'Bizning xizmatlarimiz')}
             </h2>
-            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-              {t('services_page.grid_subtitle', 'Intellektual mulkni himoya qilish va o\'stirish uchun to\'liq yechim')}
+            <p className="mt-3 text-muted-foreground">
+              {t(
+                'services_page.grid_subtitle',
+                "Intellektual mulkni himoya qilish va o'stirish uchun to'liq yechim"
+              )}
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {services.map((service) => (
-              <div
-                key={service.id}
-                className={`rounded-2xl p-8 transition transform hover:scale-105 ${
-                  service.highlight
-                    ? 'bg-gradient-to-br from-purple-600 to-indigo-600 text-white shadow-2xl ring-2 ring-purple-300'
-                    : 'bg-white shadow-lg hover:shadow-xl'
-                }`}
-              >
-                <div className="text-5xl mb-4">{service.icon}</div>
-                <h3 className="text-xl font-bold mb-3">{t(`services_page.packages.p${service.id}_name`, service.name)}</h3>
-                <p
-                  className={`text-sm mb-6 ${service.highlight ? 'text-white/90' : 'text-gray-600'}`}
+          <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
+            {services.map((service) => {
+              const Icon = service.icon
+              const highlighted = service.highlight
+              return (
+                <Card
+                  key={service.id}
+                  className={`h-full transition-all hover:-translate-y-1 hover:shadow-soft-md ${
+                    highlighted ? 'border-0 bg-primary text-primary-foreground shadow-soft-md' : ''
+                  }`}
                 >
-                  {t(`services_page.packages.p${service.id}_desc`, service.desc)}
-                </p>
-                <ul className="space-y-2">
-                  {service.features.map((feature, idx) => {
-                    let translatedFeature = feature;
-                    if (feature === 'Rasmiy sana tasdiqi') translatedFeature = t('depositing_page.bullet_1', feature);
-                    else if (feature === 'Raqamli guvohnoma') translatedFeature = t('depositing_page.bullet_2', feature);
-                    else if (feature === 'Huquqiy kuchga ega') translatedFeature = t('depositing_page.bullet_4', feature);
-                    else if (feature === 'Xavfsiz saqlash') translatedFeature = t('depositing_page.bullet_3', feature);
-                    else {
-                      const featureMap = {
-                        'Asarni qayd etish': 'book', 'Reyting tizimi': 'mob', 'Detaliy xulosa': 'proj', 'Sertifikat': 'logo',
-                        'Onlayn maslaha': 'pres', 'Hujjatlar tahlili': 'doc', 'Huquq himoyasi': 'inv', 'Nizolarni hal etish': 'idea',
-                        'Litsenziya shartlari': 'pattern', 'To\'lov tizimi': 'trail', 'Monitoring': 'photo', 'Hisobot': 'api'
-                      };
-                      const key = featureMap[feature] || feature;
-                      translatedFeature = t(`services_page.items.${key}`, feature);
-                    }
-                    return (
-                      <li
-                        key={idx}
-                        className={`text-sm flex items-center gap-2 ${service.highlight ? 'text-white/80' : 'text-gray-700'}`}
-                      >
-                        <span className="text-lg">✓</span> {translatedFeature}
-                      </li>
-                    )
-                  })}
-                </ul>
-              </div>
-            ))}
+                  <CardContent className="p-6">
+                    <div
+                      className={`flex h-11 w-11 items-center justify-center rounded-lg ${
+                        highlighted
+                          ? 'bg-primary-foreground/15 text-primary-foreground'
+                          : 'bg-primary-soft text-primary'
+                      }`}
+                    >
+                      <Icon className="h-5 w-5" />
+                    </div>
+                    <h3 className="mt-4 text-base font-semibold">
+                      {t(`services_page.packages.p${service.id}_name`, service.name)}
+                    </h3>
+                    <p
+                      className={`mt-1.5 text-sm leading-relaxed ${
+                        highlighted ? 'text-primary-foreground/85' : 'text-muted-foreground'
+                      }`}
+                    >
+                      {t(`services_page.packages.p${service.id}_desc`, service.desc)}
+                    </p>
+                    <ul className="mt-4 space-y-1.5 text-sm">
+                      {service.features.map((feature) => (
+                        <li
+                          key={feature}
+                          className={`flex items-center gap-2 ${
+                            highlighted ? 'text-primary-foreground/85' : 'text-foreground/80'
+                          }`}
+                        >
+                          <Check className="h-4 w-4 shrink-0" />
+                          {tFeature(feature)}
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+              )
+            })}
           </div>
         </div>
       </section>
 
       {/* WHAT WE ACCEPT */}
-      <section className="py-16 sm:py-24 px-3 sm:px-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-4 pb-2.5">
+      <section className="bg-background py-16 sm:py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl md:text-4xl">
               {t('services_page.accept_title', 'Qanday asarlarni qabul qilamiz?')}
             </h2>
-            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-              {t('services_page.accept_subtitle', 'Har qanday soha, har qanday tipdagi intellektual mulk')}
+            <p className="mt-3 text-muted-foreground">
+              {t(
+                'services_page.accept_subtitle',
+                'Har qanday soha, har qanday tipdagi intellektual mulk'
+              )}
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {providedWorks.map((work, idx) => {
-              const categoryKey = idx === 0 ? 'text' : idx === 1 ? 'music' : idx === 2 ? 'visual' : idx === 3 ? 'tech' : idx === 4 ? 'media' : 'other';
-              const categoryEmoji = idx === 0 ? '📚 ' : idx === 1 ? '🎵 ' : idx === 2 ? '🎨 ' : idx === 3 ? '💻 ' : idx === 4 ? '🎬 ' : '🏆 ';
+          <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {providedWorks.map((work) => {
+              const Icon = work.icon
               return (
-                <div
-                  key={idx}
-                  className="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-8 border border-gray-200 hover:border-purple-300 hover:shadow-lg transition"
-                >
-                  <h3 className="text-lg font-bold text-gray-900 mb-6">
-                    {categoryEmoji + t(`services_page.cats.${categoryKey}`, work.category)}
-                  </h3>
-                  <ul className="space-y-3">
-                    {work.items.map((item, itemIdx) => {
-                      const itemKeyMap = {
-                        'Kitoblar': 'book', 'Dissertatsiyalar': 'diss', 'Maqolalar': 'art', 'Loyihalar': 'proj', 'Taqdimotlar': 'pres',
-                        'Kuylar': 'tune', 'Vokal traklari': 'vocal', 'Arranjirovkalar': 'arr', 'Podcast': 'pod', 'Remikslari': 'remix',
-                        'Rasmlar': 'pic', 'Ilustratsiyalar': 'ill', 'Dizayn loyal': 'design', 'Fotografiyalar': 'photo', 'Logolar': 'logo',
-                        'Dasturiy kod': 'code', 'Veb-saytlar': 'site', 'Mobilka': 'mob', "API'lar": 'api', 'Elektron kurstalar': 'course',
-                        'Videolar': 'video', 'Animasiyalar': 'anim', 'Dokumentlar': 'doc', 'Kompilatsiyalar': 'comp', 'Trailerlar': 'trail',
-                        'Ixtirolar': 'inv', 'Rasm naqshlari': 'pattern', 'Arxitektura': 'arch', 'Joriy va tarixiy': 'history', 'Tarkibiy noyalar': 'idea'
-                      };
-                      const key = itemKeyMap[item] || item;
-                      return (
-                        <li
-                          key={itemIdx}
-                          className="flex items-center gap-3 text-gray-700"
-                        >
-                          <span className="w-2 h-2 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-full"></span>
-                          {t(`services_page.items.${key}`, item)}
+                <Card key={work.key} className="transition-colors hover:border-primary/30">
+                  <CardContent className="p-6">
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-soft text-primary">
+                        <Icon className="h-5 w-5" />
+                      </div>
+                      <h3 className="text-base font-semibold text-foreground">
+                        {t(`services_page.cats.${work.key}`, work.category)}
+                      </h3>
+                    </div>
+                    <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
+                      {work.items.map((item) => (
+                        <li key={item} className="flex items-center gap-2">
+                          <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                          {t(`services_page.items.${itemKeyMap[item] || item}`, item)}
                         </li>
-                      )
-                    })}
-                  </ul>
-                </div>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
               )
             })}
           </div>
         </div>
       </section>
 
-      {/* PROCESS SECTION */}
-      <section className="py-16 sm:py-24 px-3 sm:px-6 bg-gradient-to-b from-blue-50 to-purple-50">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent mb-4 pb-2.5">
+      {/* PROCESS */}
+      <section className="bg-muted/40 py-16 sm:py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl md:text-4xl">
               {t('services_page.step_title', '6 qadamda deponentlang')}
             </h2>
-            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+            <p className="mt-3 text-muted-foreground">
               {t('services_page.step_subtitle', 'Sodda, tez va tushunarli jarayon')}
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
             {processSteps.map((step, idx) => {
-              const stepKey = `step_${idx + 1}`;
+              const stepKey = `step_${idx + 1}`
               return (
-                <div key={idx} className="group relative">
-                  {/* CONNECTION LINE */}
-                  {idx < processSteps.length - 1 && idx % 3 !== 2 && (
-                    <div className="hidden lg:block absolute -right-4 top-16 w-8 h-1 bg-gradient-to-r from-purple-400 to-transparent"></div>
-                  )}
-
-                  {/* CARD */}
-                  <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition relative">
-                    {/* STEP NUMBER */}
-                    <div className="absolute -top-6 -left-6 w-16 h-16 bg-gradient-to-br from-purple-600 to-indigo-600 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-lg">
-                      {step.number}
-                    </div>
-
-                    {/* ICON */}
-                    <div className="text-5xl mb-6 mt-4">{step.icon}</div>
-
-                    {/* CONTENT */}
-                    <h3 className="text-lg font-bold text-gray-900 mb-3">
+                <Card key={step.number} className="relative h-full">
+                  <span className="absolute -left-3 -top-3 flex h-10 w-10 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground shadow-soft">
+                    {step.number}
+                  </span>
+                  <CardContent className="p-6">
+                    <h3 className="mt-2 text-base font-semibold text-foreground">
                       {t(`services_page.${stepKey}`, step.title)}
                     </h3>
-                    <p className="text-gray-600 leading-relaxed">{t(`services_page.${stepKey}_desc`, step.desc)}</p>
-                  </div>
-                </div>
+                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                      {t(`services_page.${stepKey}_desc`, step.desc)}
+                    </p>
+                  </CardContent>
+                </Card>
               )
             })}
           </div>
 
-          {/* TIMELINE BOTTOM */}
-          <div className="mt-12 text-center">
-            <p className="text-gray-600 text-lg font-semibold">
-              ⏱️ {t('services_page.total_time', 'Umumiy vaqt: 3-5 kun')}
-            </p>
+          <div className="mt-10 flex items-center justify-center gap-2 text-sm font-semibold text-muted-foreground">
+            <Clock className="h-4 w-4 text-primary" />
+            {t('services_page.total_time', 'Umumiy vaqt: 3-5 kun')}
           </div>
         </div>
       </section>
 
-      {/* BENEFITS SECTION */}
-      <section className="py-24 px-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent mb-4 pb-2.5">
+      {/* BENEFITS */}
+      <section className="bg-background py-16 sm:py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl md:text-4xl">
               {t('services_page.why_title', 'Nima uchun bizni tanlaysiz?')}
             </h2>
-            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-              {t('services_page.why_subtitle', '6 ta ososiy manfa\'at va imkoniyatlar')}
+            <p className="mt-3 text-muted-foreground">
+              {t('services_page.why_subtitle', "6 ta asosiy manfa'at va imkoniyatlar")}
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {benefits.map((benefit, idx) => (
-              <div
-                key={idx}
-                className="bg-white rounded-2xl p-8 border-2 border-gray-100 hover:border-purple-300 hover:shadow-xl transition relative overflow-hidden group"
-              >
-                {/* linear BACKGROUND ON HOVER */}
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-50 to-indigo-50 opacity-0 group-hover:opacity-100 transition -z-10"></div>
-
-                <div className="text-5xl mb-4">{benefit.icon}</div>
-                <h3 className="text-lg font-bold text-gray-900 mb-3">
-                  {t(`services_page.benefits.b${idx + 1}_title`, benefit.title)}
-                </h3>
-                <p className="text-gray-600 leading-relaxed">{t(`services_page.benefits.b${idx + 1}_desc`, benefit.desc)}</p>
-              </div>
-            ))}
+          <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {benefits.map((benefit, idx) => {
+              const Icon = benefit.icon
+              return (
+                <Card key={benefit.title} className="transition-all hover:-translate-y-1 hover:shadow-soft-md">
+                  <CardContent className="p-6">
+                    <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary-soft text-primary">
+                      <Icon className="h-5 w-5" />
+                    </div>
+                    <h3 className="mt-4 text-base font-semibold text-foreground">
+                      {t(`services_page.benefits.b${idx + 1}_title`, benefit.title)}
+                    </h3>
+                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                      {t(`services_page.benefits.b${idx + 1}_desc`, benefit.desc)}
+                    </p>
+                  </CardContent>
+                </Card>
+              )
+            })}
           </div>
         </div>
       </section>
 
-      {/* FINAL CTA */}
-      <section className="relative py-24 px-6 overflow-hidden">
-        {/* BACKGROUND DECORATION */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-purple-400 opacity-10 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-indigo-400 opacity-10 rounded-full blur-3xl"></div>
-        </div>
-
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          <h2 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent pb-6">
+      {/* CTA */}
+      <section className="bg-primary text-primary-foreground">
+        <div className="mx-auto max-w-4xl px-4 py-16 text-center sm:px-6 sm:py-20">
+          <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
             {t('services_page.cta_title', 'Asaringizni bugunoq himoya qiling')}
           </h2>
-          <p className="text-xl text-gray-700 mb-12 max-w-2xl mx-auto leading-relaxed">
-            {t('services_page.cta_subtitle', 'Minglab mutaxassislar va ijodkorlar asarlarini bizga ishonmoqdalar. Siz ham qila olasiz.')}
+          <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-primary-foreground/85">
+            {t(
+              'services_page.cta_subtitle',
+              'Minglab mutaxassislar va ijodkorlar asarlarini bizga ishonmoqdalar.'
+            )}
           </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <NavLink
-              to="/login"
-              className="px-10 py-5 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold rounded-xl hover:shadow-xl transition text-lg"
-            >
-              {t('services_page.cta_btn', 'Boshlang →')}
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
+            <NavLink to="/login">
+              <Button size="lg" variant="secondary">
+                {t('services_page.cta_btn', 'Boshlang')}
+                <ArrowRight className="h-4 w-4" />
+              </Button>
             </NavLink>
-            <NavLink
-              to="/contact"
-              className="px-10 py-5 bg-gray-200 text-gray-900 font-bold rounded-xl hover:bg-gray-300 transition text-lg"
-            >
-              {t('services_page.faq_btn', 'Savollar berish')}
+            <NavLink to="/contact">
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-primary-foreground/30 bg-transparent text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground"
+              >
+                {t('services_page.faq_btn', 'Savollar berish')}
+              </Button>
             </NavLink>
           </div>
-
-          <p className="mt-8 text-gray-600 text-sm">
-            {t('services_page.cta_no_card', 'Kredit kartasiz ro\'yxatdan o\'tish. Barcha ma\'lumotlar shifrlangan.')}
+          <p className="mt-6 text-xs text-primary-foreground/70">
+            {t(
+              'services_page.cta_no_card',
+              "Kredit kartasiz ro'yxatdan o'tish. Barcha ma'lumotlar shifrlangan."
+            )}
           </p>
         </div>
       </section>
 
-      {/* FAQ PREVIEW */}
-      <section className="py-24 px-6 bg-gray-50">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-4xl font-bold text-center text-gray-900 mb-16">
-            {t('services_page.faq_title', 'Tez-tez so\'raladigan savollar')}
+      {/* FAQ */}
+      <section className="bg-muted/40 py-16 sm:py-24">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6">
+          <h2 className="text-center text-2xl font-bold tracking-tight text-foreground sm:text-3xl md:text-4xl">
+            {t('services_page.faq_title', "Tez-tez so'raladigan savollar")}
           </h2>
-
-          <div className="space-y-6">
+          <div className="mt-10 space-y-4">
             {[
               {
                 q: t('services_page.faq_q1', 'Deponentlash qanchalik uzoq vaqt oladi?'),
-                a: t('services_page.faq_a1', "Odatda 1-3 kun. Hujjatlarni kiritgach, mutaxassislar tekshiruv o'tkazadi va siz guvohnomasini olasiz."),
+                a: t('services_page.faq_a1', 'Odatda 1-3 kun.'),
               },
               {
                 q: t('services_page.faq_q2', "Mening asarlarini boshqalar ko'rishi mumkinmi?"),
-                a: t('services_page.faq_a2', "Yo'q. Barcha ma'lumotlar shifrlangan va faqat siz ishongan shaxslar ko'rishishi mumkin."),
+                a: t('services_page.faq_a2', "Yo'q. Barcha ma'lumotlar shifrlangan."),
               },
               {
-                q: t('services_page.faq_q3', 'Deponentlash guvohnomasining huquqiy kuchi qancha?'),
-                a: t('services_page.faq_a3', "O'zbekistonda to'la qonuniy kuchga ega. Sudda dalil sifatida ishlatilishi mumkin."),
+                q: t('services_page.faq_q3', 'Guvohnomaning huquqiy kuchi qancha?'),
+                a: t('services_page.faq_a3', "O'zbekistonda to'la qonuniy kuchga ega."),
               },
               {
                 q: t('services_page.faq_q4', 'Nechta asarni deponentlash mumkin?'),
-                a: t('services_page.faq_a4', "Cheksiz. Siz xohlagancha ko'p asarni himoya qila olasiz."),
+                a: t('services_page.faq_a4', 'Cheksiz.'),
               },
-            ].map((item, idx) => (
-              <div
-                key={idx}
-                className="bg-white rounded-xl p-6 border border-gray-200 hover:border-purple-300 transition"
-              >
-                <h3 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
-                  <span className="text-purple-600 text-xl">❓</span> {item.q}
-                </h3>
-                <p className="text-gray-600 ml-6">{item.a}</p>
-              </div>
+            ].map((item) => (
+              <Card key={item.q} className="transition-colors hover:border-primary/30">
+                <CardContent className="p-5">
+                  <h3 className="flex items-start gap-2 text-base font-semibold text-foreground">
+                    <HelpCircle className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
+                    {item.q}
+                  </h3>
+                  <p className="ml-7 mt-2 text-sm leading-relaxed text-muted-foreground">
+                    {item.a}
+                  </p>
+                </CardContent>
+              </Card>
             ))}
           </div>
-
-          <div className="mt-12 text-center">
+          <div className="mt-10 text-center">
             <NavLink
               to="/contact"
-              className="text-purple-600 font-bold text-lg hover:text-indigo-600 transition"
+              className="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline"
             >
-              {t('services_page.more_faq', 'Ko\'proq savol-javoblar →')}
+              {t('services_page.more_faq', "Ko'proq savol-javoblar")}
+              <ArrowRight className="h-3.5 w-3.5" />
             </NavLink>
           </div>
         </div>
@@ -570,5 +453,19 @@ const Services = () => {
     </main>
   )
 }
+
+const Stat = ({ value, label }) => (
+  <div>
+    <p className="text-3xl font-extrabold">{value}</p>
+    <p className="mt-0.5 text-xs text-primary-foreground/80">{label}</p>
+  </div>
+)
+
+const MiniTile = ({ icon: Icon, label }) => (
+  <div className="rounded-xl border border-primary-foreground/20 bg-primary-foreground/10 p-4">
+    <Icon className="h-5 w-5" />
+    <p className="mt-2 text-sm font-semibold">{label}</p>
+  </div>
+)
 
 export default Services
