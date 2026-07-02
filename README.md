@@ -29,6 +29,27 @@ Platformaga OneID yoki tizim orqali kirgan a'zolar uchun xizmat ko'rsatish panel
 - Oq-qora rangli, toza, professionallar uchun mo'ljallangan interfeys (Admin Panel dizayni).
 - Autentifikatsiya holatini doimiy tekshirish va a'zoligini tasdiqlagan (isMember: true) foydalanuvchilar uchungina xizmat qiladi.
 
+## 📦 Umumiy UI qatlami — `packages/ui` (`@shared`)
+
+`dashboard` va `admin` ilovalarining umumiy qatlami **bitta joyda** — `packages/ui/` da (npm **workspaces**). Umumiy komponent yoki dizayn-token faqat shu yerda o'zgartiriladi va ikkala ilova avtomatik oladi.
+
+- **Import qoidasi:** umumiy = `@shared/*` (ui, api, lib, data, config/env, styles, i18n); ilovaga xos = `@/*`.
+- **`packages/ui` tarkibi:** `ui/` (24 komponent), `api/`, `lib/` (csv, activity-log, format…), `data/geo`, `config/env.js`, `styles/index.css` (tokenlar), `i18n/` — `createI18n(resources)` fabrikasi, `tailwind.preset.js`.
+- **Ilovaga xos (packages/ui da EMAS):** `src/config/routes.js` (navigatsiya har xil) va tarjimalar `src/i18n/*.json` (har ilova o'z JSON'lari bilan `createI18n` chaqiradi).
+- **Infratuzilma:** ildizda `package.json` (workspaces) + bitta `npm install` (umumiy `node_modules`, bitta React). Har ilovada vite/vitest `@shared` alias + `server.fs.allow:['..']`, tailwind `presets:[uiPreset]`.
+
+**Buyruqlar (ildizdan):**
+
+```bash
+npm install            # workspaces: hamma bog'liqliklarni ildizga o'rnatadi
+npm run build          # admin + dashboard build
+npm run test           # admin + dashboard testlar (packages/ui testlari ham)
+npm run check:shared   # drift-guard: <app>/src/shared yoki @/shared bo'lsa xato beradi
+npm run verify         # check:shared + build (CI da ishlaydi)
+```
+
+> ⚠️ **Qoida:** ilovalar ichida `src/shared/` yoki `@/shared/` importlarini qayta yaratmang — umumiy kod faqat `packages/ui` da. `npm run check:shared` (CI) buni tekshiradi.
+
 ## 🔐 Autentifikatsiya (Auth Flow)
 
 1. **OneID va Login**: Foydalanuvchilar OneID xizmati yoki standart login/parol yordamida kirishadi. API bu jarayonda tokenlar hamda foydalanuvchi turini aniqlaydi.

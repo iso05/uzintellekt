@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>UzIntellekt Admin — Доработки (Refinements) — Specification</title>
+  <style>
+    :root {
+      --fg: #1a1a1a;
+      --muted: #6b6b6b;
+      --bg: #ffffff;
+      --surface: #f6f7f9;
+      --border: #e3e6ea;
+      --accent: #2f6feb;
+      --accent-soft: #e7efff;
+      --danger: #d64545;
+      --ok: #2e9e5b;
+    }
+    * { box-sizing: border-box; }
+    html, body { background: var(--bg); color: var(--fg); }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.55;
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 0 1.25rem;
+    }
+    h1 { font-size: 2rem; margin-bottom: 0.25rem; }
+    h2 { font-size: 1.35rem; margin-top: 2.25rem; border-bottom: 1px solid var(--border); padding-bottom: 0.35rem; }
+    h3 { font-size: 1.05rem; margin-top: 1.5rem; }
+    p, li { font-size: 1rem; }
+    code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.92em; }
+    pre { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 0.75rem 1rem; overflow-x: auto; }
+    code { background: var(--surface); padding: 0.1em 0.35em; border-radius: 4px; }
+    pre code { background: transparent; padding: 0; }
+    table { width: 100%; border-collapse: collapse; margin: 0.5rem 0 1rem; }
+    th, td { border: 1px solid var(--border); padding: 0.5rem 0.65rem; text-align: left; vertical-align: top; font-size: 0.94rem; }
+    th { background: var(--surface); }
+    .svg-figure {
+      margin: 1.5rem 0;
+      padding: 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+    .svg-figure svg { width: 100%; height: auto; display: block; font-family: inherit; }
+    .svg-figure figcaption { color: var(--muted); font-size: 0.9rem; margin-top: 0.5rem; text-align: center; }
+    .meta { color: var(--muted); margin-top: 0; }
+    ul.tight, ol.tight { margin: 0.25rem 0 0.75rem 1.25rem; }
+    .tag { display: inline-block; font-size: 0.72rem; font-weight: 600; padding: 0.05rem 0.4rem; border-radius: 4px; background: var(--accent-soft); color: var(--accent); vertical-align: middle; }
+    .tag.v1 { background: #e5f6ec; color: var(--ok); }
+    .tag.adv { background: #fdeaea; color: var(--danger); }
+    .fid { font-weight: 600; color: var(--accent); }
+  </style>
+</head>
+<body>
+  <h1>UzIntellekt Admin — Доработки</h1>
+  <p class="meta">Developer-ready specification · редизайн/правки админ-панели (<code>admin/</code>) по итогам поэкранного аудита</p>
+
+  <section>
+    <h2>Overview</h2>
+    <p>Живой аудит всех экранов админ-панели выявил конкретные находки, сгруппированные в сквозные темы. Эта спека описывает доработки без изменения архитектуры: тот же стек (Vite/React 18, FSD, Tailwind + токены, общий <code>packages/ui</code> через <code>@shared</code>), тот же реальный API (grid-паттерн). Правки строго в токенах и <code>shared/ui</code>, по контракту <em>ui-contract-unified</em>. Всё выбранное пользователем — в v1.</p>
+    <p><b>Решение по итогам аудита:</b> экран «Журнал» (client-side activity-log) <b>удалён целиком</b> как ненужный — вместе с nav-пунктом, роутом, страницей, i18n-ключами и «мёртвыми» вызовами <code>logActivity</code>. Поэтому тема аудит-лога из плана исключена.</p>
+  </section>
+
+  <section>
+    <h2>Requirements</h2>
+    <h3>Functional</h3>
+    <ol class="tight">
+      <li><b>Локализация меток.</b> Латинские словарные/типовые/ролевые/статусные метки (типы работ, роль правообладателя, бейдж <code>EXPIRED</code>) отображаются кириллицей через общий <code>transliterateUzLatinToCyrillic</code>, как в dashboard. Затрагивает Дашборд (D2), Модерацию-список (M2), карточку произведения (W1, W2-роль, W3-бейдж).</li>
+      <li><b>Паритет грида.</b> Единый переиспользуемый тулбар грида — дебаунс-поиск, сортировка по колонкам, пагинация, фильтры — применён к Файлам (F1, F2), Договорам (C2, поиск/Экспорт), Пользователям (U1 поиск по фамилии/ПИНФЛ, U3 сортировка), Модерации-списку (M3 поиск по названию, M4 сортировка). Полный мультиполе-поиск пользователей и фильтр по дате в модерации <b>отложены</b> (нет серверной поддержки — см. Open Questions).</li>
+      <li><b>Баги отображения данных.</b> Договоры: колонка «Эгаси» показывает имя владельца, а не константу-роль (C1). Дашборд: убрать «осиротевший» суффикс при <code>avgHours=null</code> (D4) и лишний breadcrumb на главной (D1).</li>
+      <li><b>Связанные сущности в карточке пользователя.</b> Карточка пользователя показывает <em>все его произведения и договоры</em> списком; каждая строка кликабельна и ведёт на карточку произведения / скачивание договора (UD2 + прямой запрос пользователя).</li>
+      <li><b>Маскирование PII.</b> ПИНФЛ (ЖШШИР) и паспорт по умолчанию замаскированы, раскрытие по клику (UD1, W2).</li>
+      <li><b>Воркфлоу модерации.</b> Bulk «Маъқуллаш/Рад этиш» из списка (M1); из карточки произведения можно скачать просроченное (<code>EXPIRED</code>) вложение для проверки (W3).</li>
+      <li><b>Журнал удалён</b> (A1/A2 сняты) — экран и вся его обвязка убраны из админки.</li>
+    </ol>
+    <h3>Non-functional</h3>
+    <ul class="tight">
+      <li>Никаких новых палитр/компонентов — только токены и <code>@shared/ui</code>; drift-guard (<code>scripts/check-no-local-shared.sh</code>) остаётся зелёным.</li>
+      <li>Общие правки (тулбар грида, маска PII, транслитерация) живут в <code>packages/ui</code>, чтобы dashboard мог их переиспользовать.</li>
+      <li>Grid-запросы остаются на серверной пагинации/фильтрации (<code>cachedGridGet</code>), поиск дебаунсится (≥300&nbsp;мс), кэш инвалидируется при мутациях.</li>
+      <li>i18n: все новые строки — в 4 языках (uz-Cyrl default / uz / ru / en); отсутствие ключа не должно ронять экран.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Architecture</h2>
+    <p>Изменений в топологии нет. Админка — SPA, потребляет общий слой <code>packages/ui</code> (@shared) и реальный API через grid-паттерн. Доработки добавляют один общий примитив (<b>DataGrid toolbar</b>) в <code>@shared/ui</code>, подключают уже существующий <code>transliterate</code> в admin и точечно правят страницы/энтити.</p>
+    <figure class="svg-figure">
+      <svg viewBox="0 0 820 440" role="img" aria-labelledby="arch-title">
+        <title id="arch-title">Архитектура доработок админки</title>
+        <defs>
+          <marker id="ah" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 z" fill="#2f6feb"/>
+          </marker>
+        </defs>
+        <!-- admin app -->
+        <rect x="20" y="30" width="360" height="380" rx="10" fill="#ffffff" stroke="#e3e6ea"/>
+        <text x="200" y="55" text-anchor="middle" font-size="15" font-weight="700">admin/ (Vite/React, FSD)</text>
+
+        <rect x="45" y="75" width="140" height="46" rx="8" fill="#e7efff" stroke="#2f6feb"/>
+        <text x="115" y="103" text-anchor="middle" font-size="13">pages/*</text>
+        <rect x="215" y="75" width="140" height="46" rx="8" fill="#e7efff" stroke="#2f6feb"/>
+        <text x="285" y="97" text-anchor="middle" font-size="13">features/*</text>
+        <text x="285" y="113" text-anchor="middle" font-size="11" fill="#6b6b6b">decide, bulk, mask</text>
+
+        <rect x="45" y="140" width="310" height="52" rx="8" fill="#f6f7f9" stroke="#e3e6ea"/>
+        <text x="200" y="162" text-anchor="middle" font-size="13" font-weight="600">entities/* (work · user · contract · dictionary)</text>
+        <text x="200" y="180" text-anchor="middle" font-size="11" fill="#6b6b6b">api.js → grid filters/sort · owner-scoped queries</text>
+
+        <rect x="45" y="210" width="310" height="40" rx="8" fill="#f6f7f9" stroke="#e3e6ea"/>
+        <text x="200" y="234" text-anchor="middle" font-size="12">i18n/*.json (uz-Cyrl · uz · ru · en)</text>
+
+        <rect x="45" y="268" width="310" height="120" rx="8" fill="#fbfcfe" stroke="#e3e6ea"/>
+        <text x="200" y="288" text-anchor="middle" font-size="12" fill="#6b6b6b">app-local: config/routes.js</text>
+        <text x="200" y="318" text-anchor="middle" font-size="12.5" font-weight="600">использует ↓</text>
+
+        <!-- shared -->
+        <rect x="470" y="60" width="320" height="180" rx="10" fill="#ffffff" stroke="#2f6feb"/>
+        <text x="630" y="85" text-anchor="middle" font-size="15" font-weight="700">packages/ui (@shared)</text>
+        <rect x="490" y="100" width="280" height="34" rx="7" fill="#e5f6ec" stroke="#2e9e5b"/>
+        <text x="630" y="122" text-anchor="middle" font-size="12.5" font-weight="600">ui/ + NEW: DataGridToolbar, MaskedField</text>
+        <rect x="490" y="142" width="280" height="30" rx="7" fill="#f6f7f9" stroke="#e3e6ea"/>
+        <text x="630" y="162" text-anchor="middle" font-size="12">lib/transliterate.js (уже есть)</text>
+        <rect x="490" y="180" width="280" height="30" rx="7" fill="#f6f7f9" stroke="#e3e6ea"/>
+        <text x="630" y="200" text-anchor="middle" font-size="12">api/ (cachedGridGet, requestJson, cache)</text>
+
+        <!-- API -->
+        <rect x="470" y="300" width="320" height="90" rx="10" fill="#f6f7f9" stroke="#e3e6ea"/>
+        <text x="630" y="330" text-anchor="middle" font-size="14" font-weight="700">Backend API</text>
+        <text x="630" y="352" text-anchor="middle" font-size="12" fill="#6b6b6b">/api/v1/*/grid · /decide · /download</text>
+        <text x="630" y="372" text-anchor="middle" font-size="11.5" fill="#6b6b6b">page/size/filters/sort → {totalItems, items[]}</text>
+
+        <line x1="380" y1="200" x2="470" y2="150" stroke="#2f6feb" stroke-width="2" marker-end="url(#ah)"/>
+        <line x1="630" y1="240" x2="630" y2="300" stroke="#2f6feb" stroke-width="2" marker-end="url(#ah)"/>
+        <text x="700" y="270" font-size="11" fill="#6b6b6b">HTTP + Bearer</text>
+      </svg>
+      <figcaption>Доработки добавляют общие примитивы в packages/ui и точечно правят admin; API и топология без изменений.</figcaption>
+    </figure>
+    <h3>Technology stack</h3>
+    <ul class="tight">
+      <li>React 18 + Vite 5, Feature-Sliced Design; Tailwind 3.4 + CSS-переменные-токены.</li>
+      <li>Общий слой: <code>@uzintellekt/ui</code> (npm workspaces), импорт через <code>@shared/*</code>.</li>
+      <li>Grid: <code>cachedGridGet(endpoint, {page, size, filters:[{field,operator,value}], sort:{selector,desc}})</code>; операторы <code>eq</code>, <code>sw</code>; серверная пагинация.</li>
+      <li>i18n: <code>createI18n(resources)</code>, 4 языка; локализация словарных терминов через <code>transliterateUzLatinToCyrillic</code>.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Data Model</h2>
+    <p>Правки не меняют сущности, но опираются на связи <em>пользователь → произведения / договоры / файлы</em> для карточки пользователя (UD2) и для показа имени владельца в договорах (C1).</p>
+    <figure class="svg-figure">
+      <svg viewBox="0 0 820 470" role="img" aria-labelledby="er-title">
+        <title id="er-title">Связи сущностей, задействованные в доработках</title>
+        <!-- User -->
+        <g>
+          <rect x="40" y="40" width="220" height="24" rx="4" fill="#2f6feb"/>
+          <text x="150" y="57" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">User (Фойдаланувчи)</text>
+          <rect x="40" y="64" width="220" height="150" fill="#ffffff" stroke="#e3e6ea"/>
+          <text x="52" y="84" font-size="12">id : uuid (PK)</text>
+          <text x="52" y="104" font-size="12">fullName : string</text>
+          <text x="52" y="124" font-size="12">pinfl : string (PII · маска)</text>
+          <text x="52" y="144" font-size="12">passport : string (PII · маска)</text>
+          <text x="52" y="164" font-size="12">phones : string[]</text>
+          <text x="52" y="184" font-size="12">state : ACTIVE | BLOCKED</text>
+          <text x="52" y="204" font-size="12">role : USER | ADMIN</text>
+        </g>
+        <!-- Work -->
+        <g>
+          <rect x="560" y="30" width="220" height="24" rx="4" fill="#2f6feb"/>
+          <text x="670" y="47" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">Work (Асар)</text>
+          <rect x="560" y="54" width="220" height="130" fill="#ffffff" stroke="#e3e6ea"/>
+          <text x="572" y="74" font-size="12">id : uuid (PK)</text>
+          <text x="572" y="94" font-size="12">ownerUserId : uuid (FK)</text>
+          <text x="572" y="114" font-size="12">name : string</text>
+          <text x="572" y="134" font-size="12">type : dict (латиница→кир.)</text>
+          <text x="572" y="154" font-size="12">state : REVIEW|APPROVED…</text>
+          <text x="572" y="174" font-size="12">rightHolders[] : {passport,%}</text>
+        </g>
+        <!-- Contract -->
+        <g>
+          <rect x="560" y="230" width="220" height="24" rx="4" fill="#2f6feb"/>
+          <text x="670" y="247" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">Contract (Шартнома)</text>
+          <rect x="560" y="254" width="220" height="110" fill="#ffffff" stroke="#e3e6ea"/>
+          <text x="572" y="274" font-size="12">id : uuid (PK)</text>
+          <text x="572" y="294" font-size="12">userId : uuid (FK)</text>
+          <text x="572" y="314" font-size="12">number : string</text>
+          <text x="572" y="334" font-size="12">type : MEMBERSHIP|LICENSE</text>
+          <text x="572" y="354" font-size="12">state : CREATED|PENDING…</text>
+        </g>
+        <!-- WorkFile -->
+        <g>
+          <rect x="40" y="300" width="220" height="24" rx="4" fill="#6b6b6b"/>
+          <text x="150" y="317" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">WorkFile (Файл)</text>
+          <rect x="40" y="324" width="220" height="110" fill="#ffffff" stroke="#e3e6ea"/>
+          <text x="52" y="344" font-size="12">id : uuid (PK)</text>
+          <text x="52" y="364" font-size="12">workId : uuid (FK)</text>
+          <text x="52" y="384" font-size="12">name : string</text>
+          <text x="52" y="404" font-size="12">size : bytes</text>
+          <text x="52" y="424" font-size="12">state : UPLOADED | EXPIRED</text>
+        </g>
+        <!-- rels -->
+        <line x1="260" y1="120" x2="560" y2="110" stroke="#2f6feb" stroke-width="1.5"/>
+        <text x="410" y="100" font-size="11" fill="#6b6b6b">1 → * (owner)</text>
+        <line x1="260" y1="150" x2="560" y2="300" stroke="#2f6feb" stroke-width="1.5"/>
+        <text x="410" y="240" font-size="11" fill="#6b6b6b">1 → * (userId)</text>
+        <line x1="670" y1="184" x2="260" y2="360" stroke="#6b6b6b" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <text x="380" y="300" font-size="11" fill="#6b6b6b">Work 1 → * File</text>
+      </svg>
+      <figcaption>Карточка пользователя агрегирует Work (owner) и Contract (userId); имя владельца в списке договоров берётся из связи с User.</figcaption>
+    </figure>
+    <h3>Storage</h3>
+    <p>Хранилище не меняется — всё на backend. Клиент только фильтрует grid-запросы по владельцу и кэширует ответы (<code>cachedGridGet</code>). Экран «Журнал» действий удалён целиком (вместе с client-side ring buffer и вызовами <code>logActivity</code>); серверный аудит — Advanced (см. Open Questions).</p>
+  </section>
+
+  <section>
+    <h2>API Design</h2>
+    <p>Новых серверных эндпоинтов v1 не вводит — переиспользуются существующие grid/decide/download. Ниже — как доработки используют API.</p>
+    <table>
+      <thead><tr><th>Использование</th><th>Endpoint</th><th>Параметры / фильтр</th><th>Экран</th></tr></thead>
+      <tbody>
+        <tr><td>Работы пользователя</td><td><code>POST /api/v1/works/grid</code></td><td><code>filters:[{field:'ownerUserId',operator:'eq',value:userId}]</code> <span class="tag">поле уточнить по api-docs</span></td><td>Карточка пользователя (UD2)</td></tr>
+        <tr><td>Договоры пользователя</td><td><code>POST /api/v1/contracts/grid</code></td><td><code>filters:[{field:'userId',operator:'eq',value:userId}]</code></td><td>Карточка пользователя (UD2)</td></tr>
+        <tr><td>Поиск в гриде</td><td>любой <code>*/grid</code></td><td><code>{field, operator:'sw'|'eq', value}</code> из тулбара (дебаунс)</td><td>Файлы, Договоры, Пользователи, Модерация</td></tr>
+        <tr><td>Сортировка</td><td>любой <code>*/grid</code></td><td><code>sort:{selector, desc}</code> из клика по заголовку</td><td>все списки</td></tr>
+        <tr><td>Bulk-решение</td><td><code>PATCH /api/v1/admin/works/{id}/decide</code></td><td>последовательный вызов per-id <code>{decision, reason}</code>, затем <code>invalidateCache</code></td><td>Модерация (M1)</td></tr>
+        <tr><td>Скачать вложение (в т.ч. EXPIRED)</td><td><code>GET /api/v1/admin/work-files/{id}/download</code> <span class="tag">уточнить</span></td><td>presigned url; кнопка активна независимо от <code>state</code></td><td>Карточка произведения (W3)</td></tr>
+        <tr><td>Экспорт договоров</td><td>клиентский CSV</td><td><code>shared/lib/csv</code> (как в Users/Files)</td><td>Договоры (C3)</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>User &amp; Request Flow</h2>
+    <p>Центральный поток доработок — единый тулбар грида: поиск/сортировка/страница транслируются в серверный grid-запрос через кэш.</p>
+    <figure class="svg-figure">
+      <svg viewBox="0 0 820 430" role="img" aria-labelledby="flow-title">
+        <title id="flow-title">Поток грид-тулбара (поиск → серверный запрос → рендер)</title>
+        <defs>
+          <marker id="ah2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L8,3 L0,6 z" fill="#2f6feb"/>
+          </marker>
+        </defs>
+        <!-- lanes -->
+        <g font-size="12.5" font-weight="700">
+          <rect x="30" y="30" width="150" height="34" rx="6" fill="#e7efff" stroke="#2f6feb"/><text x="105" y="52" text-anchor="middle">Admin (UI тулбар)</text>
+          <rect x="230" y="30" width="150" height="34" rx="6" fill="#e7efff" stroke="#2f6feb"/><text x="305" y="52" text-anchor="middle">useGridQuery</text>
+          <rect x="430" y="30" width="150" height="34" rx="6" fill="#e7efff" stroke="#2f6feb"/><text x="505" y="52" text-anchor="middle">cache (@shared)</text>
+          <rect x="640" y="30" width="150" height="34" rx="6" fill="#e7efff" stroke="#2f6feb"/><text x="715" y="52" text-anchor="middle">Backend /grid</text>
+        </g>
+        <g stroke="#c9d3e0" stroke-dasharray="4 4">
+          <line x1="105" y1="64" x2="105" y2="410"/>
+          <line x1="305" y1="64" x2="305" y2="410"/>
+          <line x1="505" y1="64" x2="505" y2="410"/>
+          <line x1="715" y1="64" x2="715" y2="410"/>
+        </g>
+        <g font-size="11.5">
+          <line x1="105" y1="100" x2="305" y2="100" stroke="#2f6feb" stroke-width="1.6" marker-end="url(#ah2)"/>
+          <text x="150" y="94">ввод (debounce 300ms) → filters</text>
+          <line x1="105" y1="140" x2="305" y2="140" stroke="#2f6feb" stroke-width="1.6" marker-end="url(#ah2)"/>
+          <text x="150" y="134">клик заголовка → sort</text>
+          <line x1="305" y1="180" x2="505" y2="180" stroke="#2f6feb" stroke-width="1.6" marker-end="url(#ah2)"/>
+          <text x="330" y="174">key = {endpoint,page,size,filters,sort}</text>
+          <line x1="505" y1="220" x2="715" y2="220" stroke="#2f6feb" stroke-width="1.6" marker-end="url(#ah2)"/>
+          <text x="530" y="214">miss → POST /grid</text>
+          <line x1="715" y1="260" x2="505" y2="260" stroke="#2e9e5b" stroke-width="1.6" marker-end="url(#ah2)"/>
+          <text x="530" y="254">{totalItems, items[]}</text>
+          <line x1="505" y1="300" x2="305" y2="300" stroke="#2e9e5b" stroke-width="1.6" marker-end="url(#ah2)"/>
+          <text x="330" y="294">cached ответ</text>
+          <line x1="305" y1="340" x2="105" y2="340" stroke="#2e9e5b" stroke-width="1.6" marker-end="url(#ah2)"/>
+          <text x="130" y="334">рендер строк + Pagination</text>
+          <line x1="105" y1="384" x2="305" y2="384" stroke="#d64545" stroke-width="1.6" marker-end="url(#ah2)"/>
+          <text x="130" y="378">смена страницы → page (0-based UI → 1-based API)</text>
+        </g>
+      </svg>
+      <figcaption>Одинаковый поток на всех списках: тулбар → useGridQuery → кэш → серверный grid. Пагинация UI 0-based, API 1-based.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2>Authentication &amp; Authorization</h2>
+    <ul class="tight">
+      <li>Без изменений: <code>POST /auth/login</code>, <code>getMe</code> role-check (ADMIN-only, <code>NotAdminError</code>), token-storage + silent refresh.</li>
+      <li>Маскирование PII (UD1/W2) — только представление; данные всё равно приходят с backend, маска клиентская (раскрытие по клику логируется в журнал действий).</li>
+      <li>Bulk-decide и скачивание EXPIRED-вложения используют те же admin-эндпоинты; прав доступа не расширяем.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Error Handling</h2>
+    <ul class="tight">
+      <li><b>Частичный bulk (M1):</b> при последовательных <code>decide</code> собирать per-item результат; показать сводку «N успешно, M ошибок», не откатывая успешные; инвалидировать кэш один раз в конце.</li>
+      <li><b>Owner-scoped grid пуст (UD2):</b> корректный <code>EmptyState</code> («нет произведений / договоров»), а не «осиротевшие» кнопки без данных.</li>
+      <li><b>Отсутствует ключ i18n / поле словаря:</b> транслитерация — идемпотентный fallback (латиница как есть), экран не падает.</li>
+      <li><b>Скачивание EXPIRED (W3):</b> если presigned url недоступен — тост с причиной, кнопка не «молча» задизейблена.</li>
+      <li><b>C1 без имени владельца:</b> если grid-ответ не содержит имени — деградация до «— (открыть)» вместо ложной константы-роли; открытый вопрос по backend-полю.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Testing Plan</h2>
+    <h3>Unit tests (Vitest, в packages/ui и admin)</h3>
+    <ul class="tight">
+      <li><code>transliterate</code>-обёртка для типов/ролей/статусов: латиница→кириллица, идемпотентность на уже-кириллице, пустое/undefined.</li>
+      <li>DataGridToolbar: дебаунс формирует корректные <code>filters</code>; клик заголовка тогглит <code>sort.desc</code>; сброс страницы на новый фильтр.</li>
+      <li>MaskedField: маскирует по умолчанию, раскрывает по клику, не мутирует исходное значение.</li>
+      <li>Owner-scoped запросы: builder фильтра для работ/договоров по <code>userId</code>.</li>
+      <li>Bulk-decide reducer: агрегирует успех/ошибку, единичная инвалидция кэша.</li>
+    </ul>
+    <h3>Integration tests</h3>
+    <ul class="tight">
+      <li>Карточка пользователя рендерит списки работ+договоров из замоканного grid; строки — ссылки на нужные роуты.</li>
+      <li>Договоры: колонка владельца показывает имя (мок с owner), fallback без имени.</li>
+      <li>Экспорт договоров формирует CSV с BOM/`;` и защитой от формул (как Users/Files).</li>
+    </ul>
+    <h3>End-to-end / live smoke</h3>
+    <ul class="tight">
+      <li>Пройти каждый экран после правок: 0 ошибок в консоли, кириллические метки, работающий поиск/сортировка/пагинация.</li>
+      <li>UI-проверка на 3 вьюпортах (desktop/tablet/mobile) — без переполнения/обрезки.</li>
+      <li>Bulk-модерация и раскрытие PII проверяются в UI <b>без реальных мутаций клиентских данных</b> (диалоги открыть/отменить).</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Open Questions</h2>
+    <ul class="tight">
+      <li><b>Grid-возможности (прозондировано на реальном API, Phase 3).</b> Оператор <code>lk</code> (contains, регистронезависимо) работает на <code>lastName</code>/<code>firstName</code>/<code>pinfl</code> (users) и <code>name</code> (works); <code>phone</code>/<code>phones</code>/<code>fullName</code> → 500. Фильтры ANDятся — <b>OR между полями невозможен</b>. Поэтому: поиск пользователей по телефону, поиск модерации по автору (вложенный <code>rightHolders</code>) и фильтр по дате создания (нет range-операторов) <b>отложены</b> до расширения backend (например, виртуальное поле <code>search</code>/<code>q</code> или операторы <code>gt</code>/<code>lt</code>).</li>
+      <li><b>Поле владельца работ (решено, Phase 4).</b> Прозондировано: работы линкуются к пользователю через <code>createdBy</code> (совпадает с <code>rightHolders[].userId</code>); фильтр по вложенному правообладателю → 500. Карточка пользователя использует <code>createdBy eq userId</code>.</li>
+      <li><b>Имя владельца в grid договоров (решено, Phase 4).</b> <code>/contracts/grid</code> НЕ возвращает имя — только <code>userId</code>. C1 решён client-side резолвом (<code>useUserNames</code> → <code>getUserById</code>, кэш). Если backend добавит имя/псевдоним в grid-ответ — резолв можно убрать.</li>
+      <li><b>Эндпоинт скачивания work-file.</b> Подтвердить путь и то, что presigned url выдаётся для <code>EXPIRED</code>-файлов (W3).</li>
+      <li><b>Политика маскирования PII.</b> Маскировать полностью или частично (последние 4)? Логировать раскрытие? По умолчанию — полная маска + лог раскрытия.</li>
+    </ul>
+  </section>
+</body>
+</html>
