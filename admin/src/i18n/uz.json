@@ -1,0 +1,368 @@
+{
+  "nav": {
+    "dashboard": "Boshqaruv paneli",
+    "moderation": "Moderatsiya",
+    "users": "Foydalanuvchilar",
+    "files": "Fayllar",
+    "contracts": "Shartnomalar",
+    "menu": "Menyu",
+    "logout": "Chiqish",
+    "admin_panel": "Admin panel"
+  },
+  "header": {
+    "menu": "Menyu",
+    "expand": "Yoyish",
+    "collapse": "Yig'ish",
+    "close": "Yopish"
+  },
+  "crumbs": {
+    "home": "Boshqaruv paneli",
+    "moderation": "Moderatsiya",
+    "users": "Foydalanuvchilar",
+    "files": "Fayllar",
+    "contracts": "Shartnomalar",
+    "detail": "Tafsilotlar"
+  },
+  "role": {
+    "admin": "Administrator",
+    "moderator": "Moderator",
+    "user": "Foydalanuvchi"
+  },
+  "common": {
+    "no_data": "Tanlangan davr uchun ma'lumot yo'q",
+    "error": "Ma'lumotlarni yuklab bo'lmadi",
+    "loading": "Yuklanmoqda…",
+    "cancel": "Bekor qilish",
+    "retry": "Qayta urinish",
+    "export": "Eksport",
+    "yes": "Ha",
+    "no": "Yo'q",
+    "crash_title": "Nimadir noto‘g‘ri ketdi",
+    "crash_desc": "Sahifani ko‘rsatishda xatolik yuz berdi. Qayta yuklab ko‘ring.",
+    "reload": "Qayta yuklash",
+    "clear": "Tozalash",
+    "copy": "Nusxa olish"
+  },
+  "auth": {
+    "checking": "Tekshirilmoqda...",
+    "failed": "Kirish amalga oshmadi"
+  },
+  "user": {
+    "create": "Foydalanuvchi yaratish",
+    "create_title": "Yangi foydalanuvchi",
+    "create_desc": "Yangi foydalanuvchi ma'lumotlarini kiriting",
+    "created_toast": "Foydalanuvchi yaratildi",
+    "edit": "Tahrirlash",
+    "edit_title": "Foydalanuvchini tahrirlash",
+    "edit_desc": "Rol va aloqa ma'lumotlarini o'zgartirish",
+    "updated_toast": "Ma'lumotlar saqlandi",
+    "block": "Bloklash",
+    "block_title": "Foydalanuvchi bloklansinmi?",
+    "block_confirm": "{{name}} tizimga kirish huquqini yo'qotadi.",
+    "blocked_toast": "Foydalanuvchi bloklandi",
+    "activate": "Faollashtirish",
+    "activate_title": "Foydalanuvchi faollashtirilsinmi?",
+    "activate_confirm": "{{name}} tizimga qayta kirish huquqini oladi.",
+    "activated_toast": "Foydalanuvchi faollashtirildi",
+    "search_ph": "Familiya yoki PINFL bo'yicha qidirish",
+    "all_roles": "Barcha rollar",
+    "all_states": "Barcha holatlar",
+    "empty": "Foydalanuvchilar topilmadi",
+    "items": "foydalanuvchi",
+    "not_found": "Foydalanuvchi topilmadi",
+    "back_to_list": "Foydalanuvchilar ro'yxatiga",
+    "personal_data": "Shaxsiy ma'lumotlar",
+    "username": "Login",
+    "is_member": "Tashkilot a'zosi",
+    "columns": {
+      "name": "F.I.O.",
+      "role": "Rol",
+      "state": "Holati",
+      "phone": "Telefon",
+      "created": "Ro'yxatga olingan"
+    },
+    "form": {
+      "type": "Turi",
+      "individual": "Jismoniy shaxs",
+      "legal": "Yuridik shaxs",
+      "last_name": "Familiya",
+      "first_name": "Ism",
+      "middle_name": "Otasining ismi",
+      "pinfl": "JSHSHIR",
+      "passport": "Pasport",
+      "birth_date": "Tug'ilgan sana",
+      "legal_name": "Nomi",
+      "inn": "STIR",
+      "pseudonym": "Taxallus",
+      "phones": "Telefonlar",
+      "address": "Manzil",
+      "role": "Rol",
+      "required": "Majburiy maydon",
+      "create": "Yaratish",
+      "save": "Saqlash",
+      "region": "Viloyat",
+      "district": "Tuman/Shahar",
+      "street": "Ko'cha nomi",
+      "house": "Uy raqami",
+      "region_ph": "Viloyatni tanlang",
+      "district_ph": "Tumanni tanlang",
+      "district_ph_region_first": "Avval viloyat tanlang",
+      "street_ph": "Masalan: Mustaqillik ko'chasi",
+      "house_ph": "Masalan: 45-uy",
+      "geo_loading": "Hududlar ro'yxati yuklanmoqda...",
+      "geo_error": "Viloyat/tuman ma'lumotlarini yuklab bo'lmadi."
+    },
+    "all_types": "Barcha turlar"
+  },
+  "moderation": {
+    "filter_all": "Barcha holatlar",
+    "items": "ta asar",
+    "empty": "Tanlangan filtr bo'yicha asar yo'q",
+    "columns": {
+      "name": "Nomi",
+      "type": "Turi",
+      "author": "Muallif",
+      "status": "Holati",
+      "created": "Yaratilgan"
+    },
+    "search_ph": "Asar nomi bo'yicha qidirish"
+  },
+  "work": {
+    "details": "Asar tafsilotlari",
+    "status": "Holati",
+    "type": "Turi",
+    "description": "Tavsifi",
+    "no_description": "Tavsifsiz",
+    "created": "Yaratilgan",
+    "updated": "Yangilangan",
+    "registration_date": "Ro'yxatga olingan sana",
+    "rejection_reason": "Rad etish sababi",
+    "rightholders": "Huquq egalari",
+    "no_rightholders": "Huquq egalari ko'rsatilmagan",
+    "files": "Fayllar",
+    "no_files": "Fayllar biriktirilmagan",
+    "download": "Yuklab olish",
+    "back_to_queue": "Moderatsiya navbatiga",
+    "not_found": "Asar topilmadi",
+    "section_title": "Asarlar",
+    "section_hint": "Foydalanuvchi nomidan asar yarating (qoralama), so'ng tahrirlang va moderatsiyaga yuboring.",
+    "create_work": "Asar yaratish",
+    "form": {
+      "create_title": "Yangi asar",
+      "edit_title": "Asarni tahrirlash",
+      "desc": "Asar ma'lumotlari va huquq egalari",
+      "name": "Nomi",
+      "type": "Asar turi",
+      "select_type": "Turni tanlang",
+      "description": "Tavsifi",
+      "share": "Ulush, %",
+      "share_total": "Ulushlar yig'indisi: {{total}}%",
+      "share_error": "Ulushlar yig‘indisi 100% bo‘lishi kerak",
+      "holder": "Huquq egasi {{n}}",
+      "add_holder": "Huquq egasini qo'shish",
+      "remove_holder": "O'chirish",
+      "select_roles": "Rollarni tanlang",
+      "roles_selected": "{{count}} ta rol",
+      "create": "Yaratish",
+      "created_toast": "Asar yaratildi",
+      "updated_toast": "Asar yangilandi"
+    },
+    "submit": {
+      "action": "Moderatsiyaga yuborish",
+      "title": "Moderatsiyaga yuborilsinmi?",
+      "confirm": "\"{{name}}\" asari ko'rib chiqishga yuboriladi.",
+      "submitted_toast": "Asar moderatsiyaga yuborildi"
+    }
+  },
+  "decide": {
+    "approve": "Ma'qullash",
+    "reject": "Rad etish",
+    "approve_title": "Asarni ma'qullash",
+    "reject_title": "Asarni rad etish",
+    "approve_desc": "asar ro'yxatga olinadi",
+    "reject_desc": "asar rad etiladi",
+    "reason": "Rad etish sababi",
+    "note": "Izoh (ixtiyoriy)",
+    "reason_ph": "Rad etish sababini ko'rsating",
+    "note_ph": "Qaror bo'yicha izoh",
+    "reason_required": "Rad etish sababi majburiy",
+    "success_approved": "Asar ma'qullandi",
+    "success_rejected": "Asar rad etildi"
+  },
+  "dashboard": {
+    "period": {
+      "7d": "7 kun",
+      "30d": "30 kun",
+      "90d": "90 kun",
+      "custom": "Tanlang",
+      "apply": "Qo'llash"
+    },
+    "metric": {
+      "created": "Yaratilgan",
+      "registered": "Ro'yxatdan o'tgan",
+      "approved": "Ma'qullangan",
+      "rejected": "Rad etilgan"
+    },
+    "granularity": {
+      "DAY": "Kunlik",
+      "WEEK": "Haftalik",
+      "MONTH": "Oylik"
+    },
+    "work_status": {
+      "DRAFT": "Qoralama",
+      "UNDER_REVIEW": "Ko'rib chiqilmoqda",
+      "REJECTED": "Rad etilgan",
+      "REGISTERED": "Ro'yxatga olingan"
+    },
+    "user_state": {
+      "CREATED": "Yaratilgan",
+      "ACTIVE": "Faol",
+      "BLOCKED": "Bloklangan",
+      "DELETED": "O'chirilgan"
+    },
+    "cards": {
+      "works": "Jami asarlar",
+      "users": "Jami foydalanuvchilar",
+      "queue": "Moderatsiya navbatida",
+      "storage": "Xotira hajmi",
+      "registered_period": "davrda yangi",
+      "avg_hours": "soat qaror uchun",
+      "near_cap": "limit yaqinida",
+      "per_user_cap": "foydalanuvchi limiti",
+      "works_count": "{{count}} ta asar",
+      "vs_prev": "oldingiga"
+    },
+    "drill_status": "Moderatsiyada ochish",
+    "charts": {
+      "works_over_time": "Asarlar dinamikasi",
+      "works_by_type": "Asarlar turlari bo'yicha",
+      "works_by_status": "Asarlar holati bo'yicha",
+      "top_contributors": "Top mualliflar",
+      "top_storage": "Xotira bo'yicha top"
+    }
+  },
+  "file_state": {
+    "PENDING": "Kutilmoqda",
+    "UPLOADED": "Yuklangan",
+    "DELETED": "O'chirilgan",
+    "EXPIRED": "Muddati tugagan"
+  },
+  "files": {
+    "total_storage": "Jami xotirada",
+    "per_user_cap": "Foydalanuvchi limiti",
+    "users_near_cap": "Limit yaqinida",
+    "empty": "Fayllar topilmadi",
+    "items": "fayl",
+    "open_work": "Asarni ochish",
+    "delete": "O'chirish",
+    "delete_title": "Fayl o'chirilsinmi?",
+    "delete_confirm": "\"{{name}}\" fayli o'chiriladi.",
+    "deleted_toast": "Fayl o'chirildi",
+    "columns": {
+      "file": "Fayl",
+      "work": "Asar",
+      "size": "Hajmi",
+      "status": "Holati",
+      "uploaded": "Yuklangan"
+    },
+    "search_ph": "Fayl nomi bo'yicha qidirish",
+    "all_states": "Barcha holatlar"
+  },
+  "contract": {
+    "section_title": "Shartnomalar",
+    "section_hint": "Foydalanuvchida hali shartnoma yo'q. Avval imzolangan shartnomani yuklashingiz mumkin.",
+    "upload_legacy": "Shartnoma yuklash",
+    "sign": "Imzolash",
+    "upload": "Yuklash",
+    "all_types": "Barcha turlar",
+    "all_states": "Barcha holatlar",
+    "empty": "Shartnomalar topilmadi",
+    "items": "shartnoma",
+    "open_user": "Ko'rish",
+    "legacy_title": "Shartnoma yuklash",
+    "legacy_desc": "Foydalanuvchining avval rasmiylashtirilgan shartnomasini yuklang",
+    "legacy_uploaded": "Shartnoma yuklandi",
+    "sign_title": "Shartnomani imzolash",
+    "sign_desc": "Foydalanuvchi nomidan shartnomani imzolash",
+    "signed_toast": "Shartnoma imzolandi",
+    "state": {
+      "CREATED": "Rasmiylashtirilgan",
+      "PENDING": "Kutilmoqda",
+      "TERMINATED": "Bekor qilingan"
+    },
+    "type": {
+      "MEMBERSHIP": "A'zolik",
+      "LICENSE": "Litsenziya"
+    },
+    "columns": {
+      "number": "Raqam",
+      "type": "Turi",
+      "state": "Holati",
+      "owner": "Egasi",
+      "signed_at": "Imzolangan"
+    },
+    "form": {
+      "type": "Shartnoma turi",
+      "effective_from": "Amal qiladi",
+      "effective_until": "Amal qiladi (gacha)",
+      "signed_at": "Imzolangan sana",
+      "document": "Hujjat",
+      "signature": "Imzo tasviri"
+    },
+    "search_ph": "Raqam bo'yicha qidirish"
+  },
+  "page": {
+    "stub": "Bo'lim Phase {{phase}} da qo'shiladi.",
+    "dashboard": {
+      "title": "Boshqaruv paneli",
+      "subtitle": "Tizim sharhi: asarlar, foydalanuvchilar, moderatsiya, xotira"
+    },
+    "moderation": {
+      "title": "Asarlar moderatsiyasi",
+      "subtitle": "Ko'rib chiqilayotgan asarlar navbati va ular bo'yicha qarorlar"
+    },
+    "users": {
+      "title": "Foydalanuvchilar",
+      "subtitle": "Foydalanuvchilar va rollarni boshqarish"
+    },
+    "files": {
+      "title": "Fayllar",
+      "subtitle": "Asar ilovalari va kvota ishlatilishi"
+    },
+    "contracts": {
+      "title": "Shartnomalar",
+      "subtitle": "Foydalanuvchi shartnomalari va imzolash"
+    },
+    "login": {
+      "title": "Admin panelga kirish",
+      "subtitle": "Faqat administratorlar uchun",
+      "username": "Login",
+      "username_ph": "Loginni kiriting",
+      "password": "Parol",
+      "password_ph": "Parolni kiriting",
+      "submit": "Kirish",
+      "signing_in": "Kirilmoqda…",
+      "error_required": "Login va parolni kiriting",
+      "error_invalid": "Login yoki parol noto'g'ri",
+      "error_denied": "Kirish faqat administratorlar uchun ruxsat etilgan",
+      "error_generic": "Kirib bo'lmadi. Qayta urinib ko'ring."
+    }
+  },
+  "notfound": {
+    "title": "Sahifa topilmadi",
+    "description": "So'ralgan sahifa mavjud emas yoki ko'chirilgan.",
+    "back": "Boshqaruv paneliga"
+  },
+  "pagination": {
+    "total": "Jami",
+    "items": "ta",
+    "prev": "Oldingi sahifa",
+    "next": "Keyingi sahifa"
+  },
+  "validation": {
+    "phone_required": "Telefon raqam kiritilishi shart",
+    "phone_998": "Telefon raqam 998 bilan boshlanishi kerak",
+    "phone_incomplete": "Telefon raqam to'liq kiritilmagan (998XXXXXXXXX)",
+    "phone_format": "Telefon raqam noto'g'ri (998XXXXXXXXX formatida)"
+  }
+}

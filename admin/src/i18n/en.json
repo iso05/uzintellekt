@@ -1,0 +1,368 @@
+{
+  "nav": {
+    "dashboard": "Dashboard",
+    "moderation": "Moderation",
+    "users": "Users",
+    "files": "Files",
+    "contracts": "Contracts",
+    "menu": "Menu",
+    "logout": "Log out",
+    "admin_panel": "Admin panel"
+  },
+  "header": {
+    "menu": "Menu",
+    "expand": "Expand",
+    "collapse": "Collapse",
+    "close": "Close"
+  },
+  "crumbs": {
+    "home": "Dashboard",
+    "moderation": "Moderation",
+    "users": "Users",
+    "files": "Files",
+    "contracts": "Contracts",
+    "detail": "Details"
+  },
+  "role": {
+    "admin": "Administrator",
+    "moderator": "Moderator",
+    "user": "User"
+  },
+  "common": {
+    "no_data": "No data for the selected period",
+    "error": "Failed to load data",
+    "loading": "Loading…",
+    "cancel": "Cancel",
+    "retry": "Retry",
+    "export": "Export",
+    "yes": "Yes",
+    "no": "No",
+    "crash_title": "Something went wrong",
+    "crash_desc": "An error occurred while rendering the page. Try reloading.",
+    "reload": "Reload",
+    "clear": "Clear",
+    "copy": "Copy"
+  },
+  "auth": {
+    "checking": "Checking...",
+    "failed": "Sign-in failed"
+  },
+  "user": {
+    "create": "Create user",
+    "create_title": "New user",
+    "create_desc": "Fill in the new user's details",
+    "created_toast": "User created",
+    "edit": "Edit",
+    "edit_title": "Edit user",
+    "edit_desc": "Change role and contact details",
+    "updated_toast": "Changes saved",
+    "block": "Block",
+    "block_title": "Block this user?",
+    "block_confirm": "{{name}} will lose access to the system.",
+    "blocked_toast": "User blocked",
+    "activate": "Activate",
+    "activate_title": "Activate this user?",
+    "activate_confirm": "{{name}} will regain access to the system.",
+    "activated_toast": "User activated",
+    "search_ph": "Search by last name or PINFL",
+    "all_roles": "All roles",
+    "all_states": "All states",
+    "empty": "No users found",
+    "items": "users",
+    "not_found": "User not found",
+    "back_to_list": "Back to users",
+    "personal_data": "Personal data",
+    "username": "Username",
+    "is_member": "Organization member",
+    "columns": {
+      "name": "Full name",
+      "role": "Role",
+      "state": "State",
+      "phone": "Phone",
+      "created": "Registered"
+    },
+    "form": {
+      "type": "Type",
+      "individual": "Individual",
+      "legal": "Legal entity",
+      "last_name": "Last name",
+      "first_name": "First name",
+      "middle_name": "Middle name",
+      "pinfl": "PINFL",
+      "passport": "Passport",
+      "birth_date": "Birth date",
+      "legal_name": "Legal name",
+      "inn": "INN",
+      "pseudonym": "Pseudonym",
+      "phones": "Phones",
+      "address": "Address",
+      "role": "Role",
+      "required": "Required field",
+      "create": "Create",
+      "save": "Save",
+      "region": "Region",
+      "district": "District/City",
+      "street": "Street name",
+      "house": "House number",
+      "region_ph": "Select region",
+      "district_ph": "Select district",
+      "district_ph_region_first": "Select a region first",
+      "street_ph": "e.g. Mustaqillik street",
+      "house_ph": "e.g. House 45",
+      "geo_loading": "Loading regions list...",
+      "geo_error": "Failed to load region/district data."
+    },
+    "all_types": "All types"
+  },
+  "moderation": {
+    "filter_all": "All statuses",
+    "items": "works",
+    "empty": "No works match the selected filter",
+    "columns": {
+      "name": "Name",
+      "type": "Type",
+      "author": "Author",
+      "status": "Status",
+      "created": "Created"
+    },
+    "search_ph": "Search by work name"
+  },
+  "work": {
+    "details": "Work details",
+    "status": "Status",
+    "type": "Type",
+    "description": "Description",
+    "no_description": "No description",
+    "created": "Created",
+    "updated": "Updated",
+    "registration_date": "Registration date",
+    "rejection_reason": "Rejection reason",
+    "rightholders": "Right holders",
+    "no_rightholders": "No right holders listed",
+    "files": "Files",
+    "no_files": "No files attached",
+    "download": "Download",
+    "back_to_queue": "Back to moderation queue",
+    "not_found": "Work not found",
+    "section_title": "Works",
+    "section_hint": "Create a work on behalf of the user (draft), then edit it and submit for review.",
+    "create_work": "Create work",
+    "form": {
+      "create_title": "New work",
+      "edit_title": "Edit work",
+      "desc": "Work details and right holders",
+      "name": "Name",
+      "type": "Work type",
+      "select_type": "Select type",
+      "description": "Description",
+      "share": "Share, %",
+      "share_total": "Share total: {{total}}%",
+      "share_error": "Shares must total 100%",
+      "holder": "Right holder {{n}}",
+      "add_holder": "Add right holder",
+      "remove_holder": "Remove",
+      "select_roles": "Select roles",
+      "roles_selected": "{{count}} roles",
+      "create": "Create",
+      "created_toast": "Work created",
+      "updated_toast": "Work updated"
+    },
+    "submit": {
+      "action": "Submit for review",
+      "title": "Submit for review?",
+      "confirm": "The work \"{{name}}\" will be submitted for review.",
+      "submitted_toast": "Work submitted for review"
+    }
+  },
+  "decide": {
+    "approve": "Approve",
+    "reject": "Reject",
+    "approve_title": "Approve work",
+    "reject_title": "Reject work",
+    "approve_desc": "the work will be registered",
+    "reject_desc": "the work will be rejected",
+    "reason": "Rejection reason",
+    "note": "Note (optional)",
+    "reason_ph": "State the rejection reason",
+    "note_ph": "Comment on the decision",
+    "reason_required": "A rejection reason is required",
+    "success_approved": "Work approved",
+    "success_rejected": "Work rejected"
+  },
+  "dashboard": {
+    "period": {
+      "7d": "7 days",
+      "30d": "30 days",
+      "90d": "90 days",
+      "custom": "Custom",
+      "apply": "Apply"
+    },
+    "metric": {
+      "created": "Created",
+      "registered": "Registered",
+      "approved": "Approved",
+      "rejected": "Rejected"
+    },
+    "granularity": {
+      "DAY": "Daily",
+      "WEEK": "Weekly",
+      "MONTH": "Monthly"
+    },
+    "work_status": {
+      "DRAFT": "Draft",
+      "UNDER_REVIEW": "Under review",
+      "REJECTED": "Rejected",
+      "REGISTERED": "Registered"
+    },
+    "user_state": {
+      "CREATED": "Created",
+      "ACTIVE": "Active",
+      "BLOCKED": "Blocked",
+      "DELETED": "Deleted"
+    },
+    "cards": {
+      "works": "Total works",
+      "users": "Total users",
+      "queue": "Moderation queue",
+      "storage": "Storage used",
+      "registered_period": "new this period",
+      "avg_hours": "h to decision",
+      "near_cap": "near cap",
+      "per_user_cap": "per-user cap",
+      "works_count": "{{count}} works",
+      "vs_prev": "vs prev"
+    },
+    "drill_status": "Open in moderation",
+    "charts": {
+      "works_over_time": "Works over time",
+      "works_by_type": "Works by type",
+      "works_by_status": "Works by status",
+      "top_contributors": "Top contributors",
+      "top_storage": "Top storage users"
+    }
+  },
+  "file_state": {
+    "PENDING": "Pending",
+    "UPLOADED": "Uploaded",
+    "DELETED": "Deleted",
+    "EXPIRED": "Expired"
+  },
+  "files": {
+    "total_storage": "Total storage",
+    "per_user_cap": "Per-user cap",
+    "users_near_cap": "Near cap",
+    "empty": "No files found",
+    "items": "files",
+    "open_work": "Open work",
+    "delete": "Delete",
+    "delete_title": "Delete file?",
+    "delete_confirm": "The file \"{{name}}\" will be deleted.",
+    "deleted_toast": "File deleted",
+    "columns": {
+      "file": "File",
+      "work": "Work",
+      "size": "Size",
+      "status": "Status",
+      "uploaded": "Uploaded"
+    },
+    "search_ph": "Search by file name",
+    "all_states": "All statuses"
+  },
+  "contract": {
+    "section_title": "Contracts",
+    "section_hint": "The user has no contract yet. You can upload a previously signed contract.",
+    "upload_legacy": "Upload contract",
+    "sign": "Sign",
+    "upload": "Upload",
+    "all_types": "All types",
+    "all_states": "All states",
+    "empty": "No contracts found",
+    "items": "contracts",
+    "open_user": "View",
+    "legacy_title": "Upload contract",
+    "legacy_desc": "Upload the user's previously executed contract",
+    "legacy_uploaded": "Contract uploaded",
+    "sign_title": "Sign contract",
+    "sign_desc": "Sign a contract on behalf of the user",
+    "signed_toast": "Contract signed",
+    "state": {
+      "CREATED": "Created",
+      "PENDING": "Pending",
+      "TERMINATED": "Terminated"
+    },
+    "type": {
+      "MEMBERSHIP": "Membership",
+      "LICENSE": "License"
+    },
+    "columns": {
+      "number": "Number",
+      "type": "Type",
+      "state": "State",
+      "owner": "Owner",
+      "signed_at": "Signed"
+    },
+    "form": {
+      "type": "Contract type",
+      "effective_from": "Effective from",
+      "effective_until": "Effective until",
+      "signed_at": "Signed date",
+      "document": "Document",
+      "signature": "Signature image"
+    },
+    "search_ph": "Search by number"
+  },
+  "page": {
+    "stub": "This section arrives in Phase {{phase}}.",
+    "dashboard": {
+      "title": "Dashboard",
+      "subtitle": "System overview: works, users, moderation, storage"
+    },
+    "moderation": {
+      "title": "Work moderation",
+      "subtitle": "Queue of works under review and decisions on them"
+    },
+    "users": {
+      "title": "Users",
+      "subtitle": "Manage users and roles"
+    },
+    "files": {
+      "title": "Files",
+      "subtitle": "Work attachments and quota usage"
+    },
+    "contracts": {
+      "title": "Contracts",
+      "subtitle": "User contracts and signing"
+    },
+    "login": {
+      "title": "Admin panel sign in",
+      "subtitle": "Administrators only",
+      "username": "Username",
+      "username_ph": "Enter username",
+      "password": "Password",
+      "password_ph": "Enter password",
+      "submit": "Sign in",
+      "signing_in": "Signing in…",
+      "error_required": "Enter username and password",
+      "error_invalid": "Invalid username or password",
+      "error_denied": "Access is restricted to administrators",
+      "error_generic": "Sign in failed. Please try again."
+    }
+  },
+  "notfound": {
+    "title": "Page not found",
+    "description": "The requested page does not exist or has been moved.",
+    "back": "Back to dashboard"
+  },
+  "pagination": {
+    "total": "Total",
+    "items": "items",
+    "prev": "Previous page",
+    "next": "Next page"
+  },
+  "validation": {
+    "phone_required": "Phone number is required",
+    "phone_998": "Phone number must start with 998",
+    "phone_incomplete": "Phone number is incomplete (998XXXXXXXXX)",
+    "phone_format": "Invalid phone number (use format 998XXXXXXXXX)"
+  }
+}
