@@ -1,0 +1,17 @@
+{
+  "name": "uzintellekt",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": [
+    "packages/ui",
+    "admin",
+    "dashboard"
+  ],
+  "scripts": {
+    "check:shared": "bash scripts/check-no-local-shared.sh",
+    "lint": "npm run lint -w admin && npm run lint -w dashboard",
+    "test": "npm run test -w admin && npm run test -w dashboard",
+    "build": "npm run build -w admin && npm run build -w dashboard",
+    "verify": "npm run check:shared && npm run build"
+  }
+}
