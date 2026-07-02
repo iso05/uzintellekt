@@ -2,8 +2,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { ArrowLeft, Send, AlertCircle, Loader2, Paperclip } from 'lucide-react'
-import { Button, toast, PageHeader, ListSkeleton } from '@/shared/ui'
-import { ROUTES } from '@/shared/config/routes'
+import { Button, toast, PageHeader, ListSkeleton } from '@shared/ui'
+import { ROUTES } from '@/config/routes'
 import { useAuth } from '@/features/auth'
 import {
   getWork,
@@ -24,8 +24,8 @@ import { WorkFilesSection, UploadDropzone } from '@/widgets/work-files'
 import { AuthorSelfCheckbox } from '@/features/work-fill-author'
 import { DeleteWorkButton } from '@/features/work-delete'
 import { useAutosave } from '@/features/work-autosave'
-import { draftKey, loadDraft, clearDraft } from '@/shared/lib/draft-storage'
-import { apiErrorMessage } from '@/shared/lib/api-error'
+import { draftKey, loadDraft, clearDraft } from '@shared/lib/draft-storage'
+import { apiErrorMessage } from '@shared/lib/api-error'
 
 function Banner({ tone = 'destructive', title, children }) {
   const styles =

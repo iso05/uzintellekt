@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { HardDrive } from 'lucide-react'
 import { formatBytes, quotaPercent } from '@/entities/work-file'
-import { cn } from '@/shared/lib/utils'
+import { cn } from '@shared/lib/utils'
 
 /** Storage usage bar: used / limit with a fill that turns red when near full. */
 export default function QuotaBar({ used, limit }) {

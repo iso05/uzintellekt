@@ -3,7 +3,7 @@ import {
   validateName,
   validateShare,
   validateRequired,
-} from '@/shared/lib/validators'
+} from '@shared/lib/validators'
 
 export const EMPTY_HOLDER = {
   passportNo: '',

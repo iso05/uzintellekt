@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom'
 import { Pencil, Eye } from 'lucide-react'
-import { Button } from '@/shared/ui'
+import { Button } from '@shared/ui'
 import { getWorkStatus, isEditableState, isDeletableState } from '@/entities/work'
-import { ROUTES } from '@/shared/config/routes'
+import { ROUTES } from '@/config/routes'
 import { SubmitWorkButton } from '@/features/work-submit'
 import { DeleteWorkButton } from '@/features/work-delete'
 

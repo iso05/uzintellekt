@@ -5,7 +5,7 @@ export const WORK_STATUS = {
   REGISTERED: 'REGISTERED',
 }
 
-// Maps backend state to a Badge variant (matches @/shared/ui Badge).
+// Maps backend state to a Badge variant (matches @shared/ui Badge).
 // Labels are resolved via i18n (work_status.*) at render time, not here.
 export const WORK_STATUS_CONFIG = {
   DRAFT: { variant: 'muted' },

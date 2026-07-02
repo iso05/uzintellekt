@@ -8,8 +8,8 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/shared/ui'
-import { cn } from '@/shared/lib/utils'
+} from '@shared/ui'
+import { cn } from '@shared/lib/utils'
 import { WORK_STATUS_CONFIG } from '@/entities/work'
 
 const STATE_KEYS = Object.keys(WORK_STATUS_CONFIG).filter((key) => key !== 'APPROVED')

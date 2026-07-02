@@ -16,7 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
   toast,
-} from '@/shared/ui'
+} from '@shared/ui'
 import {
   loadGeo,
   parseAddress,
@@ -24,7 +24,7 @@ import {
   findRegionByName,
   findDistrictByName,
   districtsOfRegion,
-} from '@/shared/api'
+} from '@shared/api'
 import { updateMeField } from '@/entities/user'
 
 export default function AddressEditDialog({ open, onOpenChange, initialAddress, onDone }) {

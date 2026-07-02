@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { Building2, User, Check, FlaskConical } from 'lucide-react'
-import { Badge } from '@/shared/ui'
+import { Badge } from '@shared/ui'
 
 export default function UserBadges({ user }) {
   const { t } = useTranslation()

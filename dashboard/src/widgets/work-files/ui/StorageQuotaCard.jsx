@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { getStorageQuota, formatBytes } from '@/entities/work-file'
-import { Skeleton } from '@/shared/ui'
+import { Skeleton } from '@shared/ui'
 import QuotaBar from './QuotaBar'
 
 /**

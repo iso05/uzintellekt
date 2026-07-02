@@ -22,7 +22,7 @@ import {
   WORK_FILE_STATUS,
 } from '@/entities/work-file'
 import { useUploadQueue, UPLOAD_STATE } from '@/features/work-file-upload'
-import { apiErrorMessage } from '@/shared/lib/api-error'
+import { apiErrorMessage } from '@shared/lib/api-error'
 import {
   Button,
   Skeleton,
@@ -36,8 +36,8 @@ import {
   AlertDialogDescription,
   AlertDialogCancel,
   AlertDialogAction,
-} from '@/shared/ui'
-import { cn } from '@/shared/lib/utils'
+} from '@shared/ui'
+import { cn } from '@shared/lib/utils'
 import QuotaBar from './QuotaBar'
 import UploadDropzone from './UploadDropzone'
 

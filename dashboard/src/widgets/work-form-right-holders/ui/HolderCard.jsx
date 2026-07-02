@@ -1,7 +1,7 @@
 import { Trash2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { Input, Label, Button, FieldError } from '@/shared/ui'
-import { cn } from '@/shared/lib/utils'
+import { Input, Label, Button, FieldError } from '@shared/ui'
+import { cn } from '@shared/lib/utils'
 import { AuthorRolesMultiSelect, buildHolderErrorKey } from '@/entities/work'
 
 function Required() {

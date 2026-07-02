@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Plus, Sparkles, Calendar } from 'lucide-react'
-import { Button } from '@/shared/ui'
+import { Button } from '@shared/ui'
 import { getUserShortName, getUserRoleLabel } from '@/entities/user'
-import { todayLocalized } from '@/shared/lib/format'
-import { ROUTES } from '@/shared/config/routes'
+import { todayLocalized } from '@shared/lib/format'
+import { ROUTES } from '@/config/routes'
 
 export default function WelcomeCard({ user }) {
   const navigate = useNavigate()

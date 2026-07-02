@@ -3,7 +3,7 @@ import { render, screen, fireEvent, waitFor, within, act } from '@testing-librar
 import i18n from '@/i18n'
 
 const requestJson = vi.fn()
-vi.mock('@/shared/api', () => ({ requestJson: (...a) => requestJson(...a) }))
+vi.mock('@shared/api', () => ({ requestJson: (...a) => requestJson(...a) }))
 
 import { WorkFilesSection } from '../index'
 

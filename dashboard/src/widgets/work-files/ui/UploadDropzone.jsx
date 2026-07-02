@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { UploadCloud } from 'lucide-react'
 import { ACCEPT_ATTR } from '@/entities/work-file'
-import { cn } from '@/shared/lib/utils'
+import { cn } from '@shared/lib/utils'
 
 /**
  * Drag&drop zone with a keyboard/click fallback (<input type=file>).

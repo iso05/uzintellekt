@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 
 const requestJson = vi.fn()
-vi.mock('@/shared/api', () => ({
+vi.mock('@shared/api', () => ({
   requestJson: (...args) => requestJson(...args),
   cachedGridGet: vi.fn(),
   invalidateCache: vi.fn(),

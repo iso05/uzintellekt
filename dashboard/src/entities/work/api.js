@@ -1,4 +1,4 @@
-import { requestJson, cachedGridGet, invalidateCache } from '@/shared/api'
+import { requestJson, cachedGridGet, invalidateCache } from '@shared/api'
 import i18n from '@/i18n'
 
 const WORKS_GRID = '/api/v1/works/grid'

@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { Plus } from 'lucide-react'
-import { Card } from '@/shared/ui'
-import { ROUTES } from '@/shared/config/routes'
+import { Card } from '@shared/ui'
+import { ROUTES } from '@/config/routes'
 
 export default function CreateWorkQuickAction() {
   const navigate = useNavigate()

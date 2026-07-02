@@ -10,9 +10,9 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/shared/ui'
-import { cn } from '@/shared/lib/utils'
-import { resolveLocalizedName } from '@/shared/lib/localized-name'
+} from '@shared/ui'
+import { cn } from '@shared/lib/utils'
+import { resolveLocalizedName } from '@shared/lib/localized-name'
 import { useDictionaries } from '@/entities/work'
 
 const MAX = 500

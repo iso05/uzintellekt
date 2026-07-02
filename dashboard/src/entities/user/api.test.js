@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 
 const requestJson = vi.fn()
-vi.mock('@/shared/api', () => ({ requestJson: (...args) => requestJson(...args) }))
+vi.mock('@shared/api', () => ({ requestJson: (...args) => requestJson(...args) }))
 vi.mock('@/i18n', () => ({ default: { t: (key) => key } }))
 
 import { updateMeField } from './api'

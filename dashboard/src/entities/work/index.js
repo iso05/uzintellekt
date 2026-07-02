@@ -42,6 +42,7 @@ export {
   getShareTotalError,
   toPayload,
   fromBackend,
+  getHolderRoleIds,
 } from './model/validation'
 
 export { useWorkForm } from './model/use-work-form'

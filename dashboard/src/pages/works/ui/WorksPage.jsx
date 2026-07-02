@@ -10,8 +10,8 @@ import {
   TabsContent,
   toast,
   PageHeader,
-} from '@/shared/ui'
-import { ROUTES } from '@/shared/config/routes'
+} from '@shared/ui'
+import { ROUTES } from '@/config/routes'
 import { getWorks, getMyContributions } from '@/entities/work'
 import { WorksToolbar } from '@/widgets/works-toolbar'
 import { WorksTable } from '@/widgets/works-table'

@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
 import i18n from '@/i18n'
-import { toast } from '@/shared/ui'
+import { toast } from '@shared/ui'
 import {
   createWork,
   updateWork,

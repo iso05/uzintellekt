@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { FileText, ArrowRight, FilePlus2 } from 'lucide-react'
-import { Button, ListSkeleton, EmptyState } from '@/shared/ui'
+import { Button, ListSkeleton, EmptyState } from '@shared/ui'
 import { StatusBadge, getWorkStatus } from '@/entities/work'
-import { formatDateTime } from '@/shared/lib/format'
-import { ROUTES } from '@/shared/config/routes'
+import { formatDateTime } from '@shared/lib/format'
+import { ROUTES } from '@/config/routes'
 
 export default function RecentWorksTable({ works, loading, onView }) {
   const navigate = useNavigate()

@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { Badge } from '@/shared/ui'
+import { Badge } from '@shared/ui'
 import { getStatusConfig } from '../model/status'
 
 export default function StatusBadge({ status, className }) {

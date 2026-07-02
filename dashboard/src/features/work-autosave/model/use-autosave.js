@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { saveDraft } from '@/shared/lib/draft-storage'
+import { saveDraft } from '@shared/lib/draft-storage'
 
 export const AUTOSAVE_STATUS = {
   IDLE: 'idle',

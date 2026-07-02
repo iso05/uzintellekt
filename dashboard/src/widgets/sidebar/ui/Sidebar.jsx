@@ -1,9 +1,9 @@
 import { Link, NavLink } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { LogOut, X } from 'lucide-react'
-import { Button, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/shared/ui'
-import { cn } from '@/shared/lib/utils'
-import { NAV_ITEMS, ROUTES } from '@/shared/config/routes'
+import { Button, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@shared/ui'
+import { cn } from '@shared/lib/utils'
+import { NAV_ITEMS, ROUTES } from '@/config/routes'
 import logo from '@/assets/logo/logo.svg'
 
 function NavItem({ item, collapsed }) {

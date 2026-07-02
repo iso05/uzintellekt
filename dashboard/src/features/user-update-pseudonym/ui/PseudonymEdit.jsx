@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Check, X, Loader2 } from 'lucide-react'
-import { Input, Button, toast } from '@/shared/ui'
-import { maskName } from '@/shared/lib/input-masks'
+import { Input, Button, toast } from '@shared/ui'
+import { maskName } from '@shared/lib/input-masks'
 import { updateMeField } from '@/entities/user'
 
 export default function PseudonymEdit({ initialValue, onDone, onCancel }) {

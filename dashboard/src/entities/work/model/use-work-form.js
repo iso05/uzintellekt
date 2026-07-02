@@ -1,11 +1,11 @@
 import { useState, useCallback, useEffect, useRef } from 'react'
-import { maskName, maskPassport, maskShare } from '@/shared/lib/input-masks'
+import { maskName, maskPassport, maskShare } from '@shared/lib/input-masks'
 import {
   validateRequired,
   validatePassport,
   validateName,
   validateShare,
-} from '@/shared/lib/validators'
+} from '@shared/lib/validators'
 import {
   EMPTY_HOLDER,
   buildHolderErrorKey,

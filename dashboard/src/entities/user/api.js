@@ -1,4 +1,4 @@
-import { requestJson } from '@/shared/api'
+import { requestJson } from '@shared/api'
 import i18n from '@/i18n'
 
 export async function getMe() {

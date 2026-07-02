@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Check, X, Loader2 } from 'lucide-react'
-import { Input, Button, FieldError, toast } from '@/shared/ui'
-import { maskPhone } from '@/shared/lib/input-masks'
-import { validatePhone } from '@/shared/lib/validators'
+import { Input, Button, FieldError, toast } from '@shared/ui'
+import { maskPhone } from '@shared/lib/input-masks'
+import { validatePhone } from '@shared/lib/validators'
 import { updateMeField } from '@/entities/user'
 
 function PhoneRow({ label, value, onChange, error, onBlur, disabled, optional }) {

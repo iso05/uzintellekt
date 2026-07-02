@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { Eye, Download, Loader2 } from 'lucide-react'
-import { Button } from '@/shared/ui'
+import { Button } from '@shared/ui'
 
 export default function ContractActions({ contract, busy, onView, onDownload }) {
   const { t } = useTranslation()

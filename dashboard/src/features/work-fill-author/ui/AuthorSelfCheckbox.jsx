@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
-import { Checkbox } from '@/shared/ui'
-import { maskName, maskPassport } from '@/shared/lib/input-masks'
+import { Checkbox } from '@shared/ui'
+import { maskName, maskPassport } from '@shared/lib/input-masks'
 
 /**
  * Pre-fills holder #0 with the current user's identity when checked.

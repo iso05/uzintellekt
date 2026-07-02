@@ -12,7 +12,7 @@ import {
   Pagination,
   Button,
   EmptyState,
-} from '@/shared/ui'
+} from '@shared/ui'
 import {
   StatusBadge,
   WorkTypeBadge,
@@ -20,8 +20,8 @@ import {
   useDictionaries,
 } from '@/entities/work'
 import { WorkActions } from '@/widgets/work-actions'
-import { ROUTES } from '@/shared/config/routes'
-import { formatDate } from '@/shared/lib/format'
+import { ROUTES } from '@/config/routes'
+import { formatDate } from '@shared/lib/format'
 
 function WorksEmptyState({ hasFilters }) {
   const navigate = useNavigate()

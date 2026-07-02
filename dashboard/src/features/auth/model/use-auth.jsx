@@ -1,12 +1,12 @@
 import { createContext, useContext, useEffect, useState, useRef } from 'react'
-import { ENV, getMainSite } from '@/shared/config/env'
-import { safeLocalStorage, safeSessionStorage } from '@/shared/lib/safe-storage'
-import { clearAllDrafts } from '@/shared/lib/draft-storage'
+import { ENV, getMainSite } from '@shared/config/env'
+import { safeLocalStorage, safeSessionStorage } from '@shared/lib/safe-storage'
+import { clearAllDrafts } from '@shared/lib/draft-storage'
 import {
   tokenStorage,
   tryRefreshSilently,
   loginWithOneIdCode,
-} from '@/shared/api'
+} from '@shared/api'
 import { getMe, getUserFullName, isBlocked } from '@/entities/user'
 
 const AuthContext = createContext(null)

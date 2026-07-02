@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { Copy, Pencil, Check, X } from 'lucide-react'
-import { Badge, Button, toast } from '@/shared/ui'
+import { Badge, Button, toast } from '@shared/ui'
 
 async function copyToClipboard(text, okMsg, errMsg) {
   try {

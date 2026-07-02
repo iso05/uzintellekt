@@ -1,4 +1,4 @@
-import { request, cachedGridGet, tokenStorage } from '@/shared/api'
+import { request, cachedGridGet, tokenStorage } from '@shared/api'
 
 export async function getContractsGrid({
   page = 0,

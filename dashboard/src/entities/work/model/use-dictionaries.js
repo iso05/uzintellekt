@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { resolveLocalizedName } from '@/shared/lib/localized-name'
+import { resolveLocalizedName } from '@shared/lib/localized-name'
 import { getWorkTypes, getAuthorRoles } from '../api'
 
 let _cache = null

@@ -304,7 +304,8 @@
     "col_name": "Name",
     "col_desc": "Description",
     "col_status": "Status",
-    "load_error": "Failed to load contributed works"
+    "load_error": "Failed to load contributed works",
+    "item_label": "works"
   },
   "work_files": {
     "title": "Work files",
@@ -343,5 +344,11 @@
     "rate_limit": "Too many requests. Try again shortly.",
     "draft_limit": "Limit reached: up to 3 drafts.",
     "submit_no_file": "Attach at least one file before submitting."
+  },
+  "pagination": {
+    "total": "Total",
+    "items": "items",
+    "prev": "Previous page",
+    "next": "Next page"
   }
 }

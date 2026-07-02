@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react'
 import i18n from '@/i18n'
 import { downloadContract } from '@/entities/contract'
-import { toast } from '@/shared/ui'
+import { toast } from '@shared/ui'
 
 /**
  * Shared logic for viewing/downloading a contract PDF.

@@ -1,7 +1,7 @@
 import { Check, AlertCircle } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { cn } from '@/shared/lib/utils'
-import { resolveValidationError } from '@/shared/lib/validation-error'
+import { cn } from '@shared/lib/utils'
+import { resolveValidationError } from '@shared/lib/validation-error'
 
 export default function SharesTotalBar({ total, error }) {
   const { t } = useTranslation()

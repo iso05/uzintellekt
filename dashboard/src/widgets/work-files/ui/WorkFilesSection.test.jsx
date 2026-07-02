@@ -4,7 +4,7 @@ import i18n from '@/i18n'
 
 // Fake the network layer; the real entity api functions run on top of it.
 const requestJson = vi.fn()
-vi.mock('@/shared/api', () => ({ requestJson: (...a) => requestJson(...a) }))
+vi.mock('@shared/api', () => ({ requestJson: (...a) => requestJson(...a) }))
 
 import { WorkFilesSection } from '../index'
 

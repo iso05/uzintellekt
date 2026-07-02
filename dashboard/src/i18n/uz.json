@@ -304,7 +304,8 @@
     "col_name": "Nomi",
     "col_desc": "Tavsif",
     "col_status": "Holati",
-    "load_error": "Qatnashgan asarlarni yuklashda xatolik"
+    "load_error": "Qatnashgan asarlarni yuklashda xatolik",
+    "item_label": "ta asar"
   },
   "work_files": {
     "title": "Ish fayllari",
@@ -343,5 +344,11 @@
     "rate_limit": "Juda tez-tez. Birozdan so'ng urinib ko'ring.",
     "draft_limit": "Cheklov: eng ko'pi 3 ta qoralama.",
     "submit_no_file": "Yuborishdan oldin kamida bitta fayl biriktiring."
+  },
+  "pagination": {
+    "total": "Jami",
+    "items": "ta",
+    "prev": "Oldingi sahifa",
+    "next": "Keyingi sahifa"
   }
 }

@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { ChevronsLeft, ChevronsRight, Menu, Search, X } from 'lucide-react'
-import { Button } from '@/shared/ui'
-import LanguageSwitcher from '@/shared/ui/LanguageSwitcher'
-import { ROUTES } from '@/shared/config/routes'
+import { Button } from '@shared/ui'
+import LanguageSwitcher from '@shared/ui/LanguageSwitcher'
+import { ROUTES } from '@/config/routes'
 import { getUserShortName, getUserInitials, getUserRoleLabel } from '@/entities/user'
 
 export default function Header({

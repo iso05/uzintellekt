@@ -1,6 +1,6 @@
 import { Users, Plus } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { Button } from '@/shared/ui'
+import { Button } from '@shared/ui'
 import HolderCard from './HolderCard'
 import SharesTotalBar from './SharesTotalBar'
 

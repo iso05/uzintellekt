@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { FileText, CheckCircle2, Clock, XCircle } from 'lucide-react'
-import { Skeleton } from '@/shared/ui'
-import { ROUTES } from '@/shared/config/routes'
+import { Skeleton } from '@shared/ui'
+import { ROUTES } from '@/config/routes'
 import StatCard from './StatCard'
 
 const STATS = [

@@ -10,10 +10,12 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
+      '@shared': path.resolve(__dirname, '../packages/ui'),
     },
   },
   server: {
     port: 3002,
+    fs: { allow: ['..'] },
   },
   build: {
     sourcemap: false,

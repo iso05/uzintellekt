@@ -1,6 +1,6 @@
 import { CheckCircle2, XCircle } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { formatDate, formatDateTime } from '@/shared/lib/format'
+import { formatDate, formatDateTime } from '@shared/lib/format'
 import StatusBadge from './StatusBadge'
 import { getWorkStatus } from '../model/status'
 import { getHolderRoleIds } from '../model/validation'

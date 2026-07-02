@@ -13,9 +13,9 @@ import {
   AlertDialogTrigger,
   Button,
   toast,
-} from '@/shared/ui'
+} from '@shared/ui'
 import { submitWork } from '@/entities/work'
-import { apiErrorMessage } from '@/shared/lib/api-error'
+import { apiErrorMessage } from '@shared/lib/api-error'
 
 export default function SubmitWorkButton({
   workId,

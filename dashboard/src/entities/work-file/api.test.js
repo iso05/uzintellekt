@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 
 const requestJson = vi.fn()
-vi.mock('@/shared/api', () => ({ requestJson: (...args) => requestJson(...args) }))
+vi.mock('@shared/api', () => ({ requestJson: (...args) => requestJson(...args) }))
 
 import {
   listWorkFiles,

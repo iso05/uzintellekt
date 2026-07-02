@@ -1,4 +1,4 @@
-import { requestJson } from '@/shared/api'
+import { requestJson } from '@shared/api'
 
 // Frontend API for the work-files presigned upload flow + storage quota.
 // Control-plane calls (init/confirm/list/delete/url/quota) go through the shared
