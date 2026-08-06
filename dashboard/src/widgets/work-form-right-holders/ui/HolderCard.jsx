@@ -95,36 +95,44 @@ export default function HolderCard({
 
       setUploadQueue((prev) => [...prev, newQueueItem])
 
-      const uploadPromise = (workId && holder.id)
-        ? uploadRightHolderDocument({
-            workId,
-            rightHolderId: holder.id,
-            file,
-            onProgress: (p) => {
-              setUploadQueue((prev) =>
-                prev.map((item) => (item.id === localId ? { ...item, progress: p, state: 'put' } : item))
-              )
-            },
-            onState: (s) => {
-              setUploadQueue((prev) =>
-                prev.map((item) => (item.id === localId ? { ...item, state: s } : item))
-              )
-            },
-          })
-        : uploadOne({
-            workId: workId || 'test-work-id',
-            file: file,
-            onProgress: (p) => {
-              setUploadQueue((prev) =>
-                prev.map((item) => (item.id === localId ? { ...item, progress: p, state: 'put' } : item))
-              )
-            },
-            onState: (s) => {
-              setUploadQueue((prev) =>
-                prev.map((item) => (item.id === localId ? { ...item, state: s } : item))
-              )
-            },
-          })
+      const getUploadTargetId = async () => {
+        if (workId && workId !== 'test-work-id') return workId
+        if (ensureWorkId) return await ensureWorkId()
+        throw new Error("Asar ID mavjud emas")
+      }
+
+      const uploadPromise = getUploadTargetId().then((targetId) => {
+        return (targetId && holder.id)
+          ? uploadRightHolderDocument({
+              workId: targetId,
+              rightHolderId: holder.id,
+              file,
+              onProgress: (p) => {
+                setUploadQueue((prev) =>
+                  prev.map((item) => (item.id === localId ? { ...item, progress: p, state: 'put' } : item))
+                )
+              },
+              onState: (s) => {
+                setUploadQueue((prev) =>
+                  prev.map((item) => (item.id === localId ? { ...item, state: s } : item))
+                )
+              },
+            })
+          : uploadOne({
+              workId: targetId,
+              file: file,
+              onProgress: (p) => {
+                setUploadQueue((prev) =>
+                  prev.map((item) => (item.id === localId ? { ...item, progress: p, state: 'put' } : item))
+                )
+              },
+              onState: (s) => {
+                setUploadQueue((prev) =>
+                  prev.map((item) => (item.id === localId ? { ...item, state: s } : item))
+                )
+              },
+            })
+      })
 
       uploadPromise
         .then(() => {
@@ -155,36 +163,44 @@ export default function HolderCard({
       prev.map((i) => (i.id === localId ? { ...i, state: 'init', progress: 0, errorMsg: null } : i))
     )
 
-    const uploadPromise = (workId && holder.id)
-      ? uploadRightHolderDocument({
-          workId,
-          rightHolderId: holder.id,
-          file: item.fileObj,
-          onProgress: (p) => {
-            setUploadQueue((prev) =>
-              prev.map((i) => (i.id === localId ? { ...i, progress: p, state: 'put' } : i))
-            )
-          },
-          onState: (s) => {
-            setUploadQueue((prev) =>
-              prev.map((i) => (i.id === localId ? { ...i, state: s } : i))
-            )
-          },
-        })
-      : uploadOne({
-          workId: workId || 'test-work-id',
-          file: item.fileObj,
-          onProgress: (p) => {
-            setUploadQueue((prev) =>
-              prev.map((i) => (i.id === localId ? { ...i, progress: p, state: 'put' } : i))
-            )
-          },
-          onState: (s) => {
-            setUploadQueue((prev) =>
-              prev.map((i) => (i.id === localId ? { ...i, state: s } : i))
-            )
-          },
-        })
+    const getUploadTargetId = async () => {
+      if (workId && workId !== 'test-work-id') return workId
+      if (ensureWorkId) return await ensureWorkId()
+      throw new Error("Asar ID mavjud emas")
+    }
+
+    const uploadPromise = getUploadTargetId().then((targetId) => {
+      return (targetId && holder.id)
+        ? uploadRightHolderDocument({
+            workId: targetId,
+            rightHolderId: holder.id,
+            file: item.fileObj,
+            onProgress: (p) => {
+              setUploadQueue((prev) =>
+                prev.map((i) => (i.id === localId ? { ...i, progress: p, state: 'put' } : i))
+              )
+            },
+            onState: (s) => {
+              setUploadQueue((prev) =>
+                prev.map((i) => (i.id === localId ? { ...i, state: s } : i))
+              )
+            },
+          })
+        : uploadOne({
+            workId: targetId,
+            file: item.fileObj,
+            onProgress: (p) => {
+              setUploadQueue((prev) =>
+                prev.map((i) => (i.id === localId ? { ...i, progress: p, state: 'put' } : i))
+              )
+            },
+            onState: (s) => {
+              setUploadQueue((prev) =>
+                prev.map((i) => (i.id === localId ? { ...i, state: s } : i))
+              )
+            },
+          })
+    })
 
     uploadPromise
       .then(() => {

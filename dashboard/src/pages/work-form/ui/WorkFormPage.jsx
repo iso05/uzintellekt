@@ -409,7 +409,8 @@ export default function WorkFormPage() {
 
         <FilesCard t={t}>
           <WorkFilesSection
-            workId={workId || 'test-work-id'}
+            workId={workId}
+            ensureWorkId={() => ensureWorkId(form)}
             readOnly={false}
             initialFiles={pendingFiles}
             onUploadedChange={setHasUploaded}
