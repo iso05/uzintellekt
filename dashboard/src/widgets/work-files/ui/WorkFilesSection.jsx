@@ -137,6 +137,11 @@ export default function WorkFilesSection({
 
   const load = useCallback(
     async ({ silent = false } = {}) => {
+      if (!workId || workId === 'test-work-id' || workId === 'null' || workId === 'undefined') {
+        setFiles([])
+        setLoading(false)
+        return
+      }
       if (!silent) setLoading(true)
       setError(false)
       try {

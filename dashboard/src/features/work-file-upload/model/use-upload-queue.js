@@ -64,28 +64,36 @@ export function useUploadQueue(
   }, [])
 
   const runItem = useCallback(
-    (item) => {
-      uploader({
-        workId,
-        file: item.file,
-        api,
-        onProgress: (p) => patch(item.localId, { progress: p }),
-        onState: (s) => patch(item.localId, { state: s }),
-      })
-        .then((confirmed) => {
-          patch(item.localId, { state: UPLOAD_STATE.DONE, progress: 100, error: undefined })
-          onFileDone?.(confirmed)
+    async (item) => {
+      try {
+        let targetWorkId = workId
+        const isInvalid = (id) => !id || id === 'test-work-id' || id === 'null' || id === 'undefined'
+        if (isInvalid(targetWorkId) && ensureWorkId) {
+          targetWorkId = await ensureWorkId()
+        }
+        if (isInvalid(targetWorkId)) {
+          throw new Error("Asar ID mavjud emas")
+        }
+
+        const confirmed = await uploader({
+          workId: targetWorkId,
+          file: item.file,
+          api,
+          onProgress: (p) => patch(item.localId, { progress: p }),
+          onState: (s) => patch(item.localId, { state: s }),
         })
-        .catch((err) => {
-          patch(item.localId, {
-            state: UPLOAD_STATE.ERROR,
-            error: err?.message,
-            errorCode: err?.apiError?.errorCode ?? null,
-            errorStatus: err?.status ?? null,
-          })
+        patch(item.localId, { state: UPLOAD_STATE.DONE, progress: 100, error: undefined })
+        onFileDone?.(confirmed)
+      } catch (err) {
+        patch(item.localId, {
+          state: UPLOAD_STATE.ERROR,
+          error: err?.message,
+          errorCode: err?.apiError?.errorCode ?? null,
+          errorStatus: err?.status ?? null,
         })
+      }
     },
-    [workId, api, uploader, patch, onFileDone]
+    [workId, ensureWorkId, api, uploader, patch, onFileDone]
   )
 
   // Pump: keep up to maxParallel uploads running. A ref guards against starting

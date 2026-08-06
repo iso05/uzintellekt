@@ -96,7 +96,7 @@ export default function HolderCard({
       setUploadQueue((prev) => [...prev, newQueueItem])
 
       const getUploadTargetId = async () => {
-        if (workId && workId !== 'test-work-id') return workId
+        if (workId && workId !== 'test-work-id' && workId !== 'null' && workId !== 'undefined') return workId
         if (ensureWorkId) return await ensureWorkId()
         throw new Error("Asar ID mavjud emas")
       }
@@ -164,7 +164,7 @@ export default function HolderCard({
     )
 
     const getUploadTargetId = async () => {
-      if (workId && workId !== 'test-work-id') return workId
+      if (workId && workId !== 'test-work-id' && workId !== 'null' && workId !== 'undefined') return workId
       if (ensureWorkId) return await ensureWorkId()
       throw new Error("Asar ID mavjud emas")
     }

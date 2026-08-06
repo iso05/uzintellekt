@@ -7,6 +7,9 @@ import { requestJson } from '@shared/api'
 // the presigned URL is already authorized and signed for an exact content type.
 
 function base(workId) {
+  if (!workId || workId === 'null' || workId === 'undefined') {
+    throw new Error("Asar ID mavjud emas (Work ID is required)")
+  }
   return `/api/v1/works/${workId}/files`
 }
 
