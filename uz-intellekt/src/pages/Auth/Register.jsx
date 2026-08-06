@@ -413,22 +413,22 @@ function ContractModal({ open, onAgree, onCancel, form, regions, allDistricts })
 
   useEffect(() => {
     if (!open) return
-    // pdf.js allaqachon yuklangan bo'lsa, qayta inject qilmaymiz
     if (window.pdfjsLib) {
+      window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+        'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'
       renderPDF()
       return
     }
     const s = document.createElement('script')
     s.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js'
     s.onload = () => {
-      window.pdfjsLib.GlobalWorkerOptions.workerSrc =
-        'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'
+      if (window.pdfjsLib) {
+        window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+          'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'
+      }
       renderPDF()
     }
     document.head.appendChild(s)
-    return () => {
-      s.remove()
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open])
 
@@ -517,8 +517,17 @@ function ContractModal({ open, onAgree, onCancel, form, regions, allDistricts })
       }, 300)
     } catch {
       if (pdfWrapRef.current) {
-        pdfWrapRef.current.innerHTML =
-          `<p class="p-10 text-center text-sm text-muted-foreground">${t('register_page.contract_load_err')}</p>`
+        pdfWrapRef.current.innerHTML = `
+          <div class="prose prose-sm max-w-none p-6 text-foreground">
+            <h3 class="text-base font-semibold text-center">[A'ZOLIK SHARTNOMASI]</h3>
+            <p><strong>Foydalanuvchi ma'lumotlari:</strong></p>
+            <ul>
+              <li><strong>Telefon:</strong> ${phonesList.join(', ')}</li>
+              <li><strong>Manzil:</strong> ${addressString}</li>
+              <li><strong>Taxallus:</strong> ${sanitizedForm.pseudonym || "Yo'q"}</li>
+            </ul>
+            <p class="mt-4 text-xs text-muted-foreground">Platformadan foydalanish va a'zolik shartnoma matnini tasdiqlab, imzo chekish tugmasini bosing.</p>
+          </div>`
       }
       setLoadingPdf(false)
       setTimeout(() => {
