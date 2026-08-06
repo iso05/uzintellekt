@@ -141,7 +141,7 @@ export default function WorksPage() {
         }
       />
 
-      <Tabs defaultValue="my-works">
+      <Tabs value={searchParams.get('tab') || 'my-works'} onValueChange={(val) => applyFilterToUrl({ tab: val })}>
         <TabsList>
           <TabsTrigger value="my-works" className="group">
             {t('works.tab_mine')}
