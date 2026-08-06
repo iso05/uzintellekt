@@ -107,8 +107,8 @@
       "region_ph": "Viloyatni tanlang",
       "district_ph": "Tumanni tanlang",
       "district_ph_region_first": "Avval viloyat tanlang",
-      "street_ph": "Masalan: Mustaqillik ko'chasi",
-      "house_ph": "Masalan: 45-uy",
+      "street_ph": "Mustaqillik ko'chasi",
+      "house_ph": "45-uy",
       "geo_loading": "Hududlar ro'yxati yuklanmoqda...",
       "geo_error": "Viloyat/tuman ma'lumotlarini yuklab bo'lmadi."
     },
@@ -163,9 +163,12 @@
       "remove_holder": "O'chirish",
       "select_roles": "Rollarni tanlang",
       "roles_selected": "{{count}} ta rol",
+      "select_files": "Fayllarni tanlash",
+      "files_required": "Kamida 1 ta fayl yuklanishi shart",
       "create": "Yaratish",
       "created_toast": "Asar yaratildi",
-      "updated_toast": "Asar yangilandi"
+      "updated_toast": "Asar yangilandi",
+      "user_is_author": "Foydalanuvchining o'zi muallif"
     },
     "submit": {
       "action": "Moderatsiyaga yuborish",
@@ -357,12 +360,23 @@
     "total": "Jami",
     "items": "ta",
     "prev": "Oldingi sahifa",
-    "next": "Keyingi sahifa"
+    "next": "Keyingi sahifa",
+    "per_page": "Ko'rsatish:"
   },
   "validation": {
     "phone_required": "Telefon raqam kiritilishi shart",
     "phone_998": "Telefon raqam 998 bilan boshlanishi kerak",
     "phone_incomplete": "Telefon raqam to'liq kiritilmagan (998XXXXXXXXX)",
-    "phone_format": "Telefon raqam noto'g'ri (998XXXXXXXXX formatida)"
+    "phone_format": "Telefon raqam noto'g'ri (998XXXXXXXXX formatida)",
+    "pinfl_format": "PINFL 14 ta raqamdan iborat bo'lishi kerak",
+    "passport_seria_format": "Seriya: 2 ta BOSH harf + 7 ta raqam (masalan: AA1234567)",
+    "birth_date_format": "Sana kk.oo.yyyy formatida kiriting (masalan: 15.03.1990)",
+    "birth_date_invalid": "Kiritilgan sana mavjud emas",
+    "birth_date_range": "Tug'ilgan sana 1900 yildan katta va bugundan oldin bo'lishi kerak",
+    "latin_only": "Ism/familiya faqat lotin harflaridan iborat bo'lishi va bo'sh joylarsiz yozilishi kerak",
+    "field_required": "Ushbu maydon to'ldirilishi shart"
+  },
+  "errors": {
+    "draft_limit": "Cheklov: eng ko'pi 3 ta qoralama."
   }
 }

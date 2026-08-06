@@ -67,6 +67,27 @@ export async function getMyContributions() {
   return data?.items ?? data?.content ?? data?.data?.items ?? []
 }
 
+export async function acceptConsent(workId) {
+  const data = await requestJson(`/api/v1/works/${workId}/consent/accept`, { method: 'POST' })
+  invalidateCache(WORKS_GRID)
+  return data
+}
+
+export async function rejectConsent(workId, reasonId) {
+  const data = await requestJson(`/api/v1/works/${workId}/consent/reject`, {
+    method: 'POST',
+    body: JSON.stringify({ reasonId: Number(reasonId) }),
+  })
+  invalidateCache(WORKS_GRID)
+  return data
+}
+
+export async function withdrawWork(workId) {
+  const data = await requestJson(`/api/v1/works/${workId}/withdraw`, { method: 'POST' })
+  invalidateCache(WORKS_GRID)
+  return data
+}
+
 export async function getWorkTypes() {
   return requestJson('/api/v1/dictionaries/work-types')
 }
@@ -74,3 +95,8 @@ export async function getWorkTypes() {
 export async function getAuthorRoles() {
   return requestJson('/api/v1/dictionaries/author-roles')
 }
+
+export async function getConsentRejectReasons() {
+  return requestJson('/api/v1/dictionaries/consent-reject-reasons')
+}
+

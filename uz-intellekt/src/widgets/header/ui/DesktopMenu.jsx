@@ -69,7 +69,7 @@ const DesktopMenu = () => {
           )}
 
           {!item.disabled && item.children && openMenu === idx && (
-            <div className="absolute left-0 top-full z-50 mt-2 w-64 overflow-hidden rounded-lg border border-border bg-popover py-1.5 text-popover-foreground shadow-soft-md">
+            <div className="absolute left-0 top-full z-50 mt-2 w-64 rounded-lg border border-border bg-popover py-1.5 text-popover-foreground shadow-soft-md">
               {item.children.map((child, cIdx) => (
                 <div key={cIdx} className="relative">
                   {child.disabled ? (

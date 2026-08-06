@@ -350,10 +350,15 @@ export default function WorkFilesSection({
 
       <AlertDialog open={!!pendingDelete} onOpenChange={(o) => !o && setPendingDelete(null)}>
         <AlertDialogContent>
-          <AlertDialogHeader>
+          <AlertDialogHeader className="min-w-0 overflow-hidden">
             <AlertDialogTitle>{t('work_files.delete_confirm_title')}</AlertDialogTitle>
-            <AlertDialogDescription className="break-words [overflow-wrap:anywhere]">
-              {t('work_files.delete_confirm_desc', { name: pendingDelete?.filename })}
+            <AlertDialogDescription asChild>
+              <div className="min-w-0 space-y-2 text-sm text-muted-foreground">
+                <p>{t('work_files.delete_confirm_desc_prefix')}</p>
+                <p className="break-all rounded-md border border-border bg-muted/60 px-3 py-2 font-medium text-foreground">
+                  {pendingDelete?.filename}
+                </p>
+              </div>
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

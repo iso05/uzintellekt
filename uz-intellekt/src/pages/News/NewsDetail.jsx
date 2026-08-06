@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { ArrowLeft, FileText } from 'lucide-react'
 import newsData from '../../data/newsData'
 import { formatDate } from '@/shared/lib/utils'
+import { useSEO } from '@/hooks/useSEO'
 
 const NewsDetail = () => {
   const { id } = useParams()
@@ -35,6 +36,11 @@ const NewsDetail = () => {
     `news_block.item_${newsItem.id}.content`,
     newsItem.content || newsItem.desc
   )
+
+  useSEO({
+    title: title,
+    description: content ? content.slice(0, 150) + '...' : undefined,
+  })
   const category =
     newsItem.category === 'Tadbir'
       ? t('news_block.cats.event', 'Tadbir')

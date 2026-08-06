@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Check, X, Loader2 } from 'lucide-react'
 import { Input, Button, toast } from '@shared/ui'
-import { maskName } from '@shared/lib/input-masks'
+import { maskPseudonym } from '@shared/lib/input-masks'
 import { updateMeField } from '@/entities/user'
 
 export default function PseudonymEdit({ initialValue, onDone, onCancel }) {
@@ -28,7 +28,7 @@ export default function PseudonymEdit({ initialValue, onDone, onCancel }) {
       <Input
         autoFocus
         value={value}
-        onChange={(e) => setValue(maskName(e.target.value))}
+        onChange={(e) => setValue(maskPseudonym(e.target.value))}
         placeholder={t('profile.f_pseudonym')}
         disabled={saving}
         className="h-9"

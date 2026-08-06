@@ -7,8 +7,12 @@ export {
   deleteWork,
   getWorksStat,
   getMyContributions,
+  acceptConsent,
+  rejectConsent,
+  withdrawWork,
   getWorkTypes,
   getAuthorRoles,
+  getConsentRejectReasons,
 } from './api'
 
 export {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link, Outlet, useLocation } from 'react-router-dom'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { ChevronRight } from 'lucide-react'
 import { useAuth } from '@/features/auth'
@@ -9,6 +9,7 @@ import { Toaster, ErrorBoundary } from '@shared/ui'
 import { resolveRouteMeta } from '@/config/routes'
 
 function Breadcrumbs({ items }) {
+  const navigate = useNavigate()
   if (!items?.length) return null
   return (
     <nav className="mb-5 flex items-center gap-1.5 text-sm text-muted-foreground" aria-label="breadcrumb">
@@ -20,9 +21,21 @@ function Breadcrumbs({ items }) {
             {last ? (
               <span className="font-medium text-foreground">{c.label}</span>
             ) : (
-              <Link to={c.to} className="transition-colors hover:text-foreground">
+              <a
+                href={c.to}
+                onClick={(e) => {
+                  e.preventDefault()
+                  const stepsBack = i - (items.length - 1)
+                  if (stepsBack < 0) {
+                    navigate(stepsBack)
+                  } else {
+                    navigate(c.to)
+                  }
+                }}
+                className="transition-colors hover:text-foreground cursor-pointer"
+              >
                 {c.label}
-              </Link>
+              </a>
             )}
           </span>
         )

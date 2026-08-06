@@ -57,8 +57,8 @@ const LanguageSwitcher = ({ variant = 'desktop' }) => {
 
   return (
     <Select value={currentLang} onValueChange={handleLanguageChange}>
-      <SelectTrigger className="h-9 w-[88px] gap-1.5 px-3 text-sm">
-        <Globe className="h-4 w-4 text-muted-foreground" />
+      <SelectTrigger className="h-9 w-9 rounded-full lg:rounded-lg lg:w-auto lg:min-w-[88px] gap-1.5 p-0 lg:px-2.5 text-sm justify-center lg:justify-start [&>svg:last-child]:hidden lg:[&>svg:last-child]:block [&>span]:hidden lg:[&>span]:inline">
+        <Globe className="h-4 w-4 shrink-0 text-muted-foreground" />
         <SelectValue />
       </SelectTrigger>
       <SelectContent align="end">

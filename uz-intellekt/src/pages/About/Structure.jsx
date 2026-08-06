@@ -1,9 +1,14 @@
 import { useTranslation } from 'react-i18next'
 import { Network } from 'lucide-react'
 import { EmptyState } from '@/shared/ui'
+import { useSEO } from '@/hooks/useSEO'
 
 const Structure = () => {
   const { t } = useTranslation()
+  useSEO({
+    title: t('seo.structure_title'),
+    description: t('seo.structure_desc'),
+  })
   return (
     <section className="bg-background py-16 sm:py-24">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">

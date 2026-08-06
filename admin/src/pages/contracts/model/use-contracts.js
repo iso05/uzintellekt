@@ -14,10 +14,10 @@ export function buildContractFilters({ type, state, search }) {
   return filters
 }
 
-export function useContractsQueue({ type, state, search, sort } = {}) {
+export function useContractsQueue({ type, state, search, sort, pageSize = PAGE_SIZE } = {}) {
   return useGridQuery({
     fetcher: getContractsGrid,
-    pageSize: PAGE_SIZE,
+    pageSize,
     filters: buildContractFilters({ type, state, search }),
     sort,
   })

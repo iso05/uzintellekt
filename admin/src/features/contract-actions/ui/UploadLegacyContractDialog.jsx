@@ -16,6 +16,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  DatePicker,
   toast,
 } from '@shared/ui'
 import { uploadLegacyContract, CONTRACT_TYPES } from '@/entities/contract'
@@ -51,13 +52,12 @@ export default function UploadLegacyContractDialog({ userId, open, onOpenChange,
     }
   }, [open])
 
-  const set = (key) => (e) => setForm((f) => ({ ...f, [key]: e.target.value }))
+  const setVal = (key) => (val) => setForm((f) => ({ ...f, [key]: val }))
 
   function validate() {
     const errs = {}
     const req = t('user.form.required')
     if (!form.effectiveFrom.trim()) errs.effectiveFrom = req
-    if (!form.effectiveUntil.trim()) errs.effectiveUntil = req
     if (!form.signedAt.trim()) errs.signedAt = req
     if (!file) errs.document = req
     setErrors(errs)
@@ -71,7 +71,7 @@ export default function UploadLegacyContractDialog({ userId, open, onOpenChange,
       await uploadLegacyContract(userId, {
         type: form.type,
         effectiveFrom: form.effectiveFrom.trim(),
-        effectiveUntil: form.effectiveUntil.trim(),
+        effectiveUntil: form.effectiveUntil.trim() || undefined,
         signedAt: form.signedAt.trim(),
         document: file,
       })
@@ -111,21 +111,36 @@ export default function UploadLegacyContractDialog({ userId, open, onOpenChange,
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <Field label={t('contract.form.effective_from')} required error={errors.effectiveFrom}>
-              <Input value={form.effectiveFrom} onChange={set('effectiveFrom')} placeholder="дд.мм.гггг" disabled={submitting} />
+              <DatePicker
+                value={form.effectiveFrom}
+                onChange={setVal('effectiveFrom')}
+                disabled={submitting}
+                hasError={Boolean(errors.effectiveFrom)}
+              />
             </Field>
-            <Field label={t('contract.form.effective_until')} required error={errors.effectiveUntil}>
-              <Input value={form.effectiveUntil} onChange={set('effectiveUntil')} placeholder="дд.мм.гггг" disabled={submitting} />
+            <Field label={t('contract.form.effective_until')} error={errors.effectiveUntil}>
+              <DatePicker
+                value={form.effectiveUntil}
+                onChange={setVal('effectiveUntil')}
+                disabled={submitting}
+                hasError={Boolean(errors.effectiveUntil)}
+              />
             </Field>
           </div>
 
           <Field label={t('contract.form.signed_at')} required error={errors.signedAt}>
-            <Input value={form.signedAt} onChange={set('signedAt')} placeholder="дд.мм.гггг" disabled={submitting} />
+            <DatePicker
+              value={form.signedAt}
+              onChange={setVal('signedAt')}
+              disabled={submitting}
+              hasError={Boolean(errors.signedAt)}
+            />
           </Field>
 
           <Field label={t('contract.form.document')} required error={errors.document}>
             <Input
               type="file"
-              accept=".pdf,.doc,.docx,image/*"
+              accept=".pdf"
               onChange={(e) => setFile(e.target.files?.[0] || null)}
               disabled={submitting}
               className="cursor-pointer file:mr-3 file:cursor-pointer file:rounded file:border-0 file:bg-muted file:px-2 file:py-1 file:text-sm"

@@ -80,3 +80,52 @@ export async function deleteWorkFile(workId, fileId) {
   await requestJson(`/api/v1/admin/works/${workId}/files/${fileId}`, { method: 'DELETE' })
   invalidateCache(FILES_GRID)
 }
+
+export function initAdminUpload(workId, { filename, sizeBytes }) {
+  return requestJson(`/api/v1/works/${workId}/files/init`, {
+    method: 'POST',
+    body: JSON.stringify({ filename, sizeBytes }),
+  })
+}
+
+export function confirmAdminUpload(workId, fileId) {
+  return requestJson(`/api/v1/works/${workId}/files/${fileId}/confirm`, {
+    method: 'POST',
+  })
+}
+
+export function putToStorage(uploadUrl, file, contentType, onProgress) {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest()
+    xhr.open('PUT', uploadUrl, true)
+    if (contentType) xhr.setRequestHeader('Content-Type', contentType)
+
+    if (typeof onProgress === 'function' && xhr.upload) {
+      xhr.upload.onprogress = (e) => {
+        if (e.lengthComputable) onProgress(Math.round((e.loaded / e.total) * 100))
+      }
+    }
+
+    xhr.onload = () => {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        resolve()
+      } else {
+        const err = new Error(`Upload failed: ${xhr.status}`)
+        err.status = xhr.status
+        reject(err)
+      }
+    }
+    xhr.onerror = () => {
+      const err = new Error('Network error during upload')
+      err.status = 0
+      reject(err)
+    }
+    xhr.ontimeout = () => {
+      const err = new Error('Upload timed out')
+      err.status = 0
+      reject(err)
+    }
+
+    xhr.send(file)
+  })
+}

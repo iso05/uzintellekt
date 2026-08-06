@@ -11,6 +11,7 @@ import {
   toast,
   PageHeader,
 } from '@shared/ui'
+import { useLocalStorageState } from '@shared/hooks/use-local-storage-state'
 import { ROUTES } from '@/config/routes'
 import { getWorks, getMyContributions } from '@/entities/work'
 import { WorksToolbar } from '@/widgets/works-toolbar'
@@ -29,7 +30,7 @@ export default function WorksPage() {
   const [works, setWorks] = useState([])
   const [total, setTotal] = useState(0)
   const [page, setPage] = useState(1)
-  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE)
+  const [pageSize, setPageSize] = useLocalStorageState('my_works_page_size', DEFAULT_PAGE_SIZE)
   const [search, setSearch] = useState(() => searchParams.get('search') || '')
   // Debounced mirror of `search` — the input updates instantly, but the fetch
   // only fires once typing settles, instead of one request per keystroke.
@@ -170,11 +171,6 @@ export default function WorksPage() {
               setPage(1)
               applyFilterToUrl({ state: v })
             }}
-            pageSize={pageSize}
-            onPageSizeChange={(v) => {
-              setPageSize(v)
-              setPage(1)
-            }}
             onRefresh={loadWorks}
             loading={loading}
           />
@@ -186,6 +182,10 @@ export default function WorksPage() {
             pageSize={pageSize}
             total={total}
             onPageChange={setPage}
+            onPageSizeChange={(v) => {
+              setPageSize(v)
+              setPage(1)
+            }}
             onView={openDetail}
             onChanged={handleChanged}
           />

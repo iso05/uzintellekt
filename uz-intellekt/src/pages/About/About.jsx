@@ -1,8 +1,13 @@
 import { useTranslation } from 'react-i18next'
 import { Card, CardContent, Eyebrow, HeroChip } from '@/shared/ui'
+import { useSEO } from '@/hooks/useSEO'
 
 const About = () => {
   const { t } = useTranslation()
+  useSEO({
+    title: t('seo.about_title'),
+    description: t('seo.about_desc'),
+  })
   return (
     <section className="bg-background py-16 sm:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">

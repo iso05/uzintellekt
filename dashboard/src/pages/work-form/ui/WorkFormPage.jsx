@@ -2,7 +2,17 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { ArrowLeft, Send, AlertCircle, Loader2, Paperclip } from 'lucide-react'
-import { Button, toast, PageHeader, ListSkeleton } from '@shared/ui'
+import {
+  Button,
+  toast,
+  PageHeader,
+  ListSkeleton,
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from '@shared/ui'
 import { ROUTES } from '@/config/routes'
 import { useAuth } from '@/features/auth'
 import {
@@ -16,12 +26,12 @@ import {
   toPayload,
   validateWorkForm,
   getShareTotalError,
+  EMPTY_HOLDER,
 } from '@/entities/work'
 import { isAllowedFile } from '@/entities/work-file'
 import { BasicInfoSection } from '@/widgets/work-form-basic-info'
 import { RightHoldersSection } from '@/widgets/work-form-right-holders'
 import { WorkFilesSection, UploadDropzone } from '@/widgets/work-files'
-import { AuthorSelfCheckbox } from '@/features/work-fill-author'
 import { DeleteWorkButton } from '@/features/work-delete'
 import { useAutosave } from '@/features/work-autosave'
 import { draftKey, loadDraft, clearDraft } from '@shared/lib/draft-storage'
@@ -140,8 +150,55 @@ export default function WorkFormPage() {
     } else {
       const saved = loadDraft(storageKey)
       if (saved?.data) {
-        setForm(saved.data)
+        const draftData = { ...saved.data }
+        const isUserLegal = user?.userType === 'LEGAL'
+        const defaultType = isUserLegal ? 'LEGAL' : 'PHYSICAL'
+        const defaultPassportNo = isUserLegal
+          ? (user?.inn || user?.passportNo || user?.pinfl || '123456789')
+          : (user?.pinfl || user?.passportNo || '30101961234509')
+        const defaultFirstName = isUserLegal
+          ? (user?.legalName || user?.orgName || user?.firstName || 'OOO UZINTELLEKT')
+          : (user?.firstName || 'Test')
+        const defaultLastName = isUserLegal
+          ? ''
+          : (user?.lastName || 'Foydalanuvchi')
+
+        if (draftData.rightHolders && draftData.rightHolders[0]) {
+          const rh0 = draftData.rightHolders[0]
+          rh0.type = defaultType
+          rh0.passportNo = defaultPassportNo
+          rh0.firstName = defaultFirstName
+          rh0.lastName = defaultLastName
+        }
+        setForm(draftData)
         toast.success(t('form.draft_restored'))
+      } else {
+        const isUserLegal = user?.userType === 'LEGAL'
+        const defaultType = isUserLegal ? 'LEGAL' : 'PHYSICAL'
+        const defaultPassportNo = isUserLegal
+          ? (user?.inn || user?.passportNo || user?.pinfl || '123456789')
+          : (user?.pinfl || user?.passportNo || '30101961234509')
+        const defaultFirstName = isUserLegal
+          ? (user?.legalName || user?.orgName || user?.firstName || 'OOO UZINTELLEKT')
+          : (user?.firstName || 'Test')
+        const defaultLastName = isUserLegal
+          ? ''
+          : (user?.lastName || 'Foydalanuvchi')
+
+        setForm({
+          name: '',
+          description: '',
+          workTypeId: '',
+          rightHolders: [
+            {
+              ...EMPTY_HOLDER,
+              type: defaultType,
+              passportNo: defaultPassportNo,
+              firstName: defaultFirstName,
+              lastName: defaultLastName,
+            },
+          ],
+        })
       }
       setReady(true)
     }
@@ -149,7 +206,7 @@ export default function WorkFormPage() {
       alive = false
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [routeId])
+  }, [routeId, user])
 
   // Single-flight create: autosave, file-drop, and submit all funnel through
   // this, so a brand-new work is created on the backend exactly once.
@@ -257,7 +314,7 @@ export default function WorkFormPage() {
     }
   }
 
-  if (isRouteEdit && loading) {
+  if (loading || !ready) {
     return (
       <div className="flex flex-col gap-6">
         <PageHeader title={t('form.loading')} subtitle={t('form.loading_sub')} />
@@ -307,6 +364,19 @@ export default function WorkFormPage() {
         }
       />
 
+      {user && user.isMember === false && (
+        <Banner tone="warning" title={t('form.no_membership_title', { defaultValue: "A'zolik shartnomasi talab etiladi" })}>
+          <div className="flex flex-col gap-2">
+            <span>{t('form.no_membership_msg', { defaultValue: "Asarni yuborish uchun avval a'zolik shartnomasini imzolashingiz kerak." })}</span>
+            <div>
+              <Button size="sm" variant="outline" type="button" onClick={() => navigate(ROUTES.CONTRACTS)}>
+                {t('form.go_to_contracts', { defaultValue: "Shartnomaga o'tish" })}
+              </Button>
+            </div>
+          </div>
+        </Banner>
+      )}
+
       {workState === 'REJECTED' && rejectionReason && (
         <Banner tone="destructive" title={t('form.reject_title')}>
           {rejectionReason}
@@ -333,37 +403,17 @@ export default function WorkFormPage() {
           onRemoveHolder={removeHolder}
           getRemainingShareFor={getRemainingShareFor}
           disabled={submitting}
-          headerExtra={
-            <AuthorSelfCheckbox
-              user={user}
-              holders={form.rightHolders}
-              disabled={submitting}
-              onApply={(data) => {
-                Object.entries(data).forEach(([k, v]) => setHolder(0, k, v))
-                handleHolderBlur(0, 'passportNo', data.passportNo)
-              }}
-              onClear={(data) => {
-                Object.entries(data).forEach(([k, v]) => setHolder(0, k, v))
-                handleHolderBlur(0, 'passportNo', '')
-              }}
-            />
-          }
+          workId={workId}
+          ensureWorkId={() => ensureWorkId(form)}
         />
 
         <FilesCard t={t}>
-          {isExisting ? (
-            <WorkFilesSection
-              workId={workId}
-              readOnly={false}
-              initialFiles={pendingFiles}
-              onUploadedChange={setHasUploaded}
-            />
-          ) : (
-            <div className="flex flex-col gap-2">
-              <UploadDropzone onFiles={handlePreCreateDrop} disabled={submitting} />
-              <p className="text-[12px] text-muted-foreground">{t('work_files.attach_on_create')}</p>
-            </div>
-          )}
+          <WorkFilesSection
+            workId={workId || 'test-work-id'}
+            readOnly={false}
+            initialFiles={pendingFiles}
+            onUploadedChange={setHasUploaded}
+          />
         </FilesCard>
 
         <div className="sticky bottom-4 z-10 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border bg-card/95 px-4 py-3 shadow-soft-md backdrop-blur supports-[backdrop-filter]:bg-card/80">

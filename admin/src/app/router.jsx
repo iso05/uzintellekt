@@ -1,4 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom'
+import KeepAlive from 'react-activation'
 import App from '@/App'
 import { AdminLayout } from '@/widgets/admin-layout'
 import { ProtectedRoute } from '@/features/auth'
@@ -25,12 +26,40 @@ export const router = createBrowserRouter([
         ),
         children: [
           { path: '/', element: <DashboardPage /> },
-          { path: '/moderation', element: <ModerationPage /> },
+          {
+            path: '/moderation',
+            element: (
+              <KeepAlive name="ModerationPage" id="ModerationPage">
+                <ModerationPage />
+              </KeepAlive>
+            ),
+          },
           { path: '/moderation/:id', element: <WorkDetailPage /> },
-          { path: '/users', element: <UsersPage /> },
+          {
+            path: '/users',
+            element: (
+              <KeepAlive name="UsersPage" id="UsersPage">
+                <UsersPage />
+              </KeepAlive>
+            ),
+          },
           { path: '/users/:id', element: <UserDetailPage /> },
-          { path: '/files', element: <FilesPage /> },
-          { path: '/contracts', element: <ContractsPage /> },
+          {
+            path: '/files',
+            element: (
+              <KeepAlive name="FilesPage" id="FilesPage">
+                <FilesPage />
+              </KeepAlive>
+            ),
+          },
+          {
+            path: '/contracts',
+            element: (
+              <KeepAlive name="ContractsPage" id="ContractsPage">
+                <ContractsPage />
+              </KeepAlive>
+            ),
+          },
           { path: '*', element: <NotFound /> },
         ],
       },

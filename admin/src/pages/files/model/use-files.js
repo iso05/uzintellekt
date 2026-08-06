@@ -15,10 +15,10 @@ export function buildFileFilters({ status, search }) {
   return filters
 }
 
-export function useFilesQueue({ status, search, sort } = {}) {
+export function useFilesQueue({ status, search, sort, pageSize = PAGE_SIZE } = {}) {
   const q = useGridQuery({
     fetcher: getAdminFilesGrid,
-    pageSize: PAGE_SIZE,
+    pageSize,
     filters: buildFileFilters({ status, search }),
     sort,
   })

@@ -1,27 +1,23 @@
 import { useTranslation } from 'react-i18next'
-import { Search, RefreshCw, X } from 'lucide-react'
+import { Search, X } from 'lucide-react'
 import {
-  Button,
   Input,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
+  RefreshButton,
 } from '@shared/ui'
-import { cn } from '@shared/lib/utils'
 import { WORK_STATUS_CONFIG } from '@/entities/work'
 
 const STATE_KEYS = Object.keys(WORK_STATUS_CONFIG).filter((key) => key !== 'APPROVED')
-const PAGE_SIZE_OPTIONS = [10, 20, 50]
 
 export default function WorksToolbar({
   search,
   onSearchChange,
   stateFilter,
   onStateFilterChange,
-  pageSize,
-  onPageSizeChange,
   onRefresh,
   loading,
 }) {
@@ -31,7 +27,7 @@ export default function WorksToolbar({
     ...STATE_KEYS.map((value) => ({ value, label: t(`work_status.${value}`) })),
   ]
   return (
-    <div className="grid grid-cols-1 gap-2.5 rounded-xl border border-border bg-card p-3 shadow-soft sm:grid-cols-[1fr_180px_110px_auto] sm:items-center">
+    <div className="grid grid-cols-1 gap-2.5 rounded-xl border border-border bg-card p-3 shadow-soft sm:grid-cols-[1fr_180px_auto] sm:items-center">
       <div className="relative">
         <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <Input
@@ -68,30 +64,12 @@ export default function WorksToolbar({
         </SelectContent>
       </Select>
 
-      <Select value={String(pageSize)} onValueChange={(v) => onPageSizeChange(Number(v))}>
-        <SelectTrigger>
-          <SelectValue />
-        </SelectTrigger>
-        <SelectContent>
-          {PAGE_SIZE_OPTIONS.map((s) => (
-            <SelectItem key={s} value={String(s)}>
-              {t('works.page_size', { n: s })}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-
-      <Button
-        variant="outline"
-        size="icon"
-        disabled={loading}
+      <RefreshButton
+        loading={loading}
         onClick={onRefresh}
         title={t('common.refresh')}
-        aria-label={t('common.refresh')}
-        className="h-10 w-10 shrink-0 justify-self-end"
-      >
-        <RefreshCw className={cn('h-4 w-4', loading && 'animate-spin')} />
-      </Button>
+        className="h-10 w-10 shrink-0 justify-self-end border border-input hover:bg-muted"
+      />
     </div>
   )
 }

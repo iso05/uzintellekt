@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /register
+Disallow: /login
+
+Sitemap: https://uzintellekt.uz/sitemap.xml

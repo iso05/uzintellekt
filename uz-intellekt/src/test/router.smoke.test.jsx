@@ -17,18 +17,18 @@ function renderAt(path) {
 describe('AppRouter smoke', () => {
   it('renders Home at /', () => {
     renderAt('/')
-    expect(screen.getAllByText(/Himoya|Protect|Защит/i).length).toBeGreaterThan(0)
+    expect(screen.getAllByText(/Himoya|Protect|Защит|Ҳимоя/i).length).toBeGreaterThan(0)
   })
 
   it('renders About at /about', () => {
     renderAt('/about')
-    expect(screen.getAllByText(/Biz haqimizda|About Us|О нас/i).length).toBeGreaterThan(0)
+    expect(screen.getAllByText(/Biz haqimizda|About Us|О нас|Биз ҳақимизда/i).length).toBeGreaterThan(0)
   })
 
   it('renders NotFound at unknown route', () => {
     renderAt('/this-page-does-not-exist')
     expect(
-      screen.getByText(/Sahifa topilmadi|Page Not Found|Страница не найдена/i)
+      screen.getByText(/Sahifa topilmadi|Page Not Found|Страница не найдена|Саҳифа топилмади/i)
     ).toBeInTheDocument()
   })
 })

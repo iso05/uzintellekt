@@ -26,6 +26,7 @@ import {
   toast,
 } from '@shared/ui'
 import { useDebouncedValue } from '@shared/hooks/use-debounced-value'
+import { useLocalStorageState } from '@shared/hooks/use-local-storage-state'
 import { formatDate } from '@shared/lib/format'
 import { toCsv, downloadCsv } from '@shared/lib/csv'
 import {
@@ -33,6 +34,7 @@ import {
   getFullName,
   getUsersGrid,
   USER_STATES,
+  USER_ROLES,
 } from '@/entities/user'
 import { CreateUserDialog } from '@/features/user-create'
 import { ROUTES } from '@/config/routes'
@@ -46,18 +48,21 @@ export default function UsersPage() {
   const navigate = useNavigate()
   const [state, setState] = useState(ALL)
   const [type, setType] = useState(ALL)
+  const [role, setRole] = useState('USER')
   const [searchInput, setSearchInput] = useState('')
   const [sort, setSort] = useState(null)
   const search = useDebouncedValue(searchInput, 350)
+  const [pageSize, setPageSize] = useLocalStorageState('users_page_size', PAGE_SIZE)
   const [createOpen, setCreateOpen] = useState(false)
   const [exporting, setExporting] = useState(false)
 
   const queryArgs = {
     state: state === ALL ? null : state,
     type: type === ALL ? null : type,
+    role: role === ALL ? null : role,
     search,
   }
-  const q = useUsersQueue({ ...queryArgs, sort })
+  const q = useUsersQueue({ ...queryArgs, sort, pageSize })
 
   async function onExport() {
     setExporting(true)
@@ -132,6 +137,19 @@ export default function UsersPage() {
             ))}
           </SelectContent>
         </Select>
+        <Select value={role} onValueChange={setRole}>
+          <SelectTrigger className="h-10 w-[170px]">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent align="end">
+            <SelectItem value={ALL}>{t('user.all_roles')}</SelectItem>
+            {USER_ROLES.map((r) => (
+              <SelectItem key={r} value={r}>
+                {t(`role.${r.toLowerCase()}`, { defaultValue: r })}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </DataGridToolbar>
 
       <Card className="overflow-hidden">
@@ -195,6 +213,8 @@ export default function UsersPage() {
               total={q.totalItems}
               onPageChange={(p) => q.setPage(p + 1)}
               itemLabel={t('user.items')}
+              pageSizeOptions={[10, 20, 50]}
+              onPageSizeChange={setPageSize}
             />
           </>
         )}

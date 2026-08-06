@@ -164,10 +164,6 @@ const MobileMenu = ({ open, onClose }) => {
               </div>
             ))}
 
-            <div className="border-t border-border pt-4">
-              <LanguageSwitcher variant="mobile" />
-            </div>
-
             <NavLink to="/login" onClick={onClose} className="block">
               <Button className="w-full">
                 {t('nav.login_join', "A'zo bo'lish/Kirish")}

@@ -25,6 +25,7 @@ import {
   Video,
 } from 'lucide-react'
 import { Button, Card, CardContent } from '@/shared/ui'
+import { useSEO } from '@/hooks/useSEO'
 
 const services = [
   {
@@ -115,6 +116,10 @@ const itemKeyMap = {
 
 const Services = () => {
   const { t } = useTranslation()
+  useSEO({
+    title: t('seo.services_title'),
+    description: t('seo.services_desc'),
+  })
 
   const tFeature = (feature) => {
     const cfg = featureMap[feature]

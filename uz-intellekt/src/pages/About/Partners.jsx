@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { ArrowRight } from 'lucide-react'
 import { Button, Card, CardContent, Eyebrow, HeroChip } from '@/shared/ui'
+import { useSEO } from '@/hooks/useSEO'
 
 const partners = [
   {
@@ -35,6 +36,10 @@ const stats = [
 
 const Partners = () => {
   const { t } = useTranslation()
+  useSEO({
+    title: t('seo.partners_title'),
+    description: t('seo.partners_desc'),
+  })
 
   const localizedPartners = partners.map((item, idx) => ({
     ...item,

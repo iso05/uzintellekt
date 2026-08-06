@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { ArrowLeft, Check, X, Download, FileText, Users, AlertTriangle, Pencil } from 'lucide-react'
 import {
@@ -251,13 +251,15 @@ export default function WorkDetailPage() {
 }
 
 function BackLink({ t }) {
+  const navigate = useNavigate()
   return (
-    <Link
-      to={ROUTES.MODERATION}
+    <button
+      type="button"
+      onClick={() => navigate(-1)}
       className="inline-flex w-fit items-center gap-1.5 text-[13px] font-medium text-muted-foreground transition-colors hover:text-foreground"
     >
       <ArrowLeft className="h-4 w-4" />
       {t('work.back_to_queue')}
-    </Link>
+    </button>
   )
 }

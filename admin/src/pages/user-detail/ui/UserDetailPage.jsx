@@ -73,14 +73,16 @@ function Count({ value }) {
 }
 
 function BackLink({ t }) {
+  const navigate = useNavigate()
   return (
-    <Link
-      to={ROUTES.USERS}
+    <button
+      type="button"
+      onClick={() => navigate(-1)}
       className="inline-flex w-fit items-center gap-1.5 text-[13px] font-medium text-muted-foreground transition-colors hover:text-foreground"
     >
       <ArrowLeft className="h-4 w-4" />
       {t('user.back_to_list')}
-    </Link>
+    </button>
   )
 }
 

@@ -14,6 +14,7 @@ import {
   resolveWorkTypeName,
   getHolderRoleIds,
   StatusBadge,
+  withdrawWork,
 } from '@/entities/work'
 import { WorkFilesSection } from '@/widgets/work-files'
 
@@ -63,24 +64,37 @@ export default function WorkDetailPage() {
   const [work, setWork] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
+  const [withdrawing, setWithdrawing] = useState(false)
 
-  useEffect(() => {
-    let alive = true
+  const loadData = () => {
     setLoading(true)
     setError(false)
     getWork(id)
-      .then((data) => alive && setWork(data))
+      .then((data) => setWork(data))
       .catch((e) => {
-        if (!alive) return
         setError(true)
         toast.error(e?.message || t('common.detail_error'))
       })
-      .finally(() => alive && setLoading(false))
-    return () => {
-      alive = false
-    }
+      .finally(() => setLoading(false))
+  }
+
+  useEffect(() => {
+    loadData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id])
+
+  const handleWithdraw = async () => {
+    setWithdrawing(true)
+    try {
+      await withdrawWork(id)
+      toast.success(t('work.withdraw_success', { defaultValue: "Asar ko'rib chiqishdan qaytarib olindi va черновик holatiga o'tkazildi" }))
+      loadData()
+    } catch (err) {
+      toast.error(err?.message || t('work.withdraw_error', { defaultValue: 'Xatolik yuz berdi' }))
+    } finally {
+      setWithdrawing(false)
+    }
+  }
 
   const status = work ? getWorkStatus(work) : null
   const editable = status ? isEditableState(status) : false
@@ -97,6 +111,16 @@ export default function WorkDetailPage() {
               <ArrowLeft className="h-4 w-4" />
               {t('detail.back')}
             </Button>
+            {work?.state === 'PENDING_CONSENT' && (
+              <Button
+                variant="warning"
+                disabled={withdrawing}
+                onClick={handleWithdraw}
+                className="gap-2"
+              >
+                {t('detail.withdraw', { defaultValue: 'Qaytarib olish' })}
+              </Button>
+            )}
             {editable && (
               <Button onClick={() => navigate(ROUTES.WORK_EDIT(id))} className="gap-2">
                 <Pencil className="h-4 w-4" />

@@ -61,6 +61,35 @@ export const tokenStorage = {
 
 import { sanitizeErrorMessage } from '../utils/securityUtils'
 
+// ── Single-flight token refresh ──────────────────────────────────
+let refreshPromise = null
+
+async function doSilentRefresh() {
+  const rt = tokenStorage.getRefresh()
+  if (!rt) return null
+
+  const res = await fetch(`${BASE}/api/v1/auth/token/refresh`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ refreshToken: rt }),
+  })
+
+  if (!res.ok) return null
+
+  const data = await res.json().catch(() => ({}))
+  if (data.token)        tokenStorage.set(data.token)
+  if (data.refreshToken) tokenStorage.setRefresh(data.refreshToken)
+  return data.token || null
+}
+
+function getSilentRefreshPromise() {
+  if (refreshPromise) return refreshPromise
+  refreshPromise = doSilentRefresh().finally(() => {
+    refreshPromise = null
+  })
+  return refreshPromise
+}
+
 // ── Base request helper ─────────────────────────────────────────
 async function request(path, options = {}) {
   const token = tokenStorage.get()
@@ -84,8 +113,30 @@ async function request(path, options = {}) {
     headers,
   })
 
-  // Token muddati tugagan → clear va login ga yo'naltirish
+  // Token muddati tugagan → refresh qilish yoki login ga yo'naltirish
   if (res.status === 401) {
+    if (path === '/api/v1/auth/token/refresh' || options._retry) {
+      tokenStorage.clear()
+      window.location.href = '/login'
+      throw new Error('Sessiya tugadi. Qayta kiring.')
+    }
+
+    const rt = tokenStorage.getRefresh()
+    if (rt) {
+      try {
+        const refreshedToken = await getSilentRefreshPromise()
+        if (refreshedToken) {
+          const retryOptions = {
+            ...options,
+            _retry: true,
+          }
+          return request(path, retryOptions)
+        }
+      } catch (err) {
+        // refresh failed, fall through to logout
+      }
+    }
+
     tokenStorage.clear()
     window.location.href = '/login'
     throw new Error('Sessiya tugadi. Qayta kiring.')
@@ -101,6 +152,7 @@ async function request(path, options = {}) {
 
   return res
 }
+
 
 // ── Auth endpoints ──────────────────────────────────────────────
 
@@ -180,8 +232,6 @@ export async function previewContract(payload) {
  * signatureDataUrl — canvas.toDataURL('image/png') dan kelgan base64 string
  */
 export async function signContract(payload, signatureDataUrl) {
-  const token = tokenStorage.get()
-
   // base64 → Blob → File
   const base64 = signatureDataUrl.replace(/^data:image\/\w+;base64,/, '')
   const binary  = atob(base64)
@@ -202,25 +252,10 @@ export async function signContract(payload, signatureDataUrl) {
   formData.append('request', requestBlob)
   formData.append('signatureImage', imageFile)
 
-  const res = await fetch(`${BASE}/api/v1/contracts/sign`, {
+  const res = await request('/api/v1/contracts/sign', {
     method: 'POST',
-    headers: token ? { Authorization: `Bearer ${token}` } : {},
     body: formData,
-    // Content-Type header QOLDIRILMAYDI — browser o'zi boundary bilan to'ldiradi
   })
-
-  if (res.status === 401) {
-    tokenStorage.clear()
-    window.location.href = '/login'
-    throw new Error('Sessiya tugadi. Qayta kiring.')
-  }
-
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}))
-    throw new Error(
-      sanitizeErrorMessage(err.errorMessage || `Shartnoma imzolashda xatolik: ${res.status}`)
-    )
-  }
 
   return res.blob()
 }

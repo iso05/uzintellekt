@@ -4,11 +4,16 @@ import { ChevronDown, Search } from 'lucide-react'
 import newsData from '../../data/newsData'
 import { NewsCard } from '@/entities/news'
 import { Button, Input } from '@/shared/ui'
+import { useSEO } from '@/hooks/useSEO'
 
 const categories = ['Barchasi', 'Tadbir', 'Yangilik', 'Seminar']
 
 const News = () => {
   const { t } = useTranslation()
+  useSEO({
+    title: t('seo.news_title'),
+    description: t('seo.news_desc'),
+  })
   const [search, setSearch] = useState('')
   const [activeCategory, setActiveCategory] = useState('Barchasi')
   const [showAll, setShowAll] = useState(false)

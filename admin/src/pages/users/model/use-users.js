@@ -9,10 +9,11 @@ const SEARCH_MIN_CHARS = 2
 // backend supports a case-insensitive `lk` (contains) only on a single field per
 // request (filters are ANDed), and phone is not filterable — so the search box
 // routes by input: an all-digits query searches PINFL, otherwise the surname.
-export function buildUserFilters({ state, type, search }) {
+export function buildUserFilters({ state, type, role, search }) {
   const filters = []
   if (state) filters.push({ field: 'state', operator: 'eq', value: state })
   if (type) filters.push({ field: 'type', operator: 'eq', value: type })
+  if (role) filters.push({ field: 'role', operator: 'eq', value: role })
   const q = search?.trim()
   if (q && q.length >= SEARCH_MIN_CHARS) {
     const field = /^\d+$/.test(q) ? 'pinfl' : 'lastName'
@@ -21,11 +22,11 @@ export function buildUserFilters({ state, type, search }) {
   return filters
 }
 
-export function useUsersQueue({ state, type, search, sort } = {}) {
+export function useUsersQueue({ state, type, role, search, sort, pageSize = PAGE_SIZE } = {}) {
   return useGridQuery({
     fetcher: getUsersGrid,
-    pageSize: PAGE_SIZE,
-    filters: buildUserFilters({ state, type, search }),
+    pageSize,
+    filters: buildUserFilters({ state, type, role, search }),
     sort,
   })
 }

@@ -25,6 +25,7 @@ import {
   toast,
 } from '@shared/ui'
 import { useDebouncedValue } from '@shared/hooks/use-debounced-value'
+import { useLocalStorageState } from '@shared/hooks/use-local-storage-state'
 import { formatDate } from '@shared/lib/format'
 import { toCsv, downloadCsv } from '@shared/lib/csv'
 import { WorkStatusBadge, WORK_STATUS_ORDER, getWorksGrid } from '@/entities/work'
@@ -52,10 +53,11 @@ export default function ModerationPage() {
   const [searchInput, setSearchInput] = useState('')
   const [sort, setSort] = useState(null)
   const search = useDebouncedValue(searchInput, 350)
+  const [pageSize, setPageSize] = useLocalStorageState('moderation_page_size', PAGE_SIZE)
   const [exporting, setExporting] = useState(false)
   const typeMap = useWorkTypeMap()
   const activeStatus = status === ALL ? null : status
-  const q = useWorksQueue({ status: activeStatus, search, sort })
+  const q = useWorksQueue({ status: activeStatus, search, sort, pageSize })
 
   async function onExport() {
     setExporting(true)
@@ -171,6 +173,8 @@ export default function ModerationPage() {
               total={q.totalItems}
               onPageChange={(p) => q.setPage(p + 1)}
               itemLabel={t('moderation.items')}
+              pageSizeOptions={[10, 20, 50]}
+              onPageSizeChange={setPageSize}
             />
           </>
         )}

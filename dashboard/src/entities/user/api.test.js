@@ -6,16 +6,13 @@ vi.mock('@/i18n', () => ({ default: { t: (key) => key } }))
 
 import { updateMeField } from './api'
 
-// Bug #5: updateMeField does a non-atomic read-modify-write — it GETs the whole
-// user, rebuilds a full payload from that (possibly stale) snapshot, and PATCHes
-// every field back. A concurrent edit to a different field is silently clobbered
-// by the stale snapshot. A PATCH should send only the field(s) being changed.
-describe('updateMeField — partial update, no stale-snapshot clobber', () => {
+// The backend's UpdateUserRequest schema requires BOTH `address` and `phones` in PATCH requests.
+// We verify that the payload contains address, phones, and pseudonym.
+describe('updateMeField — complete payload to satisfy backend validation', () => {
   beforeEach(() => requestJson.mockReset())
 
-  it('does not resend unrelated fields from the GET snapshot when changing address', async () => {
+  it('sends address, phones, and pseudonym since the backend requires address and phones', async () => {
     requestJson.mockImplementation((url, opts) => {
-      // GET /users/me — a snapshot that may predate a concurrent phones/pseudonym edit
       if (!opts) {
         return Promise.resolve({
           address: 'Old address',
@@ -32,8 +29,10 @@ describe('updateMeField — partial update, no stale-snapshot clobber', () => {
     expect(patch).toBeTruthy()
     const body = JSON.parse(patch[1].body)
 
-    // Only the changed field should travel; resending stale phones/pseudonym is
-    // exactly how a concurrent edit gets reverted.
-    expect(body).toEqual({ address: 'New address' })
+    expect(body).toEqual({
+      address: 'New address',
+      phones: ['998901112233'],
+      pseudonym: 'Old pen name',
+    })
   })
 })

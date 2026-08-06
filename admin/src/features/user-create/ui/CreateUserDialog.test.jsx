@@ -6,11 +6,27 @@ vi.mock('@/entities/user', async (importActual) => {
   return { ...actual, createUser: vi.fn() }
 })
 
+vi.mock('@shared/ui', async (importActual) => {
+  const actual = await importActual()
+  return {
+    ...actual,
+    Select: ({ value, onValueChange, children }) => (
+      <select value={value} onChange={(e) => onValueChange(e.target.value)}>
+        {children}
+      </select>
+    ),
+    SelectTrigger: ({ children }) => children,
+    SelectValue: () => null,
+    SelectContent: ({ children }) => children,
+    SelectItem: ({ value, children }) => <option value={value}>{children}</option>,
+  }
+})
+
 import { createUser } from '@/entities/user'
 import CreateUserDialog from './CreateUserDialog'
 
 // Default type is INDIVIDUAL → textbox order:
-// [lastName, firstName, middleName, pinfl, passportSeria, birthDate, pseudonym, phones, address]
+// [lastName, firstName, middleName, pinfl, passportSeria, birthDate, pseudonym, street]
 function boxes() {
   return screen.getAllByRole('textbox')
 }
@@ -18,14 +34,17 @@ function boxes() {
 describe('CreateUserDialog', () => {
   beforeEach(() => vi.clearAllMocks())
 
-  it('blocks submission when required fields are empty', () => {
+  it('blocks submission when required fields are empty', async () => {
     render(<CreateUserDialog open onOpenChange={() => {}} onCreated={() => {}} />)
 
-    fireEvent.click(screen.getByRole('button', { name: 'user.form.create' }))
+    const button = screen.getByRole('button', { name: 'user.form.create' })
+    await waitFor(() => expect(button).not.toBeDisabled())
+
+    fireEvent.click(button)
 
     expect(createUser).not.toHaveBeenCalled()
-    // Three required-field errors: lastName, firstName, address.
-    expect(screen.getAllByText('user.form.required')).toHaveLength(3)
+    // Five required-field errors: lastName, firstName, region, district, street.
+    expect(screen.getAllByText('user.form.required')).toHaveLength(5)
   })
 
   it('creates an individual with the minimal required fields', async () => {
@@ -34,17 +53,24 @@ describe('CreateUserDialog', () => {
     const onOpenChange = vi.fn()
     render(<CreateUserDialog open onOpenChange={onOpenChange} onCreated={onCreated} />)
 
+    const button = screen.getByRole('button', { name: 'user.form.create' })
+    await waitFor(() => expect(button).not.toBeDisabled())
+
     const [lastName, firstName] = boxes()
     fireEvent.change(lastName, { target: { value: 'ALIYEV' } })
     fireEvent.change(firstName, { target: { value: 'ALI' } })
-    fireEvent.change(boxes()[8], { target: { value: 'Tashkent' } })
+    fireEvent.change(screen.getByPlaceholderText('user.form.street_ph'), { target: { value: 'Tashkent' } })
 
-    fireEvent.click(screen.getByRole('button', { name: 'user.form.create' }))
+    const [, regionSelect, districtSelect] = screen.getAllByRole('combobox')
+    fireEvent.change(regionSelect, { target: { value: '1' } })
+    fireEvent.change(districtSelect, { target: { value: '15' } })
+
+    fireEvent.click(button)
 
     await waitFor(() =>
       expect(createUser).toHaveBeenCalledWith({
         type: 'INDIVIDUAL',
-        address: 'Tashkent',
+        address: 'Qoraqalpog‘iston Respublikasi, Amudaryo tumani, Tashkent',
         lastName: 'ALIYEV',
         firstName: 'ALI',
       })

@@ -1,4 +1,5 @@
 export {
+  getOverviewDashboard,
   getWorksDashboard,
   getUsersDashboard,
   getModerationDashboard,

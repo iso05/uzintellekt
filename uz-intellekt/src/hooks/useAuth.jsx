@@ -6,7 +6,7 @@ import {
   createContext,
   useContext,
 } from 'react'
-import { loginWithOneIdCode, getMe, tokenStorage } from '../services/api'
+import { loginWithOneIdCode, getMe, tokenStorage, refreshToken } from '../services/api'
 import { ONEID_CONFIG, generateState } from '../config/oneid.config'
 
 const AuthContext = createContext(null)
@@ -19,17 +19,27 @@ export function AuthProvider({ children }) {
   // ── App ochilganda tokenni tekshir ─────────────────────────
   useEffect(() => {
     const token = tokenStorage.get()
-    if (!token) {
-      setLoading(false)
-      return
-    }
-    getMe()
-      .then((userData) => setUser(userData))
-      .catch(() => {
+    const rToken = tokenStorage.getRefresh()
+
+    const checkAuth = async () => {
+      const startTime = Date.now()
+      try {
+        if (token || rToken) {
+          if (!token && rToken) {
+            await refreshToken()
+          }
+          const userData = await getMe()
+          setUser(userData)
+        }
+      } catch (err) {
         tokenStorage.clear()
         setUser(null)
-      })
-      .finally(() => setLoading(false))
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    checkAuth()
   }, [])
 
   // ── OneID sahifasiga redirect ───────────────────────────────

@@ -9,6 +9,9 @@ export {
   getAdminFileDownloadUrl,
   getAdminFilesGrid,
   deleteWorkFile,
+  initAdminUpload,
+  confirmAdminUpload,
+  putToStorage,
 } from './api'
 export {
   WORK_STATUS,

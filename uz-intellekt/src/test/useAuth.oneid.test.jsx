@@ -50,7 +50,12 @@ describe('OneID login — CSRF state', () => {
     vi.doMock('@/services/api', () => ({
       loginWithOneIdCode: vi.fn().mockResolvedValue({}),
       getMe: vi.fn().mockResolvedValue({ id: 1, isMember: true }),
-      tokenStorage: { get: vi.fn(() => null), set: vi.fn(), clear: vi.fn() },
+      tokenStorage: {
+        get: vi.fn(() => null),
+        getRefresh: vi.fn(() => null),
+        set: vi.fn(),
+        clear: vi.fn(),
+      },
     }))
     const { AuthProvider, useAuth } = await import('@/hooks/useAuth')
     const { result } = renderHook(() => useAuth(), { wrapper: AuthProvider })

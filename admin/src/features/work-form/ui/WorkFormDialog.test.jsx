@@ -45,7 +45,7 @@ describe('WorkFormDialog', () => {
       workTypeId: 1,
       description: 'desc',
       rightHolders: [
-        { lastName: 'ALIYEV', firstName: 'ALI', passportNo: 'AB123', sharePercentage: 100, authorRoleIds: [1] },
+        { lastName: 'ALIYEV', firstName: 'ALI', passportNo: 'AB1234567', sharePercentage: 100, authorRoleIds: [1] },
       ],
     }
     render(<WorkFormDialog mode="edit" work={work} open onOpenChange={onOpenChange} onDone={onDone} />)
@@ -58,7 +58,7 @@ describe('WorkFormDialog', () => {
         description: 'desc',
         workTypeId: 1,
         rightHolders: [
-          { passportNo: 'AB123', firstName: 'ALI', lastName: 'ALIYEV', sharePercentage: 100, authorRoles: [1] },
+          { passportNo: 'AB1234567', firstName: 'ALI', lastName: 'ALIYEV', sharePercentage: 100, authorRoles: [1] },
         ],
       })
     )

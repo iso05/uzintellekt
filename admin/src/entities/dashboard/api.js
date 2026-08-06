@@ -14,6 +14,10 @@ function qs(params) {
   return parts.length ? `?${parts.join('&')}` : ''
 }
 
+export function getOverviewDashboard({ from, to } = {}) {
+  return requestJson(`${BASE}/overview${qs({ from, to })}`)
+}
+
 export function getWorksDashboard({ from, to } = {}) {
   return requestJson(`${BASE}/works${qs({ from, to })}`)
 }

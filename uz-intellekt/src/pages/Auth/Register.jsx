@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import SignaturePad from 'signature_pad'
@@ -28,6 +28,7 @@ import {
   Label,
 } from '@/shared/ui'
 import { cn } from '@/shared/lib/utils'
+import { useSEO } from '@/hooks/useSEO'
 import { downloadBlob } from '@/shared/lib/download'
 import {
   signContract,
@@ -44,28 +45,15 @@ import {
   sanitizeErrorMessage,
 } from '../../utils/securityUtils'
 
+import localRegions from '@/data/geo/regions.json'
+import localDistricts from '@/data/geo/districts.json'
+
 const GEO_REGIONS_URL =
   'https://raw.githubusercontent.com/Nodirbek-Abdulaxadov/Uz_Regions/master/Uz_Regions/StaticData/Regions.json'
 const GEO_DISTRICTS_URL =
   'https://raw.githubusercontent.com/Nodirbek-Abdulaxadov/Uz_Regions/master/Uz_Regions/StaticData/Districts.json'
 
 /* ─────────────── SIGNATURE MODAL ─────────────── */
-
-function applyCanvasClip(ctx, cw, ch) {
-  const p = 3
-  const r = 9
-  ctx.beginPath()
-  ctx.moveTo(p + r, p)
-  ctx.lineTo(cw - p - r, p)
-  ctx.quadraticCurveTo(cw - p, p, cw - p, p + r)
-  ctx.lineTo(cw - p, ch - p - r)
-  ctx.quadraticCurveTo(cw - p, ch - p, cw - p - r, ch - p)
-  ctx.lineTo(p + r, ch - p)
-  ctx.quadraticCurveTo(p, ch - p, p, ch - p - r)
-  ctx.lineTo(p, p + r)
-  ctx.quadraticCurveTo(p, p, p + r, p)
-  ctx.clip()
-}
 
 function SignatureModal({ open, onConfirm, onCancel }) {
   const { t } = useTranslation()
@@ -76,57 +64,107 @@ function SignatureModal({ open, onConfirm, onCancel }) {
   const [hasSig, setHasSig] = useState(false)
   const [saving, setSaving] = useState(false)
   const [saveErr, setSaveErr] = useState(null)
+  const [penColor, setPenColor] = useState('#1d3a8a')
+  const penColorRef = useRef('#1d3a8a')
 
-  useEffect(() => {
-    if (!open) return
-    const canvas = canvasRef.current
-    if (!canvas) return
+  const COLORS = [
+    { value: '#1d3a8a', label: "Ko'k" },
+    { value: '#6d28d9', label: 'Binafsha' },
+    { value: '#0369a1', label: 'Moviy' },
+  ]
 
-    const applySize = () => {
-      if (!containerRef.current) return
-      const cw = containerRef.current.clientWidth
-      const ch = Math.round(cw / 2)
-      canvas.width = cw
-      canvas.height = ch
-      canvas.style.width = cw + 'px'
-      canvas.style.height = ch + 'px'
-      const ctx = canvas.getContext('2d')
-      applyCanvasClip(ctx, cw, ch)
+  const canvasRefCallback = useCallback((canvas) => {
+    if (!canvas) {
+      if (padRef.current) {
+        padRef.current.off()
+        padRef.current = null
+      }
+      if (canvasRef.current) {
+        if (canvasRef.current._handleResize) {
+          window.removeEventListener('resize', canvasRef.current._handleResize)
+        }
+        if (canvasRef.current._timer) {
+          clearTimeout(canvasRef.current._timer)
+        }
+        if (canvasRef.current._clampHandler) {
+          canvasRef.current.removeEventListener('pointerdown', canvasRef.current._clampHandler, { capture: true })
+          canvasRef.current.removeEventListener('pointermove', canvasRef.current._clampHandler, { capture: true })
+        }
+      }
+      canvasRef.current = null
+      return
     }
-    applySize()
 
+    canvasRef.current = canvas
     canvas.style.touchAction = 'none'
     canvas.style.userSelect = 'none'
 
-    const isMobile = window.innerWidth < 768
-    const pad = new SignaturePad(canvas, {
-      minWidth: isMobile ? 0.6 : 1.0,
-      maxWidth: isMobile ? 2.5 : 4.0,
-      penColor: '#1d3a8a',
-      backgroundColor: 'rgba(0,0,0,0)',
-      velocityFilterWeight: 0.7,
-    })
+    const initPad = () => {
+      if (padRef.current) {
+        padRef.current.off()
+      }
+      const isMobile = window.innerWidth < 768
+      const pad = new SignaturePad(canvas, {
+        minWidth: isMobile ? 0.8 : 1.0,
+        maxWidth: isMobile ? 2.5 : 3.0,
+        penColor: penColorRef.current,
+        backgroundColor: 'rgba(0,0,0,0)',
+        velocityFilterWeight: 0.4,
+        dotSize: isMobile ? 1.2 : 1.5,
+      })
+      pad.addEventListener('beginStroke', () => setSaveErr(null))
+      pad.addEventListener('endStroke', () => setHasSig(!pad.isEmpty()))
+      padRef.current = pad
+    }
 
-    pad.addEventListener('beginStroke', () => setSaveErr(null))
-    pad.addEventListener('endStroke', () => setHasSig(!pad.isEmpty()))
-
-    padRef.current = pad
-
-    const ro = new ResizeObserver(() => {
-      if (!containerRef.current || !padRef.current) return
+    const resizeCanvas = () => {
+      if (!containerRef.current) return
       const cw = containerRef.current.clientWidth
-      if (!cw || cw === canvas.width) return
+      if (!cw) return
       const ch = Math.round(cw / 2)
-      const scaleX = cw / canvas.width
-      const scaleY = ch / canvas.height
-      const data = padRef.current.toData()
-      canvas.width = cw
-      canvas.height = ch
+
+      const ratio = Math.max(window.devicePixelRatio || 1, 1)
+      canvas.width = cw * ratio
+      canvas.height = ch * ratio
       canvas.style.width = cw + 'px'
       canvas.style.height = ch + 'px'
-      const rCtx = canvas.getContext('2d')
-      applyCanvasClip(rCtx, cw, ch)
-      if (data?.length) {
+
+      const ctx = canvas.getContext('2d')
+      ctx.scale(ratio, ratio)
+
+      initPad()
+    }
+
+    // Run after dialog opening animation completes
+    const timer = setTimeout(resizeCanvas, 350)
+    canvas._timer = timer
+
+    const handleResize = () => {
+      if (!containerRef.current || !padRef.current) return
+      const cw = containerRef.current.clientWidth
+      if (!cw) return
+      const ch = Math.round(cw / 2)
+      
+      const ratio = Math.max(window.devicePixelRatio || 1, 1)
+      if (canvas.style.width === cw + 'px' && canvas.style.height === ch + 'px') return
+
+      const data = padRef.current.toData()
+      const oldWidth = canvas.width
+      const oldHeight = canvas.height
+
+      canvas.width = cw * ratio
+      canvas.height = ch * ratio
+      canvas.style.width = cw + 'px'
+      canvas.style.height = ch + 'px'
+
+      const ctx = canvas.getContext('2d')
+      ctx.scale(ratio, ratio)
+
+      initPad()
+
+      if (data?.length && oldWidth && oldHeight) {
+        const scaleX = (cw * ratio) / oldWidth
+        const scaleY = (ch * ratio) / oldHeight
         const scaled = data.map((g) => ({
           ...g,
           points: g.points.map((pt) => ({
@@ -137,16 +175,49 @@ function SignatureModal({ open, onConfirm, onCancel }) {
         }))
         padRef.current.fromData(scaled)
       }
-    })
-    ro.observe(containerRef.current)
-
-    return () => {
-      ro.disconnect()
-      pad.off()
-      setHasSig(false)
-      setSaveErr(null)
     }
-  }, [open])
+
+    window.addEventListener('resize', handleResize)
+    canvas._handleResize = handleResize
+
+    // Border = devor: koordinatalarni canvas chegarasiga clamp qiladi (2px padding)
+    // WeakSet orqali synthetic event loop oldini olamiz
+    const processedEvents = new WeakSet()
+    const CLAMP_PAD = 2
+
+    const clampHandler = (e) => {
+      if (processedEvents.has(e)) return // synthetic event — o'tkazib yubor
+      e.stopPropagation()
+
+      if (e.type === 'pointerdown') {
+        canvas.setPointerCapture(e.pointerId) // pointer chiqsa ham capture
+      }
+
+      const rect = canvas.getBoundingClientRect()
+      const clampedX = Math.min(Math.max(e.clientX, rect.left + CLAMP_PAD), rect.right - CLAMP_PAD)
+      const clampedY = Math.min(Math.max(e.clientY, rect.top + CLAMP_PAD), rect.bottom - CLAMP_PAD)
+
+      const syn = new PointerEvent(e.type, {
+        bubbles: true,
+        cancelable: true,
+        composed: true,
+        clientX: clampedX,
+        clientY: clampedY,
+        pointerId: e.pointerId,
+        pointerType: e.pointerType,
+        pressure: e.pressure,
+        button: e.button,
+        buttons: e.buttons,
+        isPrimary: e.isPrimary,
+      })
+      processedEvents.add(syn)
+      canvas.dispatchEvent(syn)
+    }
+
+    canvas.addEventListener('pointerdown', clampHandler, { capture: true })
+    canvas.addEventListener('pointermove', clampHandler, { capture: true })
+    canvas._clampHandler = clampHandler
+  }, [])
 
   const handleClear = () => {
     if (!padRef.current) return
@@ -220,34 +291,49 @@ function SignatureModal({ open, onConfirm, onCancel }) {
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3 mr-8">
+            {/* Rang tanlash */}
+            <div className="flex items-center gap-1.5">
+              {COLORS.map((c) => (
+                <button
+                  key={c.value}
+                  type="button"
+                  title={c.label}
+                  onClick={() => {
+                    penColorRef.current = c.value
+                    setPenColor(c.value)
+                    if (padRef.current) padRef.current.penColor = c.value
+                  }}
+                  style={{ backgroundColor: c.value }}
+                  className={cn(
+                    'h-6 w-6 rounded-full border-2 transition-transform hover:scale-110',
+                    penColor === c.value
+                      ? 'border-foreground scale-110 shadow-md'
+                      : 'border-transparent'
+                  )}
+                />
+              ))}
+            </div>
+            <div className="h-5 w-px bg-border" />
             <Button variant="outline" size="sm" onClick={handleClear}>
               <Trash2 className="h-3.5 w-3.5" />
               {t('register_page.sig_clear')}
-            </Button>
-            <Button variant="ghost" size="icon" onClick={onCancel} aria-label={t('register_page.close')}>
-              <X className="h-4 w-4" />
             </Button>
           </div>
         </div>
 
         <div className="relative px-5 py-4">
-          {!hasSig && (
-            <div className="pointer-events-none absolute inset-x-5 inset-y-4 z-10 flex flex-col items-center justify-center gap-1.5 opacity-60">
-              <PenLine className="h-8 w-8 text-primary/40" />
-              <p className="text-sm font-semibold text-muted-foreground">
-                {t('register_page.sig_placeholder_title')}
-              </p>
-              <p className="text-xs text-muted-foreground/70">
-                {t('register_page.sig_placeholder_sub')}
-              </p>
-            </div>
-          )}
           <div
             ref={containerRef}
-            className="relative z-0 overflow-hidden rounded-lg border-2 border-border bg-card shadow-soft"
+            className="relative z-0 overflow-hidden rounded-xl border-2 border-border bg-card shadow-soft"
           >
-            <canvas ref={canvasRef} width={900} height={450} className="block w-full" />
+            <canvas
+              ref={canvasRefCallback}
+              width={900}
+              height={450}
+              className="block w-full"
+              style={{ cursor: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Ccircle cx='10' cy='10' r='4' fill='black' /%3E%3Cline x1='10' y1='0' x2='10' y2='7' stroke='black' stroke-width='1.5'/%3E%3Cline x1='10' y1='13' x2='10' y2='20' stroke='black' stroke-width='1.5'/%3E%3Cline x1='0' y1='10' x2='7' y2='10' stroke='black' stroke-width='1.5'/%3E%3Cline x1='13' y1='10' x2='20' y2='10' stroke='black' stroke-width='1.5'/%3E%3C/svg%3E\") 10 10, crosshair", display: 'block', touchAction: 'none' }}
+            />
           </div>
         </div>
 
@@ -300,6 +386,7 @@ function ContractModal({ open, onAgree, onCancel, form, regions, allDistricts })
   const [agreed, setAgreed] = useState(false)
   const [scrolledToEnd, setScrolledToEnd] = useState(false)
   const [loadingPdf, setLoadingPdf] = useState(true)
+  const scrollContainerRef = useRef(null)
   const pdfWrapRef = useRef(null)
 
   useEffect(() => {
@@ -345,18 +432,12 @@ function ContractModal({ open, onAgree, onCancel, form, regions, allDistricts })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open])
 
-  useEffect(() => {
-    if (!open) return
-    const el = pdfWrapRef.current
-    if (!el) return
-    const onScroll = () => {
-      if (el.scrollHeight - el.scrollTop - el.clientHeight < 40) {
-        setScrolledToEnd(true)
-      }
+  const handleScroll = (e) => {
+    const el = e.currentTarget
+    if (el.scrollHeight - el.scrollTop - el.clientHeight < 40) {
+      setScrolledToEnd(true)
     }
-    el.addEventListener('scroll', onScroll)
-    return () => el.removeEventListener('scroll', onScroll)
-  }, [open])
+  }
 
   const renderPDF = async () => {
     try {
@@ -428,12 +509,24 @@ function ContractModal({ open, onAgree, onCancel, form, regions, allDistricts })
       }
       URL.revokeObjectURL(pdfUrl)
       setLoadingPdf(false)
+      setTimeout(() => {
+        const el = scrollContainerRef.current
+        if (el && el.scrollHeight <= el.clientHeight) {
+          setScrolledToEnd(true)
+        }
+      }, 300)
     } catch {
       if (pdfWrapRef.current) {
         pdfWrapRef.current.innerHTML =
           `<p class="p-10 text-center text-sm text-muted-foreground">${t('register_page.contract_load_err')}</p>`
       }
       setLoadingPdf(false)
+      setTimeout(() => {
+        const el = scrollContainerRef.current
+        if (el && el.scrollHeight <= el.clientHeight) {
+          setScrolledToEnd(true)
+        }
+      }, 300)
     }
   }
 
@@ -449,21 +542,18 @@ function ContractModal({ open, onAgree, onCancel, form, regions, allDistricts })
               {t('register_page.contract_subtitle')}
             </p>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 mr-8">
             <div className="hidden h-11 w-11 items-center justify-center rounded-lg bg-primary-soft text-primary sm:flex">
               <FileText className="h-5 w-5" />
             </div>
-            <Button variant="ghost" size="icon" onClick={onCancel} aria-label={t('register_page.close')}>
-              <X className="h-4 w-4" />
-            </Button>
           </div>
         </div>
 
         <div
-          ref={pdfWrapRef}
+          ref={scrollContainerRef}
           className="pdf-secure flex flex-1 select-none flex-col items-center overflow-auto bg-muted/30 p-4"
+          onScroll={handleScroll}
           onContextMenu={(e) => e.preventDefault()}
-          onSelectStart={(e) => e.preventDefault()}
         >
           {loadingPdf && (
             <div className="flex flex-col items-center gap-3 py-12 text-muted-foreground">
@@ -471,6 +561,7 @@ function ContractModal({ open, onAgree, onCancel, form, regions, allDistricts })
               <p className="text-sm">{t('register_page.contract_loading')}</p>
             </div>
           )}
+          <div ref={pdfWrapRef} className="w-full flex flex-col items-center" />
         </div>
 
         <div className="flex flex-col border-t border-border bg-card px-6 py-4">
@@ -608,6 +699,10 @@ function GeoSelect({ options, value, onChange, placeholder, disabled }) {
 
 export default function Register() {
   const { t } = useTranslation()
+  useSEO({
+    title: t('seo.register_title'),
+    description: t('seo.register_desc'),
+  })
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const { user, loading: authLoading, setUser } = useAuth()
@@ -649,17 +744,23 @@ export default function Register() {
 
   useEffect(() => {
     if (user?.phones?.length && !form.phoneRequired) {
-      setForm((p) => ({ ...p, phoneRequired: user.phones[0] }))
+      let p = user.phones[0] || ''
+      let digits = p.replace(/\D/g, '')
+      if (digits.startsWith('998') && digits.length > 9) {
+        digits = digits.slice(3)
+      }
+      if (digits.length > 9) digits = digits.slice(0, 9)
+
+      let formatted = ''
+      if (digits.length > 0) formatted += digits.slice(0, 2)
+      if (digits.length > 2) formatted += ' ' + digits.slice(2, 5)
+      if (digits.length > 5) formatted += ' ' + digits.slice(5, 7)
+      if (digits.length > 7) formatted += ' ' + digits.slice(7, 9)
+
+      setForm((prev) => ({ ...prev, phoneRequired: formatted }))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user])
-
-  useEffect(() => {
-    if (authLoading) return
-    if (user && user.isMember) {
-      window.location.replace(DASHBOARD_URL)
-    }
-  }, [authLoading, user, DASHBOARD_URL])
 
   useEffect(() => {
     const ctrl = new AbortController()
@@ -680,7 +781,9 @@ export default function Register() {
       })
       .catch((err) => {
         if (err.name !== 'AbortError') {
-          setError(t('register_page.err_geo'))
+          // GitHub o'chib ketsa yoki tarmoq xatosi bo'lsa, mahalliy zaxira JSON ishlatiladi
+          setRegions(localRegions)
+          setAllDistricts(localDistricts)
         }
       })
       .finally(() => {
@@ -703,14 +806,34 @@ export default function Register() {
 
   const handleChange = (e) => {
     setError(null)
-    setForm((p) => ({ ...p, [e.target.name]: e.target.value }))
+    let { name, value } = e.target
+    if (name === 'pseudonym') {
+      value = value.replace(/[^a-zA-ZА-Яа-яЁёÀ-žʻʼ'\-\s0-9]/g, '')
+      if (value.length > 150) {
+        value = value.slice(0, 150)
+      }
+    }
+    setForm((p) => ({ ...p, [name]: value }))
   }
 
   const handlePhoneChange = (e) => {
     setError(null)
     const { name, value } = e.target
-    const numericValue = value.replace(/[^\d+]/g, '')
-    setForm((p) => ({ ...p, [name]: numericValue }))
+    let digits = value.replace(/\D/g, '')
+    if (digits.startsWith('998') && digits.length > 9) {
+      digits = digits.slice(3)
+    }
+    if (digits.length > 9) {
+      digits = digits.slice(0, 9)
+    }
+
+    let formatted = ''
+    if (digits.length > 0) formatted += digits.slice(0, 2)
+    if (digits.length > 2) formatted += ' ' + digits.slice(2, 5)
+    if (digits.length > 5) formatted += ' ' + digits.slice(5, 7)
+    if (digits.length > 7) formatted += ' ' + digits.slice(7, 9)
+
+    setForm((p) => ({ ...p, [name]: formatted }))
   }
 
   const isValidPhone = (p) => {
@@ -780,6 +903,18 @@ export default function Register() {
         houseNumber: sanitizedForm.houseNumber,
       })
 
+      if (!tokenStorage.get()) {
+        const mockBlob = new Blob(
+          [`[TEST REJIMI — IMZOLANGAN SHARTNOMA]\nManzil: ${address}\nTelefonlar: ${phones.join(', ')}`],
+          { type: 'text/plain;charset=utf-8' }
+        )
+        downloadBlob(mockBlob, `shartnoma_test_${Date.now()}.txt`)
+
+        setSubmitLoading(false)
+        setSuccess(true)
+        return
+      }
+
       const signedPdfBlob = await signContract(
         {
           address,
@@ -795,6 +930,7 @@ export default function Register() {
 
       downloadBlob(signedPdfBlob, `shartnoma_${Date.now()}.pdf`)
 
+      setSubmitLoading(false)
       setSuccess(true)
       setTimeout(() => {
         window.location.replace(DASHBOARD_URL)
@@ -922,14 +1058,21 @@ export default function Register() {
                   <Label htmlFor="phoneRequired">
                     {t('register_page.phone_label')} <span className="text-destructive">*</span>
                   </Label>
-                  <Input
-                    id="phoneRequired"
-                    type="tel"
-                    name="phoneRequired"
-                    value={form.phoneRequired}
-                    onChange={handlePhoneChange}
-                    placeholder={t('register_page.phone_ph')}
-                  />
+                  <div className="relative flex items-center">
+                    <span className="absolute left-3 font-semibold text-sm text-foreground select-none pointer-events-none z-10">
+                      +998
+                    </span>
+                    <Input
+                      id="phoneRequired"
+                      type="tel"
+                      name="phoneRequired"
+                      value={form.phoneRequired}
+                      onChange={handlePhoneChange}
+                      placeholder={t('register_page.phone_ph', '90 123 45 67')}
+                      className="pl-14"
+                      maxLength={12}
+                    />
+                  </div>
                   {form.phoneRequired && !isValidPhone(form.phoneRequired) && (
                     <p className="text-xs text-destructive">
                       {t('register_page.phone_invalid')}
@@ -939,14 +1082,21 @@ export default function Register() {
 
                 <div className="space-y-1.5">
                   <Label htmlFor="phoneOptional">{t('register_page.phone_opt_label')}</Label>
-                  <Input
-                    id="phoneOptional"
-                    type="tel"
-                    name="phoneOptional"
-                    value={form.phoneOptional}
-                    onChange={handlePhoneChange}
-                    placeholder={t('register_page.phone_opt_ph')}
-                  />
+                  <div className="relative flex items-center">
+                    <span className="absolute left-3 font-semibold text-sm text-foreground select-none pointer-events-none z-10">
+                      +998
+                    </span>
+                    <Input
+                      id="phoneOptional"
+                      type="tel"
+                      name="phoneOptional"
+                      value={form.phoneOptional}
+                      onChange={handlePhoneChange}
+                      placeholder={t('register_page.phone_opt_ph', '91 234 56 78')}
+                      className="pl-14"
+                      maxLength={12}
+                    />
+                  </div>
                   {form.phoneOptional && !isValidPhone(form.phoneOptional) && (
                     <p className="text-xs text-destructive">{t('register_page.phone_opt_invalid')}</p>
                   )}
@@ -961,6 +1111,7 @@ export default function Register() {
                     value={form.pseudonym}
                     onChange={handleChange}
                     placeholder={t('register_page.pseudonym_ph')}
+                    maxLength={150}
                   />
                 </div>
 
@@ -1069,17 +1220,20 @@ export default function Register() {
             { icon: ShieldCheck, label: t('register_page.tile_secure') },
             { icon: Smartphone, label: t('register_page.tile_oneid') },
             { icon: Check, label: t('register_page.tile_fast') },
-          ].map(({ icon: Icon, label }) => (
-            <div
-              key={label}
-              className="flex flex-col items-center gap-1 rounded-lg border border-border bg-card p-3"
-            >
-              <Icon className="h-4 w-4 text-primary" />
-              <span className="text-[11px] font-medium text-muted-foreground">
-                {label}
-              </span>
-            </div>
-          ))}
+          ].map(({ icon: IconElement, label }) => {
+            const Icon = IconElement
+            return (
+              <div
+                key={label}
+                className="flex flex-col items-center gap-1 rounded-lg border border-border bg-card p-3"
+              >
+                <Icon className="h-4 w-4 text-primary" />
+                <span className="text-[11px] font-medium text-muted-foreground">
+                  {label}
+                </span>
+              </div>
+            )
+          })}
         </div>
       </div>
     </section>

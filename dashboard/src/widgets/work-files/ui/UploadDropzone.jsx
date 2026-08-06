@@ -65,6 +65,7 @@ export default function UploadDropzone({ onFiles, disabled = false }) {
         accept={ACCEPT_ATTR}
         className="hidden"
         onChange={handleChange}
+        onClick={(e) => e.stopPropagation()}
         disabled={disabled}
       />
     </div>

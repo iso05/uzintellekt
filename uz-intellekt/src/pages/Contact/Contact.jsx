@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import emailjs from '@emailjs/browser'
 import { Clock, Info, Loader2, Mail, MapPin, Phone, Send } from 'lucide-react'
 import { Button, Card, CardContent, Input, Label, Textarea } from '@/shared/ui'
+import { useSEO } from '@/hooks/useSEO'
 
 const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID
 const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID
@@ -15,6 +16,10 @@ const INITIAL = { from_name: '', from_email: '', message: '' }
 
 const Contact = () => {
   const { t } = useTranslation()
+  useSEO({
+    title: t('seo.contact_title'),
+    description: t('seo.contact_desc'),
+  })
   const formRef = useRef()
   const [form, setForm] = useState(INITIAL)
   const [status, setStatus] = useState(null)

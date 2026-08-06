@@ -23,17 +23,17 @@ describe('buildHolderErrorKey', () => {
 describe('findDuplicatePassportErrors', () => {
   it('returns empty when no duplicates', () => {
     const errors = findDuplicatePassportErrors([
-      holder({ passportNo: 'AB1234567' }),
-      holder({ passportNo: 'CD7654321' }),
+      holder({ passportNo: '30101961234509' }),
+      holder({ passportNo: '40101961234506' }),
     ])
     expect(errors).toEqual({})
   })
 
   it('flags the second+ occurrence, not the first', () => {
     const errors = findDuplicatePassportErrors([
-      holder({ passportNo: 'AB1234567' }),
-      holder({ passportNo: 'AB1234567' }),
-      holder({ passportNo: 'AB1234567' }),
+      holder({ passportNo: '30101961234509' }),
+      holder({ passportNo: '30101961234509' }),
+      holder({ passportNo: '30101961234509' }),
     ])
     expect(errors['rightHolders[0].passportNo']).toBeUndefined()
     expect(errors['rightHolders[1].passportNo']).toEqual({ key: 'validation.passport_dup' })
@@ -42,8 +42,8 @@ describe('findDuplicatePassportErrors', () => {
 
   it('is case-insensitive and trims whitespace', () => {
     const errors = findDuplicatePassportErrors([
-      holder({ passportNo: 'ab1234567' }),
-      holder({ passportNo: '  AB1234567  ' }),
+      holder({ passportNo: '30101961234509' }),
+      holder({ passportNo: '  30101961234509  ' }),
     ])
     expect(errors['rightHolders[1].passportNo']).toBeDefined()
   })
@@ -86,7 +86,7 @@ describe('validateHolder', () => {
   it('passes for a fully valid holder', () => {
     const errors = validateHolder(
       holder({
-        passportNo: 'AB1234567',
+        passportNo: '30101961234509',
         firstName: 'Ali',
         lastName: 'Valiyev',
         share: '100',
@@ -100,7 +100,7 @@ describe('validateHolder', () => {
   it('reports missing role', () => {
     const errors = validateHolder(
       holder({
-        passportNo: 'AB1234567',
+        passportNo: '30101961234509',
         firstName: 'Ali',
         lastName: 'Valiyev',
         share: '100',
@@ -119,14 +119,14 @@ describe('validateWorkForm', () => {
       workTypeId: '1',
       rightHolders: [
         holder({
-          passportNo: 'AB1234567',
+          passportNo: '30101961234509',
           firstName: 'A',
           lastName: 'B',
           share: '50',
           authorRoleIds: ['1'],
         }),
         holder({
-          passportNo: 'AB1234567',
+          passportNo: '30101961234509',
           firstName: 'C',
           lastName: 'D',
           share: '50',
@@ -159,11 +159,13 @@ describe('toPayload', () => {
       workTypeId: '5',
       rightHolders: [
         holder({
-          passportNo: 'AB1234567',
+          passportNo: '30101961234509',
           firstName: 'Ali',
           lastName: 'Valiyev',
           share: '100',
           authorRoleIds: ['1', '2'],
+          ownerType: 'CONTRACT',
+          contractFiles: ['test.pdf'],
         }),
       ],
     })
@@ -173,11 +175,19 @@ describe('toPayload', () => {
       workTypeId: 5,
       rightHolders: [
         {
-          passportNo: 'AB1234567',
-          firstName: 'Ali',
-          lastName: 'Valiyev',
+          passportNo: '30101961234509',
+          ownerType: 'AUTHOR',
+          rightHolderType: 'AUTHOR',
+          subjectType: 'INDIVIDUAL',
+          pinfl: '30101961234509',
+          firstName: 'ALI',
+          lastName: 'VALIYEV',
+          inn: null,
+          legalName: null,
           sharePercentage: 100,
           authorRoles: [1, 2],
+          contractFile: 'test.pdf',
+          contractFiles: ['test.pdf'],
         },
       ],
     })

@@ -2,6 +2,7 @@ import { NavLink } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { ArrowRight, Check, FileBadge, Lock, ShieldCheck } from 'lucide-react'
 import { Button, Card, CardContent } from '@/shared/ui'
+import { useSEO } from '@/hooks/useSEO'
 
 const features = [
   {
@@ -37,6 +38,10 @@ const steps = [
 
 const Depositing = () => {
   const { t } = useTranslation()
+  useSEO({
+    title: t('seo.depositing_title'),
+    description: t('seo.depositing_desc'),
+  })
   return (
     <section className="bg-background py-16 sm:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">

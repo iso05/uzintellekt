@@ -66,4 +66,18 @@ describe('useGridQuery', () => {
     expect(result.current.error).toBe('boom')
     expect(result.current.items).toEqual([])
   })
+
+  it('resets to page 1 when pageSize changes', async () => {
+    const fetcher = vi.fn().mockResolvedValue(PAGE)
+    const { result, rerender } = renderHook(({ pageSize }) => useGridQuery({ fetcher, pageSize }), {
+      initialProps: { pageSize: 10 },
+    })
+    await waitFor(() => expect(result.current.loading).toBe(false))
+
+    act(() => result.current.setPage(3))
+    await waitFor(() => expect(result.current.page).toBe(3))
+
+    rerender({ pageSize: 20 })
+    await waitFor(() => expect(result.current.page).toBe(1))
+  })
 })

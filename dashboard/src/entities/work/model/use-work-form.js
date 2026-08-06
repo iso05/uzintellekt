@@ -1,10 +1,12 @@
 import { useState, useCallback, useEffect, useRef } from 'react'
-import { maskName, maskPassport, maskShare } from '@shared/lib/input-masks'
+import { maskLatinName, maskPassport, maskShare, maskUzPinfl } from '@shared/lib/input-masks'
 import {
   validateRequired,
   validatePassport,
-  validateName,
+  validatePinfl,
+  validateLatinName,
   validateShare,
+  normalizePassportName,
 } from '@shared/lib/validators'
 import {
   EMPTY_HOLDER,
@@ -22,8 +24,8 @@ const INITIAL_FORM = {
 
 const HOLDER_FIELD_MASKS = {
   passportNo: maskPassport,
-  firstName: maskName,
-  lastName: maskName,
+  firstName: maskLatinName,
+  lastName: maskLatinName,
   share: maskShare,
 }
 
@@ -33,9 +35,9 @@ const FIELD_BLUR_VALIDATORS = {
 }
 
 const HOLDER_BLUR_VALIDATORS = {
-  passportNo: validatePassport,
-  firstName: (v) => validateName(v, 'validation.field_first_name'),
-  lastName: (v) => validateName(v, 'validation.field_last_name'),
+  passportNo: null,
+  firstName: (v) => validateLatinName(v, 'validation.field_first_name'),
+  lastName: (v) => validateLatinName(v, 'validation.field_last_name'),
   share: validateShare,
   authorRoleIds: (v) => (!v || v.length === 0 ? { key: 'validation.role_required' } : null),
 }
@@ -63,9 +65,24 @@ export function useWorkForm(initial = INITIAL_FORM) {
   }, [])
 
   const setHolder = useCallback((idx, key, raw) => {
-    const value = HOLDER_FIELD_MASKS[key] ? HOLDER_FIELD_MASKS[key](raw) : raw
     setForm((f) => {
       const rh = [...f.rightHolders]
+      const holder = rh[idx]
+      const isLegal = holder?.type === 'LEGAL'
+
+      let value = raw
+      if (key === 'passportNo') {
+        if (isLegal) {
+          value = raw.replace(/\D/g, '').slice(0, 9)
+        } else {
+          value = maskUzPinfl(raw)
+        }
+      } else if ((key === 'firstName' || key === 'lastName') && isLegal) {
+        value = raw
+      } else if (HOLDER_FIELD_MASKS[key]) {
+        value = HOLDER_FIELD_MASKS[key](raw)
+      }
+
       rh[idx] = { ...rh[idx], [key]: value }
       return { ...f, rightHolders: rh }
     })
@@ -104,23 +121,74 @@ export function useWorkForm(initial = INITIAL_FORM) {
   }, [])
 
   const handleHolderBlur = useCallback((idx, field, value) => {
-    const validator = HOLDER_BLUR_VALIDATORS[field]
+    let finalValue = value
+    const holder = formRef.current.rightHolders[idx]
+    const isLegal = holder?.type === 'LEGAL'
+
+    if (field === 'firstName' || field === 'lastName') {
+      if (!isLegal) {
+        finalValue = normalizePassportName(value)
+        setForm((f) => {
+          const rh = [...f.rightHolders]
+          rh[idx] = { ...rh[idx], [field]: finalValue }
+          return { ...f, rightHolders: rh }
+        })
+      }
+    }
+
     setFieldErrors((prev) => {
       const next = { ...prev }
-      if (validator) {
-        const err = validator(value)
-        const errKey = buildHolderErrorKey(idx, field)
-        if (err) next[errKey] = err
-        else delete next[errKey]
+      const errKey = buildHolderErrorKey(idx, field)
+
+      if (field === 'passportNo') {
+        if (isLegal) {
+          if (!finalValue || finalValue.trim() === '') {
+            next[errKey] = { key: 'validation.inn_required' }
+          } else if (!/^\d{9}$/.test(finalValue.trim())) {
+            next[errKey] = { key: 'validation.inn_format' }
+          } else {
+            delete next[errKey]
+          }
+        } else {
+          const err = validatePinfl(finalValue)
+          if (err) next[errKey] = err
+          else delete next[errKey]
+        }
+      } else if (field === 'firstName') {
+        if (isLegal) {
+          if (!finalValue || finalValue.trim() === '') {
+            next[errKey] = { key: 'validation.org_name_required' }
+          } else {
+            delete next[errKey]
+          }
+        } else {
+          const err = validateLatinName(finalValue, 'validation.field_first_name')
+          if (err) next[errKey] = err
+          else delete next[errKey]
+        }
+      } else if (field === 'lastName') {
+        if (isLegal) {
+          delete next[errKey]
+        } else {
+          const err = validateLatinName(finalValue, 'validation.field_last_name')
+          if (err) next[errKey] = err
+          else delete next[errKey]
+        }
+      } else {
+        const validator = HOLDER_BLUR_VALIDATORS[field]
+        if (validator) {
+          const err = validator(finalValue)
+          if (err) next[errKey] = err
+          else delete next[errKey]
+        }
       }
+
       // Cross-holder uniqueness for passportNo: re-run on every passport blur
       // so editing one holder's passport can clear or trigger errors on others.
-      // Build a fresh snapshot from formRef + the value just blurred — onChange
-      // and onBlur fire in the same batch, so formRef may still be stale.
       if (field === 'passportNo') {
-        const maskedValue = HOLDER_FIELD_MASKS.passportNo
-          ? HOLDER_FIELD_MASKS.passportNo(value)
-          : value
+        const maskedValue = isLegal
+          ? finalValue.trim()
+          : (HOLDER_FIELD_MASKS.passportNo ? HOLDER_FIELD_MASKS.passportNo(value) : value)
         const holders = formRef.current.rightHolders.map((h, i) =>
           i === idx ? { ...h, passportNo: maskedValue } : h
         )

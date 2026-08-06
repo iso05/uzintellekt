@@ -107,8 +107,8 @@
       "region_ph": "Select region",
       "district_ph": "Select district",
       "district_ph_region_first": "Select a region first",
-      "street_ph": "e.g. Mustaqillik street",
-      "house_ph": "e.g. House 45",
+      "street_ph": "Mustaqillik street",
+      "house_ph": "House 45",
       "geo_loading": "Loading regions list...",
       "geo_error": "Failed to load region/district data."
     },
@@ -163,9 +163,12 @@
       "remove_holder": "Remove",
       "select_roles": "Select roles",
       "roles_selected": "{{count}} roles",
+      "select_files": "Select files",
+      "files_required": "At least 1 file must be uploaded",
       "create": "Create",
       "created_toast": "Work created",
-      "updated_toast": "Work updated"
+      "updated_toast": "Work updated",
+      "user_is_author": "The user is the author"
     },
     "submit": {
       "action": "Submit for review",
@@ -357,12 +360,23 @@
     "total": "Total",
     "items": "items",
     "prev": "Previous page",
-    "next": "Next page"
+    "next": "Next page",
+    "per_page": "Show:"
   },
   "validation": {
     "phone_required": "Phone number is required",
     "phone_998": "Phone number must start with 998",
     "phone_incomplete": "Phone number is incomplete (998XXXXXXXXX)",
-    "phone_format": "Invalid phone number (use format 998XXXXXXXXX)"
+    "phone_format": "Invalid phone number (use format 998XXXXXXXXX)",
+    "pinfl_format": "PINFL must be exactly 14 digits",
+    "passport_seria_format": "Series: 2 uppercase letters + 7 digits (e.g. AA1234567)",
+    "birth_date_format": "Enter date in dd.MM.yyyy format (e.g. 15.03.1990)",
+    "birth_date_invalid": "This date does not exist",
+    "birth_date_range": "Date of birth must be after 1900 and before today",
+    "latin_only": "First/last name must contain only Latin letters without spaces",
+    "field_required": "This field is required"
+  },
+  "errors": {
+    "draft_limit": "Limit reached: up to 3 drafts."
   }
 }

@@ -83,7 +83,7 @@
   },
   "stats": {
     "total": "Total works",
-    "registered": "Approved",
+    "registered": "Accepted",
     "pending": "Under review",
     "rejected": "Rejected"
   },
@@ -91,7 +91,7 @@
     "DRAFT": "Draft",
     "UNDER_REVIEW": "Under review",
     "REJECTED": "Rejected",
-    "REGISTERED": "Registered",
+    "REGISTERED": "Accepted",
     "unknown": "Unknown"
   },
   "recent": {
@@ -231,6 +231,10 @@
     "passport_required": "Passport series/number is required",
     "passport_format": "Invalid passport format (AA1234567)",
     "passport_dup": "This passport is already in the rights holders list",
+    "latin_only": "First/last name must contain only Latin letters",
+    "birth_date_format": "Enter date in dd.MM.yyyy format (e.g. 15.03.1990)",
+    "birth_date_invalid": "The entered date does not exist",
+    "birth_date_range": "Birth date must be between 1900 and today",
     "phone_required": "Phone number is required",
     "phone_998": "Phone number must start with 998",
     "phone_incomplete": "Phone number is incomplete (998XXXXXXXXX)",
@@ -327,6 +331,7 @@
     "download_error": "Could not get the link",
     "delete_confirm_title": "Delete file?",
     "delete_confirm_desc": "“{{name}}” will be permanently deleted.",
+    "delete_confirm_desc_prefix": "The following file will be permanently deleted:",
     "reject_type": "“{{name}}”: file type not allowed",
     "reject_quota": "“{{name}}”: not enough storage space",
     "load_error": "Could not load files",

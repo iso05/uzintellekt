@@ -25,6 +25,7 @@ import {
   toast,
 } from '@shared/ui'
 import { useDebouncedValue } from '@shared/hooks/use-debounced-value'
+import { useLocalStorageState } from '@shared/hooks/use-local-storage-state'
 import { formatDate, formatDateTime } from '@shared/lib/format'
 import { toCsv, downloadCsv } from '@shared/lib/csv'
 import {
@@ -48,6 +49,7 @@ export default function ContractsPage() {
   const [searchInput, setSearchInput] = useState('')
   const [sort, setSort] = useState(null)
   const search = useDebouncedValue(searchInput, 350)
+  const [pageSize, setPageSize] = useLocalStorageState('contracts_page_size', PAGE_SIZE)
   const [exporting, setExporting] = useState(false)
 
   const filterArgs = {
@@ -55,7 +57,7 @@ export default function ContractsPage() {
     state: state === ALL ? null : state,
     search,
   }
-  const q = useContractsQueue({ ...filterArgs, sort })
+  const q = useContractsQueue({ ...filterArgs, sort, pageSize })
 
   async function download(contract) {
     try {
@@ -207,6 +209,8 @@ export default function ContractsPage() {
               total={q.totalItems}
               onPageChange={(p) => q.setPage(p + 1)}
               itemLabel={t('contract.items')}
+              pageSizeOptions={[10, 20, 50]}
+              onPageSizeChange={setPageSize}
             />
           </>
         )}

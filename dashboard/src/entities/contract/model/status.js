@@ -5,6 +5,7 @@ export const CONTRACT_STATUS = {
   EXPIRED: 'EXPIRED',
   PENDING: 'PENDING',
   CANCELLED: 'CANCELLED',
+  CREATED: 'CREATED',
 }
 
 // Maps backend status → a Badge variant. Labels are resolved via i18n

@@ -28,9 +28,7 @@ const Header = () => {
             <NavLink to="/login" className="hidden lg:inline-flex">
               <Button size="sm">{t('nav.login_join', "A'zo bo'lish/Kirish")}</Button>
             </NavLink>
-            <div className="hidden lg:block">
-              <LanguageSwitcher />
-            </div>
+            <LanguageSwitcher />
 
             <Button
               variant="ghost"

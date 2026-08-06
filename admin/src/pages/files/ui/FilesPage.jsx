@@ -37,6 +37,7 @@ import {
   toast,
 } from '@shared/ui'
 import { useDebouncedValue } from '@shared/hooks/use-debounced-value'
+import { useLocalStorageState } from '@shared/hooks/use-local-storage-state'
 import { formatBytes, formatDateTime } from '@shared/lib/format'
 import { toCsv, downloadCsv } from '@shared/lib/csv'
 import {
@@ -72,9 +73,10 @@ export default function FilesPage() {
   const [searchInput, setSearchInput] = useState('')
   const [sort, setSort] = useState(null)
   const search = useDebouncedValue(searchInput, 350)
+  const [pageSize, setPageSize] = useLocalStorageState('files_page_size', PAGE_SIZE)
 
   const filterArgs = { status: status === ALL ? null : status, search }
-  const q = useFilesQueue({ ...filterArgs, sort })
+  const q = useFilesQueue({ ...filterArgs, sort, pageSize })
   const [del, setDel] = useState({ open: false, file: null })
   const [exporting, setExporting] = useState(false)
 
@@ -249,6 +251,8 @@ export default function FilesPage() {
               total={q.totalItems}
               onPageChange={(p) => q.setPage(p + 1)}
               itemLabel={t('files.items')}
+              pageSizeOptions={[10, 20, 50]}
+              onPageSizeChange={setPageSize}
             />
           </TooltipProvider>
         )}

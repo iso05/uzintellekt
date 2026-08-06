@@ -1,16 +1,22 @@
 import {
   validatePassport,
-  validateName,
+  validatePinfl,
+  validateLatinName,
   validateShare,
   validateRequired,
 } from '@shared/lib/validators'
 
 export const EMPTY_HOLDER = {
+  type: 'INDIVIDUAL', // 'INDIVIDUAL' | 'LEGAL'
+  subjectType: 'INDIVIDUAL',
+  rightHolderType: 'AUTHOR', // 'AUTHOR' | 'HEIR' | 'OTHER'
+  ownerType: 'AUTHOR',
   passportNo: '',
   firstName: '',
   lastName: '',
   share: '',
-  authorRoleIds: [],
+  authorRoleIds: ['1'],
+  contractFiles: [],
 }
 
 export function buildHolderErrorKey(idx, field) {
@@ -22,14 +28,28 @@ export function buildHolderErrorKey(idx, field) {
 
 export function validateHolder(rh, idx) {
   const errors = {}
-  const passErr = validatePassport(rh.passportNo)
-  if (passErr) errors[buildHolderErrorKey(idx, 'passportNo')] = passErr
+  const isLegal = rh.type === 'LEGAL' || rh.subjectType === 'LEGAL'
 
-  const fnErr = validateName(rh.firstName, 'validation.field_first_name')
-  if (fnErr) errors[buildHolderErrorKey(idx, 'firstName')] = fnErr
+  if (isLegal) {
+    if (!rh.passportNo || rh.passportNo.trim() === '') {
+      errors[buildHolderErrorKey(idx, 'passportNo')] = { key: 'validation.inn_required' }
+    } else if (!/^\d{9}$/.test(rh.passportNo.trim())) {
+      errors[buildHolderErrorKey(idx, 'passportNo')] = { key: 'validation.inn_format' }
+    }
 
-  const lnErr = validateName(rh.lastName, 'validation.field_last_name')
-  if (lnErr) errors[buildHolderErrorKey(idx, 'lastName')] = lnErr
+    if (!rh.firstName || rh.firstName.trim() === '') {
+      errors[buildHolderErrorKey(idx, 'firstName')] = { key: 'validation.org_name_required' }
+    }
+  } else {
+    const pinflErr = validatePinfl(rh.passportNo)
+    if (pinflErr) errors[buildHolderErrorKey(idx, 'passportNo')] = pinflErr
+
+    const fnErr = validateLatinName(rh.firstName, 'validation.field_first_name')
+    if (fnErr) errors[buildHolderErrorKey(idx, 'firstName')] = fnErr
+
+    const lnErr = validateLatinName(rh.lastName, 'validation.field_last_name')
+    if (lnErr) errors[buildHolderErrorKey(idx, 'lastName')] = lnErr
+  }
 
   const shareErr = validateShare(rh.share)
   if (shareErr) errors[buildHolderErrorKey(idx, 'share')] = shareErr
@@ -89,7 +109,7 @@ export function computeShareTotal(rightHolders) {
 
 export function getShareTotalError(rightHolders) {
   const total = computeShareTotal(rightHolders)
-  if (total !== 100) return { key: 'validation.share_total_simple' }
+  if (Math.abs(total - 100) > 0.02) return { key: 'validation.share_total_simple' }
   return null
 }
 
@@ -97,15 +117,41 @@ export function getShareTotalError(rightHolders) {
 export function toPayload(form) {
   return {
     name: form.name.trim(),
-    description: form.description.trim() || undefined,
+    description: form.description?.trim() || undefined,
     workTypeId: Number(form.workTypeId),
-    rightHolders: form.rightHolders.map((rh) => ({
-      passportNo: rh.passportNo.trim(),
-      firstName: rh.firstName.trim(),
-      lastName: rh.lastName.trim(),
-      sharePercentage: Number(rh.share),
-      authorRoles: (rh.authorRoleIds || []).map(Number),
-    })),
+    rightHolders: form.rightHolders.map((rh) => {
+      const isLegal = rh.type === 'LEGAL' || rh.subjectType === 'LEGAL'
+      const rhType = rh.rightHolderType || rh.ownerType || 'AUTHOR'
+      const roles = (rh.authorRoleIds || rh.authorRoles || ['1']).map(Number)
+      const pNo = (rh.passportNo || rh.pinfl || rh.inn || '').trim()
+
+      const payloadItem = {
+        passportNo: pNo,
+        ownerType: rhType,
+        rightHolderType: rhType,
+        subjectType: isLegal ? 'LEGAL' : 'INDIVIDUAL',
+        sharePercentage: Number(rh.share ?? rh.sharePercentage ?? 0),
+        authorRoles: roles.length > 0 ? roles : [1],
+        contractFile: rh.contractFiles && rh.contractFiles.length > 0 ? rh.contractFiles[0] : null,
+        contractFiles: rh.contractFiles || [],
+      }
+
+      if (isLegal) {
+        payloadItem.inn = pNo
+        payloadItem.legalName = (rh.legalName || rh.firstName || '').trim()
+        payloadItem.pinfl = null
+        payloadItem.firstName = null
+        payloadItem.lastName = null
+      } else {
+        payloadItem.pinfl = pNo
+        payloadItem.firstName = (rh.firstName || '').trim().toUpperCase()
+        payloadItem.lastName = (rh.lastName || '').trim().toUpperCase()
+        payloadItem.inn = null
+        payloadItem.legalName = null
+      }
+
+      return payloadItem
+    }),
   }
 }
 
@@ -131,13 +177,31 @@ export function fromBackend(data) {
     workTypeId: data?.workTypeId || data?.workType?.id || '',
     rightHolders:
       data?.rightHolders && data.rightHolders.length > 0
-        ? data.rightHolders.map((rh) => ({
-            passportNo: rh.passportNo || rh.passportSeria || '',
-            firstName: rh.firstName || '',
-            lastName: rh.lastName || '',
-            share: rh.sharePercentage || rh.share || '',
-            authorRoleIds: getHolderRoleIds(rh),
-          }))
+        ? data.rightHolders.map((rh) => {
+            const isLegal = rh.subjectType === 'LEGAL' || rh.type === 'LEGAL'
+            const roleIds = getHolderRoleIds(rh)
+            const rhType = rh.rightHolderType || rh.ownerType || 'AUTHOR'
+            const pNo = isLegal ? (rh.inn || rh.passportNo || '') : (rh.pinfl || rh.passportNo || '')
+            return {
+              id: rh.id,
+              userId: rh.userId,
+              type: isLegal ? 'LEGAL' : 'INDIVIDUAL',
+              subjectType: isLegal ? 'LEGAL' : 'INDIVIDUAL',
+              rightHolderType: rhType,
+              ownerType: rhType,
+              pinfl: rh.pinfl || (isLegal ? '' : pNo),
+              inn: rh.inn || (isLegal ? pNo : ''),
+              passportNo: pNo,
+              legalName: rh.legalName || (isLegal ? rh.firstName || '' : ''),
+              firstName: rh.firstName || (isLegal ? rh.legalName || '' : ''),
+              lastName: rh.lastName || '',
+              share: rh.sharePercentage !== undefined ? String(rh.sharePercentage) : String(rh.share || ''),
+              authorRoleIds: roleIds.length > 0 ? roleIds : ['1'],
+              contractFiles: rh.contractFiles || (rh.contractFile ? [rh.contractFile] : []),
+            }
+          })
         : [{ ...EMPTY_HOLDER }],
   }
 }
+
+

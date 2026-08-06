@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { Button } from './button'
 import { cn } from '@shared/lib/utils'
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from './select'
 
 function _windowOf(current, total, max = 7) {
   if (total <= max) return Array.from({ length: total }, (_, i) => i)
@@ -23,13 +24,15 @@ export function Pagination({
   onPageChange,
   className,
   itemLabel,
+  pageSizeOptions,
+  onPageSizeChange,
 }) {
   const { t } = useTranslation()
   const totalPages = Math.max(1, Math.ceil(total / pageSize))
-  if (totalPages <= 1) return null
+  if (totalPages <= 1 && !pageSizeOptions) return null
 
   const visible = _windowOf(page, totalPages, 7)
-  const from = page * pageSize + 1
+  const from = total === 0 ? 0 : page * pageSize + 1
   const to = Math.min((page + 1) * pageSize, total)
   const label = itemLabel || t('pagination.items')
 
@@ -40,45 +43,66 @@ export function Pagination({
         className
       )}
     >
-      <span className="text-[13px] font-medium text-muted-foreground">
-        {t('pagination.total')} {total} {label} • {from}–{to}
-      </span>
-
-      <div className="flex gap-1">
-        <Button
-          variant="outline"
-          size="icon"
-          className="h-8 w-8"
-          disabled={page === 0}
-          onClick={() => onPageChange(page - 1)}
-          aria-label={t('pagination.prev')}
-        >
-          <ChevronLeft className="h-3.5 w-3.5" />
-        </Button>
-
-        {visible.map((p) => (
-          <Button
-            key={p}
-            variant={p === page ? 'default' : 'outline'}
-            size="icon"
-            className="h-8 w-8 text-xs"
-            onClick={() => onPageChange(p)}
+      <div className="flex items-center gap-4 flex-wrap">
+        <span className="text-[13px] font-medium text-muted-foreground">
+          {t('pagination.total')} {total} {label} • {from}–{to}
+        </span>
+        {pageSizeOptions && onPageSizeChange && (
+          <Select
+            value={String(pageSize)}
+            onValueChange={(val) => onPageSizeChange(Number(val))}
           >
-            {p + 1}
-          </Button>
-        ))}
-
-        <Button
-          variant="outline"
-          size="icon"
-          className="h-8 w-8"
-          disabled={page >= totalPages - 1}
-          onClick={() => onPageChange(page + 1)}
-          aria-label={t('pagination.next')}
-        >
-          <ChevronRight className="h-3.5 w-3.5" />
-        </Button>
+            <SelectTrigger className="h-8 w-[70px] text-xs">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {pageSizeOptions.map((opt) => (
+                <SelectItem key={opt} value={String(opt)} className="text-xs">
+                  {opt}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        )}
       </div>
+
+      {totalPages > 1 && (
+        <div className="flex gap-1">
+          <Button
+            variant="outline"
+            size="icon"
+            className="h-8 w-8"
+            disabled={page === 0}
+            onClick={() => onPageChange(page - 1)}
+            aria-label={t('pagination.prev')}
+          >
+            <ChevronLeft className="h-3.5 w-3.5" />
+          </Button>
+
+          {visible.map((p) => (
+            <Button
+              key={p}
+              variant={p === page ? 'default' : 'outline'}
+              size="icon"
+              className="h-8 w-8 text-xs"
+              onClick={() => onPageChange(p)}
+            >
+              {p + 1}
+            </Button>
+          ))}
+
+          <Button
+            variant="outline"
+            size="icon"
+            className="h-8 w-8"
+            disabled={page >= totalPages - 1}
+            onClick={() => onPageChange(page + 1)}
+            aria-label={t('pagination.next')}
+          >
+            <ChevronRight className="h-3.5 w-3.5" />
+          </Button>
+        </div>
+      )}
     </div>
   )
 }

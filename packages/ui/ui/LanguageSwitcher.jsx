@@ -24,7 +24,7 @@ export default function LanguageSwitcher() {
 
   return (
     <Select value={current} onValueChange={(v) => i18n.changeLanguage(v)}>
-      <SelectTrigger className="h-9 w-auto min-w-[88px] gap-1.5 px-2.5 text-sm">
+      <SelectTrigger className="h-9 w-9 rounded-full lg:rounded-lg lg:w-auto lg:min-w-[88px] gap-1.5 p-0 lg:px-2.5 text-sm justify-center lg:justify-start [&>svg:last-child]:hidden lg:[&>svg:last-child]:block [&>span]:hidden lg:[&>span]:inline">
         <Globe className="h-4 w-4 shrink-0 text-muted-foreground" />
         <SelectValue />
       </SelectTrigger>

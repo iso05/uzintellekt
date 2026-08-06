@@ -6,14 +6,19 @@ import { useAuth } from '../../hooks/useAuth'
 import useScrollToTop from '../../hooks/useScrollToTop'
 import { cleanURLHistory, isValidAuthCode, sanitizeErrorMessage } from '../../utils/securityUtils'
 import { Button, Card, CardContent } from '@/shared/ui'
+import { useSEO } from '@/hooks/useSEO'
 
 export default function Login() {
   useScrollToTop()
 
   const navigate = useNavigate()
   const { t } = useTranslation()
+  useSEO({
+    title: t('seo.login_title'),
+    description: t('seo.login_desc'),
+  })
   const [searchParams] = useSearchParams()
-  const { user, loading, loginWithOneId, handleCallback } = useAuth()
+  const { user, loading, loginWithOneId, handleCallback, logout } = useAuth()
 
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
@@ -22,6 +27,14 @@ export default function Login() {
 
   const DASHBOARD_URL =
     import.meta.env.VITE_DASHBOARD_URL || 'https://dashboard.uzintellekt.uz'
+
+  // Handle logout parameter: /login?action=logout
+  useEffect(() => {
+    if (searchParams.get('action') === 'logout') {
+      logout()
+      navigate('/login', { replace: true })
+    }
+  }, [searchParams, logout, navigate])
 
   useEffect(() => {
     const hasCode = Boolean(searchParams.get('code'))
@@ -92,7 +105,24 @@ export default function Login() {
     { icon: ShieldCheck, label: t('login_page.badge_verified', 'Verified') },
   ]
 
-  const isBusy = loading || isLoading
+  const isBusy = loading || isLoading || Boolean(user)
+
+  if (isBusy) {
+    return (
+      <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-background/80 backdrop-blur-sm">
+        <div className="flex flex-col items-center gap-4 rounded-2xl bg-card p-8 shadow-lg border border-border max-w-sm w-full mx-4 text-center">
+          <Loader2 className="h-10 w-10 animate-spin text-primary animate-duration-1000" />
+          <p className="text-sm font-semibold text-foreground">
+            {isLoading
+              ? t('login_page.oneid_loading', 'OneID orqali autentifikatsiya...')
+              : user
+                ? t('register_page.redirecting', "Dashboard'ga yo'naltirilmoqda...")
+                : t('login_page.checking_session', 'Avtorizatsiya tekshirilmoqda...')}
+          </p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <section className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-background px-4 py-16">
@@ -105,47 +135,30 @@ export default function Login() {
 
             <div className="text-center">
               <h1 className="text-2xl font-extrabold tracking-tight text-foreground">
-                {isBusy
-                  ? t('login_page.title_checking', 'Tekshirilmoqda...')
-                  : t('login_page.title_welcome', 'Xush kelibsiz')}
+                {t('login_page.title_welcome', 'Xush kelibsiz')}
               </h1>
               <p className="mt-1.5 text-sm text-muted-foreground">
                 {t('login_page.subtitle', 'uzintellekt.uz platformasiga kirish')}
               </p>
             </div>
 
-            {isBusy && (
-              <div className="flex flex-col items-center gap-3 py-2">
-                <Loader2 className="h-8 w-8 animate-spin text-primary" />
-                <p className="text-sm text-muted-foreground">
-                  {isLoading
-                    ? t('login_page.oneid_loading', 'OneID orqali autentifikatsiya...')
-                    : t('login_page.checking_session', 'Avtorizatsiya tekshirilmoqda...')}
-                </p>
-              </div>
-            )}
-
-            {error && !isBusy && (
+            {error && (
               <div className="flex items-start gap-2 rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive">
                 <ShieldAlert className="mt-0.5 h-4 w-4 shrink-0" />
                 <span>{error}</span>
               </div>
             )}
 
-            {!isBusy && (
-              <>
-                <Button onClick={handleLoginClick} size="lg" className="w-full">
-                  <Lock className="h-4 w-4" />
-                  {t('login_page.btn_oneid', 'OneID bilan kirish')}
-                </Button>
-                <p className="text-center text-xs text-muted-foreground">
-                  {t(
-                    'login_page.hint',
-                    "O'zbekiston Davlat xizmatlari — id.egov.uz orqali xavfsiz kirish"
-                  )}
-                </p>
-              </>
-            )}
+            <Button onClick={handleLoginClick} size="lg" className="w-full">
+              <Lock className="h-4 w-4" />
+              {t('login_page.btn_oneid', 'OneID bilan kirish')}
+            </Button>
+            <p className="text-center text-xs text-muted-foreground">
+              {t(
+                'login_page.hint',
+                "O'zbekiston Davlat xizmatlari — id.egov.uz orqali xavfsiz kirish"
+              )}
+            </p>
           </CardContent>
         </Card>
 

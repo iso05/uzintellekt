@@ -16,10 +16,10 @@ export function buildWorkFilters({ status, search } = {}) {
 }
 
 // Loads a page of the works grid, optionally filtered by state and name.
-export function useWorksQueue({ status, search, sort } = {}) {
+export function useWorksQueue({ status, search, sort, pageSize = PAGE_SIZE } = {}) {
   return useGridQuery({
     fetcher: getWorksGrid,
-    pageSize: PAGE_SIZE,
+    pageSize,
     filters: buildWorkFilters({ status, search }),
     sort,
   })

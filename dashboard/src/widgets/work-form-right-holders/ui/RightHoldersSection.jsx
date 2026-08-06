@@ -16,6 +16,8 @@ export default function RightHoldersSection({
   getRemainingShareFor,
   disabled = false,
   headerExtra,
+  workId,
+  ensureWorkId,
 }) {
   const { t } = useTranslation()
   return (
@@ -29,7 +31,6 @@ export default function RightHoldersSection({
             <h2 className="m-0 text-[15px] font-bold leading-tight text-foreground">
               {t('form.holders_title')}
             </h2>
-            <p className="m-0 text-[12px] text-muted-foreground">{t('form.holders_sub')}</p>
           </div>
         </div>
         {headerExtra}
@@ -45,10 +46,12 @@ export default function RightHoldersSection({
             remainingShare={getRemainingShareFor(idx)}
             totalShare={shareTotal}
             disabled={disabled}
-            canRemove={rightHolders.length > 1}
+            canRemove={rightHolders.length > 1 && idx > 0}
             onChange={(field, value) => onHolderChange(idx, field, value)}
             onBlur={(field, value) => onHolderBlur(idx, field, value)}
             onRemove={() => onRemoveHolder(idx)}
+            workId={workId}
+            ensureWorkId={ensureWorkId}
           />
         ))}
 
@@ -59,7 +62,8 @@ export default function RightHoldersSection({
             variant="outline"
             type="button"
             onClick={onAddHolder}
-            className="mt-1 w-full border-2 border-dashed border-border bg-transparent text-muted-foreground hover:border-primary/40 hover:bg-primary-soft hover:text-primary"
+            disabled={shareTotal >= 100}
+            className="mt-1 w-full border-2 border-dashed border-border bg-transparent text-muted-foreground hover:border-primary/40 hover:bg-primary-soft hover:text-primary disabled:opacity-50 disabled:pointer-events-none"
           >
             <Plus className="h-4 w-4" />
             {t('form.add_holder')}

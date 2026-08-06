@@ -38,13 +38,13 @@ export default function Header({
 
   return (
     <header className="sticky top-0 z-30 flex flex-col border-b border-border bg-card/80 backdrop-blur supports-[backdrop-filter]:bg-card/70">
-      <div className="flex h-16 items-center gap-3 px-4 md:px-6 lg:px-8">
-        {/* Mobile menu */}
+      <div className="flex h-16 items-center gap-2 sm:gap-3 px-3 sm:px-4 md:px-6 lg:px-8">
+        {/* Mobile menu trigger */}
         <Button
           variant="ghost"
           size="icon"
           onClick={onOpenMobile}
-          className="lg:hidden"
+          className="lg:hidden text-muted-foreground hover:bg-muted hover:text-foreground"
           aria-label={t('header.menu')}
         >
           <Menu className="h-5 w-5" />
@@ -67,7 +67,7 @@ export default function Header({
             e.preventDefault()
             submitSearch(query)
           }}
-          className="relative hidden h-10 min-w-[260px] items-center gap-2 rounded-lg border border-border bg-background px-3 transition-colors focus-within:border-primary/40 hover:border-primary/30 md:flex lg:min-w-[320px]"
+          className="relative hidden h-10 min-w-[220px] items-center gap-2 rounded-lg border border-border bg-background px-3 transition-colors focus-within:border-primary/40 hover:border-primary/30 md:flex lg:min-w-[320px]"
         >
           <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
           <input
@@ -80,7 +80,7 @@ export default function Header({
         </form>
 
         {/* Right side */}
-        <div className="ml-auto flex items-center gap-2">
+        <div className="ml-auto flex items-center gap-1.5 sm:gap-2">
           <Button
             variant="ghost"
             size="icon"
@@ -98,14 +98,14 @@ export default function Header({
           <button
             type="button"
             onClick={() => navigate(ROUTES.PROFILE)}
-            className="flex items-center gap-2.5 rounded-lg p-1 pr-2 transition-colors hover:bg-muted"
+            className="flex items-center gap-2 rounded-lg p-1 pr-2 transition-colors hover:bg-muted min-w-0"
           >
             <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary/70 text-sm font-bold text-primary-foreground shadow-soft">
               {initials}
             </span>
-            <span className="hidden flex-col items-start leading-tight sm:flex">
-              <span className="text-[13px] font-semibold text-foreground">{shortName}</span>
-              <span className="text-[11px] font-medium text-muted-foreground">{roleLabel}</span>
+            <span className="hidden flex-col items-start leading-tight sm:flex max-w-[120px] md:max-w-[160px] text-left">
+              <span className="w-full truncate text-[13px] font-semibold text-foreground" title={shortName}>{shortName}</span>
+              <span className="w-full truncate text-[11px] font-medium text-muted-foreground" title={roleLabel}>{roleLabel}</span>
             </span>
           </button>
         </div>

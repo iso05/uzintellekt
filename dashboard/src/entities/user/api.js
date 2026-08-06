@@ -29,12 +29,24 @@ export async function updateMeField(field, value) {
     throw new Error(i18n.t('validation.address_required'))
   }
 
-  // Send only the field(s) being changed. A full read-modify-write (GET the
-  // whole user, rebuild every field, PATCH it all back) silently reverts a
-  // concurrent edit to another field made from a fresher snapshot.
-  const payload =
+  // The backend's UpdateUserRequest schema requires BOTH `address` and `phones` in PATCH requests.
+  // We fetch the latest user profile and merge the updated field to satisfy validation and avoid stale data.
+  const currentUser = await getMe()
+
+  const payload = {
+    address: field === 'address' ? value : (currentUser.address || ''),
+    phones: field === 'phones' ? value : (currentUser.phones || []),
+  }
+
+  const newPseudonym =
     field === 'pseudonym' || field === 'pseudoname'
-      ? { pseudonym: value || null, pseudoname: value || null } // backend aliases both
-      : { [field]: value }
+      ? value
+      : (currentUser.pseudonym || currentUser.pseudoname)
+
+  if (newPseudonym !== undefined) {
+    payload.pseudonym = newPseudonym || null
+  }
+
   return updateMe(payload)
 }
+
