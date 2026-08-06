@@ -47,7 +47,7 @@ export default function HolderCard({
 
   const currentHolderType = isPrimaryHolderLocked
     ? (isUserLegal ? 'LEGAL' : 'INDIVIDUAL')
-    : (holder.type === 'PHYSICAL' || holder.type === 'INDIVIDUAL' || holder.subjectType === 'INDIVIDUAL' ? 'INDIVIDUAL' : 'LEGAL')
+    : ((holder.subjectType === 'LEGAL' || holder.type === 'LEGAL') ? 'LEGAL' : 'INDIVIDUAL')
 
   const isLegal = currentHolderType === 'LEGAL'
 
@@ -235,6 +235,7 @@ export default function HolderCard({
             value={currentHolderType}
             onValueChange={(val) => {
               onChange('type', val)
+              onChange('subjectType', val)
               onChange('passportNo', '')
               onChange('firstName', '')
               onChange('lastName', '')
