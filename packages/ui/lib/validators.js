@@ -125,10 +125,11 @@ export const validatePhone = (value) => {
   return null
 }
 
-export const validateShare = (value) => {
+export const validateShare = (value, isPrimary = false) => {
   if (value === '' || value === null || value === undefined) return { key: 'validation.share_required' }
   const num = parseFloat(value)
   if (isNaN(num)) return { key: 'validation.share_number' }
+  if (isPrimary && num < 0.01) return { key: 'validation.share_min_primary' }
   if (num < 0) return { key: 'validation.share_min' }
   if (num > 100) return { key: 'validation.share_over' }
   return null

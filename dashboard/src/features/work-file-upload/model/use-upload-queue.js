@@ -43,6 +43,7 @@ function nextLocalId() {
 export function useUploadQueue(
   workId,
   {
+    ensureWorkId,
     remainingBytes = Infinity,
     maxParallel = 3,
     api = { initUpload: defaultInit, putToStorage: defaultPut, confirmUpload: defaultConfirm },

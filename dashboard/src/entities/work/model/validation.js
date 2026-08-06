@@ -51,7 +51,7 @@ export function validateHolder(rh, idx) {
     if (lnErr) errors[buildHolderErrorKey(idx, 'lastName')] = lnErr
   }
 
-  const shareErr = validateShare(rh.share)
+  const shareErr = validateShare(rh.share, idx === 0)
   if (shareErr) errors[buildHolderErrorKey(idx, 'share')] = shareErr
 
   if (!rh.authorRoleIds || rh.authorRoleIds.length === 0) {
