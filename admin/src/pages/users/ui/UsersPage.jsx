@@ -38,7 +38,7 @@ import {
 } from '@/entities/user'
 import { CreateUserDialog } from '@/features/user-create'
 import { ROUTES } from '@/config/routes'
-import { useUsersQueue, buildUserFilters, PAGE_SIZE } from '../model/use-users'
+import { useUsersQueue, buildUserFilters, filterUsersByType, getGridUserType, PAGE_SIZE } from '../model/use-users'
 
 const EXPORT_CAP = 5000
 const ALL = 'ALL'
@@ -75,14 +75,15 @@ export default function UsersPage() {
       })
       const columns = [
         { header: t('user.columns.name'), value: (u) => getFullName(u) },
-        { header: t('user.form.type'), value: (u) => t((u.userType || u.type) === 'LEGAL' ? 'user.form.legal' : 'user.form.individual') },
+        { header: t('user.form.type'), value: (u) => t(getGridUserType(u) === 'LEGAL' ? 'user.form.legal' : 'user.form.individual') },
         { header: t('user.columns.state'), value: (u) => t(`dashboard.user_state.${u.state}`, { defaultValue: u.state }) },
         { header: t('user.columns.phone'), value: (u) => (u.phones || []).join(', ') },
         { header: t('user.form.pinfl'), value: (u) => u.pinfl || '' },
         { header: t('user.form.address'), value: (u) => u.address || '' },
         { header: t('user.columns.created'), value: (u) => u.createdAt || '' },
       ]
-      downloadCsv(`users-${new Date().toISOString().slice(0, 10)}.csv`, toCsv(data?.items ?? [], columns))
+      const items = filterUsersByType(data?.items, queryArgs.type)
+      downloadCsv(`users-${new Date().toISOString().slice(0, 10)}.csv`, toCsv(items, columns))
     } catch (err) {
       toast.error(err?.message || t('common.error'))
     } finally {
@@ -187,8 +188,8 @@ export default function UsersPage() {
                       {getFullName(u) || '—'}
                     </TableCell>
                     <TableCell>
-                      <Badge variant={(u.userType || u.type) === 'LEGAL' ? 'info' : 'muted'}>
-                        {t((u.userType || u.type) === 'LEGAL' ? 'user.form.legal' : 'user.form.individual')}
+                      <Badge variant={getGridUserType(u) === 'LEGAL' ? 'info' : 'muted'}>
+                        {t(getGridUserType(u) === 'LEGAL' ? 'user.form.legal' : 'user.form.individual')}
                       </Badge>
                     </TableCell>
                     <TableCell>

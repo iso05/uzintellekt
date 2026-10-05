@@ -38,23 +38,42 @@ function RightHoldersTable({ holders, authorRoles }) {
             <th className="px-3 py-2.5 text-left text-[11px] font-bold uppercase tracking-wider text-muted-foreground">{t('detail.col_passport')}</th>
             <th className="px-3 py-2.5 text-left text-[11px] font-bold uppercase tracking-wider text-muted-foreground">{t('detail.col_first_name')}</th>
             <th className="px-3 py-2.5 text-left text-[11px] font-bold uppercase tracking-wider text-muted-foreground">{t('detail.col_last_name')}</th>
+            <th className="px-3 py-2.5 text-left text-[11px] font-bold uppercase tracking-wider text-muted-foreground">Turi</th>
             <th className="px-3 py-2.5 text-left text-[11px] font-bold uppercase tracking-wider text-muted-foreground">{t('detail.col_share')}</th>
             <th className="px-3 py-2.5 text-left text-[11px] font-bold uppercase tracking-wider text-muted-foreground">{t('detail.col_role')}</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-border">
-          {holders.map((rh, idx) => (
-            <tr key={rh.id ?? idx}>
-              <td className="px-3 py-2.5 font-medium text-muted-foreground">{idx + 1}</td>
-              <td className="px-3 py-2.5 font-mono text-foreground">{rh.passportNo || rh.passportSeria || '—'}</td>
-              <td className="px-3 py-2.5 text-foreground">{rh.firstName || '—'}</td>
-              <td className="px-3 py-2.5 text-foreground">{rh.lastName || '—'}</td>
-              <td className="px-3 py-2.5 font-bold tabular-nums text-foreground">{rh.sharePercentage ?? rh.share ?? 0}%</td>
-              <td className="px-3 py-2.5 text-muted-foreground">
-                {resolveAuthorRoleNames(authorRoles, getHolderRoleIds(rh))}
-              </td>
-            </tr>
-          ))}
+          {holders.map((rh, idx) => {
+            const rhType = (rh.rightHolderType || rh.ownerType || rh.type || 'AUTHOR').toUpperCase()
+            return (
+              <tr key={rh.id ?? idx}>
+                <td className="px-3 py-2.5 font-medium text-muted-foreground">{idx + 1}</td>
+                <td className="px-3 py-2.5 font-mono text-foreground">{rh.passportNo || rh.passportSeria || rh.pinfl || rh.inn || '—'}</td>
+                <td className="px-3 py-2.5 text-foreground">{rh.firstName || rh.legalName || '—'}</td>
+                <td className="px-3 py-2.5 text-foreground">{rh.lastName || '—'}</td>
+                <td className="px-3 py-2.5 text-foreground">
+                  {rhType === 'HEIR' ? (
+                    <span className="inline-flex items-center rounded bg-purple-100 dark:bg-purple-950 px-2 py-0.5 text-[11px] font-semibold text-purple-800 dark:text-purple-300">
+                      Voris
+                    </span>
+                  ) : rhType === 'OTHER' ? (
+                    <span className="inline-flex items-center rounded bg-amber-100 dark:bg-amber-950 px-2 py-0.5 text-[11px] font-semibold text-amber-800 dark:text-amber-300">
+                      Boshqa
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center rounded bg-blue-100 dark:bg-blue-950 px-2 py-0.5 text-[11px] font-semibold text-blue-800 dark:text-blue-300">
+                      Muallif
+                    </span>
+                  )}
+                </td>
+                <td className="px-3 py-2.5 font-bold tabular-nums text-foreground">{rh.sharePercentage ?? rh.share ?? 0}%</td>
+                <td className="px-3 py-2.5 text-muted-foreground">
+                  {resolveAuthorRoleNames(authorRoles, getHolderRoleIds(rh))}
+                </td>
+              </tr>
+            )
+          })}
         </tbody>
       </table>
     </div>

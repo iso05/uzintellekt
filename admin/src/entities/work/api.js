@@ -62,6 +62,16 @@ export function getAdminWorkFiles(workId) {
   return requestJson(`/api/v1/admin/works/${workId}/files`)
 }
 
+export function getRightHolderDocuments(workId, rightHolderId) {
+  return requestJson(`/api/v1/admin/works/${workId}/right-holders/${rightHolderId}/documents`)
+}
+
+export function getAdminRightHolderDocumentDownloadUrl(workId, rightHolderId, documentId) {
+  return requestJson(
+    `/api/v1/admin/works/${workId}/right-holders/${rightHolderId}/documents/${documentId}/download-url`
+  )
+}
+
 export function getAdminFileDownloadUrl(workId, fileId) {
   return requestJson(`/api/v1/admin/works/${workId}/files/${fileId}/download-url`)
 }

@@ -8,9 +8,11 @@ export function isBlocked(user) {
 
 export function getFullName(user) {
   if (!user) return ''
-  // The grid returns `type`, the detail endpoint returns `userType` — accept both.
-  const kind = user.userType || user.type
-  if (kind === 'LEGAL' && user.legalName) return user.legalName
+  const typeValues = [user.subjectType, user.type, user.userType]
+    .filter(Boolean)
+    .map((v) => String(v).toUpperCase().trim())
+  const isLegal = typeValues.includes('LEGAL') || typeValues.includes('YURIDIK') || (!typeValues.length && Boolean(user.legalName))
+  if (isLegal && user.legalName) return user.legalName
   const name = [user.lastName, user.firstName, user.middleName].filter(Boolean).join(' ').trim()
   return name || user.legalName || user.username || ''
 }

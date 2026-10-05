@@ -1,9 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import {
-  getWorksDashboard,
-  getUsersDashboard,
-  getModerationDashboard,
-  getStorageDashboard,
+  getOverviewDashboard,
   getTopContributors,
   getTopStorage,
   getWorksSeries,
@@ -17,10 +14,64 @@ function valueOr(result, fallback = null) {
   return result.status === 'fulfilled' ? result.value : fallback
 }
 
+export function processWorksData(worksRaw) {
+  if (!worksRaw) return null
+  if (worksRaw.rows && Array.isArray(worksRaw.rows)) {
+    const byStatus = {}
+    const typeTotals = {}
+    let total = 0
+    for (const r of worksRaw.rows) {
+      const cnt = Number(r.count || r.total) || 0
+      total += cnt
+      // WorkStatRowResponse uses `status`; keep `state` only as a backwards
+      // compatible fallback for older dashboard responses.
+      const status = r.status || r.state
+      if (status) {
+        byStatus[status] = (byStatus[status] || 0) + cnt
+      }
+      if (r.workTypeId) {
+        typeTotals[r.workTypeId] = (typeTotals[r.workTypeId] || 0) + cnt
+      }
+    }
+    const byType = Object.entries(typeTotals).map(([wtId, cnt]) => ({
+      workTypeId: Number(wtId),
+      total: cnt,
+    }))
+    return {
+      total: worksRaw.total ?? total,
+      byStatus: worksRaw.byStatus || byStatus,
+      byType: worksRaw.byType || byType,
+      period: worksRaw.period || { created: 0 },
+    }
+  }
+  return worksRaw
+}
+
+function processUsersData(usersRaw) {
+  if (!usersRaw) return null
+  if (usersRaw.rows && Array.isArray(usersRaw.rows)) {
+    const byState = {}
+    let total = 0
+    for (const r of usersRaw.rows) {
+      const cnt = Number(r.count || r.total) || 0
+      total += cnt
+      if (r.state) {
+        byState[r.state] = (byState[r.state] || 0) + cnt
+      }
+    }
+    return {
+      total: usersRaw.total ?? total,
+      byState: usersRaw.byState || byState,
+      period: usersRaw.period || { registered: 0 },
+    }
+  }
+  return usersRaw
+}
+
 /**
  * Loads every period-scoped block of the dashboard in parallel. Refetches when
  * the period preset changes. A top-level error is surfaced only when the core
- * works call fails, so transient gaps degrade to empty sections.
+ * overview call fails.
  */
 export function useDashboardSummary(period) {
   const [state, setState] = useState({ loading: true, error: null, data: null })
@@ -30,23 +81,25 @@ export function useDashboardSummary(period) {
     const { from, to } = period
     const prev = previousRange(period)
 
-    const [works, users, moderation, storage, topContributors, topStorage, workTypes, prevWorks, prevUsers] =
+    const [overview, topContributors, topStorage, workTypes, prevOverview] =
       await Promise.allSettled([
-        getWorksDashboard({ from, to }),
-        getUsersDashboard({ from, to }),
-        getModerationDashboard({ from, to }),
-        getStorageDashboard(),
+        getOverviewDashboard({ from, to }),
         getTopContributors({ from, to, limit: 5 }),
         getTopStorage({ limit: 5 }),
         getWorkTypes(),
-        getWorksDashboard({ from: prev.from, to: prev.to }),
-        getUsersDashboard({ from: prev.from, to: prev.to }),
+        getOverviewDashboard({ from: prev.from, to: prev.to }),
       ])
 
-    const worksVal = valueOr(works)
-    const usersVal = valueOr(users)
-    const prevWorksVal = valueOr(prevWorks)
-    const prevUsersVal = valueOr(prevUsers)
+    const overviewVal = valueOr(overview)
+    const prevOverviewVal = valueOr(prevOverview)
+
+    const worksVal = processWorksData(overviewVal?.works)
+    const usersVal = processUsersData(overviewVal?.users)
+    const moderationVal = overviewVal?.moderation
+    const storageVal = overviewVal?.storage
+
+    const prevWorksVal = processWorksData(prevOverviewVal?.works)
+    const prevUsersVal = processUsersData(prevOverviewVal?.users)
 
     // Period-over-period deltas (null when the previous period failed to load).
     const deltas = {
@@ -63,24 +116,20 @@ export function useDashboardSummary(period) {
     const data = {
       works: worksVal,
       users: usersVal,
-      moderation: valueOr(moderation),
-      storage: valueOr(storage),
+      moderation: moderationVal,
+      storage: storageVal,
       topContributors: valueOr(topContributors, []),
       topStorage: valueOr(topStorage, []),
       workTypes: valueOr(workTypes, []),
       deltas,
     }
 
-    const allFailed =
-      works.status === 'rejected' &&
-      users.status === 'rejected' &&
-      moderation.status === 'rejected' &&
-      storage.status === 'rejected'
+    const failed = overview.status === 'rejected'
 
     if (isActive())
       setState({
         loading: false,
-        error: allFailed ? works.reason?.message || 'error' : null,
+        error: failed ? overview.reason?.message || 'error' : null,
         data,
       })
   }, [period])

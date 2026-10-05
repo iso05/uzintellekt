@@ -69,12 +69,22 @@ export function useUploadQueue(
       try {
         let targetWorkId = workId
         const isInvalid = (id) => !id || id === 'test-work-id' || id === 'null' || id === 'undefined'
+
+        console.group(`📁 runItem: "${item.name}"`)
+        console.log('workId dan oldin:', targetWorkId, '| yaroqsizmi:', isInvalid(targetWorkId))
+
         if (isInvalid(targetWorkId) && ensureWorkId) {
+          console.log('🔄 ensureWorkId chaqirilmoqda...')
           targetWorkId = await ensureWorkId()
+          console.log('ensureWorkId natijasi:', targetWorkId)
         }
         if (isInvalid(targetWorkId)) {
-          throw new Error("Asar ID mavjud emas")
+          console.log('⏳ targetWorkId hali mavjud emas, fayl qatorda kutilmoqda:', item.name)
+          startedRef.current.delete(item.localId)
+          console.groupEnd()
+          return
         }
+        console.log('✅ targetWorkId:', targetWorkId)
 
         const confirmed = await uploader({
           workId: targetWorkId,
@@ -84,8 +94,18 @@ export function useUploadQueue(
           onState: (s) => patch(item.localId, { state: s }),
         })
         patch(item.localId, { state: UPLOAD_STATE.DONE, progress: 100, error: undefined })
+        console.groupEnd()
         onFileDone?.(confirmed)
       } catch (err) {
+        console.error('❌ useUploadQueue xatosi:', {
+          file: item.name,
+          workId,
+          status: err?.status,
+          errorCode: err?.apiError?.errorCode,
+          errorMessage: err?.apiError?.errorMessage,
+          message: err?.message,
+        })
+        console.groupEnd()
         patch(item.localId, {
           state: UPLOAD_STATE.ERROR,
           error: err?.message,
@@ -96,6 +116,7 @@ export function useUploadQueue(
     },
     [workId, ensureWorkId, api, uploader, patch, onFileDone]
   )
+
 
   // Pump: keep up to maxParallel uploads running. A ref guards against starting
   // the same item twice across the re-renders each state change triggers.
@@ -111,7 +132,7 @@ export function useUploadQueue(
         runItem(it)
       }
     }
-  }, [items, maxParallel, runItem])
+  }, [items, maxParallel, runItem, workId])
 
   const addFiles = useCallback(
     (files) => {

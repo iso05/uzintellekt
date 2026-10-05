@@ -62,15 +62,16 @@ describe('CreateUserDialog', () => {
     fireEvent.change(screen.getByPlaceholderText('user.form.street_ph'), { target: { value: 'Tashkent' } })
 
     const [, regionSelect, districtSelect] = screen.getAllByRole('combobox')
-    fireEvent.change(regionSelect, { target: { value: '1' } })
-    fireEvent.change(districtSelect, { target: { value: '15' } })
+    fireEvent.change(regionSelect, { target: { value: '2' } })
+    fireEvent.change(districtSelect, { target: { value: '16' } })
 
     fireEvent.click(button)
 
     await waitFor(() =>
       expect(createUser).toHaveBeenCalledWith({
+        subjectType: 'INDIVIDUAL',
         type: 'INDIVIDUAL',
-        address: 'Qoraqalpog‘iston Respublikasi, Amudaryo tumani, Tashkent',
+        address: "Andijon viloyati, Oltinko'l tumani, Tashkent",
         lastName: 'ALIYEV',
         firstName: 'ALI',
       })

@@ -1,15 +1,24 @@
 import { describe, it, expect } from 'vitest'
-import { buildUserFilters } from './use-users'
+import { buildUserFilters, filterUsersByType, getGridUserType } from './use-users'
 
 describe('buildUserFilters', () => {
   it('returns no filters when nothing is set', () => {
     expect(buildUserFilters({})).toEqual([])
   })
 
-  it('maps state and type to eq filters', () => {
+  it('includes state and subjectType filters in the server grid request', () => {
     expect(buildUserFilters({ state: 'BLOCKED', type: 'LEGAL' })).toEqual([
       { field: 'state', operator: 'eq', value: 'BLOCKED' },
-      { field: 'type', operator: 'eq', value: 'LEGAL' },
+      { field: 'subjectType', operator: 'eq', value: 'LEGAL' },
+    ])
+  })
+
+  it('maps admin and moderator selections to the role field', () => {
+    expect(buildUserFilters({ role: 'ADMIN' })).toEqual([
+      { field: 'role', operator: 'eq', value: 'ADMIN' },
+    ])
+    expect(buildUserFilters({ role: 'MODERATOR' })).toEqual([
+      { field: 'role', operator: 'eq', value: 'MODERATOR' },
     ])
   })
 
@@ -31,9 +40,33 @@ describe('buildUserFilters', () => {
   })
 
   it('combines exact-match filters with the search', () => {
-    expect(buildUserFilters({ state: 'ACTIVE', search: 'ivanov' })).toEqual([
+    expect(buildUserFilters({ state: 'ACTIVE', type: 'INDIVIDUAL', search: 'ivanov' })).toEqual([
       { field: 'state', operator: 'eq', value: 'ACTIVE' },
+      { field: 'subjectType', operator: 'eq', value: 'INDIVIDUAL' },
       { field: 'lastName', operator: 'lk', value: 'ivanov' },
     ])
+  })
+})
+
+describe('filterUsersByType', () => {
+  it('keeps only organization records for the legal filter', () => {
+    const users = [
+      { id: 'person', type: 'INDIVIDUAL', firstName: 'Ali' },
+      { id: 'company', type: 'LEGAL', legalName: 'IT GROUP MChJ' },
+    ]
+    expect(filterUsersByType(users, 'LEGAL')).toEqual([users[1]])
+  })
+
+  it('treats a record as legal when any API type alias says LEGAL', () => {
+    expect(getGridUserType({ type: 'INDIVIDUAL', subjectType: 'LEGAL' })).toBe('LEGAL')
+  })
+
+  it('identifies legal entity by legalName or INN when type is omitted', () => {
+    expect(getGridUserType({ legalName: 'UZINTELLEKT MCHJ' })).toBe('LEGAL')
+    expect(getGridUserType({ inn: '123456789' })).toBe('LEGAL')
+  })
+
+  it('identifies individual by pinfl or name when type is omitted', () => {
+    expect(getGridUserType({ pinfl: '30101990123450', firstName: 'Ali' })).toBe('INDIVIDUAL')
   })
 })

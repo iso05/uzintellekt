@@ -16,12 +16,12 @@ export function Calendar({ className, classNames, showOutsideDays = true, ...pro
       classNames={{
         months: 'flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0',
         month: 'space-y-4',
-        caption: 'flex justify-between pt-1 relative items-center px-8',
-        caption_label: 'text-sm font-semibold text-foreground',
-        caption_dropdowns: 'flex gap-1 items-center justify-center text-xs font-semibold',
-        dropdown: 'text-xs font-semibold rounded-md border border-input bg-card px-1.5 py-1 text-foreground cursor-pointer focus:outline-none focus:ring-1 focus:ring-primary',
-        dropdown_month: 'text-xs font-semibold rounded-md border border-input bg-card px-1.5 py-1 cursor-pointer',
-        dropdown_year: 'text-xs font-semibold rounded-md border border-input bg-card px-1.5 py-1 cursor-pointer',
+        caption: 'flex justify-center pt-1 relative items-center px-8 h-9',
+        caption_label: 'hidden',
+        caption_dropdowns: 'flex gap-1.5 items-center justify-center text-xs font-semibold',
+        dropdown: 'text-xs font-semibold rounded-md border border-input bg-card px-2 py-1 text-foreground cursor-pointer focus:outline-none focus:ring-1 focus:ring-primary',
+        dropdown_month: 'text-xs font-semibold rounded-md border border-input bg-card px-2 py-1 cursor-pointer',
+        dropdown_year: 'text-xs font-semibold rounded-md border border-input bg-card px-2 py-1 cursor-pointer',
         nav: 'space-x-1 flex items-center',
         nav_button: cn(
           buttonVariants({ variant: 'outline' }),

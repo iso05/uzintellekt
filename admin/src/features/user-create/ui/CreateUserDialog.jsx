@@ -21,6 +21,7 @@ import {
   toast,
 } from '@shared/ui'
 import { cn } from '@shared/lib/utils'
+import { apiErrorMessage } from '@shared/lib/api-error'
 import { maskPhone, maskDigitsOnly, maskPassportSeria } from '@shared/lib/input-masks'
 import {
   validatePhone,
@@ -231,7 +232,12 @@ export default function CreateUserDialog({ open, onOpenChange, onCreated }) {
       house: form.house.trim(),
     }).replace(/,\s*$/, '') // remove trailing ", " if house empty
 
-    const payload = { type: form.type, address }
+    // OpenAPI spec specifies `subjectType` ("INDIVIDUAL" | "LEGAL")
+    const payload = {
+      subjectType: form.type,
+      type: form.type,
+      address,
+    }
 
     const opt = (k, v) => { if (v?.trim()) payload[k] = v.trim() }
 
@@ -264,7 +270,8 @@ export default function CreateUserDialog({ open, onOpenChange, onCreated }) {
       onOpenChange(false)
       onCreated?.(created)
     } catch (err) {
-      toast.error(err?.message || t('common.error'))
+      console.error('❌ createUser xatosi:', err)
+      toast.error(apiErrorMessage(err, t, 'common.error'))
     } finally {
       setSubmitting(false)
     }

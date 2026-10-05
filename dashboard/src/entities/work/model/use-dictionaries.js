@@ -50,9 +50,15 @@ export function useDictionaries() {
   }
 }
 
-export function resolveWorkTypeName(workTypes, typeId) {
-  const t = workTypes.find((x) => Number(x.id) === Number(typeId))
-  if (!t) return '—'
+export function resolveWorkTypeName(workTypes = [], typeId) {
+  if (!typeId && typeId !== 0) return '—'
+  if (typeof typeId === 'object') {
+    return resolveLocalizedName(typeId.localizedName, typeId.name || typeId.title || typeId.code) || '—'
+  }
+  const t = workTypes.find(
+    (x) => String(x.id) === String(typeId) || String(x.code || '').toLowerCase() === String(typeId).toLowerCase()
+  )
+  if (!t) return String(typeId) || '—'
   return resolveLocalizedName(t.localizedName, t.name) || '—'
 }
 

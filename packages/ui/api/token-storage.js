@@ -80,7 +80,7 @@ export const tokenStorage = {
   getRefreshExpiry: () => _readExpiry(REFRESH_EXP_KEY),
   isAccessExpiring: (leewaySec = 30) => {
     const exp = _readExpiry(ACCESS_EXP_KEY)
-    if (exp === null) return true
+    if (exp === null) return !_readToken(ACCESS_KEY, ACCESS_KEY)
     return Date.now() >= exp - leewaySec * 1000
   },
   isRefreshExpired: (leewaySec = 5) => {

@@ -44,6 +44,14 @@ export function todayLocalized() {
   return formatDate(new Date())
 }
 
+// Convert "DD.MM.YYYY" or Date to backend ISO date string "YYYY-MM-DD"
+export function toIsoDate(input) {
+  if (!input) return ''
+  const d = _parse(input)
+  if (!d) return String(input).trim()
+  return `${d.getFullYear()}-${_pad(d.getMonth() + 1)}-${_pad(d.getDate())}`
+}
+
 // Human-readable byte size (binary units). 0 → "0 B".
 export function formatBytes(bytes, decimals = 1) {
   const n = Number(bytes)

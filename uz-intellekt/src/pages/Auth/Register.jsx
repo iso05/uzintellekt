@@ -440,13 +440,16 @@ function ContractModal({ open, onAgree, onCancel, form, regions, allDistricts })
   }
 
   const renderPDF = async () => {
+    let sanitizedForm = {}
+    let addressString = ''
+    let phonesList = []
     try {
-      const sanitizedForm = sanitizeFormData(form)
+      sanitizedForm = sanitizeFormData(form)
       const regionObj = regions.find((r) => String(r.id) === sanitizedForm.region)
       const districtObj = allDistricts.find(
         (d) => String(d.id) === sanitizedForm.district
       )
-      const addressString = buildAddress({
+      addressString = buildAddress({
         regionName: regionObj ? regionObj.name : '',
         districtName: districtObj ? districtObj.name : '',
         street: sanitizedForm.street,
@@ -456,7 +459,7 @@ function ContractModal({ open, onAgree, onCancel, form, regions, allDistricts })
       const secondaryPhone = sanitizedForm.phoneOptional
         ? normalizePhone(sanitizedForm.phoneOptional)
         : null
-      const phonesList = [primaryPhone, secondaryPhone].filter(Boolean)
+      phonesList = [primaryPhone, secondaryPhone].filter(Boolean)
 
       if (!tokenStorage.get()) {
         if (pdfWrapRef.current) {
@@ -482,7 +485,6 @@ function ContractModal({ open, onAgree, onCancel, form, regions, allDistricts })
         phones: phonesList,
         contractType: 'MEMBERSHIP',
         pseudonym: sanitizedForm.pseudonym || null,
-        pseudoname: sanitizedForm.pseudonym || null,
       })
       const pdfUrl = URL.createObjectURL(pdfBlob)
       const pdf = await window.pdfjsLib.getDocument(pdfUrl).promise
@@ -714,7 +716,7 @@ export default function Register() {
   })
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
-  const { user, loading: authLoading, setUser } = useAuth()
+  const { user, setUser } = useAuth()
 
   const DASHBOARD_URL =
     import.meta.env.VITE_DASHBOARD_URL || 'https://dashboard.uzintellekt.uz'
@@ -930,7 +932,6 @@ export default function Register() {
           phones,
           contractType: 'MEMBERSHIP',
           pseudonym: sanitizedForm.pseudonym || null,
-          pseudoname: sanitizedForm.pseudonym || null,
         },
         sigData
       )

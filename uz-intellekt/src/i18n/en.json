@@ -55,7 +55,7 @@
     "title_highlight": "Intellectual Property",
     "desc": "Register, manage, and secure copyright reliably through our digital platform.",
     "cta": "Join / Login",
-    "cta_secondary": "Explore our services",
+    "cta_secondary": "Registration Guide",
     "image_alt": "UzIntellekt — intellectual property protection",
     "trust": "Secure, fast sign-in with OneID"
   },
@@ -200,6 +200,8 @@
     "send_btn": "Send"
   },
   "services_page": {
+    "video_guide_title": "Registration Guide",
+    "video_guide_subtitle": "Detailed video guide on how to register and use services on the platform",
     "hero_title": "Protect Your Intellectual Property",
     "hero_desc": "We provide the simplest, fastest, and most secure depositing service. Protect your works completely and stand against future infringements.",
     "start_btn": "Start",

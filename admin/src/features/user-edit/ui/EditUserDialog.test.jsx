@@ -16,7 +16,7 @@ const user = {
   role: 'USER',
   pseudonym: 'p',
   phones: ['998900000000'],
-  address: 'Andijon viloyati, Andijon shahri, Mustaqillik, 45',
+  address: 'Andijon viloyati, Andijon tumani, Mustaqillik, 45',
 }
 
 // Textboxes in the dialog, in order: [pseudonym, phone1, phone2, street, house].
@@ -40,7 +40,7 @@ describe('EditUserDialog', () => {
     await waitFor(() =>
       expect(updateUser).toHaveBeenCalledWith('u1', {
         role: 'USER',
-        address: 'Andijon viloyati, Andijon shahri, NewStreet, 45',
+        address: 'Andijon viloyati, Andijon tumani, NewStreet, 45',
         phones: ['998900000000'],
         pseudonym: 'p',
       })

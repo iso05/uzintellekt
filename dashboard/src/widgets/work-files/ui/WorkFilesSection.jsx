@@ -10,6 +10,7 @@ import {
   X,
   AlertCircle,
   FolderOpen,
+  Paperclip,
 } from 'lucide-react'
 import {
   listWorkFiles,
@@ -122,9 +123,11 @@ function QueueItemRow({ item, onRetry, onRemove, t, units }) {
  */
 export default function WorkFilesSection({
   workId,
+  ensureWorkId,
   readOnly = false,
   initialFiles = null,
   onUploadedChange,
+  disabled = false,
 }) {
   const { t } = useTranslation()
   const units = t('work_files.units').split(',')
@@ -136,8 +139,9 @@ export default function WorkFilesSection({
   const [pendingDelete, setPendingDelete] = useState(null)
 
   const load = useCallback(
-    async ({ silent = false } = {}) => {
-      if (!workId || workId === 'test-work-id' || workId === 'null' || workId === 'undefined') {
+    async ({ silent = false, targetWorkId = null } = {}) => {
+      const activeId = targetWorkId || workId
+      if (!activeId || activeId === 'test-work-id' || activeId === 'null' || activeId === 'undefined') {
         setFiles([])
         setLoading(false)
         return
@@ -146,14 +150,14 @@ export default function WorkFilesSection({
       setError(false)
       try {
         // Quota only matters where uploads are possible — skip it in read-only.
-      const [list, q] = await Promise.all([
-        listWorkFiles(workId),
-        readOnly ? Promise.resolve(null) : getStorageQuota(),
-      ])
+        const [list, q] = await Promise.all([
+          listWorkFiles(activeId),
+          readOnly ? Promise.resolve(null) : getStorageQuota(),
+        ])
         setFiles(visibleWorkFiles(list))
         setQuota(q)
-      } catch {
-        if (!silent) setError(true)
+      } catch (e) {
+        if (!silent) setError(e || true)
       } finally {
         if (!silent) setLoading(false)
       }
@@ -165,17 +169,38 @@ export default function WorkFilesSection({
     load()
   }, [load])
 
-  // Tell the parent whether submit is allowed (≥1 UPLOADED file).
-  useEffect(() => {
-    onUploadedChange?.(hasUploadedFile(files))
-  }, [files, onUploadedChange])
-
-  const handleFileDone = useCallback(() => load({ silent: true }), [load])
+  const handleFileDone = useCallback(
+    (confirmed) => {
+      if (confirmed) {
+        setFiles((prev) => {
+          const fid = confirmed.fileId || confirmed.id
+          if (!fid) return prev
+          const exists = prev.some((f) => f.fileId === fid || f.id === fid)
+          if (exists) {
+            return prev.map((f) => (f.fileId === fid || f.id === fid ? { ...f, ...confirmed } : f))
+          }
+          return [...prev, confirmed]
+        })
+      }
+      const targetId = confirmed?.workId || workId
+      if (targetId && targetId !== 'test-work-id' && targetId !== 'null' && targetId !== 'undefined') {
+        load({ silent: true, targetWorkId: targetId })
+      }
+    },
+    [load, workId]
+  )
 
   const { items, addFiles, retry, remove } = useUploadQueue(workId, {
+    ensureWorkId,
     remainingBytes: quota?.remainingBytes ?? Infinity,
     onFileDone: handleFileDone,
   })
+
+  // Tell the parent whether submit is allowed (≥1 UPLOADED file).
+  useEffect(() => {
+    const hasDoneInQueue = items?.some((i) => i.state === UPLOAD_STATE.DONE)
+    onUploadedChange?.(hasUploadedFile(files) || hasDoneInQueue)
+  }, [files, items, onUploadedChange])
 
   const handleFiles = (fileList) => {
     const { rejected } = addFiles(fileList)
@@ -239,7 +264,24 @@ export default function WorkFilesSection({
   // Read-only view has nothing to do but retry, so a load failure takes the whole
   // section. In edit mode we keep the dropzone usable and show the error inline,
   // so a transient list error never strands the user from uploading.
+  // Read-only view: if permission fails (e.g. 1009/403 co-author consent pending), show informational banner instead of stark error
   if (error && readOnly) {
+    const isPermissionErr =
+      error?.status === 403 ||
+      error?.status === 400 ||
+      error?.apiError?.errorCode === 1009 ||
+      error?.apiError?.errorCode === 1008 ||
+      error?.errorCode === 1009
+
+    if (isPermissionErr) {
+      return (
+        <div className="flex items-center gap-3 rounded-xl border border-primary/20 bg-primary/5 p-4 text-[13.5px] text-muted-foreground">
+          <Paperclip className="h-5 w-5 shrink-0 text-primary" />
+          <span>{t('work_files.consent_pending_notice', { defaultValue: "Asarga rozilik berilganidan so'ng asar fayllari ko'rish va yuklab olish uchun ochiladi." })}</span>
+        </div>
+      )
+    }
+
     return (
       <div className="flex flex-col items-center gap-3 rounded-xl border border-destructive/30 bg-destructive/5 py-8 text-center">
         <AlertCircle className="h-6 w-6 text-destructive" />
@@ -270,7 +312,7 @@ export default function WorkFilesSection({
 
       {!readOnly && quota && <QuotaBar used={quota.usedBytes} limit={quota.limitBytes} />}
 
-      {!readOnly && <UploadDropzone onFiles={handleFiles} />}
+      {!readOnly && <UploadDropzone onFiles={handleFiles} disabled={disabled} />}
 
       {!readOnly && activeItems.length > 0 && (
         <ul className="space-y-2">

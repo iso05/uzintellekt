@@ -175,19 +175,13 @@ describe('toPayload', () => {
       workTypeId: 5,
       rightHolders: [
         {
-          passportNo: '30101961234509',
-          ownerType: 'AUTHOR',
           rightHolderType: 'AUTHOR',
           subjectType: 'INDIVIDUAL',
           pinfl: '30101961234509',
           firstName: 'ALI',
           lastName: 'VALIYEV',
-          inn: null,
-          legalName: null,
           sharePercentage: 100,
           authorRoles: [1, 2],
-          contractFile: 'test.pdf',
-          contractFiles: ['test.pdf'],
         },
       ],
     })

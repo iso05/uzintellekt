@@ -63,8 +63,21 @@ export async function getStorageQuota() {
  */
 export function putToStorage(uploadUrl, file, contentType, onProgress) {
   return new Promise((resolve, reject) => {
+    if (!uploadUrl || typeof uploadUrl !== 'string') {
+      const err = new Error('Upload URL is missing')
+      err.status = 0
+      reject(err)
+      return
+    }
+    if (!file) {
+      const err = new Error('File is missing')
+      err.status = 0
+      reject(err)
+      return
+    }
     const xhr = new XMLHttpRequest()
     xhr.open('PUT', uploadUrl, true)
+    xhr.timeout = 60_000
     if (contentType) xhr.setRequestHeader('Content-Type', contentType)
 
     if (typeof onProgress === 'function' && xhr.upload) {

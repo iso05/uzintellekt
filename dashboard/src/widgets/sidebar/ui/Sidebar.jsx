@@ -6,10 +6,14 @@ import { cn } from '@shared/lib/utils'
 import { NAV_ITEMS, ROUTES } from '@/config/routes'
 import logo from '@/assets/logo/logo.svg'
 
-function NavItem({ item, collapsed }) {
+import { usePendingConsentCount } from '@/entities/work'
+
+function NavItem({ item, collapsed, pendingCount = 0 }) {
   const { t } = useTranslation()
   const Icon = item.icon
   const label = t(`nav.${item.key}`)
+  const isWorks = item.to === ROUTES.WORKS || item.key === 'works'
+
   const link = (
     <NavLink
       to={item.to}
@@ -29,13 +33,25 @@ function NavItem({ item, collapsed }) {
           {isActive && !collapsed && (
             <span className="absolute left-0 top-1/2 h-5 w-1 -translate-y-1/2 rounded-r-full bg-primary" />
           )}
-          <Icon
-            className={cn(
-              'h-5 w-5 shrink-0 transition-colors',
-              isActive ? 'text-primary' : 'text-muted-foreground group-hover:text-foreground'
+          <div className="relative flex items-center justify-center shrink-0">
+            <Icon
+              className={cn(
+                'h-5 w-5 shrink-0 transition-colors',
+                isActive ? 'text-primary' : 'text-muted-foreground group-hover:text-foreground'
+              )}
+            />
+            {isWorks && collapsed && pendingCount > 0 && (
+              <span className="absolute -right-1.5 -top-1.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-bold text-destructive-foreground animate-pulse">
+                {pendingCount}
+              </span>
             )}
-          />
+          </div>
           {!collapsed && <span className="truncate">{label}</span>}
+          {!collapsed && isWorks && pendingCount > 0 && (
+            <span className="ml-auto flex h-5 min-w-[20px] items-center justify-center rounded-full bg-destructive px-1.5 text-[11px] font-bold text-destructive-foreground animate-pulse shadow-soft">
+              {pendingCount}
+            </span>
+          )}
         </>
       )}
     </NavLink>
@@ -47,7 +63,7 @@ function NavItem({ item, collapsed }) {
     <Tooltip>
       <TooltipTrigger asChild>{link}</TooltipTrigger>
       <TooltipContent side="right" sideOffset={12}>
-        {label}
+        {label} {pendingCount > 0 ? `(${pendingCount})` : ''}
       </TooltipContent>
     </Tooltip>
   )
@@ -60,6 +76,7 @@ export default function Sidebar({
   onLogout,
 }) {
   const { t } = useTranslation()
+  const { pendingCount } = usePendingConsentCount()
   const items = NAV_ITEMS
   const isCompact = collapsed && !mobileOpen
 
@@ -106,7 +123,7 @@ export default function Sidebar({
             </p>
           )}
           {items.map((item) => (
-            <NavItem key={item.to} item={item} collapsed={isCompact} />
+            <NavItem key={item.to} item={item} collapsed={isCompact} pendingCount={pendingCount} />
           ))}
         </nav>
 

@@ -7,6 +7,37 @@ import LanguageSwitcher from '@shared/ui/LanguageSwitcher'
 import { ROUTES } from '@/config/routes'
 import { getUserShortName, getUserInitials, getUserRoleLabel } from '@/entities/user'
 
+function TestModeMarquee({ text }) {
+  return (
+    <div className="relative flex w-full overflow-hidden bg-red-600 text-white text-[12.5px] font-bold py-1 select-none border-b border-red-700/60 shadow-sm">
+      <style>{`
+        @keyframes test-marquee {
+          0% { transform: translateX(0%); }
+          100% { transform: translateX(-50%); }
+        }
+        .animate-test-marquee {
+          display: flex;
+          width: max-content;
+          animation: test-marquee 25s linear infinite;
+        }
+        .animate-test-marquee:hover {
+          animation-play-state: paused;
+        }
+      `}</style>
+      <div className="animate-test-marquee gap-12 items-center shrink-0">
+        <span className="flex items-center gap-2">⚠️ {text} ⚠️</span>
+        <span className="flex items-center gap-2">⚠️ {text} ⚠️</span>
+        <span className="flex items-center gap-2">⚠️ {text} ⚠️</span>
+        <span className="flex items-center gap-2">⚠️ {text} ⚠️</span>
+        <span className="flex items-center gap-2">⚠️ {text} ⚠️</span>
+        <span className="flex items-center gap-2">⚠️ {text} ⚠️</span>
+        <span className="flex items-center gap-2">⚠️ {text} ⚠️</span>
+        <span className="flex items-center gap-2">⚠️ {text} ⚠️</span>
+      </div>
+    </div>
+  )
+}
+
 export default function Header({
   user,
   collapsed,
@@ -38,6 +69,7 @@ export default function Header({
 
   return (
     <header className="sticky top-0 z-30 flex flex-col border-b border-border bg-card/80 backdrop-blur supports-[backdrop-filter]:bg-card/70">
+      <TestModeMarquee text={t('user.test_mode_banner', { defaultValue: 'Platforma test rejimida ishlayapti' })} />
       <div className="flex h-16 items-center gap-2 sm:gap-3 px-3 sm:px-4 md:px-6 lg:px-8">
         {/* Mobile menu trigger */}
         <Button

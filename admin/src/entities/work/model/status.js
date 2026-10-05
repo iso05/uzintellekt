@@ -1,17 +1,19 @@
 export const WORK_STATUS = {
   DRAFT: 'DRAFT',
+  PENDING_CONSENT: 'PENDING_CONSENT',
   UNDER_REVIEW: 'UNDER_REVIEW',
   REJECTED: 'REJECTED',
   REGISTERED: 'REGISTERED',
 }
 
 // Order used by filters/legends. UNDER_REVIEW first — it is the moderation queue.
-export const WORK_STATUS_ORDER = ['UNDER_REVIEW', 'DRAFT', 'REGISTERED', 'REJECTED']
+export const WORK_STATUS_ORDER = ['UNDER_REVIEW', 'PENDING_CONSENT', 'DRAFT', 'REGISTERED', 'REJECTED']
 
 // Maps backend state → @shared/ui Badge variant. Labels resolve via i18n
 // (dashboard.work_status.*) at render time.
 const WORK_STATUS_CONFIG = {
   DRAFT: { variant: 'muted' },
+  PENDING_CONSENT: { variant: 'warning' },
   UNDER_REVIEW: { variant: 'warning' },
   REJECTED: { variant: 'destructive' },
   REGISTERED: { variant: 'success' },

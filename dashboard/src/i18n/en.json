@@ -27,14 +27,18 @@
     "retry": "Retry",
     "reload": "Reload page",
     "crash_title": "Something went wrong",
-    "crash_desc": "An unexpected error occurred while rendering this page. Try reloading."
+    "crash_desc": "An unexpected error occurred while rendering this page. Try reloading.",
+    "read_more": "Read more...",
+    "show_less": "Show less",
+    "full_description": "Full description"
   },
   "user": {
     "type_physical": "Individual",
     "type_legal": "Legal entity",
     "member": "Member",
     "member_no": "Not a member",
-    "test_mode": "Test mode"
+    "test_mode": "Test mode",
+    "test_mode_banner": "Platform is operating in test mode"
   },
   "profile": {
     "section_identity": "Personal information",
@@ -73,7 +77,9 @@
     "geo_error": "Failed to load region/district data.",
     "region_district_required": "Region or district not selected",
     "phone1_ph": "998901234567",
-    "phone2_ph": "998912345678 (optional)"
+    "phone2_ph": "998912345678 (optional)",
+    "phone1_label": "Tel 1",
+    "phone2_label": "Tel 2"
   },
   "dashboard": {
     "welcome": "Welcome, {{name}}!",
@@ -89,6 +95,7 @@
   },
   "work_status": {
     "DRAFT": "Draft",
+    "PENDING_CONSENT": "Pending consent",
     "UNDER_REVIEW": "Under review",
     "REJECTED": "Rejected",
     "REGISTERED": "Accepted",
@@ -194,7 +201,8 @@
     "first_name_ph": "First name",
     "last_name_label": "Last name",
     "last_name_ph": "Last name",
-    "share_label": "Share (%)",
+    "no_share_label": "No share (0%)",
+    "max_chars": "Maximum: {{max}} characters",
     "share_max": "Maximum: {{max}}% • free: {{free}}%",
     "share_all_done": "All shares distributed",
     "role_label": "Author role",
@@ -220,6 +228,12 @@
     "draft_restored": "Unsaved draft restored",
     "back": "Back",
     "submit_need_file": "Attach a file to submit"
+  },
+  "errors": {
+    "quota_exceeded": "Storage quota of 500 MB exceeded",
+    "rate_limit": "Too many file operations. Please wait a moment",
+    "draft_limit": "You can keep a maximum of 3 active drafts",
+    "submit_no_file": "At least one work file must be uploaded before submission"
   },
   "validation": {
     "field_required": "{{field}} is required",
@@ -248,6 +262,7 @@
     "share_total_simple": "The total share of rights holders (%) must be 100.",
     "type_required": "Select a work type",
     "role_required": "Select at least one author role",
+    "heir_doc_required": "Every heir or other right holder must have at least one supporting document attached before the work can be submitted",
     "address_required": "Address cannot be empty",
     "phone_invalid": "Invalid phone: {{phone}}",
     "field_invalid": "Invalid field: {{field}}"
@@ -309,16 +324,20 @@
     "col_name": "Name",
     "col_desc": "Description",
     "col_status": "Status",
-    "load_error": "Failed to load contributed works",
-    "item_label": "works"
+    "load_error": "Failed to load contributions",
+    "item_label": "works",
+    "new_consent_toast": "You received {{count}} new consent request(s)! Check the Works section.",
+    "pending_badge": "Pending consent: {{count}}"
   },
   "work_files": {
     "title": "Work files",
     "storage": "Storage",
     "units": "B,KB,MB,GB,TB",
-    "drop_hint": "Drag files here or click to choose",
-    "drop_types": "PDF, DOC, DOCX",
-    "uploading": "Uploading…",
+      "drop_hint": "Drag files here or click to choose",
+      "drop_types": "PDF, DOC, DOCX",
+      "fill_fields_first": "File upload is currently unavailable",
+      "fill_fields_first_hint": "Complete all required fields, then you can upload a file here.",
+      "uploading": "Uploading…",
     "queued": "Queued",
     "done": "Done",
     "failed": "Failed",
@@ -344,6 +363,14 @@
     "attach_on_create": "Dropping a file creates the draft work and attaches it",
     "expired": "Storage expired — please re-upload",
     "upload_error": "Upload failed"
+  },
+  "holder_docs": {
+    "title": "Rights Holders File",
+    "empty": "No documents attached for rights holders.",
+    "load_error": "Could not load rights holder documents",
+    "download": "Download",
+    "download_error": "Error getting download link",
+    "holder_label": "Rights holder"
   },
   "errors": {
     "quota_exceeded": "Not enough storage space",

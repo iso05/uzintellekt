@@ -6,12 +6,15 @@ import { maskPhone } from '@shared/lib/input-masks'
 import { validatePhone } from '@shared/lib/validators'
 import { updateMeField } from '@/entities/user'
 
-function PhoneRow({ label, value, onChange, error, onBlur, disabled, optional }) {
+function PhoneRow({ label, value, onChange, error, onBlur, disabled, optional, required }) {
   const { t } = useTranslation()
   return (
     <div className="flex flex-col gap-1">
       <div className="flex items-center gap-2">
-        <span className="w-12 shrink-0 text-xs text-muted-foreground">{label}:</span>
+        <span className="w-14 shrink-0 text-xs text-muted-foreground flex items-center gap-0.5">
+          {label}:
+          {required && <span className="text-destructive font-bold">*</span>}
+        </span>
         <div className="relative flex-1">
           <Input
             type="tel"
@@ -87,7 +90,8 @@ export default function PhonesEdit({ initialPhones = [], onDone, onCancel }) {
   return (
     <div className="flex w-full max-w-sm flex-col gap-2">
       <PhoneRow
-        label="Tel 1"
+        label={t('profile.phone1_label')}
+        required
         value={phone1}
         onChange={(v) => {
           setPhone1(v)
@@ -98,7 +102,7 @@ export default function PhonesEdit({ initialPhones = [], onDone, onCancel }) {
         disabled={saving}
       />
       <PhoneRow
-        label="Tel 2"
+        label={t('profile.phone2_label')}
         value={phone2}
         onChange={(v) => {
           setPhone2(v)

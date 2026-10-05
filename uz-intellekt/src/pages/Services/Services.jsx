@@ -1,4 +1,5 @@
-import { NavLink } from 'react-router-dom'
+import { useEffect } from 'react'
+import { NavLink, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import {
   ArrowRight,
@@ -116,6 +117,20 @@ const itemKeyMap = {
 
 const Services = () => {
   const { t } = useTranslation()
+  const location = useLocation()
+
+  useEffect(() => {
+    if (location.hash === '#registration-guide' || location.state?.scrollToGuide) {
+      const timer = setTimeout(() => {
+        const el = document.getElementById('registration-guide')
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth' })
+        }
+      }, 100)
+      return () => clearTimeout(timer)
+    }
+  }, [location])
+
   useSEO({
     title: t('seo.services_title'),
     description: t('seo.services_desc'),
@@ -452,6 +467,33 @@ const Services = () => {
               {t('services_page.more_faq', "Ko'proq savol-javoblar")}
               <ArrowRight className="h-3.5 w-3.5" />
             </NavLink>
+          </div>
+        </div>
+      </section>
+
+      {/* REGISTRATION GUIDE (YOUTUBE VIDEO) */}
+      <section id="registration-guide" className="bg-background py-16 sm:py-24 border-t border-border">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl md:text-4xl">
+              {t('services_page.video_guide_title', "Ro'yxatdan o'tish qo'llanmasi")}
+            </h2>
+            <p className="mt-3 text-muted-foreground">
+              {t(
+                'services_page.video_guide_subtitle',
+                "Platformada ro'yxatdan o'tish va xizmatlardan foydalanish bo'yicha batafsil video qo'llanma"
+              )}
+            </p>
+          </div>
+
+          <div className="mt-10 overflow-hidden rounded-2xl border border-border shadow-soft-lg bg-black aspect-video">
+            <iframe
+              className="h-full w-full"
+              src="https://www.youtube.com/embed/0n1cJ0KMQjM"
+              title={t('services_page.video_guide_title', "Ro'yxatdan o'tish qo'llanmasi")}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+            />
           </div>
         </div>
       </section>

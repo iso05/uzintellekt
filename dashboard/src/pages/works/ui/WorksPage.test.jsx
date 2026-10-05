@@ -36,6 +36,13 @@ import WorksPage from './WorksPage'
 
 const page = (items, totalItems) => ({ items, totalItems })
 
+async function resolveInitialLoads(items = [{ id: 1, name: 'First' }], totalItems = 1) {
+  await act(async () => {
+    deferreds[0].resolve(page(items, totalItems))
+    deferreds[1].resolve(page(items, totalItems))
+  })
+}
+
 function renderPage() {
   return render(
     <MemoryRouter>
@@ -69,8 +76,8 @@ afterEach(() => {
 describe('WorksPage — search debounce (bug #4)', () => {
   it('issues one fetch for the initial load, not one per keystroke', async () => {
     renderPage()
-    await act(async () => deferreds[0].resolve(page([{ id: 1, name: 'First' }], 1)))
-    expect(getWorksMock).toHaveBeenCalledTimes(1)
+    await resolveInitialLoads()
+    expect(getWorksMock).toHaveBeenCalledTimes(2)
 
     const input = screen.getByPlaceholderText(i18n.t('works.search_ph'))
     fireEvent.change(input, { target: { value: 'a' } })
@@ -79,18 +86,18 @@ describe('WorksPage — search debounce (bug #4)', () => {
 
     // Before the debounce window elapses, no extra request fired.
     await advance(DEBOUNCE_MS - 50)
-    expect(getWorksMock).toHaveBeenCalledTimes(1)
+    expect(getWorksMock).toHaveBeenCalledTimes(2)
 
     // After it elapses, exactly one more request — collapsing the three keystrokes.
     await advance(100)
-    expect(getWorksMock).toHaveBeenCalledTimes(2)
+    expect(getWorksMock).toHaveBeenCalledTimes(3)
   })
 })
 
 describe('WorksPage — stale response guard (bug #3)', () => {
   it('keeps the newest response when an older request resolves last', async () => {
     renderPage()
-    await act(async () => deferreds[0].resolve(page([{ id: 1, name: 'First work' }], 1)))
+    await resolveInitialLoads([{ id: 1, name: 'First work' }], 1)
     expect(screen.getByText('First work')).toBeInTheDocument()
 
     const input = screen.getByPlaceholderText(i18n.t('works.search_ph'))
@@ -103,11 +110,11 @@ describe('WorksPage — stale response guard (bug #3)', () => {
     fireEvent.change(input, { target: { value: 'abcd' } })
     await advance(DEBOUNCE_MS + 10)
 
-    expect(deferreds.length).toBe(3)
+    expect(deferreds.length).toBe(4)
 
     // Resolve the NEWEST (#3) first, then the older (#2) last.
-    await act(async () => deferreds[2].resolve(page([{ id: 3, name: 'Newest result' }], 1)))
-    await act(async () => deferreds[1].resolve(page([{ id: 2, name: 'Stale result' }], 1)))
+    await act(async () => deferreds[3].resolve(page([{ id: 3, name: 'Newest result' }], 1)))
+    await act(async () => deferreds[2].resolve(page([{ id: 2, name: 'Stale result' }], 1)))
     await flush()
 
     // The stale (#2) response must not have overwritten the newest (#3).

@@ -24,25 +24,29 @@ import { uploadRightHolderDocument } from '@/entities/right-holder-document'
 import { UploadDropzone } from '@/widgets/work-files'
 
 export default function HolderCard({
-  index,
-  holder,
+  index = 0,
+  holder = {},
+  authorRoles = [],
   onChange,
   onBlur,
   onRemove,
-  fieldErrors,
-  remainingShare,
-  totalShare,
-  disabled,
-  canRemove,
-  workId,
-  ensureWorkId,
+  fieldErrors = {},
+  remainingShare = 100,
+  totalShare = 100,
+  disabled = false,
+  canRemove = false,
+  workId = null,
+  ensureWorkId = null,
 }) {
   const { t } = useTranslation()
   const { user } = useAuth()
   const [uploadQueue, setUploadQueue] = useState([])
-  const errKey = (field) => fieldErrors[buildHolderErrorKey(index, field)]
+  const safeFieldErrors = fieldErrors || {}
+  const errKey = (field) => safeFieldErrors[buildHolderErrorKey(index, field)]
 
-  const isUserLegal = user?.userType === 'LEGAL'
+  if (!holder) return null
+
+  const isUserLegal = user?.subjectType === 'LEGAL'
   const isPrimaryHolderLocked = index === 0
 
   const currentHolderType = isPrimaryHolderLocked
@@ -50,22 +54,27 @@ export default function HolderCard({
     : ((holder.subjectType === 'LEGAL' || holder.type === 'LEGAL') ? 'LEGAL' : 'INDIVIDUAL')
 
   const isLegal = currentHolderType === 'LEGAL'
+  const currentOwnerType = (holder.ownerType || holder.rightHolderType || holder.type || 'AUTHOR').toUpperCase()
 
   const displayPassportNo = isPrimaryHolderLocked
-    ? (isUserLegal
-        ? (user?.inn || user?.passportNo || user?.pinfl || holder.passportNo || '123456789')
-        : (user?.pinfl || user?.passportNo || holder.passportNo || '30101961234509'))
+    ? (isUserLegal ? (user?.inn || '') : (user?.pinfl || ''))
     : holder.passportNo
 
   const displayFirstName = isPrimaryHolderLocked
-    ? (isUserLegal
-        ? (user?.legalName || user?.orgName || user?.firstName || holder.firstName || 'OOO UZINTELLEKT')
-        : (user?.firstName || holder.firstName || 'Test'))
+    ? (isUserLegal ? (user?.legalName || '') : (user?.firstName || ''))
     : holder.firstName
 
   const displayLastName = isPrimaryHolderLocked
-    ? (isUserLegal ? '' : (user?.lastName || holder.lastName || 'Foydalanuvchi'))
+    ? (isUserLegal ? '' : (user?.lastName || ''))
     : holder.lastName
+
+  const isInvalidId = (id) => !id || id === 'null' || id === 'undefined' || id === 'test-work-id'
+
+  // Hujjat yuklanishi uchun IKKALASI ham kerak:
+  // 1) workId — asar server tomonida yaratilgan bo'lishi shart
+  // 2) holder.id — huquq egasi server tomonida ro'yxatdan o'tgan bo'lishi shart
+  // Bu shartlar bajarilmasa, foydalanuvchi avval asarni to'liq saqlashi kerak.
+  const canUploadDoc = !isInvalidId(workId) && Boolean(holder.id)
 
   const handleFiles = async (fileList) => {
     const files = Array.from(fileList || [])
@@ -82,127 +91,85 @@ export default function HolderCard({
 
     if (allowed.length === 0) return
 
+    let nextContractFiles = [...(holder.contractFiles || [])]
+    let nextPendingObjs = [...(holder.pendingFileObjs || [])]
+
     for (const file of allowed) {
-      const localId = `rh-upload-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
-      const newQueueItem = {
-        id: localId,
-        name: file.name,
-        size: file.size,
-        progress: 0,
-        state: 'init',
-        fileObj: file,
-      }
+      if (nextContractFiles.includes(file.name)) continue
 
-      setUploadQueue((prev) => [...prev, newQueueItem])
+      const uploadImmediately = !isInvalidId(workId) && Boolean(holder.id)
 
-      const getUploadTargetId = async () => {
-        if (workId && workId !== 'test-work-id' && workId !== 'null' && workId !== 'undefined') return workId
-        if (ensureWorkId) return await ensureWorkId()
-        throw new Error("Asar ID mavjud emas")
-      }
+      nextContractFiles.push(file.name)
+      if (!uploadImmediately) nextPendingObjs.push({ file, name: file.name })
 
-      const uploadPromise = getUploadTargetId().then((targetId) => {
-        return (targetId && holder.id)
-          ? uploadRightHolderDocument({
-              workId: targetId,
-              rightHolderId: holder.id,
-              file,
-              onProgress: (p) => {
-                setUploadQueue((prev) =>
-                  prev.map((item) => (item.id === localId ? { ...item, progress: p, state: 'put' } : item))
-                )
-              },
-              onState: (s) => {
-                setUploadQueue((prev) =>
-                  prev.map((item) => (item.id === localId ? { ...item, state: s } : item))
-                )
-              },
-            })
-          : uploadOne({
-              workId: targetId,
-              file: file,
-              onProgress: (p) => {
-                setUploadQueue((prev) =>
-                  prev.map((item) => (item.id === localId ? { ...item, progress: p, state: 'put' } : item))
-                )
-              },
-              onState: (s) => {
-                setUploadQueue((prev) =>
-                  prev.map((item) => (item.id === localId ? { ...item, state: s } : item))
-                )
-              },
-            })
-      })
+      // If workId and holder.id are ALREADY present on backend (editing existing work):
+      if (uploadImmediately) {
+        const localId = `rh-upload-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+        console.log(`📄 HolderCard: uploadRightHolderDocument workId=${workId}, rightHolderId=${holder.id}, file=${file.name}`)
 
-      uploadPromise
-        .then(() => {
-          setUploadQueue((prev) => prev.filter((item) => item.id !== localId))
-          const currentFiles = holder.contractFiles || []
-          if (!currentFiles.includes(file.name)) {
-            onChange('contractFiles', [...currentFiles, file.name])
-          }
+        setUploadQueue((prev) => [...prev, { id: localId, name: file.name, fileObj: file, size: file.size, progress: 0, state: 'init' }])
+
+        uploadRightHolderDocument({
+          workId,
+          rightHolderId: holder.id,
+          file,
+          onProgress: (p) => setUploadQueue((prev) => prev.map((item) => (item.id === localId ? { ...item, progress: p, state: 'put' } : item))),
+          onState: (s) => setUploadQueue((prev) => prev.map((item) => (item.id === localId ? { ...item, state: s } : item))),
         })
-        .catch((err) => {
-          setUploadQueue((prev) =>
-            prev.map((item) =>
-              item.id === localId
-                ? { ...item, state: 'error', errorMsg: err?.message || 'Upload error' }
-                : item
-            )
-          )
-          toast.error(t('work_files.upload_error', { name: file.name }))
-        })
+          .then(() => {
+            setUploadQueue((prev) => prev.filter((item) => item.id !== localId))
+            console.log('✅ HolderCard: hujjat yuklandi:', file.name)
+          })
+          .catch((err) => {
+            console.error('❌ HolderCard upload xatosi:', err)
+            setUploadQueue((prev) => prev.map((item) => (item.id === localId ? { ...item, state: 'error', errorMsg: err?.message } : item)))
+            onChange('pendingFileObjs', [...(holder.pendingFileObjs || []), { file, name: file.name }])
+            toast.error(t('work_files.upload_error', { name: file.name }))
+          })
+      }
     }
+
+    onChange('contractFiles', nextContractFiles)
+    onChange('pendingFileObjs', nextPendingObjs)
   }
+
 
   const handleRetryUpload = (localId) => {
     const item = uploadQueue.find((i) => i.id === localId)
     if (!item) return
 
+    if (!holder.id) {
+      toast.error(t('work_files.holder_not_saved', {
+        defaultValue: 'Huquq egasi hali saqlanmagan. Avval asarni saqlang.'
+      }))
+      return
+    }
+
+    const targetWorkId = workId
+    if (isInvalidId(targetWorkId)) {
+      toast.error(t('work_files.save_first', { defaultValue: 'Avval asarni saqlang' }))
+      return
+    }
+
     setUploadQueue((prev) =>
       prev.map((i) => (i.id === localId ? { ...i, state: 'init', progress: 0, errorMsg: null } : i))
     )
 
-    const getUploadTargetId = async () => {
-      if (workId && workId !== 'test-work-id' && workId !== 'null' && workId !== 'undefined') return workId
-      if (ensureWorkId) return await ensureWorkId()
-      throw new Error("Asar ID mavjud emas")
-    }
-
-    const uploadPromise = getUploadTargetId().then((targetId) => {
-      return (targetId && holder.id)
-        ? uploadRightHolderDocument({
-            workId: targetId,
-            rightHolderId: holder.id,
-            file: item.fileObj,
-            onProgress: (p) => {
-              setUploadQueue((prev) =>
-                prev.map((i) => (i.id === localId ? { ...i, progress: p, state: 'put' } : i))
-              )
-            },
-            onState: (s) => {
-              setUploadQueue((prev) =>
-                prev.map((i) => (i.id === localId ? { ...i, state: s } : i))
-              )
-            },
-          })
-        : uploadOne({
-            workId: targetId,
-            file: item.fileObj,
-            onProgress: (p) => {
-              setUploadQueue((prev) =>
-                prev.map((i) => (i.id === localId ? { ...i, progress: p, state: 'put' } : i))
-              )
-            },
-            onState: (s) => {
-              setUploadQueue((prev) =>
-                prev.map((i) => (i.id === localId ? { ...i, state: s } : i))
-              )
-            },
-          })
+    uploadRightHolderDocument({
+      workId: targetWorkId,
+      rightHolderId: holder.id,
+      file: item.fileObj,
+      onProgress: (p) => {
+        setUploadQueue((prev) =>
+          prev.map((i) => (i.id === localId ? { ...i, progress: p, state: 'put' } : i))
+        )
+      },
+      onState: (s) => {
+        setUploadQueue((prev) =>
+          prev.map((i) => (i.id === localId ? { ...i, state: s } : i))
+        )
+      },
     })
-
-    uploadPromise
       .then(() => {
         setUploadQueue((prev) => prev.filter((i) => i.id !== localId))
         const currentFiles = holder.contractFiles || []
@@ -211,6 +178,7 @@ export default function HolderCard({
         }
       })
       .catch((err) => {
+        console.error('❌ HolderCard retry xatosi:', { file: item.name, err })
         setUploadQueue((prev) =>
           prev.map((i) =>
             i.id === localId
@@ -228,7 +196,9 @@ export default function HolderCard({
 
   const handleRemoveFile = (fileName) => {
     const currentFiles = holder.contractFiles || []
+    const pendingObjs = holder.pendingFileObjs || []
     onChange('contractFiles', currentFiles.filter((name) => name !== fileName))
+    onChange('pendingFileObjs', pendingObjs.filter((item) => item.name !== fileName))
   }
 
   return (
@@ -325,28 +295,30 @@ export default function HolderCard({
         <div className="flex flex-col gap-1.5">
           <div className="flex items-center gap-3">
             <Label>{t('form.share_label')}</Label>
-            <div className="flex items-center gap-1.5">
-              <Checkbox
-                id={`holder-field-${index}-no-share`}
-                checked={holder.share === '0'}
-                onCheckedChange={(checked) => {
-                  if (checked) {
-                    onChange('share', '0')
-                    onBlur('share', '0')
-                  } else {
-                    onChange('share', '')
-                    onBlur('share', '')
-                  }
-                }}
-                disabled={disabled}
-              />
-              <label
-                htmlFor={`holder-field-${index}-no-share`}
-                className="text-[11.5px] font-medium leading-none cursor-pointer text-muted-foreground select-none hover:text-foreground transition-colors"
-              >
-                {t('form.no_share_label')}
-              </label>
-            </div>
+            {!isPrimaryHolderLocked && !isLegal && (
+              <div className="flex items-center gap-1.5">
+                <Checkbox
+                  id={`holder-field-${index}-no-share`}
+                  checked={holder.share === '0'}
+                  onCheckedChange={(checked) => {
+                    if (checked) {
+                      onChange('share', '0')
+                      onBlur('share', '0')
+                    } else {
+                      onChange('share', '')
+                      onBlur('share', '')
+                    }
+                  }}
+                  disabled={disabled}
+                />
+                <label
+                  htmlFor={`holder-field-${index}-no-share`}
+                  className="text-[11.5px] font-medium leading-none cursor-pointer text-muted-foreground select-none hover:text-foreground transition-colors"
+                >
+                  {t('form.no_share_label')}
+                </label>
+              </div>
+            )}
           </div>
           <Input
             id={`holder-field-${index}-sharePercentage`}
@@ -354,10 +326,14 @@ export default function HolderCard({
             inputMode="decimal"
             maxLength={6}
             placeholder="0.00"
-            value={holder.share === '0' ? '0' : holder.share}
-            onChange={(e) => onChange('share', e.target.value)}
-            onBlur={(e) => onBlur('share', e.target.value)}
-            disabled={disabled || holder.share === '0'}
+            value={holder.share === '0' ? '0' : (holder.share ?? '')}
+            onChange={(e) => {
+              onChange('share', e.target.value)
+            }}
+            onBlur={(e) => {
+              onBlur('share', e.target.value)
+            }}
+            disabled={disabled || (!isPrimaryHolderLocked && !isLegal && holder.share === '0')}
             className={cn(errKey('sharePercentage') && 'border-destructive bg-destructive/5')}
           />
           {!disabled && holder.share !== '0' && (
@@ -391,28 +367,41 @@ export default function HolderCard({
           </Select>
         </div>
 
-        <div className="flex flex-col gap-1.5">
-          <Label>{t('form.roles_label', { defaultValue: 'Mualliflik rolingiz' })}</Label>
-          <AuthorRolesMultiSelect
-            value={holder.authorRoleIds || ['1']}
-            onChange={(val) => onChange('authorRoleIds', val)}
-            disabled={disabled}
-            hasError={Boolean(errKey('authorRoleIds'))}
-          />
-          <FieldError error={errKey('authorRoleIds')} />
-        </div>
+        {(holder.ownerType || holder.rightHolderType || 'AUTHOR') === 'AUTHOR' && (
+          <div className="flex flex-col gap-1.5">
+            <Label>{t('form.roles_label', { defaultValue: 'Mualliflik rolingiz' })}</Label>
+            <AuthorRolesMultiSelect
+              value={holder.authorRoleIds || ['1']}
+              onChange={(val) => onChange('authorRoleIds', val)}
+              disabled={disabled}
+              hasError={Boolean(errKey('authorRoleIds'))}
+            />
+            <FieldError error={errKey('authorRoleIds')} />
+          </div>
+        )}
       </div>
 
-      {/* Basis Document Section (Full Width, below the grid) */}
-      {holder.ownerType && (
+      {/* Basis / Supporting Document Section (Required for HEIR / OTHER per OpenAPI spec) */}
+      {(currentOwnerType === 'HEIR' || currentOwnerType === 'OTHER' || (holder.contractFiles && holder.contractFiles.length > 0)) && (
         <div className="mt-4 flex flex-col gap-2 border-t border-border/60 pt-4">
-          <Label className="text-[13px] font-bold text-foreground">{t('form.basis_doc_label')}</Label>
+          <div className="flex flex-wrap items-center justify-between gap-1">
+            <Label className="text-[13px] font-bold text-foreground">
+              {t('form.basis_doc_label', { defaultValue: 'Asoslovchi hujjat (Vorislik / Vakillik guvohnomasi)' })}
+              {(currentOwnerType === 'HEIR' || currentOwnerType === 'OTHER') && (
+                <span className="ml-1 text-destructive">*</span>
+              )}
+            </Label>
+            <span className="text-[11.5px] font-medium text-muted-foreground">
+              {currentOwnerType === 'HEIR' || currentOwnerType === 'OTHER'
+                ? t('form.basis_doc_required_hint', { defaultValue: 'Voris / Boshqa huquq egasi uchun tasdiqlovchi hujjat yuklanishi shart' })
+                : ''}
+            </span>
+          </div>
           <UploadDropzone onFiles={handleFiles} disabled={disabled} />
-          {!workId && (
-            <p className="text-[12px] text-muted-foreground mt-0.5">
-              {t('work_files.attach_on_create')}
-            </p>
+          {errKey('contractFiles') && (
+            <FieldError error={errKey('contractFiles')} />
           )}
+
 
           {/* Uploaded & Queue files table */}
           {((holder.contractFiles && holder.contractFiles.length > 0) || uploadQueue.length > 0) && (

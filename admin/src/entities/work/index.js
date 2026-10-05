@@ -6,6 +6,8 @@ export {
   updateWork,
   submitWork,
   getAdminWorkFiles,
+  getRightHolderDocuments,
+  getAdminRightHolderDocumentDownloadUrl,
   getAdminFileDownloadUrl,
   getAdminFilesGrid,
   deleteWorkFile,

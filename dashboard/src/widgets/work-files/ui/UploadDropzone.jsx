@@ -56,8 +56,16 @@ export default function UploadDropzone({ onFiles, disabled = false }) {
       )}
     >
       <UploadCloud className="h-7 w-7 text-muted-foreground" />
-      <span className="text-[13.5px] font-semibold text-foreground">{t('work_files.drop_hint')}</span>
-      <span className="text-[12px] text-muted-foreground">{t('work_files.drop_types')}</span>
+      <span className="text-[13.5px] font-semibold text-foreground">
+        {disabled
+          ? t('work_files.fill_fields_first', { defaultValue: "Fayl yuklash hozircha yopiq" })
+          : t('work_files.drop_hint')}
+      </span>
+      <span className="text-[12px] text-muted-foreground">
+        {disabled
+          ? t('work_files.fill_fields_first_hint', { defaultValue: "Barcha majburiy maydonlarni to'ldirgach, bu yerda fayl yuklay olasiz." })
+          : t('work_files.drop_types')}
+      </span>
       <input
         ref={inputRef}
         type="file"

@@ -7,6 +7,9 @@ export {
   deleteWork,
   getWorksStat,
   getMyContributions,
+  getConsentView,
+  getConsentViewFileDownloadUrl,
+  getConsentViewDocumentDownloadUrl,
   acceptConsent,
   rejectConsent,
   withdrawWork,
@@ -44,9 +47,13 @@ export {
   findDuplicatePassportErrors,
   computeShareTotal,
   getShareTotalError,
+  getHeirOtherDocErrors,
   toPayload,
+  toPayloadForDraft,
   fromBackend,
   getHolderRoleIds,
+  isHolderValidForBackend,
 } from './model/validation'
 
 export { useWorkForm } from './model/use-work-form'
+export { usePendingConsentCount, markConsentIdsAsSeen, getSeenConsentIds } from './model/use-pending-consent-count'

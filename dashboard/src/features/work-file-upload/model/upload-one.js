@@ -71,30 +71,65 @@ export async function uploadOne({
   backoff = defaultBackoff,
   sleep = _sleep,
 }) {
+  console.group(`📤 uploadOne: "${file.name}" (${(file.size / 1024).toFixed(1)} KB)`)
+  console.log('workId:', workId)
+  console.log('file.type:', file.type)
+  console.log('file.size:', file.size, 'bytes')
+
   let attempt = 0
   for (;;) {
     attempt++
     try {
+      // ── STEP 1: INIT ──────────────────────────────────────
+      console.log(`🔄 [attempt ${attempt}] POST /works/${workId}/files/init`, {
+        filename: file.name,
+        sizeBytes: file.size,
+      })
       onState?.(UPLOAD_STATE.INIT)
       const init = await api.initUpload(workId, {
         filename: file.name,
         sizeBytes: file.size,
       })
+      console.log('✅ init response:', init)
+      if (!init?.fileId || !init?.uploadUrl || !init?.requiredContentType) {
+        const err = new Error('Server upload initialization response is incomplete')
+        err.status = 0
+        throw err
+      }
 
+      // ── STEP 2: PUT to S3 ────────────────────────────────
+      console.log(`🔄 PUT to S3:`, init.uploadUrl)
+      console.log('requiredContentType:', init.requiredContentType)
       onState?.(UPLOAD_STATE.PUT)
       await api.putToStorage(init.uploadUrl, file, init.requiredContentType, onProgress)
+      console.log('✅ S3 PUT muvaffaqiyatli')
 
+      // ── STEP 3: CONFIRM ───────────────────────────────────
+      console.log(`🔄 POST /works/${workId}/files/${init.fileId}/confirm`)
       onState?.(UPLOAD_STATE.CONFIRM)
       const confirmed = await api.confirmUpload(workId, init.fileId)
+      console.log('✅ confirm response:', confirmed)
 
       onState?.(UPLOAD_STATE.DONE)
+      console.groupEnd()
       return confirmed
     } catch (err) {
+      console.error(`❌ [attempt ${attempt}] Xato:`, {
+        message: err?.message,
+        status: err?.status,
+        errorCode: err?.apiError?.errorCode,
+        errorMessage: err?.apiError?.errorMessage,
+        fullError: err,
+      })
       if (attempt >= maxAttempts || !isRetriable(err)) {
+        console.error('🔴 Qayta urinish imkoni yo\'q. Yuklash bekor qilindi.')
+        console.groupEnd()
         onState?.(UPLOAD_STATE.ERROR)
         throw err
       }
-      await sleep(backoff(attempt))
+      const delay = backoff(attempt)
+      console.warn(`⏳ ${delay}ms kutilmoqda, keyin qayta urinish...`)
+      await sleep(delay)
       // loop → fresh init re-signs an expired uploadUrl
     }
   }

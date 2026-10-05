@@ -8,7 +8,12 @@ vi.mock('@shared/api', () => ({
 }))
 vi.mock('@/i18n', () => ({ default: { t: (key) => key } }))
 
-import { getMyContributions } from './api'
+import {
+  getMyContributions,
+  getConsentView,
+  getConsentViewFileDownloadUrl,
+  getConsentViewDocumentDownloadUrl,
+} from './api'
 
 // Bug #11: getMyContributions returned the raw response, so a wrapped object
 // ({ items: [...] }) would reach ContributionsTable.map and throw.
@@ -33,5 +38,21 @@ describe('getMyContributions — always returns an array', () => {
   it('falls back to [] for an unexpected shape', async () => {
     requestJson.mockResolvedValue({ foo: 'bar' })
     expect(await getMyContributions()).toEqual([])
+  })
+})
+
+describe('consent view API', () => {
+  beforeEach(() => requestJson.mockReset())
+
+  it('uses the dedicated redacted view and its download URL endpoints', async () => {
+    requestJson.mockResolvedValue({ id: 'w1' })
+
+    await getConsentView('w1')
+    await getConsentViewFileDownloadUrl('w1', 'f1')
+    await getConsentViewDocumentDownloadUrl('w1', 'd1')
+
+    expect(requestJson).toHaveBeenNthCalledWith(1, '/api/v1/works/w1/consent-view')
+    expect(requestJson).toHaveBeenNthCalledWith(2, '/api/v1/works/w1/consent-view/files/f1/download-url')
+    expect(requestJson).toHaveBeenNthCalledWith(3, '/api/v1/works/w1/consent-view/documents/d1/download-url')
   })
 })

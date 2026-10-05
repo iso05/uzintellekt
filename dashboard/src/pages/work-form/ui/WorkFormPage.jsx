@@ -24,11 +24,16 @@ import {
   useWorkForm,
   fromBackend,
   toPayload,
+  toPayloadForDraft,
   validateWorkForm,
   getShareTotalError,
+  getHeirOtherDocErrors,
+  isHolderValidForBackend,
   EMPTY_HOLDER,
 } from '@/entities/work'
 import { isAllowedFile } from '@/entities/work-file'
+import { uploadOne } from '@/features/work-file-upload'
+import { uploadRightHolderDocument } from '@/entities/right-holder-document'
 import { BasicInfoSection } from '@/widgets/work-form-basic-info'
 import { RightHoldersSection } from '@/widgets/work-form-right-holders'
 import { WorkFilesSection, UploadDropzone } from '@/widgets/work-files'
@@ -126,7 +131,8 @@ export default function WorkFormPage() {
   const formValid = useMemo(() => {
     const errs = validateWorkForm(form)
     const totalErr = getShareTotalError(form.rightHolders)
-    return Object.keys(errs).length === 0 && !totalErr
+    const docErrs = getHeirOtherDocErrors(form.rightHolders)
+    return Object.keys(errs).length === 0 && !totalErr && Object.keys(docErrs).length === 0
   }, [form])
 
   // Load: server data for an existing work; restore a local draft for a new one.
@@ -151,40 +157,22 @@ export default function WorkFormPage() {
       const saved = loadDraft(storageKey)
       if (saved?.data) {
         const draftData = { ...saved.data }
-        const isUserLegal = user?.userType === 'LEGAL'
-        const defaultType = isUserLegal ? 'LEGAL' : 'PHYSICAL'
-        const defaultPassportNo = isUserLegal
-          ? (user?.inn || user?.passportNo || user?.pinfl || '123456789')
-          : (user?.pinfl || user?.passportNo || '30101961234509')
-        const defaultFirstName = isUserLegal
-          ? (user?.legalName || user?.orgName || user?.firstName || 'OOO UZINTELLEKT')
-          : (user?.firstName || 'Test')
-        const defaultLastName = isUserLegal
-          ? ''
-          : (user?.lastName || 'Foydalanuvchi')
-
+        const isUserLegal = user?.subjectType === 'LEGAL'
         if (draftData.rightHolders && draftData.rightHolders[0]) {
           const rh0 = draftData.rightHolders[0]
-          rh0.type = defaultType
-          rh0.passportNo = defaultPassportNo
-          rh0.firstName = defaultFirstName
-          rh0.lastName = defaultLastName
+          rh0.subjectType = isUserLegal ? 'LEGAL' : 'INDIVIDUAL'
+          rh0.type = rh0.subjectType
+          rh0.pinfl = isUserLegal ? '' : (user?.pinfl || '')
+          rh0.passportNo = isUserLegal ? '' : (user?.pinfl || '')
+          rh0.inn = isUserLegal ? (user?.inn || '') : ''
+          rh0.firstName = isUserLegal ? '' : (user?.firstName || '')
+          rh0.lastName = isUserLegal ? '' : (user?.lastName || '')
+          rh0.legalName = isUserLegal ? (user?.legalName || '') : ''
         }
         setForm(draftData)
         toast.success(t('form.draft_restored'))
       } else {
-        const isUserLegal = user?.userType === 'LEGAL'
-        const defaultType = isUserLegal ? 'LEGAL' : 'PHYSICAL'
-        const defaultPassportNo = isUserLegal
-          ? (user?.inn || user?.passportNo || user?.pinfl || '123456789')
-          : (user?.pinfl || user?.passportNo || '30101961234509')
-        const defaultFirstName = isUserLegal
-          ? (user?.legalName || user?.orgName || user?.firstName || 'OOO UZINTELLEKT')
-          : (user?.firstName || 'Test')
-        const defaultLastName = isUserLegal
-          ? ''
-          : (user?.lastName || 'Foydalanuvchi')
-
+        const isUserLegal = user?.subjectType === 'LEGAL'
         setForm({
           name: '',
           description: '',
@@ -192,10 +180,15 @@ export default function WorkFormPage() {
           rightHolders: [
             {
               ...EMPTY_HOLDER,
-              type: defaultType,
-              passportNo: defaultPassportNo,
-              firstName: defaultFirstName,
-              lastName: defaultLastName,
+              subjectType: isUserLegal ? 'LEGAL' : 'INDIVIDUAL',
+              type: isUserLegal ? 'LEGAL' : 'INDIVIDUAL',
+              rightHolderType: 'AUTHOR',
+              pinfl: isUserLegal ? '' : (user?.pinfl || ''),
+              passportNo: isUserLegal ? '' : (user?.pinfl || ''),
+              inn: isUserLegal ? (user?.inn || '') : '',
+              firstName: isUserLegal ? '' : (user?.firstName || ''),
+              lastName: isUserLegal ? '' : (user?.lastName || ''),
+              legalName: isUserLegal ? (user?.legalName || '') : '',
             },
           ],
         })
@@ -208,19 +201,38 @@ export default function WorkFormPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [routeId, user])
 
+  const lastSavedRef = useRef(null)
+
   // Single-flight create: autosave, file-drop, and submit all funnel through
   // this, so a brand-new work is created on the backend exactly once.
+  // Uses toPayloadForDraft to auto-balance the primary holder's share so that
+  // work creation never fails due to incomplete share distribution — enabling
+  // HEIR/OTHER document uploads before shares are finalized.
   const ensureWorkId = useCallback(
     async (data) => {
       if (workIdRef.current) return workIdRef.current
       if (!createFlightRef.current) {
-        createFlightRef.current = createWork(toPayload(data))
+        createFlightRef.current = createWork(toPayloadForDraft(data))
           .then((saved) => {
             const newId = saved?.id ?? saved?.workId
             if (newId) {
               workIdRef.current = newId
+              lastSavedRef.current = saved
               setCreatedId(newId)
               setWorkState(saved?.state || 'DRAFT')
+
+              // Merge backend-assigned rightHolder IDs into UI form state
+              if (saved?.rightHolders && saved.rightHolders.length > 0) {
+                const backendForm = fromBackend(saved)
+                setForm((prev) => ({
+                  ...prev,
+                  rightHolders: prev.rightHolders.map((rh, idx) => {
+                    const savedRh = backendForm.rightHolders?.[idx]
+                    const rId = savedRh?.id || savedRh?.rightHolderId || saved?.rightHolders?.[idx]?.id || saved?.rightHolders?.[idx]?.rightHolderId
+                    return rId ? { ...rh, id: rId } : rh
+                  }),
+                }))
+              }
             }
             clearDraft(storageKey)
             return newId
@@ -234,6 +246,7 @@ export default function WorkFormPage() {
     },
     [storageKey]
   )
+
 
   // Persist to backend — update (existing) or create-once (new). Backend rejects
   // a 4th draft (1021); surface that once and keep the local copy.
@@ -292,22 +305,98 @@ export default function WorkFormPage() {
     }
   }
 
+  const hasWorkFileAttached = hasUploaded || Boolean(pendingFiles && pendingFiles.length > 0)
+
   const canSubmit =
-    isExisting &&
-    (workState === 'DRAFT' || workState === 'REJECTED') &&
+    (!isExisting || workState === 'DRAFT' || workState === 'REJECTED') &&
     formValid &&
-    hasUploaded &&
+    hasWorkFileAttached &&
     !submitting
 
   const handleSubmit = async () => {
+    if (submitting) return
+
+    // 1. Check form field validation errors
+    const errs = {
+      ...validateWorkForm(form),
+      ...getHeirOtherDocErrors(form.rightHolders),
+    }
+    const totalErr = getShareTotalError(form.rightHolders)
+    const docErrs = getHeirOtherDocErrors(form.rightHolders)
+
+    if (Object.keys(errs).length > 0 || totalErr) {
+      setFieldErrors(errs)
+      setShareTotalError(totalErr || '')
+
+      if (totalErr) {
+        toast.error(t('validation.share_total_simple', { defaultValue: "Ulushlar yig'indisi 100% bo'lishi kerak" }))
+      } else if (Object.keys(docErrs).length > 0) {
+        toast.error(t('validation.heir_doc_required'))
+      } else {
+        toast.error(t('form.fill_required_fields', { defaultValue: "Barcha majburiy maydonlarni to'ldiring" }))
+      }
+      return
+    }
+
+    // 2. Check work file attached
+    if (!hasWorkFileAttached) {
+      toast.error(t('form.submit_need_file', { defaultValue: "Asarni yuborish uchun kamida 1 ta fayl yuklanishi shart" }))
+      return
+    }
+
     setSubmitting(true)
     try {
-      await persist(form) // flush latest edits (creates once if needed)
-      await submitWork(workIdRef.current)
+      let targetWorkId = workIdRef.current
+      let createdHolderIds = []
+      let savedWork = null
+
+      // 1. Create or update work draft on backend
+      if (!targetWorkId) {
+        console.log('🚀 Creating work on backend:', toPayload(form))
+        savedWork = await createWork(toPayload(form))
+        targetWorkId = savedWork?.id ?? savedWork?.workId
+        workIdRef.current = targetWorkId
+        setCreatedId(targetWorkId)
+      } else {
+        console.log('🚀 Updating work on backend:', toPayload(form))
+        savedWork = await updateWork(targetWorkId, toPayload(form))
+      }
+      createdHolderIds = savedWork?.rightHolders || []
+
+      if (!targetWorkId) {
+        throw new Error("Asar yaratishda xatolik yuz berdi")
+      }
+
+      // 2. WorkFilesSection owns the main-file upload queue. Re-uploading its
+      // initial files here created duplicate attachments on submit.
+
+      // 3. Upload right holder documents (if any holders have pending docs)
+      const activeHolders = form.rightHolders.filter(isHolderValidForBackend)
+      const freshRightHolders = savedWork?.rightHolders || []
+
+      for (let i = 0; i < activeHolders.length; i++) {
+        const holder = activeHolders[i]
+        const pendingObjs = holder.pendingFileObjs || []
+        const freshHolderObj = freshRightHolders[i]
+        const holderId = freshHolderObj?.id || freshHolderObj?.rightHolderId || freshHolderObj?.rightHolder?.id || holder.id
+
+        if (pendingObjs.length > 0 && holderId) {
+          console.log(`📄 Uploading ${pendingObjs.length} docs for holder ${i} (${holderId})...`)
+          for (const item of pendingObjs) {
+            await uploadRightHolderDocument({ workId: targetWorkId, rightHolderId: holderId, file: item.file })
+          }
+        }
+      }
+
+      // 4. Submit work for review
+      console.log(`✅ Submitting work ${targetWorkId} for review...`)
+      await submitWork(targetWorkId)
+
       clearDraft(storageKey)
-      toast.success(t('form.submitted'))
+      toast.success(t('form.submitted', { defaultValue: "Asar ko'rib chiqishga yuborildi!" }))
       setTimeout(goBack, 800)
     } catch (e) {
+      console.error('❌ handleSubmit Xatosi:', e)
       toast.error(apiErrorMessage(e, t, 'work_actions.submit_err'))
     } finally {
       setSubmitting(false)
@@ -414,6 +503,7 @@ export default function WorkFormPage() {
             readOnly={false}
             initialFiles={pendingFiles}
             onUploadedChange={setHasUploaded}
+            disabled={!formValid}
           />
         </FilesCard>
 
@@ -433,7 +523,7 @@ export default function WorkFormPage() {
             type="button"
             variant="success"
             onClick={handleSubmit}
-            disabled={!canSubmit}
+            disabled={submitting}
             title={!hasUploaded ? t('form.submit_need_file') : undefined}
             className="gap-2"
           >

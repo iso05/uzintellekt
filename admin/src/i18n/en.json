@@ -213,6 +213,7 @@
     },
     "work_status": {
       "DRAFT": "Draft",
+      "PENDING_CONSENT": "Pending consent",
       "UNDER_REVIEW": "Under review",
       "REJECTED": "Rejected",
       "REGISTERED": "Registered"

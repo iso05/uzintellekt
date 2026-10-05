@@ -27,14 +27,18 @@
     "retry": "Qayta urinish",
     "reload": "Sahifani yangilash",
     "crash_title": "Nimadir noto‘g‘ri ketdi",
-    "crash_desc": "Sahifani ko‘rsatishda kutilmagan xatolik yuz berdi. Sahifani yangilab ko‘ring."
+    "crash_desc": "Sahifani ko‘rsatishda kutilmagan xatolik yuz berdi. Sahifani yangilab ko‘ring.",
+    "read_more": "Batafsil...",
+    "show_less": "Qisqartirish",
+    "full_description": "To'liq tavsifi"
   },
   "user": {
     "type_physical": "Jismoniy shaxs",
     "type_legal": "Yuridik shaxs",
     "member": "A'zo",
     "member_no": "A'zo emas",
-    "test_mode": "Test rejimi"
+    "test_mode": "Test rejimi",
+    "test_mode_banner": "Platforma test rejimida ishlayapti"
   },
   "profile": {
     "section_identity": "Shaxsiy ma'lumotlar",
@@ -73,7 +77,9 @@
     "geo_error": "Viloyat/tuman ma'lumotlarini yuklab bo'lmadi.",
     "region_district_required": "Viloyat yoki tuman tanlanmagan",
     "phone1_ph": "998901234567",
-    "phone2_ph": "998912345678 (ixtiyoriy)"
+    "phone2_ph": "998912345678 (ixtiyoriy)",
+    "phone1_label": "Tel 1",
+    "phone2_label": "Tel 2"
   },
   "dashboard": {
     "welcome": "Xush kelibsiz, {{name}}!",
@@ -89,6 +95,7 @@
   },
   "work_status": {
     "DRAFT": "Qoralama",
+    "PENDING_CONSENT": "Rozilik kutilmoqda",
     "UNDER_REVIEW": "Ko'rib chiqilmoqda",
     "REJECTED": "Rad etilgan",
     "REGISTERED": "Qabul qilingan",
@@ -211,7 +218,8 @@
     "inn_ph": "123456789",
     "pinfl_label": "JShShIR (PINFL)",
     "pinfl_ph": "12345678901234",
-    "no_share_label": "Ulushsiz",
+    "no_share_label": "Ulushsiz (0%)",
+    "max_chars": "Maksimal: {{max}} ta belgi",
     "basis_doc_label": "Asoslovchi hujjat (shartnoma/merosxo'rlik)",
     "upload_file": "Fayl biriktirish",
     "holder_fill": "Haq egasini to'ldirish",
@@ -241,6 +249,12 @@
     "draft_restored": "Saqlanmagan qoralama tiklandi",
     "back": "Orqaga",
     "submit_need_file": "Yuborish uchun fayl biriktiring"
+  },
+  "errors": {
+    "quota_exceeded": "500 MB saqlash kvotasi to'lgan",
+    "rate_limit": "5 daqiqada 20 tadan ortiq fayl operatsiyasi. Biroz kuting",
+    "draft_limit": "Maksimal 3 ta aktiv qoralama asar saqlashingiz mumkin",
+    "submit_no_file": "Asarni yuborish uchun kamida 1 ta fayl yuklanishi shart"
   },
   "validation": {
     "field_required": "{{field}} kiritilishi shart",
@@ -275,11 +289,13 @@
     "share_number": "Ulush foizi raqam bo'lishi kerak",
     "share_min": "Ulush foizi 0 dan kam bo'lmasligi kerak",
     "share_min_primary": "Asosiy muallif (O'zingiz) ulushi kamida 0.01% bo'lishi kerak",
+    "share_min_legal": "Yuridik shaxs ulushi kamida 0.01% bo'lishi shart",
     "share_over": "Ulush foizi 100% dan oshmasligi kerak",
     "share_total": "Jami ulush 100% bo'lishi shart. Hozirgi: {{n}}%",
     "share_total_simple": "Huquq egasining jami ulush foizi (%) 100 bo'lishi shart.",
     "type_required": "Asar turini tanlang",
     "role_required": "Kamida bitta muallif roli tanlang",
+    "heir_doc_required": "Voris yoki Boshqa huquq egasi uchun kamida 1 ta asoslovchi hujjat biriktirilishi shart",
     "address_required": "Manzil bo'sh bo'lishi mumkin emas",
     "phone_invalid": "Noto'g'ri telefon: {{phone}}",
     "field_invalid": "Noto'g'ri maydon: {{field}}"
@@ -342,15 +358,19 @@
     "col_desc": "Tavsif",
     "col_status": "Holati",
     "load_error": "Qatnashgan asarlarni yuklashda xatolik",
-    "item_label": "ta asar"
+    "item_label": "ta asar",
+    "new_consent_toast": "Sizga {{count}} ta yangi rozilik so'rovi keldi! Asarlarda ko'rib chiqishingiz mumkin.",
+    "pending_badge": "{{count}} ta rozilik kutilmoqda"
   },
   "work_files": {
     "title": "Ish fayllari",
     "storage": "Xotira",
     "units": "B,KB,MB,GB,TB",
-    "drop_hint": "Fayllarni shu yerga tashlang yoki tanlash uchun bosing",
-    "drop_types": "PDF, DOC, DOCX",
-    "uploading": "Yuklanmoqda…",
+      "drop_hint": "Fayllarni shu yerga tashlang yoki tanlash uchun bosing",
+      "drop_types": "PDF, DOC, DOCX",
+      "fill_fields_first": "Fayl yuklash hozircha yopiq",
+      "fill_fields_first_hint": "Barcha majburiy maydonlarni to'ldirgach, bu yerda fayl yuklay olasiz.",
+      "uploading": "Yuklanmoqda…",
     "queued": "Navbatda",
     "done": "Tayyor",
     "failed": "Xato",
@@ -376,6 +396,14 @@
     "attach_on_create": "Fayl ish qoralamasini yaratadi va unga biriktiriladi",
     "expired": "Saqlash muddati tugadi — qayta yuklang",
     "upload_error": "Yuklashda xato"
+  },
+  "holder_docs": {
+    "title": "Huquq egalari fayli",
+    "empty": "Huquq egalari uchun hujjatlar biriktirilmagan.",
+    "load_error": "Huquq egalari hujjatlarini yuklab bo'lmadi",
+    "download": "Yuklab olish",
+    "download_error": "Havolani olishda xato",
+    "holder_label": "Huquq egasi"
   },
   "errors": {
     "quota_exceeded": "Xotirada joy yetarli emas",

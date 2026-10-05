@@ -36,7 +36,15 @@ function isAllowedFile(file) {
   return ALLOWED_EXTENSIONS.includes(ext)
 }
 
-const emptyHolder = () => ({ type: 'PHYSICAL', lastName: '', firstName: '', passportNo: '', sharePercentage: '' })
+const emptyHolder = () => ({
+  type: 'PHYSICAL',
+  ownerType: 'AUTHOR',
+  lastName: '',
+  firstName: '',
+  passportNo: '',
+  sharePercentage: '',
+  authorRoleIds: ['1'],
+})
 
 function holdersFromWork(work) {
   const rhs = work?.rightHolders || []
@@ -47,6 +55,7 @@ function holdersFromWork(work) {
     firstName: rh.firstName || '',
     passportNo: rh.passportNo || rh.pinfl || rh.inn || '',
     sharePercentage: rh.sharePercentage != null ? String(rh.sharePercentage) : '',
+    ownerType: rh.rightHolderType || rh.ownerType || 'AUTHOR',
     authorRoleIds: rh.authorRoleIds || rh.authorRoles || [],
     authorRoles: rh.authorRoles || rh.authorRoleIds || [],
   }))
@@ -171,7 +180,7 @@ export default function WorkFormDialog({ mode = 'create', userId, work, open, on
   }, [allUsers, apiSearchResults, searchQuery])
 
   const selectUserForHolder = (holderIdx, userItem) => {
-    const isLegal = (userItem.userType || userItem.type) === 'LEGAL'
+    const isLegal = (userItem.subjectType || userItem.userType || userItem.type) === 'LEGAL'
     setHolders((hs) =>
       hs.map((h, idx) =>
         idx === holderIdx
@@ -232,7 +241,7 @@ export default function WorkFormDialog({ mode = 'create', userId, work, open, on
     return (
       <div className="absolute left-0 right-0 top-full z-50 mt-1 max-h-52 overflow-y-auto rounded-md border border-border bg-popover p-1 shadow-lg text-popover-foreground">
         {filteredUsers.map((u) => {
-          const uIsLegal = (u.userType || u.type) === 'LEGAL'
+          const uIsLegal = (u.subjectType || u.userType || u.type) === 'LEGAL'
           const name = uIsLegal
             ? (u.legalName || u.firstName || 'Tashkilot')
             : `${u.lastName || ''} ${u.firstName || ''}`.trim()
@@ -286,7 +295,7 @@ export default function WorkFormDialog({ mode = 'create', userId, work, open, on
                 lastName: isLegal ? '' : (data.lastName || 'Foydalanuvchi'),
                 passportNo: (isLegal
                   ? (data.inn || data.passportNo || data.pinfl)
-                  : (data.pinfl || data.passportSeria || data.passportNo)) || '30101961234509',
+                  : (data.pinfl || data.passportSeria || data.passportNo)) || '',
               }
               return copy
             })
@@ -307,68 +316,6 @@ export default function WorkFormDialog({ mode = 'create', userId, work, open, on
 
   const setHolder = (i, key, value) =>
     setHolders((hs) => hs.map((h, idx) => (idx === i ? { ...h, [key]: value } : h)))
-
-  const handleCheckboxChange = (checked) => {
-    setUserIsAuthor(checked)
-    if (checked && userDetails) {
-      setHolders((hs) => {
-        const copy = [...hs]
-        copy[0] = {
-          ...copy[0],
-          firstName: normalizePassportName(userDetails.firstName),
-          lastName: normalizePassportName(userDetails.lastName),
-          passportNo: (userDetails.passportSeria || userDetails.passportNo || '').trim(),
-        }
-        return copy
-      })
-    } else {
-      setHolders((hs) => {
-        const copy = [...hs]
-        if (
-          copy[0].firstName === normalizePassportName(userDetails?.firstName) &&
-          copy[0].lastName === normalizePassportName(userDetails?.lastName) &&
-          copy[0].passportNo === (userDetails?.passportSeria || userDetails?.passportNo || '').trim()
-        ) {
-          copy[0] = {
-            ...copy[0],
-            firstName: '',
-            lastName: '',
-            passportNo: '',
-          }
-        }
-        return copy
-      })
-    }
-  }
-
-  const handlePassportKeyDown = (e, i, rawPassport) => {
-    if (e.key === 'Enter') {
-      e.preventDefault()
-      const passport = (rawPassport || '').trim().toUpperCase()
-      if (PASSPORT_RE.test(passport)) {
-        getUsersGrid({
-          page: 1,
-          size: 1,
-          filters: [{ field: 'passportSeria', operator: 'eq', value: passport }],
-        })
-          .then((res) => {
-            const foundUser = res?.items?.[0]
-            if (foundUser) {
-              setHolder(i, 'firstName', foundUser.firstName || '')
-              setHolder(i, 'lastName', foundUser.lastName || '')
-              toast.success(t('user.found') || 'Foydalanuvchi topildi!')
-            } else {
-              toast.info(t('user.not_found') || 'Ushbu pasportli foydalanuvchi topilmadi')
-            }
-          })
-          .catch(() => {
-            toast.error(t('common.error'))
-          })
-      } else {
-        toast.warning(t('validation.passport_format'))
-      }
-    }
-  }
 
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files || [])
@@ -417,13 +364,26 @@ export default function WorkFormDialog({ mode = 'create', userId, work, open, on
 
       if (!h.passportNo.trim()) {
         errs.holders[i].passportNo = { key: 'validation.passport_required' }
+      } else if (isLegal ? !/^\d{9}$/.test(h.passportNo.trim()) : !/^\d{14}$/.test(h.passportNo.trim())) {
+        errs.holders[i].passportNo = { key: isLegal ? 'validation.inn_format' : 'validation.pinfl_format' }
       }
 
-      if (h.sharePercentage !== '0') {
+      if (isLegal) {
+        const share = Number(h.sharePercentage)
+        if (isNaN(share) || share < 0.01 || share > 100) {
+          errs.holders[i].sharePercentage = { key: 'validation.share_min_legal', defaultValue: "Yuridik shaxs ulushi kamida 0.01% bo'lishi shart" }
+        }
+      } else if (h.sharePercentage !== '0') {
         const share = Number(h.sharePercentage)
         if (isNaN(share) || share <= 0 || share > 100) {
           errs.holders[i].sharePercentage = { key: 'validation.share_required' }
         }
+      }
+      if (Number(h.sharePercentage) === 0 && (isLegal || (h.ownerType || 'AUTHOR') !== 'AUTHOR')) {
+        errs.holders[i].sharePercentage = { key: 'validation.share_zero_not_allowed' }
+      }
+      if (!h.authorRoleIds?.length) {
+        errs.holders[i].authorRoleIds = { key: 'validation.role_required' }
       }
     })
     if (Math.round(shareTotal) !== 100) errs.shareTotal = { key: 'work.form.share_error' }
@@ -437,15 +397,28 @@ export default function WorkFormDialog({ mode = 'create', userId, work, open, on
       name: name.trim(),
       description: description.trim() || undefined,
       workTypeId: Number(workTypeId),
-      rightHolders: holders.map((h) => ({
-        passportNo: (h.passportNo || '').trim(),
-        firstName: (h.firstName || '').trim(),
-        lastName: h.type === 'LEGAL' ? '' : (h.lastName || '').trim(),
-        sharePercentage: Number(h.sharePercentage || 0),
-        ...(h.authorRoles || h.authorRoleIds
-          ? { authorRoles: h.authorRoles || h.authorRoleIds }
-          : {}),
-      })),
+      rightHolders: holders.map((h) => {
+        const isLegal = h.type === 'LEGAL'
+        const roles = (h.authorRoleIds || h.authorRoles || ['1']).map(Number).filter(Boolean)
+        return isLegal
+          ? {
+              rightHolderType: h.ownerType || 'AUTHOR',
+              subjectType: 'LEGAL',
+              inn: (h.passportNo || '').trim(),
+              legalName: (h.firstName || '').trim(),
+              sharePercentage: Number(h.sharePercentage || 0),
+              authorRoles: roles,
+            }
+          : {
+              rightHolderType: h.ownerType || 'AUTHOR',
+              subjectType: 'INDIVIDUAL',
+              pinfl: (h.passportNo || '').trim(),
+              firstName: (h.firstName || '').trim().toUpperCase(),
+              lastName: (h.lastName || '').trim().toUpperCase(),
+              sharePercentage: Number(h.sharePercentage || 0),
+              authorRoles: roles,
+            }
+      }),
     }
   }
 
@@ -588,6 +561,21 @@ export default function WorkFormDialog({ mode = 'create', userId, work, open, on
                           <SelectItem value="LEGAL">{t('user.form.legal', 'Yuridik shaxs')}</SelectItem>
                         </SelectContent>
                       </Select>
+
+                      <Select
+                        value={h.ownerType || 'AUTHOR'}
+                        onValueChange={(value) => setHolder(i, 'ownerType', value)}
+                        disabled={submitting}
+                      >
+                        <SelectTrigger className="h-7 w-[118px] text-[11.5px] font-semibold bg-background">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="AUTHOR">Muallif</SelectItem>
+                          <SelectItem value="HEIR">Voris</SelectItem>
+                          <SelectItem value="OTHER">Boshqa</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </div>
 
                     <div className="flex items-center gap-1">
@@ -695,30 +683,34 @@ export default function WorkFormDialog({ mode = 'create', userId, work, open, on
                     <div className="flex flex-col gap-1">
                       <div className="flex items-center gap-2">
                         <Label className="text-[12px] font-semibold">{t('work.form.share', 'Ulush (%)')}</Label>
-                        <div className="flex items-center gap-1.5 ml-auto">
-                          <Checkbox
-                            id={`holder-field-${i}-no-share`}
-                            checked={h.sharePercentage === '0'}
-                            onCheckedChange={(checked) => {
-                              setHolder(i, 'sharePercentage', checked ? '0' : '')
-                            }}
-                            disabled={submitting}
-                          />
-                          <label
-                            htmlFor={`holder-field-${i}-no-share`}
-                            className="text-[11.5px] font-medium leading-none cursor-pointer text-muted-foreground select-none hover:text-foreground transition-colors"
-                          >
-                            Ulushsiz
-                          </label>
-                        </div>
+                        {!isLegal && (
+                          <div className="flex items-center gap-1.5 ml-auto">
+                            <Checkbox
+                              id={`holder-field-${i}-no-share`}
+                              checked={h.sharePercentage === '0'}
+                              onCheckedChange={(checked) => {
+                                setHolder(i, 'sharePercentage', checked ? '0' : '')
+                              }}
+                              disabled={submitting}
+                            />
+                            <label
+                              htmlFor={`holder-field-${i}-no-share`}
+                              className="text-[11.5px] font-medium leading-none cursor-pointer text-muted-foreground select-none hover:text-foreground transition-colors"
+                            >
+                              Ulushsiz
+                            </label>
+                          </div>
+                        )}
                       </div>
                       <Input
                         type="text"
                         inputMode="decimal"
                         placeholder={t('work.form.share')}
-                        value={h.sharePercentage === '0' ? '0' : h.sharePercentage}
-                        onChange={(e) => setHolder(i, 'sharePercentage', maskShare(e.target.value))}
-                        disabled={submitting || h.sharePercentage === '0'}
+                        value={h.sharePercentage === '0' ? '0' : (h.sharePercentage ?? '')}
+                        onChange={(e) => {
+                          setHolder(i, 'sharePercentage', maskShare(e.target.value))
+                        }}
+                        disabled={submitting || (!isLegal && h.sharePercentage === '0')}
                         className={he(i, 'sharePercentage') ? 'border-destructive' : ''}
                       />
                       <FieldError error={he(i, 'sharePercentage')} />

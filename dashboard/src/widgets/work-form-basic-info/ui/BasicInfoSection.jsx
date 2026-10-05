@@ -15,21 +15,17 @@ import { cn } from '@shared/lib/utils'
 import { resolveLocalizedName } from '@shared/lib/localized-name'
 import { useDictionaries } from '@/entities/work'
 
-const MAX = 500
-const SHOW_AT = 400 // 80% of MAX
-const WARN_AT = 475 // 95% of MAX
+const MAX_NAME = 500
+const MAX_DESC = 500
 
-function CharCounter({ value }) {
+function CharCounter({ value, max = MAX_DESC, t }) {
   const len = (value || '').length
-  if (len < SHOW_AT) return null
   return (
-    <div
-      className={cn(
-        'mt-0.5 text-right text-[11px] font-medium',
-        len >= WARN_AT ? 'text-destructive' : 'text-muted-foreground'
-      )}
-    >
-      {len}/{MAX}
+    <div className="mt-0.5 flex items-center justify-between text-[11.5px] font-medium text-muted-foreground">
+      <span>{t ? t('form.max_chars', { max, defaultValue: `Maksimal: ${max} belgi` }) : `Maksimal: ${max} belgi`}</span>
+      <span className={cn('tabular-nums font-semibold', len >= max - 25 && 'text-amber-600', len >= max && 'text-destructive font-bold')}>
+        {len} / {max}
+      </span>
     </div>
   )
 }
@@ -74,11 +70,11 @@ export default function BasicInfoSection({
             onChange={(e) => onFieldChange('name', e.target.value)}
             onBlur={(e) => onFieldBlur('name', e.target.value)}
             required
-            maxLength={MAX}
+            maxLength={MAX_NAME}
             disabled={disabled}
             className={cn(fieldErrors.name && 'border-destructive bg-destructive/5')}
           />
-          <CharCounter value={form.name} />
+          <CharCounter value={form.name} max={MAX_NAME} t={t} />
           <FieldError error={fieldErrors.name} />
         </div>
 
@@ -88,11 +84,11 @@ export default function BasicInfoSection({
             placeholder={t('form.desc_ph')}
             value={form.description}
             onChange={(e) => onFieldChange('description', e.target.value)}
-            maxLength={MAX}
+            maxLength={MAX_DESC}
             disabled={disabled}
             className="min-h-[110px] resize-y"
           />
-          <CharCounter value={form.description} />
+          <CharCounter value={form.description} max={MAX_DESC} t={t} />
         </div>
 
         <div className="flex flex-col gap-1.5">

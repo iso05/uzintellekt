@@ -7,7 +7,7 @@ vi.mock('@shared/api', () => ({
 }))
 
 import { requestJson, cachedGridGet, invalidateCache } from '@shared/api'
-import { getWorkById, decideWork } from './api'
+import { getWorkById, decideWork, getRightHolderDocuments, getAdminRightHolderDocumentDownloadUrl } from './api'
 
 const WORKS_GRID = '/api/v1/works/grid'
 
@@ -42,5 +42,15 @@ describe('work api', () => {
       body: JSON.stringify({ decision: 'REJECT', reason: 'no scan' }),
     })
     expect(invalidateCache).toHaveBeenCalledWith(WORKS_GRID)
+  })
+
+  it('uses the admin endpoints for right-holder documents and their downloads', async () => {
+    requestJson.mockResolvedValue({ downloadUrl: 'https://storage.example/document' })
+
+    await getRightHolderDocuments('w1', 'h1')
+    await getAdminRightHolderDocumentDownloadUrl('w1', 'h1', 'd1')
+
+    expect(requestJson).toHaveBeenNthCalledWith(1, '/api/v1/admin/works/w1/right-holders/h1/documents')
+    expect(requestJson).toHaveBeenNthCalledWith(2, '/api/v1/admin/works/w1/right-holders/h1/documents/d1/download-url')
   })
 })

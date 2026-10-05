@@ -73,7 +73,7 @@ export function DatePicker({
     onChange?.('')
   }
 
-  const calendarMonth = selectedDate || defaultMonth || (value ? undefined : new Date(1995, 0, 1))
+  const calendarMonth = selectedDate || defaultMonth || new Date()
 
   return (
     <div className={cn('relative flex items-center w-full', className)}>

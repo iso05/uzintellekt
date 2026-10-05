@@ -1,5 +1,6 @@
 export const WORK_STATUS = {
   DRAFT: 'DRAFT',
+  PENDING_CONSENT: 'PENDING_CONSENT',
   UNDER_REVIEW: 'UNDER_REVIEW',
   REJECTED: 'REJECTED',
   REGISTERED: 'REGISTERED',
@@ -9,6 +10,7 @@ export const WORK_STATUS = {
 // Labels are resolved via i18n (work_status.*) at render time, not here.
 export const WORK_STATUS_CONFIG = {
   DRAFT: { variant: 'muted' },
+  PENDING_CONSENT: { variant: 'warning' },
   UNDER_REVIEW: { variant: 'warning' },
   REJECTED: { variant: 'destructive' },
   REGISTERED: { variant: 'success' },

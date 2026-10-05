@@ -35,7 +35,7 @@ describe('WorkFormDialog', () => {
     expect(screen.getByText('work.form.share_error')).toBeInTheDocument()
   })
 
-  it('saves an edited work, mapping right-holder role ids to authorRoles', async () => {
+  it('saves an edited work with the same right-holder schema as the user dashboard', async () => {
     updateWork.mockResolvedValue({ id: 'w1' })
     const onDone = vi.fn()
     const onOpenChange = vi.fn()
@@ -45,7 +45,7 @@ describe('WorkFormDialog', () => {
       workTypeId: 1,
       description: 'desc',
       rightHolders: [
-        { lastName: 'ALIYEV', firstName: 'ALI', passportNo: 'AB1234567', sharePercentage: 100, authorRoleIds: [1] },
+        { lastName: 'ALIYEV', firstName: 'ALI', pinfl: '30101961234509', sharePercentage: 100, authorRoleIds: [1] },
       ],
     }
     render(<WorkFormDialog mode="edit" work={work} open onOpenChange={onOpenChange} onDone={onDone} />)
@@ -58,7 +58,15 @@ describe('WorkFormDialog', () => {
         description: 'desc',
         workTypeId: 1,
         rightHolders: [
-          { passportNo: 'AB1234567', firstName: 'ALI', lastName: 'ALIYEV', sharePercentage: 100, authorRoles: [1] },
+          {
+            rightHolderType: 'AUTHOR',
+            subjectType: 'INDIVIDUAL',
+            pinfl: '30101961234509',
+            firstName: 'ALI',
+            lastName: 'ALIYEV',
+            sharePercentage: 100,
+            authorRoles: [1],
+          },
         ],
       })
     )

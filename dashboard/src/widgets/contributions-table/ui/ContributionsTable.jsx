@@ -116,7 +116,9 @@ export default function ContributionsTable({ contributions = [], loading, onView
               </TableHeader>
               <TableBody>
                 {rows.map((w) => {
-                  const isAwaiting = w.awaitingMyConsent || w.consentState === 'PENDING'
+                  const status = getWorkStatus(w)
+                  const isDraft = status === 'DRAFT' || status === 'DRAFT_LIMIT_REACHED'
+                  const isAwaiting = !isDraft && (w.awaitingMyConsent || w.consentState === 'PENDING')
                   const isActing = actingWorkId === w.id
                   return (
                     <TableRow

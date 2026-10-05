@@ -213,6 +213,7 @@
     },
     "work_status": {
       "DRAFT": "Черновик",
+      "PENDING_CONSENT": "Ожидает согласия",
       "UNDER_REVIEW": "На рассмотрении",
       "REJECTED": "Отклонено",
       "REGISTERED": "Зарегистрировано"

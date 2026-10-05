@@ -34,8 +34,12 @@ const Hero = () => {
               {t('hero.cta', "A'zo bo'lish / Kirish")}
               <ArrowRight className="h-4 w-4" />
             </Button>
-            <Button size="lg" variant="outline" onClick={() => navigate('/services')}>
-              {t('hero.cta_secondary', 'Xizmatlar bilan tanishing')}
+            <Button
+              size="lg"
+              variant="outline"
+              onClick={() => navigate('/services#registration-guide', { state: { scrollToGuide: true } })}
+            >
+              {t('hero.cta_secondary', "Ro'yxatdan o'tish qo'llanmasi")}
             </Button>
           </div>
 

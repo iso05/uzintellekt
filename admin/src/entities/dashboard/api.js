@@ -18,20 +18,11 @@ export function getOverviewDashboard({ from, to } = {}) {
   return requestJson(`${BASE}/overview${qs({ from, to })}`)
 }
 
-export function getWorksDashboard({ from, to } = {}) {
-  return requestJson(`${BASE}/works${qs({ from, to })}`)
-}
-
-export function getUsersDashboard({ from, to } = {}) {
-  return requestJson(`${BASE}/users${qs({ from, to })}`)
-}
-
-export function getModerationDashboard({ from, to } = {}) {
-  return requestJson(`${BASE}/moderation${qs({ from, to })}`)
-}
-
-export function getStorageDashboard() {
-  return requestJson(`${BASE}/storage`)
+// Storage totals are provided by the `storage` block of the supported,
+// range-scoped overview response. There is no standalone /dashboard/storage API.
+export async function getStorageSummary({ from, to }) {
+  const overview = await getOverviewDashboard({ from, to })
+  return overview?.storage ?? null
 }
 
 export function getWorksSeries({ from, to, granularity = 'DAY', metric } = {}) {

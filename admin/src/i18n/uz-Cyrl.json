@@ -213,6 +213,7 @@
     },
     "work_status": {
       "DRAFT": "Қоралама",
+      "PENDING_CONSENT": "Розилик кутилмоқда",
       "UNDER_REVIEW": "Кўриб чиқилмоқда",
       "REJECTED": "Рад этилган",
       "REGISTERED": "Рўйхатга олинган"

@@ -1,4 +1,5 @@
 import { request, requestJson, cachedGridGet, invalidateCache } from '@shared/api'
+import { toIsoDate } from '@shared/lib/format'
 
 const CONTRACTS_GRID = '/api/v1/contracts/grid'
 
@@ -20,9 +21,15 @@ export function getContractDownloadUrl(contractId) {
 // multipart: JSON `request` part + binary `document`.
 export async function uploadLegacyContract(userId, { type, effectiveFrom, effectiveUntil, signedAt, document }) {
   const fd = new FormData()
+  const payload = {
+    type,
+    effectiveFrom: toIsoDate(effectiveFrom),
+    effectiveUntil: effectiveUntil ? toIsoDate(effectiveUntil) : undefined,
+    signedAt: toIsoDate(signedAt),
+  }
   fd.append(
     'request',
-    new Blob([JSON.stringify({ type, effectiveFrom, effectiveUntil, signedAt })], {
+    new Blob([JSON.stringify(payload)], {
       type: 'application/json',
     })
   )

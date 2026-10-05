@@ -55,7 +55,7 @@
     "title_highlight": "Himoya Qiling",
     "desc": "Mualliflik huquqlarini ro‘yxatdan o‘tkazing, boshqaring va raqamli platforma orqali ishonchli himoyalang.",
     "cta": "A'zo bo'lish / Kirish",
-    "cta_secondary": "Xizmatlar bilan tanishing",
+    "cta_secondary": "Ro'yxatdan o'tish qo'llanmasi",
     "image_alt": "UzIntellekt — intellektual mulk himoyasi",
     "trust": "OneID orqali xavfsiz va tez kirish"
   },
@@ -200,6 +200,8 @@
     "send_btn": "Yuborish"
   },
   "services_page": {
+    "video_guide_title": "Ro'yxatdan o'tish qo'llanmasi",
+    "video_guide_subtitle": "Platformada ro'yxatdan o'tish va xizmatlardan foydalanish bo'yicha batafsil video qo'llanma",
     "hero_title": "Intellektual mulkingizni himoya qiling",
     "hero_desc": "Biz siz uchun eng sodda, eng tez va eng xavfsiz deponentlash xizmati taqdim etamiz. Asarlarni to'liq himoya qiling va kelajakda huquqbuzarliklarga qarshi turing.",
     "start_btn": "Boshlash",

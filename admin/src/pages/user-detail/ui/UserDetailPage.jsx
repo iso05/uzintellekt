@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { ArrowLeft, Pencil, User as UserIcon, AlertTriangle, FileSignature, Upload, FileText, Plus, ChevronRight, Download, Copy, Check } from 'lucide-react'
-import { PageHeader, Card, CardContent, Button, Badge, Skeleton, EmptyState, Pagination, toast } from '@shared/ui'
+import { PageHeader, Card, CardContent, Button, Badge, Skeleton, EmptyState, Pagination, toast, CopyValue } from '@shared/ui'
 import { formatDate, formatDateTime } from '@shared/lib/format'
 import {
   UserStateBadge,
@@ -30,39 +30,6 @@ function Row({ label, children }) {
   )
 }
 
-// A value with a click-to-copy button (checkmark feedback for ~1.5s). `mono`
-// renders identifiers (PINFL, passport) in a monospace face for readability.
-function CopyValue({ value, mono }) {
-  const { t } = useTranslation()
-  const [copied, setCopied] = useState(false)
-  if (value == null || value === '') return null
-  const text = String(value)
-
-  async function copy() {
-    try {
-      await navigator.clipboard.writeText(text)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 1500)
-    } catch {
-      /* clipboard unavailable */
-    }
-  }
-
-  return (
-    <span className="inline-flex items-center gap-2">
-      <span className={mono ? 'font-mono tracking-tight' : undefined}>{text}</span>
-      <button
-        type="button"
-        onClick={copy}
-        title={t('common.copy')}
-        aria-label={t('common.copy')}
-        className="shrink-0 text-muted-foreground transition-colors hover:text-foreground"
-      >
-        {copied ? <Check className="h-3.5 w-3.5 text-success" /> : <Copy className="h-3.5 w-3.5" />}
-      </button>
-    </span>
-  )
-}
 
 function Count({ value }) {
   return (
@@ -132,7 +99,10 @@ export default function UserDetailPage() {
     )
   }
 
-  const kind = user.userType || user.type
+  // The current API returns `subjectType`; older grid responses used the
+  // aliases below. Prefer the documented field so the detail view never
+  // renders an empty type badge.
+  const kind = user.subjectType || user.userType || user.type
   const phones = Array.isArray(user.phones) ? user.phones.join(', ') : ''
 
   return (

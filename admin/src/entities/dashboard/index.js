@@ -1,9 +1,6 @@
 export {
   getOverviewDashboard,
-  getWorksDashboard,
-  getUsersDashboard,
-  getModerationDashboard,
-  getStorageDashboard,
+  getStorageSummary,
   getWorksSeries,
   getUsersSeries,
   getModerationSeries,

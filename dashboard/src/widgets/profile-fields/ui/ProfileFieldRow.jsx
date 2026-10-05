@@ -1,15 +1,6 @@
 import { useTranslation } from 'react-i18next'
-import { Copy, Pencil, Check, X } from 'lucide-react'
-import { Badge, Button, toast } from '@shared/ui'
-
-async function copyToClipboard(text, okMsg, errMsg) {
-  try {
-    await navigator.clipboard.writeText(text)
-    toast.success(okMsg)
-  } catch {
-    toast.error(errMsg)
-  }
-}
+import { Pencil, Check, X } from 'lucide-react'
+import { Badge, Button, CopyButton } from '@shared/ui'
 
 function MemberBadge({ value }) {
   const { t } = useTranslation()
@@ -61,16 +52,7 @@ export default function ProfileFieldRow({
             </span>
           )}
           {copyable && hasValue && copyValue && (
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-9 w-9 text-muted-foreground/70 hover:bg-muted hover:text-foreground"
-              onClick={() => copyToClipboard(copyValue, t('profile.copied'), t('profile.copy_failed'))}
-              title={t('profile.copy')}
-              aria-label={t('profile.copy')}
-            >
-              <Copy className="h-3.5 w-3.5" />
-            </Button>
+            <CopyButton value={copyValue} title={t('profile.copy')} />
           )}
           {editable && (
             <Button

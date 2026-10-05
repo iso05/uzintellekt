@@ -24,6 +24,10 @@ describe('user selectors', () => {
     expect(getFullName({ userType: 'LEGAL', legalName: 'Acme LLC', firstName: 'x' })).toBe('Acme LLC')
   })
 
+  it('recognizes the current API subjectType field', () => {
+    expect(getFullName({ subjectType: 'LEGAL', legalName: 'Acme LLC', firstName: 'x' })).toBe('Acme LLC')
+  })
+
   it('getFullName falls back to username when no name parts exist', () => {
     expect(getFullName({ username: 'admin' })).toBe('admin')
     expect(getFullName(null)).toBe('')

@@ -59,10 +59,13 @@ export const ERROR_CATALOG = {
  * Returns a clearly formatted error message distinguishing Frontend vs Server errors.
  */
 const CODE_KEYS = {
+  1011: 'validation.share_total_simple',
   1015: 'errors.quota_exceeded',
   1020: 'errors.rate_limit',
   1021: 'errors.draft_limit',
   1022: 'errors.submit_no_file',
+  1033: 'validation.passport_dup',
+  1034: 'validation.heir_doc_required',
 }
 
 export function apiErrorMessage(err, t, fallbackKey) {
@@ -83,17 +86,22 @@ export function apiErrorMessage(err, t, fallbackKey) {
 
   // Server Business Error (RestError with errorCode)
   if (code != null) {
-    const catalogMsg = ERROR_CATALOG[code]
-    const rawMsg = err?.apiError?.errorMessage || err?.errorMessage
     if (t && CODE_KEYS[code]) {
       const translated = t(CODE_KEYS[code])
       if (translated && translated !== CODE_KEYS[code]) {
-        return `[Server Backend Xatolik #${code}] ${translated}`
+        return translated
       }
     }
-    const detail = catalogMsg || rawMsg
-    if (detail && !err?.message) {
-      return `[Server Backend Xatolik #${code}] ${detail}`
+    const rawMsg = err?.apiError?.errorMessage || err?.errorMessage || err?.message
+    if (rawMsg && (code === 9999 || !ERROR_CATALOG[code])) {
+      return rawMsg
+    }
+    const catalogMsg = ERROR_CATALOG[code]
+    if (catalogMsg) {
+      return catalogMsg
+    }
+    if (rawMsg) {
+      return rawMsg
     }
   }
 
